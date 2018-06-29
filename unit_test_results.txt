@@ -402,8 +402,8 @@ TEST                                                                 <no date>
     1908436 0.23.6 rule precedence reversed for identical patterns
         bug-1908436.sh ...............................................[OK]
     1935701 0.24.7 buffer handling size mismatch
-        bug-1935701.sh FILE ........................................[FAIL]
-                       fstream .....................................[FAIL]
+        bug-1935701.sh FILE ..........................................[OK]
+                       fstream .......................................[OK]
     1936707 0.24.10 --plot flag doesnt seem to work
         bug-1936707.sh ...............................................[OK]
     1969629 0.25.4 token list with just TERMINATION treated empty
@@ -497,8 +497,6 @@ TEST                                                                 <no date>
     [FAIL] bug-293.sh _ bad
                     \__ good
     [FAIL] bug-3486388.sh
-    [FAIL] bug-1935701.sh _ FILE
-                        \__ fstream
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -2816,24 +2814,24 @@ quex/output/languages/cpp/TEST                                       <no date>
  * Character Counter:
 
     Default Implementation
-        test-counter.py ascii-1 ....................................[FAIL]
-                        ascii-1-wo-ReferenceP ......................[FAIL]
-                        cp737-1 ....................................[FAIL]
-                        cp737-1-wo-ReferenceP ......................[FAIL]
-                        utf_16_le-1 ................................[FAIL]
-                        utf_16_le-1-wo-ReferenceP ..................[FAIL]
-                        utf_16_le-2 ................................[FAIL]
-                        utf_16_le-2-wo-ReferenceP ..................[FAIL]
-                        utf_32_le-1 ................................[FAIL]
-                        utf_32_le-1-wo-ReferenceP ..................[FAIL]
-                        utf_8-1 ....................................[FAIL]
-                        utf_8-1-wo-ReferenceP ......................[FAIL]
-                        utf_8-2 ....................................[FAIL]
-                        utf_8-2-wo-ReferenceP ......................[FAIL]
-                        utf_8-3 ....................................[FAIL]
-                        utf_8-3-wo-ReferenceP ......................[FAIL]
-                        utf_8-4 ....................................[FAIL]
-                        utf_8-4-wo-ReferenceP ......................[FAIL]
+        test-counter.py ascii-1 ......................................[OK]
+                        ascii-1-wo-ReferenceP ........................[OK]
+                        cp737-1 ......................................[OK]
+                        cp737-1-wo-ReferenceP ........................[OK]
+                        utf_16_le-1 ..................................[OK]
+                        utf_16_le-1-wo-ReferenceP ....................[OK]
+                        utf_16_le-2 ..................................[OK]
+                        utf_16_le-2-wo-ReferenceP ....................[OK]
+                        utf_32_le-1 ..................................[OK]
+                        utf_32_le-1-wo-ReferenceP ....................[OK]
+                        utf_8-1 ......................................[OK]
+                        utf_8-1-wo-ReferenceP ........................[OK]
+                        utf_8-2 ......................................[OK]
+                        utf_8-2-wo-ReferenceP ........................[OK]
+                        utf_8-3 ......................................[OK]
+                        utf_8-3-wo-ReferenceP ........................[OK]
+                        utf_8-4 ......................................[OK]
+                        utf_8-4-wo-ReferenceP ........................[OK]
 
  * Converter:
 
@@ -2851,29 +2849,10 @@ quex/output/languages/cpp/TEST                                       <no date>
                           2 ..........................................[OK]
                           3 ..........................................[OK]
                           4 ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-counter.py _ ascii-1
-                         \__ ascii-1-wo-ReferenceP
-                         \__ cp737-1
-                         \__ cp737-1-wo-ReferenceP
-                         \__ utf_16_le-1
-                         \__ utf_16_le-1-wo-ReferenceP
-                         \__ utf_16_le-2
-                         \__ utf_16_le-2-wo-ReferenceP
-                         \__ utf_32_le-1
-                         \__ utf_32_le-1-wo-ReferenceP
-                         \__ utf_8-1
-                         \__ utf_8-1-wo-ReferenceP
-                         \__ utf_8-2
-                         \__ utf_8-2-wo-ReferenceP
-                         \__ utf_8-3
-                         \__ utf_8-3-wo-ReferenceP
-                         \__ utf_8-4
-                         \__ utf_8-4-wo-ReferenceP
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3293,52 +3272,39 @@ quex/code_base/buffer/lexatoms/converter/iconv/TEST                  <no date>
  * Convert all in one beat:
 
     uint16_t
-        one-beat-2.exe ......................................[MAKE FAILED]
+        one-beat-2.exe ...............................................[OK]
     uint32_t
-        one-beat-4.exe ......................................[MAKE FAILED]
+        one-beat-4.exe ...............................................[OK]
     uint8_t
-        one-beat-1.exe ......................................[MAKE FAILED]
+        one-beat-1.exe ...............................................[OK]
     wchar_t
-        one-beat-WC.exe .....................................[MAKE FAILED]
+        one-beat-WC.exe ..............................................[OK]
 
  * Convert drain character by drain character:
 
     uint16_t
-        stepwise-drain-2.exe ................................[MAKE FAILED]
+        stepwise-drain-2.exe .........................................[OK]
     uint32_t
-        stepwise-drain-4.exe ................................[MAKE FAILED]
+        stepwise-drain-4.exe .........................................[OK]
     uint8_t
-        stepwise-drain-1.exe ................................[MAKE FAILED]
+        stepwise-drain-1.exe .........................................[OK]
     wchar_t
-        stepwise-drain-WC.exe ...............................[MAKE FAILED]
+        stepwise-drain-WC.exe ........................................[OK]
 
  * Convert source byte by source byte:
 
     uint16_t
-        stepwise-source-2.exe ...............................[MAKE FAILED]
+        stepwise-source-2.exe ........................................[OK]
     uint32_t
-        stepwise-source-4.exe ...............................[MAKE FAILED]
+        stepwise-source-4.exe ........................................[OK]
     uint8_t
-        stepwise-source-1.exe ...............................[MAKE FAILED]
+        stepwise-source-1.exe ........................................[OK]
     wchar_t
-        stepwise-source-WC.exe ..............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] one-beat-2.exe
-    [FAIL] one-beat-4.exe
-    [FAIL] one-beat-1.exe
-    [FAIL] one-beat-WC.exe
-    [FAIL] stepwise-drain-2.exe
-    [FAIL] stepwise-drain-4.exe
-    [FAIL] stepwise-drain-1.exe
-    [FAIL] stepwise-drain-WC.exe
-    [FAIL] stepwise-source-2.exe
-    [FAIL] stepwise-source-4.exe
-    [FAIL] stepwise-source-1.exe
-    [FAIL] stepwise-source-WC.exe
+        stepwise-source-WC.exe .......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                             ICU Converter Interface                            
@@ -3349,52 +3315,39 @@ quex/code_base/buffer/lexatoms/converter/icu/TEST                    <no date>
  * Convert all in one beat:
 
     uint16_t
-        one-beat-2.exe ......................................[MAKE FAILED]
+        one-beat-2.exe ...............................................[OK]
     uint32_t
-        one-beat-4.exe ......................................[MAKE FAILED]
+        one-beat-4.exe ...............................................[OK]
     uint8_t
-        one-beat-1.exe ......................................[MAKE FAILED]
+        one-beat-1.exe ...............................................[OK]
     wchar_t
-        one-beat-WC.exe .....................................[MAKE FAILED]
+        one-beat-WC.exe ..............................................[OK]
 
  * Convert drain character by drain character:
 
     uint16_t
-        stepwise-drain-2.exe ................................[MAKE FAILED]
+        stepwise-drain-2.exe .........................................[OK]
     uint32_t
-        stepwise-drain-4.exe ................................[MAKE FAILED]
+        stepwise-drain-4.exe .........................................[OK]
     uint8_t
-        stepwise-drain-1.exe ................................[MAKE FAILED]
+        stepwise-drain-1.exe .........................................[OK]
     wchar_t
-        stepwise-drain-WC.exe ...............................[MAKE FAILED]
+        stepwise-drain-WC.exe ........................................[OK]
 
  * Convert source byte by source byte:
 
     uint16_t
-        stepwise-source-2.exe ...............................[MAKE FAILED]
+        stepwise-source-2.exe ........................................[OK]
     uint32_t
-        stepwise-source-4.exe ...............................[MAKE FAILED]
+        stepwise-source-4.exe ........................................[OK]
     uint8_t
-        stepwise-source-1.exe ...............................[MAKE FAILED]
+        stepwise-source-1.exe ........................................[OK]
     wchar_t
-        stepwise-source-WC.exe ..............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] one-beat-2.exe
-    [FAIL] one-beat-4.exe
-    [FAIL] one-beat-1.exe
-    [FAIL] one-beat-WC.exe
-    [FAIL] stepwise-drain-2.exe
-    [FAIL] stepwise-drain-4.exe
-    [FAIL] stepwise-drain-1.exe
-    [FAIL] stepwise-drain-WC.exe
-    [FAIL] stepwise-source-2.exe
-    [FAIL] stepwise-source-4.exe
-    [FAIL] stepwise-source-1.exe
-    [FAIL] stepwise-source-WC.exe
+        stepwise-source-WC.exe .......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   DFA Algebra                                  
@@ -3506,7 +3459,7 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        5  238   [FAIL] TEST                                                          
+        3  238   [FAIL] TEST                                                          
         4  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
@@ -3535,8 +3488,8 @@ SUMMARY:
            26      [OK] .........................../move/TEST                         
            96      [OK] .........................../navigation/TEST                   
        12  12    [FAIL] ...................../bytes/TEST                              
-       12  12    [FAIL] ...................../lexatoms/converter/iconv/TEST           
-       12  12    [FAIL] ......................................../icu/TEST             
+           12      [OK] ...................../lexatoms/converter/iconv/TEST           
+           12      [OK] ......................................../icu/TEST             
            5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            10      [OK] ............../lexeme_converter/TEST                          
@@ -3563,15 +3516,15 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
        60  205   [FAIL] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-       18  33    [FAIL] .........../languages/cpp/TEST                                
+           33      [OK] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _____   __             
-    |  ___|_ _(_) |___     / ||___ /  / /_      __  __
-    | |_ / _` | | / __|    | |  |_ \ | '_ \     \ \/ /
-    |  _| (_| | | \__ \    | | ___) || (_) |     >  < 
-    |_|  \__,_|_|_|___/    |_||____/  \___/     /_/\_\
+     _____     _ _           ___   ____            
+    |  ___|_ _(_) |___      / _ \ |___ \     __  __
+    | |_ / _` | | / __|    | (_) |  __) |    \ \/ /
+    |  _| (_| | | \__ \     \__, | / __/      >  < 
+    |_|  \__,_|_|_|___/       /_/ |_____|    /_/\_\
                                                                    (1701 tests)
 
 ===============================================================================

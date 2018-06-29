@@ -19,7 +19,8 @@ typedef struct Lexer_tag {
     } buffer;
 } Lexer;
 
-#define QUEX_GOTO_LABEL_VOID    ((QUEX_TYPE_GOTO_LABEL)(-1))
+typedef int Lexer_goto_label_t;
+#define QUEX_GOTO_LABEL_VOID    ((Lexer_goto_label_t)(-1))
 
 
 #ifdef DEF_DEBUG_TRACE
