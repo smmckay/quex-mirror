@@ -580,8 +580,6 @@ Default: -1
 
     
 
-Default: <system>
-
 The implementation of customized converters is supported by the following options.  
 
 .. cmdoption:: --converter-ucs-coding-name, --cucn name

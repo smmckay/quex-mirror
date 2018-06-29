@@ -7,8 +7,8 @@ Lexer_TEST_MODE_counter_on_arbitrary_lexeme(struct Lexer_tag* me, Lexer_lexatom_
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
 #   define QUEX_LABEL_STATE_ROUTER _51
     Lexer_lexatom_t    input                   = (Lexer_lexatom_t)(0x00);
-    QUEX_TYPE_GOTO_LABEL target_state_else_index = QUEX_GOTO_LABEL_VOID;
-    QUEX_TYPE_GOTO_LABEL target_state_index      = QUEX_GOTO_LABEL_VOID;
+    Lexer_goto_label_t target_state_else_index = QUEX_GOTO_LABEL_VOID;
+    Lexer_goto_label_t target_state_index      = QUEX_GOTO_LABEL_VOID;
     Lexer_lexatom_t*   loop_restart_p          = (Lexer_lexatom_t*)0x0;
     (void)me;
     me->counter._column_number_at_begin = me->counter._column_number_at_end;
@@ -369,20 +369,18 @@ _0:
 
      __quex_assert(me->buffer._read_p == LexemeEnd);
     return;
-#   ifndef QUEX_OPTION_COMPUTED_GOTOS
     __quex_assert_no_passage();
 _51:
-#   endif /* QUEX_OPTION_COMPUTED_GOTOS */
 
 #undef self
 
 
 #undef QUEX_LABEL_STATE_ROUTER
 
-#    if ! defined(QUEX_OPTION_COMPUTED_GOTOS)
+
      goto _51; /* in QUEX_GOTO_STATE       */
      goto _32; /* to BAD_LEXATOM           */
-#    endif
+
     /* Avoid compiler warning: 'Unused labels' */
 
     goto _31;

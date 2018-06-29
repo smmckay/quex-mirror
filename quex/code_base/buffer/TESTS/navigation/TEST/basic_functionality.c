@@ -43,15 +43,15 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 static QUEX_TYPE_LEXATOM_EXT       reference[8192];
-static QUEX_TYPE_STREAM_POSITION reference_load(const char* file_stem);
+static TestAnalyzer_stream_position_t reference_load(const char* file_stem);
 static bool                      verify_content(QUEX_NAME(Buffer)* me, 
-                                                QUEX_TYPE_STREAM_POSITION Position, 
-                                                QUEX_TYPE_STREAM_POSITION position_limit);
+                                                TestAnalyzer_stream_position_t Position, 
+                                                TestAnalyzer_stream_position_t position_limit);
 static void                      print_difference(QUEX_NAME(Buffer)* me);
 static bool                      seek_forward(QUEX_NAME(Buffer)*        me,
-                                              QUEX_TYPE_STREAM_POSITION PositionLimit);
+                                              TestAnalyzer_stream_position_t PositionLimit);
 static bool                      seek_backward(QUEX_NAME(Buffer)*        me,
-                                               QUEX_TYPE_STREAM_POSITION PositionLimit);
+                                               TestAnalyzer_stream_position_t PositionLimit);
 
 bool
 basic_functionality(QUEX_NAME(Buffer)* me, const char* ReferenceFileName)
@@ -63,10 +63,10 @@ basic_functionality(QUEX_NAME(Buffer)* me, const char* ReferenceFileName)
  *          false -- else.                                                   */
 {
     int  i;
-    QUEX_TYPE_STREAM_POSITION position = 0;
-    QUEX_TYPE_STREAM_POSITION previous = 0;
-    QUEX_TYPE_STREAM_POSITION position_limit;
-    QUEX_TYPE_STREAM_POSITION random_value = 1234567890;
+    TestAnalyzer_stream_position_t position = 0;
+    TestAnalyzer_stream_position_t previous = 0;
+    TestAnalyzer_stream_position_t position_limit;
+    TestAnalyzer_stream_position_t random_value = 1234567890;
     static bool               virginity_f = true;
 
     if( virginity_f ) {
@@ -128,8 +128,8 @@ basic_functionality(QUEX_NAME(Buffer)* me, const char* ReferenceFileName)
 
 static bool
 verify_content(QUEX_NAME(Buffer)* me, 
-               QUEX_TYPE_STREAM_POSITION Position, 
-               QUEX_TYPE_STREAM_POSITION PositionLimit)
+               TestAnalyzer_stream_position_t Position, 
+               TestAnalyzer_stream_position_t PositionLimit)
 /* The 'Buffer_seek()' must have positioned the 'read_p' to the character at
  * the specific position. The stretch from 'read_p' to text end must be the
  * same as in the reference buffer. Moreover, the stretch from buffer begin to
@@ -137,7 +137,7 @@ verify_content(QUEX_NAME(Buffer)* me,
  */ 
 {
     ptrdiff_t                  ContentSize = me->content_size(me);
-    QUEX_TYPE_STREAM_POSITION  begin_lexatom_index = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
+    TestAnalyzer_stream_position_t  begin_lexatom_index = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
 
     if( Position < PositionLimit ) {
         if(     me->_read_p != me->content_end(me) 
@@ -168,9 +168,9 @@ verify_content(QUEX_NAME(Buffer)* me,
 }
 
 static bool
-difference(QUEX_NAME(Buffer)* me, QUEX_TYPE_STREAM_POSITION CI)
+difference(QUEX_NAME(Buffer)* me, TestAnalyzer_stream_position_t CI)
 {
-    const QUEX_TYPE_STREAM_POSITION ci_begin = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
+    const TestAnalyzer_stream_position_t ci_begin = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
 
     return me->content_begin(me)[CI - ci_begin] != reference[CI];
 }
@@ -181,15 +181,15 @@ difference(QUEX_NAME(Buffer)* me, QUEX_TYPE_STREAM_POSITION CI)
 static void
 print_difference(QUEX_NAME(Buffer)* me)
 {
-    const QUEX_TYPE_STREAM_POSITION ci_begin = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
-    const QUEX_TYPE_STREAM_POSITION ci_end   = QUEX_NAME(Buffer_input_lexatom_index_end)(me);
-    QUEX_TYPE_STREAM_POSITION       ci;
-    QUEX_TYPE_STREAM_POSITION       ci_diff;
-    QUEX_TYPE_STREAM_POSITION       ci_print_begin;
-    QUEX_TYPE_STREAM_POSITION       ci_print_end;
+    const TestAnalyzer_stream_position_t ci_begin = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
+    const TestAnalyzer_stream_position_t ci_end   = QUEX_NAME(Buffer_input_lexatom_index_end)(me);
+    TestAnalyzer_stream_position_t       ci;
+    TestAnalyzer_stream_position_t       ci_diff;
+    TestAnalyzer_stream_position_t       ci_print_begin;
+    TestAnalyzer_stream_position_t       ci_print_end;
 
     /* Find the place, where the reference differ's from the buffer.         */
-    ci_diff = (QUEX_TYPE_STREAM_POSITION)-1;
+    ci_diff = (TestAnalyzer_stream_position_t)-1;
     FOR_RANGE(ci, ci_begin, ci_end) {
         if( difference(me, ci) ) {
             ci_diff = ci;
@@ -199,7 +199,7 @@ print_difference(QUEX_NAME(Buffer)* me)
 
     printf("ci_begin: %i; ci_end: %i; ci_diff: %i;\n",
            (int)ci_begin, (int)ci_end, (int)ci_diff);
-    if( ci_diff == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+    if( ci_diff == (TestAnalyzer_stream_position_t)-1 ) {
         printf("memcmp reported difference but no difference was found.\n");
         hwut_verify(false);
     }
@@ -264,7 +264,7 @@ find_reference(const char* file_stem)
     return &file_name[0];
 }
 
-static QUEX_TYPE_STREAM_POSITION
+static TestAnalyzer_stream_position_t
 reference_load(const char* FileName)
 /* The content of the file is directly loaded into the 'reference' buffer 
  * so that it may be used to compare against actually loaded results.         */
@@ -285,7 +285,7 @@ reference_load(const char* FileName)
 }
 
 static bool 
-seek_forward(QUEX_NAME(Buffer)* me, QUEX_TYPE_STREAM_POSITION PositionLimit)
+seek_forward(QUEX_NAME(Buffer)* me, TestAnalyzer_stream_position_t PositionLimit)
 /* Seek in steps of 1 backward until 0 is reached and try again.              */
 {
     ptrdiff_t count_n;
@@ -313,7 +313,7 @@ seek_forward(QUEX_NAME(Buffer)* me, QUEX_TYPE_STREAM_POSITION PositionLimit)
 }
 
 static bool 
-seek_backward(QUEX_NAME(Buffer)* me, QUEX_TYPE_STREAM_POSITION PositionLimit)
+seek_backward(QUEX_NAME(Buffer)* me, TestAnalyzer_stream_position_t PositionLimit)
 /* Seek in steps of 1 backward until 0 is reached and try again.              */
 {
     ptrdiff_t count_n;

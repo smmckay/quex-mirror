@@ -15,12 +15,6 @@ $$INC: quex/debug_print$$
 $$INC: quex/enums$$
 $$INC: quex/operations$$
 
-/* Stream position type shall be the same over all lexical analyzers. 
- * Customized ByteLoaders, LexatomLoaders, and Converters may rely on that.   */
-#ifndef    QUEX_TYPE_STREAM_POSITION
-#   define QUEX_TYPE_STREAM_POSITION intmax_t
-#endif
-
 /* Macro to customize an epilog to the classes, such as required to specify
  * DLL compilation for with dedicated compilers.                              */ 
 #ifndef    QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT

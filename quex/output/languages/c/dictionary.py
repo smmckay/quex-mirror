@@ -80,18 +80,20 @@ class Language(LanguageCpp):
 
         acn = Setup.analyzer_class_name
         return [
-             ("QUEX_TYPE_TOKEN",          "struct %s_tag" % self.NAME_IN_NAMESPACE(Setup.token_class_name, Setup.token_class_name_space)),
-             ("QUEX_TYPE0_TOKEN",         "struct %s_tag" % Setup.token_class_name),
-             ("QUEX_TYPE_ANALYZER",       "struct %s_tag" % self.NAME_IN_NAMESPACE(Setup.analyzer_class_name, Setup.analyzer_name_space)),
-             ("QUEX_TYPE0_ANALYZER",      "struct %s_tag" % Setup.analyzer_class_name),
-             ("QUEX_TYPE_MEMENTO",        "struct %s_tag" % self.NAME_IN_NAMESPACE("%s_Memento" % Setup.analyzer_class_name, Setup.analyzer_name_space)),
-             ("QUEX_TYPE0_MEMENTO",       "struct %s_Memento_tag" % Setup.analyzer_class_name),
-             ("QUEX_TYPE_LEXATOM",        "%s_lexatom_t" % acn),
-             ("QUEX_TYPE_TOKEN_ID",       "%s_token_id_t" % acn),
-             ("QUEX_TYPE_TOKEN_LINE_N",   "%s_token_line_n_t" % acn),
-             ("QUEX_TYPE_TOKEN_COLUMN_N", "%s_token_column_n_t" % acn),
-             ("QUEX_TYPE_ACCEPTANCE_ID",  "%s_acceptance_id_t" % acn),
-             ("QUEX_TYPE_INDENTATION",    "%s_indentation_t" % acn)
+             ("QUEX_TYPE_TOKEN",           "struct %s_tag" % self.NAME_IN_NAMESPACE(Setup.token_class_name, Setup.token_class_name_space)),
+             ("QUEX_TYPE0_TOKEN",          "struct %s_tag" % Setup.token_class_name),
+             ("QUEX_TYPE_ANALYZER",        "struct %s_tag" % self.NAME_IN_NAMESPACE(Setup.analyzer_class_name, Setup.analyzer_name_space)),
+             ("QUEX_TYPE0_ANALYZER",       "struct %s_tag" % Setup.analyzer_class_name),
+             ("QUEX_TYPE_MEMENTO",         "struct %s_tag" % self.NAME_IN_NAMESPACE("%s_Memento" % Setup.analyzer_class_name, Setup.analyzer_name_space)),
+             ("QUEX_TYPE0_MEMENTO",        "struct %s_Memento_tag" % Setup.analyzer_class_name),
+             ("QUEX_TYPE_LEXATOM",         "%s_lexatom_t" % acn),
+             ("QUEX_TYPE_TOKEN_ID",        "%s_token_id_t" % acn),
+             ("QUEX_TYPE_TOKEN_LINE_N",    "%s_token_line_n_t" % acn),
+             ("QUEX_TYPE_TOKEN_COLUMN_N",  "%s_token_column_n_t" % acn),
+             ("QUEX_TYPE_ACCEPTANCE_ID",   "%s_acceptance_id_t" % acn),
+             ("QUEX_TYPE_INDENTATION",     "%s_indentation_t" % acn),
+             ("QUEX_TYPE_STREAM_POSITION", "%s_stream_position_t" % acn),
+             ("QUEX_TYPE_GOTO_LABEL",      "%s_goto_label_t" % acn)
         ]
 
     def FOOTER_IN_IMPLEMENTATION(self):

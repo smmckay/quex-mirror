@@ -8,10 +8,6 @@
 #include "max/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
 #include "boeck/Lexer"
 
-/* When using multiple lexical analyzers, it must be compiled with 
- * QUEX_OPTION_MULTI and 'multi.i' must be included in one single file.      */
-#include <boeck/lib/multi.i>
-
 using namespace std;
 
 

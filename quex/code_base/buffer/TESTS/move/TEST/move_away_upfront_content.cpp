@@ -108,7 +108,7 @@ main(int argc, char** argv)
         QUEX_TYPE_LEXATOM_EXT  lexeme_start_char;
     } before;
     QUEX_TYPE_LEXATOM_EXT*        min_p;     
-    QUEX_TYPE_STREAM_POSITION lexatom_index_at_begin;
+    TestAnalyzer_stream_position_t lexatom_index_at_begin;
     bool                      end_of_stream_in_buffer_f;
     ptrdiff_t                 move_distance;
     QUEX_TYPE_LEXATOM_EXT         backup[MemorySize * 2];
@@ -177,7 +177,7 @@ main(int argc, char** argv)
         hwut_verify(buffer._read_p  == &before.read_p[move_distance]);
         hwut_verify(*buffer._read_p == before.read_char);
         if(    before.lexeme_start_p 
-            && buffer._backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+            && buffer._backup_lexatom_index_of_lexeme_start_p == (TestAnalyzer_stream_position_t)-1 ) {
             hwut_verify(buffer._lexeme_start_p  == &before.lexeme_start_p[move_distance]);
             hwut_verify(*buffer._lexeme_start_p == before.lexeme_start_char);
             min_p = QUEX_MIN(buffer._read_p, buffer._lexeme_start_p);

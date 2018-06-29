@@ -3,7 +3,7 @@
 #ifndef  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_WSTREAM_I
 #define  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_WSTREAM_I
 
-#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT) && defined(QUEX_OPTION_WCHAR_T)
+#if defined(__cplusplus) && ! defined(QUEX_OPTION_WCHAR_T_DISABLED)
 
 #include <fstream>
 #include <sstream>
@@ -164,6 +164,6 @@ QUEX_NAME(ByteLoader_wstream_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
 }
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* QUEX_OPTION_PLAIN_C_EXT                                               */
+#endif 
 #endif /*  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_WSTREAM_I         */
 

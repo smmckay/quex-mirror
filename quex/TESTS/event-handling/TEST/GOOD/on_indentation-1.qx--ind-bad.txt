@@ -8,7 +8,7 @@
 ##
 ## Note however: the paranoia is a heavy load on performance!
 ##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_EXT_DISABLED'
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED_EXT'
 ##
 ## Report any bug at
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
@@ -49,7 +49,7 @@ _________________________________________________________________
   }
   _indentation_handler_active_f: true;
   _mode_stack: {
-    size:    8;
+    size:    64;
     content: []
   }
   buffer: {

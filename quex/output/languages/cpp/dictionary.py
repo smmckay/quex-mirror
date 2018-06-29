@@ -717,12 +717,12 @@ class Language(dict):
         return "return %s;" % Value
 
     def CALL_MODE_HAS_ENTRY_FROM(self, ModeName):
-        return   "#   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK\n" \
+        return   "#   ifdef QUEX_OPTION_ASSERTS_EXT\n" \
                + "    QUEX_NAME(%s).has_entry_from(FromMode);\n" % ModeName \
                + "#   endif\n"
 
     def CALL_MODE_HAS_EXIT_TO(self, ModeName):
-        return   "#   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK\n" \
+        return   "#   ifdef QUEX_OPTION_ASSERTS_EXT\n" \
                + "    QUEX_NAME(%s).has_exit_to(ToMode);\n" % ModeName \
                + "#   endif\n"
 
@@ -1359,13 +1359,18 @@ class Language(dict):
         else:                                  type_lexatom = Setup.lexatom.type
 
         token_descr = token_db.token_type_definition
+        if Setup.computed_gotos_f: type_goto_label  = "void*"
+        else:                      type_goto_label  = "int32_t"
+
         type_def_list = [
-            ("lexatom_t",        type_lexatom),
-            ("token_id_t",       token_descr.token_id_type),
-            ("token_line_n_t",   token_descr.line_number_type.get_pure_text()),
-            ("token_column_n_t", token_descr.column_number_type.get_pure_text()),
-            ("acceptance_id_t",  "int"),
-            ("indentation_t",    "int")
+            ("lexatom_t",         type_lexatom),
+            ("token_id_t",        token_descr.token_id_type),
+            ("token_line_n_t",    token_descr.line_number_type.get_pure_text()),
+            ("token_column_n_t",  token_descr.column_number_type.get_pure_text()),
+            ("acceptance_id_t",   "int"),
+            ("indentation_t",     "int"),
+            ("stream_position_t", "intmax_t"),
+            ("goto_label_t",      type_goto_label)
         ]
 
         if not blackboard.required_support_indentation_count():
@@ -1466,36 +1471,43 @@ class Language(dict):
     def type_replacements(self, DirectF=False):
         if DirectF:
             token_descr = token_db.token_type_definition
-            type_memento        = "(void*)"
-            type_lexatom        = Setup.lexatom.type
-            type_token_id       = token_descr.token_id_type
-            type_token_line_n   = token_descr.line_number_type.get_pure_text()
-            type_token_column_n = token_descr.column_number_type.get_pure_text()
-            type_acceptance_id  = "int"
-            type_indentation    = "int"
+            type_memento         = "(void*)"
+            type_lexatom         = Setup.lexatom.type
+            type_token_id        = token_descr.token_id_type
+            type_token_line_n    = token_descr.line_number_type.get_pure_text()
+            type_token_column_n  = token_descr.column_number_type.get_pure_text()
+            type_acceptance_id   = "int"
+            type_indentation     = "int"
+            type_stream_position = "intmax_t"
+            if Setup.computed_gotos_f: type_goto_label  = "void*"
+            else:                      type_goto_label  = "int32_t"
         else:
             acn = Setup.analyzer_class_name
-            type_memento        = "%s_Memento" % acn
-            type_lexatom        = "%s_lexatom_t" % acn
-            type_token_id       = "%s_token_id_t" % acn
-            type_token_line_n   = "%s_token_line_n_t" % acn
-            type_token_column_n = "%s_token_column_n_t" % acn
-            type_acceptance_id  = "%s_acceptance_id_t" % acn
-            type_indentation    = "%s_indentation_t" % acn
+            type_memento         = "%s_Memento" % acn
+            type_lexatom         = "%s_lexatom_t" % acn
+            type_token_id        = "%s_token_id_t" % acn
+            type_token_line_n    = "%s_token_line_n_t" % acn
+            type_token_column_n  = "%s_token_column_n_t" % acn
+            type_acceptance_id   = "%s_acceptance_id_t" % acn
+            type_indentation     = "%s_indentation_t" % acn
+            type_stream_position = "%s_stream_position_t" % acn
+            type_goto_label      = "%s_goto_label_t" % acn
 
         return [
-             ("QUEX_TYPE_TOKEN",          self.NAME_IN_NAMESPACE(Setup.token_class_name, Setup.token_class_name_space)),
-             ("QUEX_TYPE0_TOKEN",         Setup.token_class_name),
-             ("QUEX_TYPE_ANALYZER",       self.NAME_IN_NAMESPACE(Setup.analyzer_class_name, Setup.analyzer_name_space)),
-             ("QUEX_TYPE0_ANALYZER",      Setup.analyzer_class_name),
-             ("QUEX_TYPE_MEMENTO",        self.NAME_IN_NAMESPACE("%s_Memento" % Setup.analyzer_class_name, Setup.analyzer_name_space)),
-             ("QUEX_TYPE0_MEMENTO",       type_memento),
-             ("QUEX_TYPE_LEXATOM",        type_lexatom),
-             ("QUEX_TYPE_TOKEN_ID",       type_token_id),
-             ("QUEX_TYPE_TOKEN_LINE_N",   type_token_line_n),
-             ("QUEX_TYPE_TOKEN_COLUMN_N", type_token_column_n),
-             ("QUEX_TYPE_ACCEPTANCE_ID",  type_acceptance_id),
-             ("QUEX_TYPE_INDENTATION",    type_indentation),
+             ("QUEX_TYPE_TOKEN",           self.NAME_IN_NAMESPACE(Setup.token_class_name, Setup.token_class_name_space)),
+             ("QUEX_TYPE0_TOKEN",          Setup.token_class_name),
+             ("QUEX_TYPE_ANALYZER",        self.NAME_IN_NAMESPACE(Setup.analyzer_class_name, Setup.analyzer_name_space)),
+             ("QUEX_TYPE0_ANALYZER",       Setup.analyzer_class_name),
+             ("QUEX_TYPE_MEMENTO",         self.NAME_IN_NAMESPACE("%s_Memento" % Setup.analyzer_class_name, Setup.analyzer_name_space)),
+             ("QUEX_TYPE0_MEMENTO",        type_memento),
+             ("QUEX_TYPE_LEXATOM",         type_lexatom),
+             ("QUEX_TYPE_TOKEN_ID",        type_token_id),
+             ("QUEX_TYPE_TOKEN_LINE_N",    type_token_line_n),
+             ("QUEX_TYPE_TOKEN_COLUMN_N",  type_token_column_n),
+             ("QUEX_TYPE_ACCEPTANCE_ID",   type_acceptance_id),
+             ("QUEX_TYPE_INDENTATION",     type_indentation),
+             ("QUEX_TYPE_STREAM_POSITION", type_stream_position),
+             ("QUEX_TYPE_GOTO_LABEL",      type_goto_label),
         ]
 
 implementation_headers_txt = """

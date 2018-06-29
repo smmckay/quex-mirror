@@ -57,7 +57,7 @@ QUEX_NAME(Feeder)::deliver()
 $$-----------------------------------------------------------------------------
 
 QUEX_INLINE void
-QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me, 
+QUEX_NAME(Feeder_construct)(QUEX_NAME(Feeder)*   me, 
                             QUEX_TYPE_ANALYZER* lexer,
                             QUEX_TYPE_TOKEN_ID  StreamTerminatingTokenId)
 {
@@ -76,7 +76,7 @@ $$-----------------------------------------------------------------------------
 }
 
 QUEX_INLINE void
-QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me, const void* BeginP, const void* EndP)
+QUEX_NAME(Feeder_feed)(QUEX_NAME(Feeder)* me, const void* BeginP, const void* EndP)
 {
     /* Copy buffer content into the analyzer's buffer-as much as possible.
      * 'fill()' returns a pointer to the first not-eaten byte.                */
@@ -85,7 +85,7 @@ QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me, const void* BeginP, const void* End
 }
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
+QUEX_NAME(Feeder_deliver)(QUEX_NAME(Feeder)* me)
 {
     const bool        EndOfChunkF = me->external_chunk.begin_p == me->external_chunk.end_p ? true : false;
     QUEX_TYPE_TOKEN*  token = QUEX_NAME(receive_from_chunk)(me->base.lexer, 

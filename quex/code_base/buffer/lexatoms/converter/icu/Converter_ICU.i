@@ -80,13 +80,8 @@ QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* alter_ego,
  * RETURNS: true, if success. false, else.                                    */
 {
     QUEX_NAME(Converter_ICU)* me = (QUEX_NAME(Converter_ICU)*)alter_ego;
-#   if   defined(QUEX_OPTION_ENDIAN_LITTLE)
-    const bool little_endian_f = true;
-#   elif defined(QUEX_OPTION_ENDIAN_BIG)
-    const bool little_endian_f = false;
-#   elif defined(QUEX_OPTION_ENDIAN_SYSTEM) 
-    const bool little_endian_f = QUEX_GNAME_LIB(system_is_little_endian)();
-#   endif
+    const bool                little_endian_f = QUEX_SETTING_ENDIAN_IS_LITTLE();
+
     me->from_handle = 0x0;
     me->to_handle   = 0x0; 
     if( ! FromCoding ) {

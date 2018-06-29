@@ -23,7 +23,7 @@ QToken::QToken(const QToken& Other)
 QToken::~QToken()
 inline QToken& 
 QToken::operator=(const QToken& That) 
-{ if( this != &That ) { QToken_copy(this, &That); } return *this; }
+{ /* 'this != &That' checked in 'copy' */ QToken_copy(this, &That); return *this; }
 QToken_construct(QToken* __this)
     new ((void*)__this) QToken;
 QToken_destruct(QToken* __this)

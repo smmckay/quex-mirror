@@ -10,11 +10,6 @@
 #include "boeck/lib/buffer/lexatoms/converter/icu/Converter_ICU"
 #include "boeck/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
 
-/* When using multiple lexical analyzers, it must be compiled with 
- * QUEX_OPTION_MULTI and 'multi.i' must be included in one single file.      */
-#include <boeck/lib/multi.i>
-
-
 int 
 main(int argc, char** argv) 
 {        

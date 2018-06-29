@@ -5,6 +5,7 @@
 #define QUEX_INCLUDE_GUARD__BUFFER__BUFFER_PRINT
 
 $$INC: definitions$$
+$$INC: quex/enums$$
 $$INC: buffer/Buffer$$
 $$INC: buffer/lexatoms/LexatomLoader$$
 $$INC: buffer/asserts$$

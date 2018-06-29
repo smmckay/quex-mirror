@@ -297,13 +297,6 @@ def get_quick_setters(Descr):
 helper_definitions_common = """
 #define    QUEX_SETTING_CHARACTER_CODEC       %s
 
-#ifndef    QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-$$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-#endif
-#ifndef    QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-$$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-#endif
-
 /* In cases, such as DLL compilation for some dedicated compilers, 
  * the classes need some epilog. If the user does not specify such
  * a thing, it must be empty.                                                */
@@ -312,11 +305,8 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 #endif
 
 #ifdef QUEX_OPTION_ASSERTS_EXT
-#   if defined(__cplusplus) && ! defined (QUEX_OPTION_PLAIN_C_EXT)
-#       include <cassert>
-#   else
-#       include <assert.h>
-#   endif
+$$<Cpp> #   include <cassert>$$
+$$<C>   #   include <assert.h>$$
 #   define  __quex_assert(X)              assert(X)
 #else
 #   define  __quex_assert(X)              /* no assert */
@@ -325,13 +315,8 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 """
 
 def _helper_definitions():
-    txt = helper_definitions_common \
+    return helper_definitions_common \
            % Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name)
-    # txt = txt.replace("$$TYPE_DEFINITIONS$$", Lng.type_definitions())
-
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT", token_db.support_take_text())        
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_REPETITION_SUPPORT", token_db.support_repetition())        
-    return txt
 
 def _some_standard_stuff(Descr):
     """RETURNS: [0] include guard string

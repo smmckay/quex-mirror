@@ -11,7 +11,7 @@ src/bad-default.qx:8:warning: ('--suppress 11' to avoid this message)
 ##
 ## Note however: the paranoia is a heavy load on performance!
 ##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_EXT_DISABLED'
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED_EXT'
 ##
 ## Report any bug at
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
@@ -45,7 +45,7 @@ A 'n'
   }
   _indentation_handler_active_f: true;
   _mode_stack: {
-    size:    8;
+    size:    64;
     content: []
   }
   buffer: {
@@ -78,9 +78,9 @@ A 'n'
       end_character_index: 63;
       end_p:               begin + 6, end - 1;
     }
-
-
   }
+
+
 _________________________________________________________________
    buffer front--------------------------->[0000] 0x0000
    lexeme start--------------------------->[0001] 0x003A
@@ -90,4 +90,3 @@ _________________________________________________________________
                                            [0005] 0x0068
    end of file, buffer back--------------->[0006] 0x0000
 _________________________________________________________________
-

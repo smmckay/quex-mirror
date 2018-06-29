@@ -140,9 +140,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Buffer_t
      *                             preceeding lexatom was newline. 
      *                             (i.e. for begin-of-line pre-context).      */
     QUEX_TYPE_LEXATOM      _lexatom_at_lexeme_start;      
-#   ifdef QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
-    QUEX_TYPE_LEXATOM      _lexatom_before_lexeme_start;  
-#   endif
+    $$<begin-of-line-context> QUEX_TYPE_LEXATOM      _lexatom_before_lexeme_start;$$
 
     void*                (*fill)(struct QUEX_NAME(Buffer_tag)*  me, 
                                  const void*                    ContentBegin,

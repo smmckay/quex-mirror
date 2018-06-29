@@ -17,9 +17,7 @@ typedef struct {
     QUEX_TYPE_TOKEN_ID  stream_terminating_token_id;
 } QUEX_NAME(FeederBase);
 
-#define QUEX_TYPE_FEEDER      QUEX_NAME(Feeder) 
-
-$$<Cpp> struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_TYPE_FEEDER {$$
+$$<Cpp> struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Feeder) {$$
 $$<C>   typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Feeder_tag) {$$
     QUEX_NAME(FeederBase)  base;
 
@@ -32,7 +30,7 @@ $$<C>   typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(
 
 $$<Cpp>------------------------------------------------------------------------
 public:
-    QUEX_TYPE_FEEDER(QUEX_TYPE_ANALYZER*, QUEX_TYPE_TOKEN_ID);
+    QUEX_NAME(Feeder)(QUEX_TYPE_ANALYZER*, QUEX_TYPE_TOKEN_ID);
     void             feed(const void* BeginP, const void* EndP);
     QUEX_TYPE_TOKEN* deliver();
 };
@@ -41,14 +39,14 @@ $$<C>--------------------------------------------------------------------------
     void             (*feed)(struct QUEX_NAME(Feeder_tag)*, 
                              const void* BeginP, const void* EndP);
     QUEX_TYPE_TOKEN* (*deliver)(struct QUEX_NAME(Feeder_tag)*);
-} QUEX_TYPE_FEEDER;
+} QUEX_NAME(Feeder);
 $$-----------------------------------------------------------------------------
 
-QUEX_INLINE void             QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me, 
+QUEX_INLINE void             QUEX_NAME(Feeder_construct)(QUEX_NAME(Feeder)*   me, 
                                                          QUEX_TYPE_ANALYZER* lexer,
                                                          QUEX_TYPE_TOKEN_ID  StreamTerminatingTokenId);
-QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me);
-QUEX_INLINE void             QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me,
+QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(Feeder_deliver)(QUEX_NAME(Feeder)* me);
+QUEX_INLINE void             QUEX_NAME(Feeder_feed)(QUEX_NAME(Feeder)* me,
                                                     const void* BeginP, 
                                                     const void* EndP);
 

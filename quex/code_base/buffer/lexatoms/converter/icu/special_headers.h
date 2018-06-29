@@ -7,14 +7,7 @@
  *   header files which need to be included to use the library. There must be a mechanism
  *   to prevent the inclusion of converter headers that the user does not provide.
  *   
- *   In quex the usage of a particular converter is 'announced' via a macro, e.g.
- *   if QUEX_OPTION_CONVERTER_ICU is defined it means that the ICU library is used for 
- *   conversion and the correspondent headers are to be used. 
- *   
- *   If this macro is not defined, then the compiler should never reach this file--
- *   and this case is caught by the first section of this file.                            
- *
- *   (C) 2009 Frank-Rene Schaefer
+ *   (C) 2009-2018 Frank-Rene Schaefer
  *
  *   ABSOLUTELY NO WARRANTY                                                                 */
 #ifndef  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICU__SPECIAL_HEADERS_H

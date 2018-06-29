@@ -13,13 +13,13 @@ echo
 echo "(1) A grammar with a begin of line pre-condition."
 quex -i with-begin-of-line.qx -o Simple --debug-exception
 cd Simple
-grep SUPPORT_BEGIN_OF_LINE Simple-configuration
+grep _lexatom_before_lexeme_start Simple.cpp | sort -u
 cd ..
 
 echo "(2) A grammar without a begin of line pre-condition."
 quex -i without-begin-of-line.qx -o Simple --debug-exception
 cd Simple
-grep SUPPORT_BEGIN_OF_LINE Simple-configuration
+grep _lexatom_before_lexeme_start Simple.cpp
 cd ..
 
 rm -rf Simple*

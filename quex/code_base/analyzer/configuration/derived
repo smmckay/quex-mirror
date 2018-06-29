@@ -115,9 +115,6 @@
     && ! defined  (_GLIBCXX_USE_WCHAR_T)
 #   define  QUEX_OPTION_WCHAR_T_DISABLED
 #endif
-#ifndef     QUEX_OPTION_WCHAR_T_DISABLED
-#   define  QUEX_OPTION_WCHAR_T
-#endif
 
 /* If you have a different setup, define the macros QUEX_SETTING_WCHAR_CODEC
  * and QUEX_SETTING_CHAR_CODEC before the inclusion of this file.

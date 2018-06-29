@@ -27,6 +27,13 @@
 */
 #endif
 
+typedef long TestAnalyzer_stream_position_t;
+#if ! defined(__cplusplus)
+#define QUEX_SETTING_ENDIAN_IS_LITTLE()   quex_system_is_little_endian()
+#else
+#define QUEX_SETTING_ENDIAN_IS_LITTLE()   quex::system_is_little_endian()
+#endif
+
 #define QUEX_SETTING_BUFFER_LIMIT_CODE                 0
 #define QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC 0x0A
 

@@ -122,9 +122,7 @@ QUEX_NAME(Buffer_print_this)(QUEX_NAME(Buffer)* me)
     __QUEX_STD_printf("\n");
 
     __QUEX_STD_printf("    _lexatom_at_lexeme_start:     0x%X;\n", (int)me->_lexatom_at_lexeme_start);
-#       ifdef QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
-    __QUEX_STD_printf("    _lexatom_before_lexeme_start: 0x%X;\n", (int)me->_lexatom_before_lexeme_start);
-#       endif
+    $$<begin-of-line-context> __QUEX_STD_printf("    _lexatom_before_lexeme_start: 0x%X;\n", (int)me->_lexatom_before_lexeme_start);$$
 
     QUEX_NAME(LexatomLoader_print_this)(me->filler);
 

@@ -3,6 +3,7 @@ import quex.engine.misc.error as     error
 from   quex.constants         import E_IncidenceIDs
 from   quex.blackboard        import setup as Setup, \
                                      required_support_indentation_count, \
+                                     required_support_begin_of_line, \
                                      mode_prep_prep_db
 
 def do(Condition):
@@ -50,6 +51,12 @@ def do(Condition):
         return Setup.language == "C"
     elif Condition == "Cpp":
         return Setup.language == "C++"
+    elif Condition == "std-lib":
+        return Setup.standard_library_usage_f
+    elif Condition == "begin-of-line-context":
+        return required_support_begin_of_line()
+    elif Condition == "computed-gotos":
+        return Setup.computed_gotos_f
     else:                                                                      
         error.log("Code generation: found unknown condition '<%s>'." % Condition)
 

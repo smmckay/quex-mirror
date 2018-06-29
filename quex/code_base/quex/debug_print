@@ -29,6 +29,8 @@ $$-----------------------------------------------------------------------------
 
 #if defined(QUEX_OPTION_DEBUG_SHOW_EXT)
 
+$$INC: buffer/Buffer_print$$
+
 #   define __quex_debug(Str)                                        \
            __QUEX_PRINT_SOURCE_POSITION();                          \
            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s", (Str)) 
@@ -130,6 +132,11 @@ $$-----------------------------------------------------------------------------
 #   define __quex_debug_counter()                        \
            QUEX_NAME(Counter_print_this)(&self.counter)
 
+#   define __quex_debug_buffer_load(BUFFER, Msg)                        \
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);  \
+           QUEX_NAME(Buffer_print_content_detailed)(BUFFER);            \
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "\n");
+
 #else /* not defined(QUEX_OPTION_DEBUG_SHOW_EXT) */
 
 #   define __quex_debug(FormatStr)                /* empty */
@@ -154,28 +161,9 @@ $$-----------------------------------------------------------------------------
 #   define __quex_debug_reload_after(LR)          /* empty */
 #   define __quex_debug_counter()                 /* empty */
 
-#endif /* ! QUEX_OPTION_DEBUG_SHOW_EXT */
-
-#if  defined(QUEX_OPTION_DEBUG_SHOW_LOADS)
-
-$$INC: buffer/Buffer_print$$
-#   define __quex_debug_buffer_load(BUFFER, Msg)                        \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);  \
-           QUEX_NAME(Buffer_print_content_detailed)(BUFFER);            \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "\n");
-
-#elif  defined(QUEX_OPTION_DEBUG_SHOW_LOADS) 
-
-$$INC: buffer/Buffer_print$$
-#   define __quex_debug_buffer_load(BUFFER, Msg)                        \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);  \
-           QUEX_NAME(Buffer_print_content_detailed)(BUFFER);            \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "\n");
-#else
-
 #   define __quex_debug_buffer_load(BUFFER, Msg) /* empty */
 
-#endif /* QUEX_OPTION_DEBUG_SHOW_LOADS */
+#endif /* ! QUEX_OPTION_DEBUG_SHOW_EXT */
 
 #ifdef QUEX_OPTION_STATISTICS
 #    define __quex_optional_statistics(StateIdx) \

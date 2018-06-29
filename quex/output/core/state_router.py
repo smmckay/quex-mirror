@@ -1,27 +1,24 @@
 from   quex.engine.analyzer.door_id_address_label  import DoorID, DialDB
 
 from   quex.engine.misc.tools                      import typed
-from   quex.blackboard import Lng
+from   quex.blackboard import Lng, setup as Setup
 
 from   operator import itemgetter
 
 def do(StateRouterInfoList, dial_db):
     """Create code that allows to jump to a state based on an integer value.
     """
-
     # NOTE: Do not use 'IfDoorIdReferencedCode' because the state router may 
     #       possibly not be tagged as 'gotoed', event if it is used.
-    prolog = "#   ifndef QUEX_OPTION_COMPUTED_GOTOS\n" \
-             "    __quex_assert_no_passage();\n"       \
-             "%s\n" % Lng.LABEL(DoorID.global_state_router(dial_db), dial_db) 
-    epilog = "#   endif /* QUEX_OPTION_COMPUTED_GOTOS */\n"
-    
-    if len(StateRouterInfoList) == 0: code = []
-    else:                             code = __get_code(StateRouterInfoList)
+    if   Setup.computed_gotos_f:  code = []
+    elif not StateRouterInfoList: code = []
+    else:                         code = __get_code(StateRouterInfoList)
 
-    result = [ prolog ] 
+    result = [ 
+        "    __quex_assert_no_passage();\n"       \
+        "%s\n" % Lng.LABEL(DoorID.global_state_router(dial_db), dial_db) 
+    ]
     result.extend(code)
-    result.append(epilog)
     return result
 
 def __get_code(StateRouterInfoList):

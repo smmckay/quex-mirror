@@ -206,7 +206,7 @@ MeinToken::MeinToken()
 QUEX_INLINE
 MeinToken::MeinToken(const MeinToken& Other)
 {
-   MeinToken_copy(this, &Other);
+   QUEX_NAME_TOKEN(copy)(this, &Other);
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
 
@@ -238,7 +238,7 @@ MeinToken::~MeinToken()
 
 QUEX_INLINE MeinToken& 
 MeinToken::operator=(const MeinToken& That) 
-{ if( this != &That ) { MeinToken_copy(this, &That); } return *this; }
+{ /* 'this != &That' checked in 'copy' */ QUEX_NAME_TOKEN(copy)(this, &That); return *this; }
 
 QUEX_INLINE void
 QUEX_NAME_TOKEN(construct)(MeinToken* __this)
@@ -260,8 +260,7 @@ QUEX_NAME_TOKEN(copy)(MeinToken* __this, const MeinToken* __That)
 #   define self  (*__this)
 #   define Other (*__That)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
-    (void)__this;
-    (void)__That;
+    if( __this == __That ) { return; }
 
 #   line 30 "a string"
 

@@ -11,46 +11,14 @@
 
 #define QUEX_INDICATE_CONFIGURATION_FILE_PASSED
 
-#ifdef     QUEX_OPTION_COMPUTED_GOTOS_EXT
-#   define QUEX_OPTION_COMPUTED_GOTOS
-#else
-$$SWITCH$$ QUEX_OPTION_COMPUTED_GOTOS
-#endif
-
 #if   defined(QUEX_OPTION_ENDIAN_LITTLE_EXT)
-#     define  QUEX_OPTION_ENDIAN_LITTLE
+#     define  QUEX_SETTING_ENDIAN_IS_LITTLE()     true
 #elif defined(QUEX_OPTION_ENDIAN_BIG_EXT)
-#     define  QUEX_OPTION_ENDIAN_BIG
+#     define  QUEX_SETTING_ENDIAN_IS_LITTLE()     false
 #elif defined(QUEX_OPTION_ENDIAN_SYSTEM_EXT)
-#     define  QUEX_OPTION_ENDIAN_SYSTEM
+#     define  QUEX_SETTING_ENDIAN_IS_LITTLE()     QUEX_GNAME_QUEX(system_is_little_endian)()
 #else
-$$SWITCH$$ QUEX_OPTION_ENDIAN_LITTLE
-$$SWITCH$$ QUEX_OPTION_ENDIAN_BIG
-$$SWITCH$$ QUEX_OPTION_ENDIAN_SYSTEM
-#endif
-
-/* Quex can determine whether certain handlers are not used at all.  If so,
- * computation time can be spared and quex comments the following options out.
- *                                                                           */
-$$SWITCH$$ QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT
-$$SWITCH$$ QUEX_OPTION_ON_EXIT_HANDLER_PRESENT
-
-/* Begin of line pre-condition requires an extra flag in the buffer
- * structure. Only out-comment this in case of tough memory restrictions,
- * if no begin of line pre-condition is required.                            */
-$$SWITCH$$ QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
-
-/* The following flag indicates that the engine is running on a specific
- * codec. Thus no converter is necessary. Use the flag to detect misuse.      */
-$$SWITCH$$ QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
-
-$$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-$$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-
-#if defined(QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK_EXT)
-#   define QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-#else
-$$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+#     define  QUEX_SETTING_ENDIAN_IS_LITTLE()     $$QUEX_SETTING_ENDIAN_IS_LITTLE$$
 #endif
 
 $$TYPE_DEFINITIONS$$
@@ -59,9 +27,9 @@ $$TYPE_DEFINITIONS$$
 #define QUEX_SETTING_MODE_INITIAL_P      (&$$QUEX_SETTING_MODE_INITIAL$$)
 
 #if defined(QUEX_SETTING_MODE_STACK_SIZE_EXT)
-#   define QUEX_SETTING_MODE_STACK_SIZE  QUEX_SETTING_MODE_STACK_SIZE_EXT
+#   define QUEX_SETTING_MODE_STACK_SIZE         QUEX_SETTING_MODE_STACK_SIZE_EXT
 #else
-#   define QUEX_SETTING_MODE_STACK_SIZE  (size_t)8
+#   define QUEX_SETTING_MODE_STACK_SIZE                               (size_t)64
 #endif
 
 /* BLC -- Buffer Limit Code:

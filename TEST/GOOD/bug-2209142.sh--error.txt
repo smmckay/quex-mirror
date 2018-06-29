@@ -24,7 +24,7 @@
     _column_number_at_end:   98;
   }
   _mode_stack: {
-    size:    8;
+    size:    64;
     content: []
   }
   buffer: {
@@ -57,9 +57,9 @@
       end_character_index: 115;
       end_p:               begin + 116, end - 130956;
     }
-
-
   }
+
+
 _________________________________________________________________
    buffer front--------------------------->[0000] 0x0000
                                            [0001] 0x0065

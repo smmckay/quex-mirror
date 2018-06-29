@@ -204,10 +204,8 @@ QUEX_NAME(Buffer_dysfunctional)(QUEX_NAME(Buffer)*  me)
     return    me->_read_p                         == (QUEX_TYPE_LEXATOM*)0
            && me->_lexeme_start_p                 == (QUEX_TYPE_LEXATOM*)0
            && me->_lexatom_at_lexeme_start        == (QUEX_TYPE_LEXATOM)0                                   
-#          ifdef  QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                 
-           && me->_lexatom_before_lexeme_start    == (QUEX_TYPE_LEXATOM)0
-#          endif
-           && me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1;
+           && me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1
+           $$<begin-of-line-context> && me->_lexatom_before_lexeme_start == (QUEX_TYPE_LEXATOM)0$$;
 }
 
 QUEX_INLINE void
@@ -251,9 +249,7 @@ QUEX_NAME(Buffer_init_analyzis_core)(QUEX_NAME(Buffer)*        me,
     me->_read_p                         = ReadP;
     me->_lexeme_start_p                 = LexatomStartP;
     me->_lexatom_at_lexeme_start        = LexatomAtLexemeStart;                                   
-#   ifdef  QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                 
-    me->_lexatom_before_lexeme_start    = LexatomBeforeLexemeStart;
-#   endif
+    $$<begin-of-line-context> me->_lexatom_before_lexeme_start    = LexatomBeforeLexemeStart;$$
     me->_backup_lexatom_index_of_lexeme_start_p = BackupLexatomIndexOfReadP;
 }
 

@@ -97,10 +97,10 @@ instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
     QUEX_NAME(Buffer_register_content)(buffer, end_p, 0);
     if( EndOfStreamInBufferF ) {
         buffer->input.lexatom_index_end_of_stream =   buffer->input.lexatom_index_begin \
-                                                      + (QUEX_TYPE_STREAM_POSITION)(end_p - BeginP);
+                                                      + (TestAnalyzer_stream_position_t)(end_p - BeginP);
     }
     else {
-        buffer->input.lexatom_index_end_of_stream = (QUEX_TYPE_STREAM_POSITION)-1;
+        buffer->input.lexatom_index_end_of_stream = (TestAnalyzer_stream_position_t)-1;
     }
 
     QUEX_BUFFER_ASSERT_limit_codes_in_place(buffer);

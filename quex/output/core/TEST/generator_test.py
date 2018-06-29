@@ -1,4 +1,4 @@
-#_SIZEr/bin/env python
+#! /usr/bin/env python
 
 # Switch: Removal of source and executable file
 #         'False' --> No removal.
@@ -54,7 +54,6 @@ from   quex.engine.incidence_db                    import IncidenceDB
 import quex.output.core.variable_db                as     variable_db
 from   quex.output.core.variable_db                import VariableDB
 from   quex.output.languages.core                  import db
-import quex.output.core.state_router               as     state_router_generator
 import quex.output.core.engine                     as     engine_generator
 import quex.output.analyzer.adapt                  as     adapt
 import quex.output.analyzer.modes                  as     modes
@@ -151,6 +150,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
 
     if Language.find("-CG") != -1:
         Language = Language.replace("-CG", "")
+        Setup.computed_goto_f = True
         CompileOptionStr += " -DQUEX_OPTION_COMPUTED_GOTOS_EXT "
         computed_goto_f   = True
 

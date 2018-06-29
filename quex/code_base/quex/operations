@@ -14,23 +14,18 @@
 #define QUEX_HASH_NEXT(H, C)  ((((H) << 5) + (H)) + (C))
 
 /* Support of computed goto */
-#ifdef QUEX_OPTION_COMPUTED_GOTOS
-    typedef  void*     QUEX_TYPE_GOTO_LABEL;
+$$<computed-gotos>-------------------------------------------------------------
 #   define QUEX_GOTO_LABEL_VOID       (QUEX_TYPE_GOTO_LABEL)(0x0)
 #   define QUEX_LABEL(StateIndex)     &&_##StateIndex 
-
 #   define QUEX_GOTO_TERMINAL(LABEL)  do { goto *LABEL; } while(0)
 #   define QUEX_GOTO_STATE(LABEL)     do { goto *LABEL; } while(0)
-
-#else
-    typedef  int32_t  QUEX_TYPE_GOTO_LABEL;          /* > 0: DFA_State index
-                                                      * < 0: Drop Out of a state abs(Label). */
+$$-----------------------------------------------------------------------------
+$$<not-computed-gotos>---------------------------------------------------------
 #   define QUEX_GOTO_LABEL_VOID       (QUEX_TYPE_GOTO_LABEL)(-1)
 #   define QUEX_LABEL(StateIndex)     StateIndex 
-
 #   define QUEX_GOTO_TERMINAL(LABEL)  do { last_acceptance    = LABEL; goto QUEX_TERMINAL_ROUTER; } while(0)
 #   define QUEX_GOTO_STATE(LABEL)     do { target_state_index = LABEL; goto QUEX_LABEL_STATE_ROUTER; } while(0)
-#endif
+$$-----------------------------------------------------------------------------
 
 #define QUEX_LEXEME_TERMINATING_ZERO_SET(BUFFER)                \
      (BUFFER)->_lexatom_at_lexeme_start = (BUFFER)->_read_p[0]; \

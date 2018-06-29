@@ -4,10 +4,6 @@
 #ifndef  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__RECODE__CONVERTER_RECODE
 #define  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__RECODE__CONVERTER_RECODE
 
-#if ! defined(QUEX_OPTION_CONVERTER_PINARD_RECODE)
-#    error "This header has been included without setting the compile option QUEX_OPTION_CONVERTER_PINARD_RECODE. This could cause problems on systems where the correspondent headers are not installed. Make the inclusion of this header dependent on the above compile option."
-#endif
-
 $$INC: buffer/converter/Converter$$
 
 $$INC: quex/compatibility/stdbool-pseudo.h$$

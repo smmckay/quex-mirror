@@ -137,10 +137,10 @@ def __frame(FunctionName, CodeTxt, IteratorName, DoorIdReturn, dial_db):
            # If there is no MATCH_FAILURE, then DoorIdBeyond is still referenced as 'gotoed',
            # but MATCH_FAILURE is never implemented, later on, because its DoorId is not 
            # referenced.
-           + "#    if ! defined(QUEX_OPTION_COMPUTED_GOTOS)\n"
+           + "$$<not-computed-gotos>----------------------------------------------\n"
            + "     %s /* in QUEX_GOTO_STATE       */\n" % Lng.GOTO(DoorID.global_state_router(dial_db), dial_db)
            + "     %s /* to BAD_LEXATOM           */\n" % Lng.GOTO(DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db), dial_db)
-           + "#    endif\n"
+           + "$$------------------------------------------------------------------\n"
            + "    %s\n" % Lng.COMMENT("Avoid compiler warning: 'Unused labels'") \
            + "    %s\n" % Lng.GOTO(door_id_failure, dial_db) \
            + "    (void)target_state_index;\n"

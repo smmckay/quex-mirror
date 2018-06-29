@@ -1,6 +1,7 @@
 import quex.output.analyzer.indentation_handler as     indentation_handler
 from   quex.engine.misc.string_handling         import blue_print
 from   quex.blackboard                          import setup as Setup, \
+                                                       required_support_indentation_count, \
                                                        Lng, \
                                                        E_IncidenceIDs
 from   operator import attrgetter
@@ -61,7 +62,7 @@ $$EXIT-PROCEDURE$$
 
 $$ON_INDENTATION-PROCEDURE$$
 
-#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+#ifdef QUEX_OPTION_ASSERTS_EXT
 bool
 $has_base(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
@@ -138,9 +139,12 @@ def get_implementation_of_mode_functions(mode, Modes):
 
     # (*) on indentation
     mode_name_list     = [m.name for m in Modes]
-    on_indentation_str = indentation_handler.do(mode, mode_name_list)
-    on_indentation_str = __replace_function_names(on_indentation_str, mode, 
-                                                  NullFunctionsF=False)
+    if required_support_indentation_count():
+        on_indentation_str = indentation_handler.do(mode, mode_name_list)
+        on_indentation_str = __replace_function_names(on_indentation_str, mode, 
+                                                      NullFunctionsF=False)
+    else:
+        on_indentation_str = ""
 
     # (*) has base mode
     base_mode_sequence = mode.implemented_base_mode_name_sequence() 
@@ -284,7 +288,7 @@ def __get_function_declaration(Modes, FriendF=False):
 
     def prepare(name, txt):
         if name in ("has_base", "has_entry_from", "has_exit_to"):
-            new_txt  = "#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK\n"
+            new_txt  = "#ifdef QUEX_OPTION_ASSERTS_EXT\n"
             new_txt += txt
             new_txt += "#endif\n"
             return new_txt
@@ -360,7 +364,7 @@ $$<indentation>----------------------------------------------------------------
 $$-----------------------------------------------------------------------------
     /* on_entry          */ $on_entry,
     /* on_exit           */ $on_exit,
-#   if      defined(QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK)
+#   if      defined(QUEX_OPTION_ASSERTS_EXT)
     /* has_base          */ $has_base,
     /* has_entry_from    */ $has_entry_from,
     /* has_exit_to       */ $has_exit_to,

@@ -42,11 +42,8 @@ def prepare(command_line, argv):
                   % (Setup.output_file_naming_scheme, Setup.language) + \
                   "Available schemes are: %s." % repr(sorted(Setup.language_db.all_extension_db.keys()))[1:-1])
 
-    if Setup.buffer_byte_order == "<system>": 
-        Setup.buffer_byte_order                      = sys.byteorder 
-        Setup.byte_order_is_that_of_current_system_f = True
-    else:
-        Setup.byte_order_is_that_of_current_system_f = False
+    if not Setup.buffer_byte_order: 
+        Setup.buffer_byte_order = sys.byteorder 
 
     if Setup.__buffer_lexatom_size_in_byte == "wchar_t":
         error.log("Since Quex version 0.53.5, 'wchar_t' can no longer be specified\n"
@@ -76,8 +73,8 @@ def prepare(command_line, argv):
 
     if Setup.converter_ucs_coding_name == "": 
         if global_character_type_db.has_key(Setup.lexatom.type):
-            if Setup.buffer_byte_order == "little": index = 1
-            else:                                   index = 2
+            if Setup.buffer_byte_order == "big": index = 2
+            else:                                index = 1
             Setup.converter_ucs_coding_name = global_character_type_db[Setup.lexatom.type][index]
 
     if Setup.extern_token_id_specification: 

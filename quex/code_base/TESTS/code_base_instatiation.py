@@ -24,8 +24,20 @@ from   quex.output.languages.core import db
 import quex.token_db              as     token_db
 from   quex.blackboard            import setup as Setup, \
                                          Lng
-if "--lang-C" in sys.argv: Setup.language_db = db["C"](); sys.argv.remove("--lang-C")
-else:                      Setup.language_db = db["C++"]()
+if "--lang-C" in sys.argv: 
+    Setup.language             = "C"
+    Setup.language_db          = db["C"]()
+    Setup._quex_lib_prefix     = "quex_"
+    Setup._quex_lib_name_space = []
+    Setup._quex_lib_name_safe  = "quex"
+    sys.argv.remove("--lang-C")
+else:                      
+    Setup.language             = "C++"
+    Setup.language_db          = db["C++"]()
+    Setup._quex_lib_prefix     = ""
+    Setup._quex_lib_name_space = ["quex"]
+    Setup._quex_lib_name_safe  = "quex"
+
 Setup.analyzer_class_name     = "TestAnalyzer"
 Setup.token_class_name        = "TestAnalyzer_Token"
 Setup.token_class_name_safe   = "TestAnalyzer_Token"
@@ -33,15 +45,6 @@ Setup.token_id_type           = "int"
 Setup.extern_token_class_file = "no-name"
 token_db.support_take_text    = lambda : True
 token_db.support_repetition   = lambda : True
-
-if "--lang-C" in sys.argv:
-    Setup._quex_lib_prefix        = "quex_"
-    Setup._quex_lib_name_space    = []
-    Setup._quex_lib_name_safe     = "quex"
-else:
-    Setup._quex_lib_prefix        = ""
-    Setup._quex_lib_name_space    = ["quex"]
-    Setup._quex_lib_name_safe     = "quex"
 
 token_db.token_type_definition = \
         TokenTypeDescriptorManual(Setup.extern_token_class_file,

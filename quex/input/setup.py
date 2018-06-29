@@ -227,10 +227,11 @@ SETUP_INFO = {
     "buffer_limit_code":              [["--buffer-limit"],                     0x0],
     "__buffer_lexatom_size_in_byte":  [["--buffer-element-size", "-b", "--bes"], -1],  # [Bytes] => ".lexatom.size_in_byte"
     "__buffer_lexatom_type":          [["--lexatom-type", "--buffer-element-type", "--bet"],     ""],
-    "buffer_byte_order":              [["--endian"],                           "<system>"],
+    "buffer_byte_order":              [["--endian"],                           ""],    # default => sys.byteorder
     "comment_state_machine_f":        [["--comment-state-machine"],            SetupParTypes.FLAG],
     "comment_transitions_f":          [["--comment-transitions"],              SetupParTypes.FLAG],
     "comment_mode_patterns_f":        [["--comment-mode-patterns"],            SetupParTypes.FLAG],
+    "computed_gotos_f":               [["--computed-gotos", "--cg"],           SetupParTypes.FLAG],
     "compression_template_f":         [["--template-compression"],             SetupParTypes.FLAG],
     "compression_template_uniform_f": [["--template-compression-uniform"],     SetupParTypes.FLAG],
     "compression_template_min_gain":  [["--template-compression-min-gain"],    0],
@@ -265,6 +266,7 @@ SETUP_INFO = {
     "output_directory":               [["--output-directory", "--odir"],     ""],
     "show_name_spaces_f":             [["--show-name-spaces", "--sns"],      SetupParTypes.FLAG],
     "user_application_version_id":    [["--version-id"],                     "0.0.0-pre-release"],
+    "standard_library_usage_f":       [["--no-std-lib", "--nostdlib", "--nsl"], SetupParTypes.NEGATED_FLAG],
     "implement_lib_quex_f":           [["--no-lib-quex", "--nlq"],           SetupParTypes.NEGATED_FLAG],
     #
     "warning_on_outrun_f":            [["--warning-on-outrun", "--woo"],   SetupParTypes.FLAG],
@@ -287,7 +289,6 @@ SETUP_INFO = {
     #
     #__________________________________________________________________________
     # Parameters not set on the command line:
-    "byte_order_is_that_of_current_system_f":    True,
     "_quex_lib_name_space":                      None,
     "_quex_lib_prefix":                          None,
     "_quex_lib_name_safe":                       None,

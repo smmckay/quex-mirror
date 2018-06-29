@@ -108,16 +108,8 @@ QUEX_INLINE void  QUEX_NAME(ByteLoader_delete)(QUEX_NAME(ByteLoader)** me);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-$$INC: buffer/bytes/ByteLoader_FILE$$
-$$INC: buffer/bytes/ByteLoader_stream$$
-$$INC: buffer/bytes/ByteLoader_wstream$$
-
-#ifdef QUEX_OPTION_POSIX
-$$INC: buffer/bytes/ByteLoader_POSIX$$    /* (tm) */
-#endif
-#if 0
-$$INC: buffer/bytes/ByteLoader_FreeRTOS$$ /* (tm) */
-$$INC: buffer/bytes/ByteLoader_PalmOS$$   /* (tm) */
-#endif
+$$INC: <std-lib> buffer/bytes/ByteLoader_FILE$$
+$$INC: <std-lib> buffer/bytes/ByteLoader_stream$$
+$$INC: <std-lib> buffer/bytes/ByteLoader_wstream$$
 
 #endif /*  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER */

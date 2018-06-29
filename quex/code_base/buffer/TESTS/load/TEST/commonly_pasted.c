@@ -1,11 +1,11 @@
 #include "TESTS/minimum-definitions.h"
-#include "ut/lib/buffer/lexatoms/LexatomLoader.i"
-#include "ut/lib/buffer/bytes/ByteLoader_Memory"
-#include "ut/lib/buffer/bytes/ByteLoader_Memory.i"
-#include "ut/lib/buffer/Buffer_print.i"
-#include "ut/lib/buffer/Buffer.i"
-#include "ut/lib/quex/MemoryManager"
-#include "ut/lib/quex/MemoryManager.i"
+#include "test_c/lib/buffer/lexatoms/LexatomLoader.i"
+#include "test_c/lib/buffer/bytes/ByteLoader_Memory"
+#include "test_c/lib/buffer/bytes/ByteLoader_Memory.i"
+#include "test_c/lib/buffer/Buffer_print.i"
+#include "test_c/lib/buffer/Buffer.i"
+#include "test_c/lib/quex/MemoryManager"
+#include "test_c/lib/quex/MemoryManager.i"
 #include <hwut_unit.h>
 
 typedef struct {
@@ -18,7 +18,7 @@ typedef struct {
     QUEX_TYPE_LEXATOM_EXT         lexeme_start_m1;
     QUEX_TYPE_LEXATOM_EXT*        position_register_1;
     QUEX_TYPE_LEXATOM_EXT*        position_register_3;
-    QUEX_TYPE_STREAM_POSITION lexatom_index_begin;
+    TestAnalyzer_stream_position_t lexatom_index_begin;
 } BufferBefore_t;
 
 typedef struct {
@@ -227,7 +227,7 @@ before_check_consistency(BufferBefore_t*    me,
         /* Overflow: common_on_overflow() sets 'lexeme_start_p = read_p'.
          * => in that case it is excused.                                    */
     }
-    else if( buffer->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+    else if( buffer->_backup_lexatom_index_of_lexeme_start_p == (TestAnalyzer_stream_position_t)-1 ) {
         hwut_verify(me->lexeme_start_p - buffer->_lexeme_start_p == Delta);
         if(    buffer->_lexeme_start_p > &buffer->_memory._front[1] 
             && me->lexeme_start_m1 != QUEX_SETTING_BUFFER_LIMIT_CODE ) {

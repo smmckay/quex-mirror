@@ -42,24 +42,13 @@ def do(Mode_PrepPrepDB):
     else:
         analyzer_derived_class_name = Setup.analyzer_class_name
 
+    is_little_endian_str = { 
+        "little": "true", 
+        "big":    "false", 
+        "system": "QUEX_GNAME_QUEX(systen_is_little_endian)()" 
+    }[Setup.buffer_byte_order]
 
-    # Is there a 'standard type' correspondent the lexatom type.
-    # (Relevant only if a user defined lexatom type has been specified)
-
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_COMPUTED_GOTOS",                False)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK", Setup.mode_transition_check_f)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_REPETITION_SUPPORT",      token_repetition_support_f) 
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT",       token_take_text_support_f) 
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_BIG",                    Setup.buffer_byte_order == "big")
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_LITTLE",                 Setup.buffer_byte_order == "little")
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT",    entry_handler_active_f)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_ON_EXIT_HANDLER_PRESENT",     exit_handler_active_f)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_PLAIN_C_EXT",                     Setup.language.upper() == "C")
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION", BeginOfLineSupportF)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_SYSTEM",                 Setup.byte_order_is_that_of_current_system_f)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_ENGINE_RUNNING_ON_CODEC",     Setup.buffer_encoding.name != "unicode")
-
-    codec_name  = Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name)
+    codec_name              = Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name)
     include_guard_extension = Lng.INCLUDE_GUARD(Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space) 
                                                 + "__" + Setup.analyzer_class_name)
 
@@ -75,6 +64,7 @@ def do(Mode_PrepPrepDB):
              ["$$QUEX_SETTING_CHARACTER_CODEC$$", codec_name],
              ["$$INCLUDE_GUARD_EXTENSION$$",    include_guard_extension],
              ["$$QUEX_SETTING_MODE_INITIAL$$",  Lng.NAME_IN_NAMESPACE_MAIN(blackboard.initial_mode.get_pure_text())],
+             ["$$QUEX_SETTING_ENDIAN_IS_LITTLE$$",  is_little_endian_str],
              ["$$LEXER_BUILD_DATE$$",           time.asctime()],
              ["$$LEXER_CLASS_NAME$$",           LexerClassName],
              ["$$LEXER_CLASS_NAME_SAFE$$",      Setup.analyzer_name_safe],
