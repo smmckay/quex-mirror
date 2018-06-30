@@ -110,8 +110,9 @@ def require_scheme_variable(SchemeID, SchemeIterable, TState, StateDB, dial_db):
     
     def quex_label(DoorId, LastF):
         dial_db.mark_address_as_routed(DoorId.related_address)
-        if not LastF: return "QUEX_LABEL(%s), " % DoorId.related_address
-        else:         return "QUEX_LABEL(%s) "  % DoorId.related_address
+        label_str = "%s" % Lng.ADRESS_LABEL_REFERENCE(DoorId.related_address)
+        if not LastF: return "%s, " % label_str
+        else:         return "%s " % label_str
 
     txt = ["{ "]
     LastI = len(door_id_list) - 1

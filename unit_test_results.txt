@@ -19,8 +19,8 @@ TEST                                                                 <no date>
     3025173 0.49.2 Custom Token struct for quex
         bug-3025173.sh ...............................................[OK]
     3032877 -b, --buffer-element-size enhancement
-        feature-3032877.sh codec .....................................[OK]
-                           normal ....................................[OK]
+        feature-3032877.sh codec ...................................[FAIL]
+                           normal ..................................[FAIL]
 
  * attardi:
 
@@ -166,7 +166,7 @@ TEST                                                                 <no date>
     3157923 Memory Leak by Components
         bug-3157923.sh ...............................................[OK]
     3513568 0.62.2 Memory Leak when using ICU
-        bug-3513568.sh ...............................................[OK]
+        bug-3513568.sh .............................................[FAIL]
 
  * inhenriksen:
 
@@ -302,7 +302,7 @@ TEST                                                                 <no date>
  * raphamiard:
 
     185 0.66.5 Stable output for distinct token fields
-        feature-185.sh ...............................................[OK]
+        feature-185.sh .............................................[FAIL]
 
  * rayhayes:
 
@@ -332,7 +332,7 @@ TEST                                                                 <no date>
     265 Modification time change on input file.
         bug-265.sh ...................................................[OK]
     3524729 0.62.4 token_type distinct members cause overloading error
-        bug-3524729.sh ...............................................[OK]
+        bug-3524729.sh .............................................[FAIL]
     3538026 Handling of spurious transition in PathWalkerState
         bug-3538026.sh ...............................................[OK]
 
@@ -496,7 +496,12 @@ TEST                                                                 <no date>
 -------------------------------------------------------------------------------
     [FAIL] bug-293.sh _ bad
                     \__ good
+    [FAIL] feature-3032877.sh _ codec
+                            \__ normal
     [FAIL] bug-3486388.sh
+    [FAIL] bug-3513568.sh
+    [FAIL] feature-185.sh
+    [FAIL] bug-3524729.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -523,7 +528,7 @@ demo/TEST                                                            <no date>
 demo/C/TEST                                                          <no date>
 -------------------------------------------------------------------------------
  * 00-Minimalist
-        00-Minimalist.sh .............................................[OK]
+        00-Minimalist.sh ......................................[NO OUTPUT]
  * No references to Cpp demos
         no-references-to-cpp.sh ......................................[OK]
 
@@ -653,6 +658,7 @@ demo/C/TEST                                                          <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] 00-Minimalist.sh
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
@@ -1705,20 +1711,20 @@ quex/engine/loop/TEST                                                <no date>
  * Indentation Counting:
 
     With Comments
-        indentation-w-comments.py Mixed ..............................[OK]
-                                  NewlineTerminated ..................[OK]
-                                  NotNewlineTerminated ...............[OK]
+        indentation-w-comments.py Mixed ............................[FAIL]
+                                  NewlineTerminated ...........[NO OUTPUT]
+                                  NotNewlineTerminated ........[NO OUTPUT]
     With Tabulators
-        indentation-w-tabs.py Back ...................................[OK]
-                              Front ..................................[OK]
-                              InComment ..............................[OK]
-                              Potpourri ..............................[OK]
+        indentation-w-tabs.py Back .................................[FAIL]
+                              Front ...........................[NO OUTPUT]
+                              InComment .......................[NO OUTPUT]
+                              Potpourri .......................[NO OUTPUT]
     Without Tabulators
-        indentation.py CloseMultiple .................................[OK]
-                       EmptyLines ....................................[OK]
-                       InAndOut ......................................[OK]
-                       NoDents .......................................[OK]
-                       SuppressedNewline .............................[OK]
+        indentation.py CloseMultiple ...............................[FAIL]
+                       EmptyLines .............................[NO OUTPUT]
+                       InAndOut ...............................[NO OUTPUT]
+                       NoDents ................................[NO OUTPUT]
+                       SuppressedNewline ......................[NO OUTPUT]
 
  * Loop:
 
@@ -1736,37 +1742,68 @@ quex/engine/loop/TEST                                                <no date>
  * Skip-Characters:
 
     UTF8 Engine -- Varrying Buffer Size
-        skip-utf8.py 5 ...............................................[OK]
-                     6 ...............................................[OK]
-                     7 ...............................................[OK]
-                     8 ...............................................[OK]
+        skip-utf8.py 5 .............................................[FAIL]
+                     6 .............................................[FAIL]
+                     7 .............................................[FAIL]
+                     8 .............................................[FAIL]
     Varrying Buffer Size
-        skip.py 3 ....................................................[OK]
-                4 ....................................................[OK]
-                5 ....................................................[OK]
-                6 ....................................................[OK]
-                7 ....................................................[OK]
-                8 ....................................................[OK]
+        skip.py 3 ..................................................[FAIL]
+                4 .............................................[NO OUTPUT]
+                5 .............................................[NO OUTPUT]
+                6 .............................................[NO OUTPUT]
+                7 .............................................[NO OUTPUT]
+                8 .............................................[NO OUTPUT]
 
  * Skip-NestedRange:
 
     Delimiters of different sizes
-        skip-nested_range.py one .....................................[OK]
-                             same-head ...............................[OK]
-                             three ...................................[OK]
-                             two .....................................[OK]
+        skip-nested_range.py one ...................................[FAIL]
+                             same-head .............................[FAIL]
+                             three .................................[FAIL]
+                             two ...................................[FAIL]
 
  * Skip-Range:
 
     Varrying DelimiterLength (Buffer=length+3)
-        skip-range.py 1 ..............................................[OK]
-                      2 ..............................................[OK]
-                      3 ..............................................[OK]
-                      4 ..............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        skip-range.py 1 ............................................[FAIL]
+                      2 ............................................[FAIL]
+                      3 ............................................[FAIL]
+                      4 ............................................[FAIL]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] indentation-w-comments.py _ Mixed
+                                   \__ NewlineTerminated
+                                   \__ NotNewlineTerminated
+    [FAIL] indentation-w-tabs.py _ Back
+                               \__ Front
+                               \__ InComment
+                               \__ Potpourri
+    [FAIL] indentation.py _ CloseMultiple
+                        \__ EmptyLines
+                        \__ InAndOut
+                        \__ NoDents
+                        \__ SuppressedNewline
+    [FAIL] skip-utf8.py _ 5
+                      \__ 6
+                      \__ 7
+                      \__ 8
+    [FAIL] skip.py _ 3
+                 \__ 4
+                 \__ 5
+                 \__ 6
+                 \__ 7
+                 \__ 8
+    [FAIL] skip-nested_range.py _ one
+                              \__ same-head
+                              \__ three
+                              \__ two
+    [FAIL] skip-range.py _ 1
+                       \__ 2
+                       \__ 3
+                       \__ 4
 ===============================================================================
                                                                                
                     Miscellaneous Support Functions/Modules                    
@@ -1819,7 +1856,7 @@ quex/engine/operations/TEST                                          <no date>
  * Command:
 
     Basic
-        basic.py .....................................................[OK]
+        basic.py ...................................................[FAIL]
 
  * Op:
 
@@ -1843,10 +1880,12 @@ quex/engine/operations/TEST                                          <no date>
                             one-or-none ..............................[OK]
                             two ......................................[OK]
                             two-bad ..................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] basic.py
 ===============================================================================
                                                                                
                                    DFA Tests                                   
@@ -2436,43 +2475,30 @@ quex/code_base/analyzer/struct/TEST                                  <no date>
 quex/code_base/buffer/bytes/TEST                                     <no date>
 -------------------------------------------------------------------------------
  * Segmented Input
-        segmented-input.exe Handler .........................[MAKE FAILED]
-                            Normal ..........................[MAKE FAILED]
+        segmented-input.exe Handler ..................................[OK]
+                            Normal ...................................[OK]
 
  * QUEX_NAME(ByteLoader):
 
     FILE
-        test-FILE.exe basic .................................[MAKE FAILED]
-                      init-pos ..............................[MAKE FAILED]
+        test-FILE.exe basic ..........................................[OK]
+                      init-pos .......................................[OK]
     Memory
-        test-Memory.exe basic ...............................[MAKE FAILED]
-                        init-pos ............................[MAKE FAILED]
+        test-Memory.exe basic ........................................[OK]
+                        init-pos .....................................[OK]
     POSIX
-        test-POSIX.exe basic ................................[MAKE FAILED]
-                       init-pos .............................[MAKE FAILED]
+        test-POSIX.exe basic .........................................[OK]
+                       init-pos ......................................[OK]
     std::fstream
-        test-fstream.exe basic ..............................[MAKE FAILED]
-                         init-pos ...........................[MAKE FAILED]
+        test-fstream.exe basic .......................................[OK]
+                         init-pos ....................................[OK]
     std::stringstream
-        test-stringstream.exe basic .........................[MAKE FAILED]
-                              init-pos ......................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] segmented-input.exe _ Handler
-                             \__ Normal
-    [FAIL] test-FILE.exe _ basic
-                       \__ init-pos
-    [FAIL] test-Memory.exe _ basic
-                         \__ init-pos
-    [FAIL] test-POSIX.exe _ basic
-                        \__ init-pos
-    [FAIL] test-fstream.exe _ basic
-                          \__ init-pos
-    [FAIL] test-stringstream.exe _ basic
-                               \__ init-pos
+        test-stringstream.exe basic ..................................[OK]
+                              init-pos ...............................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -2480,15 +2506,21 @@ quex/code_base/buffer/bytes/TEST                                     <no date>
 quex/code_base/extra/accumulator/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Accumulator
-        accumulator.exe Character ....................................[OK]
-                        Mix ..........................................[OK]
-                        N-Character ..................................[OK]
-                        N-String .....................................[OK]
-                        String .......................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        accumulator.exe Character ...........................[MAKE FAILED]
+                        Mix .................................[MAKE FAILED]
+                        N-Character .........................[MAKE FAILED]
+                        N-String ............................[MAKE FAILED]
+                        String ..............................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] accumulator.exe _ Character
+                         \__ Mix
+                         \__ N-Character
+                         \__ N-String
+                         \__ String
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -3459,8 +3491,8 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        3  238   [FAIL] TEST                                                          
-        4  56    [FAIL] demo/C/TEST                                                   
+        8  238   [FAIL] TEST                                                          
+        5  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
@@ -3487,10 +3519,10 @@ SUMMARY:
            11      [OK] .........................../misc/TEST                         
            26      [OK] .........................../move/TEST                         
            96      [OK] .........................../navigation/TEST                   
-       12  12    [FAIL] ...................../bytes/TEST                              
+           12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-           5       [OK] ............../extra/accumulator/TEST                         
+        5  5     [FAIL] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            10      [OK] ............../lexeme_converter/TEST                          
            3       [OK] ............../token/TEST                                     
@@ -3498,9 +3530,9 @@ SUMMARY:
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
            27      [OK] .............................../template/TEST                 
-           38      [OK] .........../loop/TEST                                         
+       30  38    [FAIL] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
-           17      [OK] .........../operations/TEST                                   
+        1  17    [FAIL] .........../operations/TEST                                   
            51      [OK] .........../state_machine/TEST                                
            9       [OK] ........................./algebra/TESTS/additional_laws/TEST  
            21      [OK] ......................................./basics/TEST           
@@ -3520,11 +3552,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           ___   ____            
-    |  ___|_ _(_) |___      / _ \ |___ \     __  __
-    | |_ / _` | | / __|    | (_) |  __) |    \ \/ /
-    |  _| (_| | | \__ \     \__, | / __/      >  < 
-    |_|  \__,_|_|_|___/       /_/ |_____|    /_/\_\
+     _____     _ _          _  ____   ____            
+    |  ___|_ _(_) |___     / ||___ \ |___ \     __  __
+    | |_ / _` | | / __|    | |  __) |  __) |    \ \/ /
+    |  _| (_| | | \__ \    | | / __/  / __/      >  < 
+    |_|  \__,_|_|_|___/    |_||_____||_____|    /_/\_\
                                                                    (1701 tests)
 
 ===============================================================================

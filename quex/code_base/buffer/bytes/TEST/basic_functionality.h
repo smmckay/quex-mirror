@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_QUEX_BASIC_FUNCTIONALITY_H
 #define INCLUDE_GUARD_QUEX_BASIC_FUNCTIONALITY_H
 
+typedef long TestAnalyzer_stream_position_t;
 #define  QUEX_NAME(X) TestAnalyzer_ ## X
 #ifdef   __cplusplus
 #include "test_cpp/lib/buffer/bytes/ByteLoader"

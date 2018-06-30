@@ -227,7 +227,6 @@ SETUP_INFO = {
     "buffer_limit_code":              [["--buffer-limit"],                     0x0],
     "__buffer_lexatom_size_in_byte":  [["--buffer-element-size", "-b", "--bes"], -1],  # [Bytes] => ".lexatom.size_in_byte"
     "__buffer_lexatom_type":          [["--lexatom-type", "--buffer-element-type", "--bet"],     ""],
-    "buffer_byte_order":              [["--endian"],                           ""],    # default => sys.byteorder
     "comment_state_machine_f":        [["--comment-state-machine"],            SetupParTypes.FLAG],
     "comment_transitions_f":          [["--comment-transitions"],              SetupParTypes.FLAG],
     "comment_mode_patterns_f":        [["--comment-mode-patterns"],            SetupParTypes.FLAG],
@@ -243,7 +242,6 @@ SETUP_INFO = {
     "path_limit_code":                [["--path-termination"],                 0x1],
     "dos_carriage_return_newline_f":  [["--no-DOS"],                           SetupParTypes.NEGATED_FLAG],
     "insight_f":                      [["--insight"],                              SetupParTypes.FLAG],
-    "converter_ucs_coding_name":      [["--converter-ucs-coding-name", "--cucn"], ""],
     "converter_only_f":               [["--converter-only", "--co"],           SetupParTypes.FLAG],
     "converter_source_name":          [["--converter-source-name", "--csn"],  ""],
     "input_mode_files":               [["-i"],                                 SetupParTypes.LIST],
@@ -376,6 +374,8 @@ SETUP_INFO = {
     "XX_source_package_directory":       [["--source-package", "--sp"],         ""],
     "XX_single_mode_analyzer_f":         [["--single-mode-analyzer", "--sma"],  SetupParTypes.FLAG],
     "XX_include_stack_support_f":        [["--no-include-stack", "--nois"],       SetupParTypes.NEGATED_FLAG],
+    "XX_buffer_byte_order":              [["--endian"],                           ""],    # default => sys.byteorder
+    "XX_converter_ucs_coding_name":      [["--converter-ucs-coding-name", "--cucn"], ""],
 }
 
 class NotificationDB:
@@ -406,6 +406,12 @@ class NotificationDB:
     warning_incidence_handler_overwrite              = 19
 
 DEPRECATED = { 
+  "XX_converter_ucs_coding_name": 
+    ("Option '--converter-ucs-coding-name' no longer supported.",
+     "0.69.1"),
+  "XX_buffer_byte_order": 
+    ("Option '--endian' no longer supported. Endianness is determined at run-time.",
+     "0.69.1"), 
   "XX_include_stack_support_f": 
     ("Option '--no-include-stack' is no longer supported.", 
       "0.69.1"), 
@@ -645,7 +651,6 @@ DOC = {
     "buffer_limit_code":              ("Buffer limit code.", ""),
     "__buffer_lexatom_size_in_byte":  ("Buffer element size.", ""),
     "__buffer_lexatom_type":          ("Buffer element type.", ""),
-    "buffer_byte_order":              ("Byte order of buffer elements.", ""),
     "comment_state_machine_f":        ("Provide state machine description in comment of generated code.", ""),
     "comment_transitions_f":          ("Provided UTF8 representation of transition characters in comments of generated code.", ""),
     "comment_mode_patterns_f":        ("", ""),
@@ -662,7 +667,6 @@ DOC = {
     "string_accumulator_f":           ("", ""),
     "converter_iconv_f":              ("Use 'iconv' library for character conversions.", ""),
     "converter_icu_f":                ("Use 'icu' library for character conversions.", ""),
-    "converter_ucs_coding_name":      ("", ""),
     "include_stack_support_f":        ("", ""),
     "input_mode_files":               ("", ""),
     "extern_token_class_file":               ("", ""),

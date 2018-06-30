@@ -16,20 +16,14 @@
 /* Support of computed goto */
 $$<computed-gotos>-------------------------------------------------------------
 #   define QUEX_GOTO_LABEL_VOID       (QUEX_TYPE_GOTO_LABEL)(0x0)
-#   define QUEX_LABEL(StateIndex)     &&_##StateIndex 
-#   define QUEX_GOTO_TERMINAL(LABEL)  do { goto *LABEL; } while(0)
-#   define QUEX_GOTO_STATE(LABEL)     do { goto *LABEL; } while(0)
 $$-----------------------------------------------------------------------------
 $$<not-computed-gotos>---------------------------------------------------------
 #   define QUEX_GOTO_LABEL_VOID       (QUEX_TYPE_GOTO_LABEL)(-1)
-#   define QUEX_LABEL(StateIndex)     StateIndex 
-#   define QUEX_GOTO_TERMINAL(LABEL)  do { last_acceptance    = LABEL; goto QUEX_TERMINAL_ROUTER; } while(0)
-#   define QUEX_GOTO_STATE(LABEL)     do { target_state_index = LABEL; goto QUEX_LABEL_STATE_ROUTER; } while(0)
 $$-----------------------------------------------------------------------------
 
 #define QUEX_LEXEME_TERMINATING_ZERO_SET(BUFFER)                \
-     (BUFFER)->_lexatom_at_lexeme_start = (BUFFER)->_read_p[0]; \
-     (BUFFER)->_read_p[0]               = (QUEX_TYPE_LEXATOM)0;
+     do { (BUFFER)->_lexatom_at_lexeme_start = (BUFFER)->_read_p[0]; \
+          (BUFFER)->_read_p[0]               = (QUEX_TYPE_LEXATOM)0; } while(0)
 
 #define QUEX_LEXEME_TERMINATING_ZERO_UNDO(BUFFER)                                 \
      /* only need to reset, in case that the terminating zero was set*/           \

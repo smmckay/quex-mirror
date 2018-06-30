@@ -644,8 +644,9 @@ class Language(dict):
             dial_db.mark_address_as_routed(on_success_adr)
             dial_db.mark_address_as_routed(on_failure_adr)
 
-            return   "    target_state_index = QUEX_LABEL(%i); target_state_else_index = QUEX_LABEL(%i);\n"  \
-                   % (on_success_adr, on_failure_adr)                                                        
+            return   "    target_state_index = %s; target_state_else_index = %s;\n"  \
+                   % (self.ADRESS_LABEL_REFERENCE(on_success_adr), 
+                      self.ADRESS_LABEL_REFERENCE(on_failure_adr))                                                       
 
         elif Op.id == E_Op.LexemeResetTerminatingZero:
             return "    QUEX_LEXEME_TERMINATING_ZERO_UNDO(&me->buffer);\n"
@@ -726,6 +727,21 @@ class Language(dict):
                + "    QUEX_NAME(%s).has_exit_to(ToMode);\n" % ModeName \
                + "#   endif\n"
 
+    def ADRESS_LABEL_REFERENCE(self, Adr):
+        if Setup.computed_gotos_f: return "&&_##%i" % Adr
+        else:                      return "%i" % Adr
+
+    @typed(DoorId=DoorID)
+    def GOTO(self, DoorId, dial_db):
+        if DoorId.last_acceptance_f():
+            if Setup.computed_gotos_f:
+                return "goto *last_acceptance;"
+            else:
+                return "goto QUEX_TERMINAL_ROUTER;" # last_acceptance supposed to be set!
+
+        return self.GOTO_ADDRESS(DoorId.related_address, dial_db)
+
+
     def LABEL_PLAIN(self, Label):
         return "%s:" % Label.strip()
 
@@ -740,14 +756,11 @@ class Language(dict):
     def LABEL_STR_BY_ADR(self, Adr):
         return "_%s" % Adr
 
-    @typed(DoorId=DoorID)
-    def GOTO(self, DoorId, dial_db):
-        if DoorId.last_acceptance_f():
-            return "QUEX_GOTO_TERMINAL(last_acceptance);"
-        return self.GOTO_ADDRESS(DoorId.related_address, dial_db)
-
     def GOTO_BY_VARIABLE(self, VariableName):
-        return "QUEX_GOTO_STATE(%s);" % VariableName 
+        if Setup.computed_gotos_f:
+            return "goto *%s;" % VariableName 
+        else:
+            return "{ target_state_index = %s; goto QUEX_LABEL_STATE_ROUTER; }" % VariableName
 
     def GOTO_STRING(self, LabelStr):
         return "goto %s;" % LabelStr
@@ -1276,7 +1289,7 @@ class Language(dict):
         return self.__re_RETURN.search(EventHandlerTxt) is not None
 
     def EXIT_ON_TERMINATION(self):
-        # NOT: "Lng.PURE_RETURN" because the terminal end of stream 
+        # NOT: "self.PURE_RETURN" because the terminal end of stream 
         #      exits anyway immediately--after 'on_after_match'.
         return "%s\n" % self.TOKEN_SEND("QUEX_SETTING_TOKEN_ID_TERMINATION")
 
@@ -1298,11 +1311,13 @@ class Language(dict):
         adr_load_failure = DoorID.incidence(E_IncidenceIDs.LOAD_FAILURE, dial_db).related_address
 
         txt = blue_print(txt, [
-            ("$$ON_BAD_LEXATOM$$",  self.LABEL_STR_BY_ADR(adr_bad_lexatom)),
-            ("$$ON_LOAD_FAILURE$$", self.LABEL_STR_BY_ADR(adr_load_failure)),
-            ("$$LOAD_RESULT$$",     self.REGISTER_NAME(E_R.LoadResult)),
-            ("$$BUFFER_LOAD_FW$$",  self.NAME_IN_NAMESPACE_MAIN("Buffer_load_forward")),
-            ("$$BUFFER_LOAD_BW$$",  self.NAME_IN_NAMESPACE_MAIN("Buffer_load_backward"))
+            ("$$ON_BAD_LEXATOM$$",               self.LABEL_STR_BY_ADR(adr_bad_lexatom)),
+            ("$$ON_LOAD_FAILURE$$",              self.LABEL_STR_BY_ADR(adr_load_failure)),
+            ("$$LOAD_RESULT$$",                  self.REGISTER_NAME(E_R.LoadResult)),
+            ("$$BUFFER_LOAD_FW$$",               self.NAME_IN_NAMESPACE_MAIN("Buffer_load_forward")),
+            ("$$BUFFER_LOAD_BW$$",               self.NAME_IN_NAMESPACE_MAIN("Buffer_load_backward")),
+            ("$$GOTO target_state_index$$",      self.GOTO_BY_VARIABLE("target_state_index")),
+            ("$$GOTO target_state_else_index$$", self.GOTO_BY_VARIABLE("target_state_else_index")),
         ])
 
         dial_db.mark_address_as_gotoed(adr_bad_lexatom)
@@ -1530,8 +1545,8 @@ cpp_reload_forward_str = """
     __quex_debug_reload_after($$LOAD_RESULT$$);
 
     switch( $$LOAD_RESULT$$ ) {
-    case E_LoadResult_DONE:           QUEX_GOTO_STATE(target_state_index);      
-    case E_LoadResult_NO_MORE_DATA:   QUEX_GOTO_STATE(target_state_else_index); 
+    case E_LoadResult_DONE:           $$GOTO target_state_index$$      
+    case E_LoadResult_NO_MORE_DATA:   $$GOTO target_state_else_index$$ 
     case E_LoadResult_ENCODING_ERROR: goto $$ON_BAD_LEXATOM$$;
     case E_LoadResult_OVERFLOW:       QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
     default:                          __quex_assert(false);
@@ -1550,8 +1565,8 @@ cpp_reload_backward_str = """
     __quex_debug_reload_after($$LOAD_RESULT$$);
 
     switch( $$LOAD_RESULT$$ ) {
-    case E_LoadResult_DONE:           QUEX_GOTO_STATE(target_state_index);      
-    case E_LoadResult_NO_MORE_DATA:   QUEX_GOTO_STATE(target_state_else_index); 
+    case E_LoadResult_DONE:           $$GOTO target_state_index$$      
+    case E_LoadResult_NO_MORE_DATA:   $$GOTO target_state_else_index$$ 
     case E_LoadResult_ENCODING_ERROR: goto $$ON_BAD_LEXATOM$$;
     case E_LoadResult_FAILURE:        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_OnLoadFailure); RETURN; 
     default:                          __quex_assert(false);

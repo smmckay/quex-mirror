@@ -16,8 +16,7 @@ def do(ModeDB, Epilog):
     assert not Epilog # If this never triggers, delete 'Epilog'
     assert token_db.token_type_definition is not None
 
-    LexerClassName                 = Setup.analyzer_class_name
-    quex_converter_coding_name_str = Setup.converter_ucs_coding_name
+    LexerClassName = Setup.analyzer_class_name
 
     # -- instances of mode classes as members of the lexer
     mode_object_members_txt,     \
@@ -68,7 +67,6 @@ def do(ModeDB, Epilog):
         ["$$TOKEN_CLASS$$",                      token_class_name],
         ["$$TOKEN_CLASS_NAME_SAFE$$",            token_class_name_safe],
         ["$$TOKEN_ID_DEFINITION_FILE$$",         Setup.output_token_id_file_ref],
-        ["$$CORE_ENGINE_CHARACTER_CODING$$",     quex_converter_coding_name_str],
         ["$$USER_DEFINED_HEADER$$",              Lng.SOURCE_REFERENCED(blackboard.header) + "\n"],
         ["$$USER_DEFINED_FOOTER$$",              Lng.SOURCE_REFERENCED(blackboard.footer) + "\n"],
         ["$$EPILOG$$",                           Epilog],

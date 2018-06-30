@@ -235,6 +235,12 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
 
     source_code = source_code.replace("$$TEST_ANALYZER_DIR$$",
                                       test_analyzer_dir)
+    if computed_goto_f:   
+        check_str = "{ TestAnalyzer_goto_label_t fails_if_not_computed_goto_labels = (void*)0; (void)fails_if_not_computed_goto_labels; }"
+    else:
+        check_str = "{ long fails_if_computed_goto_labels = (TestAnalyzer_goto_label_t)0; (void)fails_if_computed_goto_labels; }" 
+    source_code = source_code.replace("$$COMPUTED_GOTOS_CHECK$$", check_str)
+    
 
     compile_and_run(Language, source_code, AssertsActionvation_str, CompileOptionStr, 
                     test_str_list)
@@ -399,13 +405,6 @@ def create_common_declarations(Language, QuexBufferSize,
     mode_2.incidence_db = {}
     txt  = txt.replace("$$MODE_DEF_M$$", modes.initialization(mode_1))
     txt  = txt.replace("$$MODE_DEF_M2$$", modes.initialization(mode_2))
-
-    if ComputedGotoF:   
-        txt = txt.replace("$$COMPUTED_GOTOS$$",    "/* Correct */")
-        txt = txt.replace("$$NO_COMPUTED_GOTOS$$", "QUEX_ERROR_EXIT(\"QUEX_OPTION_COMPUTED_GOTOS_EXT not active!\\n\");")
-    else:
-        txt = txt.replace("$$COMPUTED_GOTOS$$",    "QUEX_ERROR_EXIT(\"QUEX_OPTION_COMPUTED_GOTOS_EXT active!\\n\");")
-        txt = txt.replace("$$NO_COMPUTED_GOTOS$$", "/* Correct */")
 
     txt = txt.replace("$$BUFFER_LIMIT_CODE$$", repr(BufferLimitCode))
 
@@ -600,14 +599,6 @@ const QUEX_NAME(Mode) *(QUEX_NAME(mode_db)[QUEX_SETTING_MAX_MODE_CLASS_N]) = {
 };
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#if defined(QUEX_OPTION_COMPUTED_GOTOS)
-#   define DEAL_WITH_COMPUTED_GOTOS() \
-           $$COMPUTED_GOTOS$$
-#else
-#   define DEAL_WITH_COMPUTED_GOTOS() \
-           $$NO_COMPUTED_GOTOS$$
-#endif
-
 static int
 run_test(const char* TestString, const char* Comment)
 {
@@ -662,7 +653,7 @@ test_program_db = {
         const size_t       MemorySize   = strlen((const char*)&TestString[1]) + 2;
         TestAnalyzer  object;
 
-        DEAL_WITH_COMPUTED_GOTOS();
+        $$COMPUTED_GOTOS_CHECK$$;
         lexer_state = &object;
         QUEX_NAME(from_memory)(lexer_state, 
                                TestString, MemorySize, &TestString[MemorySize - 1]); 
@@ -702,7 +693,7 @@ test_program_db = {
         }
         fseek(fh, 0, SEEK_SET); /* start reading from the beginning */
 
-        DEAL_WITH_COMPUTED_GOTOS();
+        $$COMPUTED_GOTOS_CHECK$$;
         byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
         QUEX_NAME(from_ByteLoader)(lexer_state, byte_loader, NULL);
         /**/
@@ -724,7 +715,7 @@ test_program_db = {
         istringstream*          istr = new istringstream("$$TEST_STRING$$");
         QUEX_NAME(ByteLoader)*  byte_loader = QUEX_NAME(ByteLoader_stream_new)(istr);
 
-        DEAL_WITH_COMPUTED_GOTOS();
+        $$COMPUTED_GOTOS_CHECK$$;
         lexer_state = TestAnalyzer::from_ByteLoader(byte_loader, NULL);
 
         return run_test("$$TEST_STRING$$", "$$COMMENT$$");
@@ -745,7 +736,7 @@ test_program_db = {
         StrangeStream<istringstream>*  strange_stream = new StrangeStream<istringstream>(&istr);
         QUEX_NAME(ByteLoader)*         byte_loader = QUEX_NAME(ByteLoader_stream_new)(strange_stream);
 
-        DEAL_WITH_COMPUTED_GOTOS();
+        $$COMPUTED_GOTOS_CHECK$$;
         lexer_state = TestAnalyzer::from_ByteLoader(byte_loader, 0x0);
         return run_test("$$TEST_STRING$$", "$$COMMENT$$");
     }\n""",
@@ -765,7 +756,7 @@ test_program_db = {
         (void)fread(test_string, 1, 65536, fh);
         fseek(fh, 0, SEEK_SET); /* start reading from the beginning */
 
-        DEAL_WITH_COMPUTED_GOTOS();
+        $$COMPUTED_GOTOS_CHECK$$;
         QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
         QUEX_NAME(from_ByteLoader)(lexer_state, byte_loader, NULL); 
 

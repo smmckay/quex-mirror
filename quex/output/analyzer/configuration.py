@@ -42,12 +42,6 @@ def do(Mode_PrepPrepDB):
     else:
         analyzer_derived_class_name = Setup.analyzer_class_name
 
-    is_little_endian_str = { 
-        "little": "true", 
-        "big":    "false", 
-        "system": "QUEX_GNAME_QUEX(systen_is_little_endian)()" 
-    }[Setup.buffer_byte_order]
-
     codec_name              = Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name)
     include_guard_extension = Lng.INCLUDE_GUARD(Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space) 
                                                 + "__" + Setup.analyzer_class_name)
@@ -61,10 +55,8 @@ def do(Mode_PrepPrepDB):
     txt = blue_print(txt, 
             [
              ["$$BUFFER_LIMIT_CODE$$",          "%s" % Setup.buffer_limit_code],
-             ["$$QUEX_SETTING_CHARACTER_CODEC$$", codec_name],
              ["$$INCLUDE_GUARD_EXTENSION$$",    include_guard_extension],
              ["$$QUEX_SETTING_MODE_INITIAL$$",  Lng.NAME_IN_NAMESPACE_MAIN(blackboard.initial_mode.get_pure_text())],
-             ["$$QUEX_SETTING_ENDIAN_IS_LITTLE$$",  is_little_endian_str],
              ["$$LEXER_BUILD_DATE$$",           time.asctime()],
              ["$$LEXER_CLASS_NAME$$",           LexerClassName],
              ["$$LEXER_CLASS_NAME_SAFE$$",      Setup.analyzer_name_safe],

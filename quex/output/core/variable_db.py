@@ -4,7 +4,7 @@ from copy import copy
 
 candidate_db = {
 # Name                             Type(0),                         InitialValue(2),               PriorityF(3)
-"input":                          ["QUEX_TYPE_LEXATOM",           "(QUEX_TYPE_LEXATOM)(0x00)", False],
+"input":                          ["QUEX_TYPE_LEXATOM",             "(QUEX_TYPE_LEXATOM)(0x00)",   False],
 "target_state_index":             ["QUEX_TYPE_GOTO_LABEL",          "QUEX_GOTO_LABEL_VOID",        False],
 "target_state_else_index":        ["QUEX_TYPE_GOTO_LABEL",          "QUEX_GOTO_LABEL_VOID",        False],
 "last_acceptance":                ["QUEX_TYPE_ACCEPTANCE_ID",       None,                          False],

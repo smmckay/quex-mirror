@@ -197,7 +197,7 @@ def require_data(PWState, TheAnalyzer):
             result.append("/* Padding */0x0, ")
             for door_id in door_id_sequence:
                 PWState.entry.dial_db.mark_address_as_routed(door_id.related_address)
-                result.append("QUEX_LABEL(%i), " % door_id.related_address)
+                result.append("%s, " % Lng.ADRESS_LABEL_REFERENCE(door_id.related_address))
             result.append("\n")
 
             length += len(door_id_sequence) + 1 # 1 padding element

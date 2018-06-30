@@ -69,11 +69,6 @@ def do(setup, command_line, argv):
         error.log("The setting of '%s' can only be\n" % example_flag
                   + "1, 2, or 4 (found %s)." % repr(setup.lexatom.size_in_byte))
 
-    if setup.buffer_byte_order not in ["system", "little", "big"]:
-        error.log("Byte order (option --endian) must be 'little', 'big', or 'system'.\n" + \
-                  "Note, that this option is only interesting for cross plattform development.\n" + \
-                  "By default, quex automatically chooses the endian type of your system.")
-
     # Manually written token class requires token class name to be specified
     if setup.extern_token_class_file:
         if not setup.token_class:

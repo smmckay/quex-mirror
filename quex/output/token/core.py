@@ -295,8 +295,6 @@ def get_quick_setters(Descr):
     return "".join(txt)
 
 helper_definitions_common = """
-#define    QUEX_SETTING_CHARACTER_CODEC       %s
-
 /* In cases, such as DLL compilation for some dedicated compilers, 
  * the classes need some epilog. If the user does not specify such
  * a thing, it must be empty.                                                */
