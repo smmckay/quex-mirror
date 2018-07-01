@@ -71,7 +71,7 @@ def _do_core(Descr):
     # TODO: Following should be always placed in front of footer/header:
     # ------------
     if Setup.token_class_only_f: 
-        helper_definitions = _helper_definitions() 
+        helper_definitions = helper_definitions_common
     elif Setup.output_configuration_file:                        
         helper_definitions = Lng.INCLUDE(Setup.output_configuration_file)
     else:
@@ -309,12 +309,7 @@ $$<C>   #   include <assert.h>$$
 #else
 #   define  __quex_assert(X)              /* no assert */
 #endif
-
 """
-
-def _helper_definitions():
-    return helper_definitions_common \
-           % Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name)
 
 def _some_standard_stuff(Descr):
     """RETURNS: [0] include guard string

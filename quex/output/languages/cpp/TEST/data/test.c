@@ -370,6 +370,7 @@ _0:
      __quex_assert(me->buffer._read_p == LexemeEnd);
     return;
     __quex_assert_no_passage();
+    goto _51; /* prevent unused label */
 _51:
 
 #undef self

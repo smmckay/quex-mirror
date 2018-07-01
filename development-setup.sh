@@ -3,14 +3,16 @@ chmod a+rx TEST/valgrindi.sh
 pushd quex/code_base/TESTS/
 rm -rf test_c test_cpp 
 python generate-TestAnalyzer.py C
-python generate-TestAnalyzer.py C++
+python generate-TestAnalyzer.py C   computed-gotos
+python generate-TestAnalyzer.py C++ 
+python generate-TestAnalyzer.py C++ computed-gotos
 popd
 
 pushd quex/output/core/TEST
 rm -rf ut 
 python ../../../code_base/TESTS/code_base_instatiation.py ut --lang-C
 quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint32_t --encoding unicode --language C
-quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint8_t --encoding utf8 --language C
+quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint8_t  --encoding utf8    --language C
 popd
 
 #pushd quex/engine/loop/TEST

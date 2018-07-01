@@ -528,7 +528,7 @@ demo/TEST                                                            <no date>
 demo/C/TEST                                                          <no date>
 -------------------------------------------------------------------------------
  * 00-Minimalist
-        00-Minimalist.sh ......................................[NO OUTPUT]
+        00-Minimalist.sh .............................................[OK]
  * No references to Cpp demos
         no-references-to-cpp.sh ......................................[OK]
 
@@ -658,7 +658,6 @@ demo/C/TEST                                                          <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] 00-Minimalist.sh
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
@@ -1711,20 +1710,20 @@ quex/engine/loop/TEST                                                <no date>
  * Indentation Counting:
 
     With Comments
-        indentation-w-comments.py Mixed ............................[FAIL]
-                                  NewlineTerminated ...........[NO OUTPUT]
-                                  NotNewlineTerminated ........[NO OUTPUT]
+        indentation-w-comments.py Mixed ..............................[OK]
+                                  NewlineTerminated ..................[OK]
+                                  NotNewlineTerminated ...............[OK]
     With Tabulators
-        indentation-w-tabs.py Back .................................[FAIL]
-                              Front ...........................[NO OUTPUT]
-                              InComment .......................[NO OUTPUT]
-                              Potpourri .......................[NO OUTPUT]
+        indentation-w-tabs.py Back ...................................[OK]
+                              Front ..................................[OK]
+                              InComment ..............................[OK]
+                              Potpourri ..............................[OK]
     Without Tabulators
-        indentation.py CloseMultiple ...............................[FAIL]
-                       EmptyLines .............................[NO OUTPUT]
-                       InAndOut ...............................[NO OUTPUT]
-                       NoDents ................................[NO OUTPUT]
-                       SuppressedNewline ......................[NO OUTPUT]
+        indentation.py CloseMultiple .................................[OK]
+                       EmptyLines ....................................[OK]
+                       InAndOut ......................................[OK]
+                       NoDents .......................................[OK]
+                       SuppressedNewline .............................[OK]
 
  * Loop:
 
@@ -1742,68 +1741,37 @@ quex/engine/loop/TEST                                                <no date>
  * Skip-Characters:
 
     UTF8 Engine -- Varrying Buffer Size
-        skip-utf8.py 5 .............................................[FAIL]
-                     6 .............................................[FAIL]
-                     7 .............................................[FAIL]
-                     8 .............................................[FAIL]
+        skip-utf8.py 5 ...............................................[OK]
+                     6 ...............................................[OK]
+                     7 ...............................................[OK]
+                     8 ...............................................[OK]
     Varrying Buffer Size
-        skip.py 3 ..................................................[FAIL]
-                4 .............................................[NO OUTPUT]
-                5 .............................................[NO OUTPUT]
-                6 .............................................[NO OUTPUT]
-                7 .............................................[NO OUTPUT]
-                8 .............................................[NO OUTPUT]
+        skip.py 3 ....................................................[OK]
+                4 ....................................................[OK]
+                5 ....................................................[OK]
+                6 ....................................................[OK]
+                7 ....................................................[OK]
+                8 ....................................................[OK]
 
  * Skip-NestedRange:
 
     Delimiters of different sizes
-        skip-nested_range.py one ...................................[FAIL]
-                             same-head .............................[FAIL]
-                             three .................................[FAIL]
-                             two ...................................[FAIL]
+        skip-nested_range.py one .....................................[OK]
+                             same-head ...............................[OK]
+                             three ...................................[OK]
+                             two .....................................[OK]
 
  * Skip-Range:
 
     Varrying DelimiterLength (Buffer=length+3)
-        skip-range.py 1 ............................................[FAIL]
-                      2 ............................................[FAIL]
-                      3 ............................................[FAIL]
-                      4 ............................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] indentation-w-comments.py _ Mixed
-                                   \__ NewlineTerminated
-                                   \__ NotNewlineTerminated
-    [FAIL] indentation-w-tabs.py _ Back
-                               \__ Front
-                               \__ InComment
-                               \__ Potpourri
-    [FAIL] indentation.py _ CloseMultiple
-                        \__ EmptyLines
-                        \__ InAndOut
-                        \__ NoDents
-                        \__ SuppressedNewline
-    [FAIL] skip-utf8.py _ 5
-                      \__ 6
-                      \__ 7
-                      \__ 8
-    [FAIL] skip.py _ 3
-                 \__ 4
-                 \__ 5
-                 \__ 6
-                 \__ 7
-                 \__ 8
-    [FAIL] skip-nested_range.py _ one
-                              \__ same-head
-                              \__ three
-                              \__ two
-    [FAIL] skip-range.py _ 1
-                       \__ 2
-                       \__ 3
-                       \__ 4
+        skip-range.py 1 ..............................................[OK]
+                      2 ..............................................[OK]
+                      3 ..............................................[OK]
+                      4 ..............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                     Miscellaneous Support Functions/Modules                    
@@ -2094,7 +2062,7 @@ quex/output/core/TEST                                                <no date>
 -------------------------------------------------------------------------------
  * Mode Changes
         test-mode-changes.py ANSI-C ..................................[OK]
-                             ANSI-C-CG .............................[FAIL]
+                             ANSI-C-CG ...............................[OK]
                              Cpp .....................................[OK]
  * Special Cases
         challenge-with-tiny-buffer-sizes.py dtc-l2 ...................[OK]
@@ -2112,231 +2080,231 @@ quex/output/core/TEST                                                <no date>
     Backwards
         test-backward_loading.py ANSI-C ..............................[OK]
                                  ANSI-C-ASSERTS ......................[OK]
-                                 ANSI-C-CG .........................[FAIL]
+                                 ANSI-C-CG ...........................[OK]
                                  ANSI-C-PathTemplate .................[OK]
                                  ANSI-C-PlainMemory ..................[OK]
                                  Cpp .................................[OK]
                                  Cpp-ASSERTS .........................[OK]
                                  Cpp-Path ............................[OK]
-                                 Cpp-Path-CG .......................[FAIL]
+                                 Cpp-Path-CG .........................[OK]
                                  Cpp-PathUniform .....................[OK]
-                                 Cpp-PathUniform-CG ................[FAIL]
+                                 Cpp-PathUniform-CG ..................[OK]
                                  Cpp-Template ........................[OK]
-                                 Cpp-Template-CG ...................[FAIL]
+                                 Cpp-Template-CG .....................[OK]
     Forward Position Adaption
         test-position_adaption.py ANSI-C .............................[OK]
                                   ANSI-C-ASSERTS .....................[OK]
-                                  ANSI-C-CG ........................[FAIL]
+                                  ANSI-C-CG ..........................[OK]
                                   ANSI-C-PathTemplate ................[OK]
                                   ANSI-C-PlainMemory .................[OK]
                                   Cpp ................................[OK]
                                   Cpp-ASSERTS ........................[OK]
                                   Cpp-Path ...........................[OK]
-                                  Cpp-Path-CG ......................[FAIL]
+                                  Cpp-Path-CG ........................[OK]
                                   Cpp-PathUniform ....................[OK]
-                                  Cpp-PathUniform-CG ...............[FAIL]
+                                  Cpp-PathUniform-CG .................[OK]
                                   Cpp-Template .......................[OK]
-                                  Cpp-Template-CG ..................[FAIL]
+                                  Cpp-Template-CG ....................[OK]
                                   Cpp_StrangeStream ..................[OK]
     No Backward Reload -- Precondition at Border
         test-no-backward-reloading.py ANSI-C .........................[OK]
                                       ANSI-C-ASSERTS .................[OK]
-                                      ANSI-C-CG ....................[FAIL]
+                                      ANSI-C-CG ......................[OK]
                                       ANSI-C-PathTemplate ............[OK]
                                       ANSI-C-PlainMemory .............[OK]
                                       Cpp ............................[OK]
                                       Cpp-ASSERTS ....................[OK]
                                       Cpp-Path .......................[OK]
-                                      Cpp-Path-CG ..................[FAIL]
+                                      Cpp-Path-CG ....................[OK]
                                       Cpp-PathUniform ................[OK]
-                                      Cpp-PathUniform-CG ...........[FAIL]
+                                      Cpp-PathUniform-CG .............[OK]
                                       Cpp-Template ...................[OK]
-                                      Cpp-Template-CG ..............[FAIL]
+                                      Cpp-Template-CG ................[OK]
                                       Cpp_StrangeStream ..............[OK]
 
  * CONTINUE:
 
     Reentry analysis without return from function
         test-continue-without-return.py ANSI-C .......................[OK]
-                                        ANSI-C-CG ..................[FAIL]
+                                        ANSI-C-CG ....................[OK]
                                         ANSI-C-PathTemplate ..........[OK]
                                         ANSI-C-PlainMemory ...........[OK]
                                         Cpp ..........................[OK]
                                         Cpp-Path .....................[OK]
-                                        Cpp-Path-CG ................[FAIL]
+                                        Cpp-Path-CG ..................[OK]
                                         Cpp-PathUniform ..............[OK]
-                                        Cpp-PathUniform-CG .........[FAIL]
+                                        Cpp-PathUniform-CG ...........[OK]
                                         Cpp-Template .................[OK]
-                                        Cpp-Template-CG ............[FAIL]
+                                        Cpp-Template-CG ..............[OK]
                                         Cpp_StrangeStream ............[OK]
 
  * Post Conditions:
 
     Part 2
         test-post-conditions-2.py ANSI-C .............................[OK]
-                                  ANSI-C-CG ........................[FAIL]
+                                  ANSI-C-CG ..........................[OK]
                                   ANSI-C-PathTemplate ................[OK]
                                   ANSI-C-PlainMemory .................[OK]
                                   Cpp ................................[OK]
                                   Cpp-Path ...........................[OK]
-                                  Cpp-Path-CG ......................[FAIL]
+                                  Cpp-Path-CG ........................[OK]
                                   Cpp-PathUniform ....................[OK]
-                                  Cpp-PathUniform-CG ...............[FAIL]
+                                  Cpp-PathUniform-CG .................[OK]
                                   Cpp-Template .......................[OK]
-                                  Cpp-Template-CG ..................[FAIL]
+                                  Cpp-Template-CG ....................[OK]
                                   Cpp_StrangeStream ..................[OK]
     Part I
         test-post-conditions.py ANSI-C ...............................[OK]
-                                ANSI-C-CG ..........................[FAIL]
+                                ANSI-C-CG ............................[OK]
                                 Cpp ..................................[OK]
     Part III
         test-post-conditions-3.py ANSI-C .............................[OK]
-                                  ANSI-C-CG ........................[FAIL]
+                                  ANSI-C-CG ..........................[OK]
                                   Cpp ................................[OK]
 
  * Pre Conditions:
 
     Multiple Identical Pre-Conditions
         test-pre-conditions-3.py ANSI-C ..............................[OK]
-                                 ANSI-C-CG .........................[FAIL]
+                                 ANSI-C-CG ...........................[OK]
                                  ANSI-C-PathTemplate .................[OK]
                                  ANSI-C-PlainMemory ..................[OK]
                                  Cpp .................................[OK]
                                  Cpp-Path ............................[OK]
-                                 Cpp-Path-CG .......................[FAIL]
+                                 Cpp-Path-CG .........................[OK]
                                  Cpp-PathUniform .....................[OK]
-                                 Cpp-PathUniform-CG ................[FAIL]
+                                 Cpp-PathUniform-CG ..................[OK]
                                  Cpp-Template ........................[OK]
-                                 Cpp-Template-CG ...................[FAIL]
+                                 Cpp-Template-CG .....................[OK]
                                  Cpp_StrangeStream ...................[OK]
     Part 2
         test-pre-conditions-2.py ANSI-C ..............................[OK]
-                                 ANSI-C-CG .........................[FAIL]
+                                 ANSI-C-CG ...........................[OK]
                                  ANSI-C-PathTemplate .................[OK]
                                  ANSI-C-PlainMemory ..................[OK]
                                  Cpp .................................[OK]
                                  Cpp-Path ............................[OK]
-                                 Cpp-Path-CG .......................[FAIL]
+                                 Cpp-Path-CG .........................[OK]
                                  Cpp-PathUniform .....................[OK]
-                                 Cpp-PathUniform-CG ................[FAIL]
+                                 Cpp-PathUniform-CG ..................[OK]
                                  Cpp-Template ........................[OK]
-                                 Cpp-Template-CG ...................[FAIL]
+                                 Cpp-Template-CG .....................[OK]
                                  Cpp_StrangeStream ...................[OK]
 
  * Pre- and Post- Conditions:
 
     Simple
         test-pre-post-condition.py ANSI-C ............................[OK]
-                                   ANSI-C-CG .......................[FAIL]
+                                   ANSI-C-CG .........................[OK]
                                    ANSI-C-PathTemplate ...............[OK]
                                    ANSI-C-PlainMemory ................[OK]
                                    Cpp ...............................[OK]
                                    Cpp-Path ..........................[OK]
-                                   Cpp-Path-CG .....................[FAIL]
+                                   Cpp-Path-CG .......................[OK]
                                    Cpp-PathUniform ...................[OK]
-                                   Cpp-PathUniform-CG ..............[FAIL]
+                                   Cpp-PathUniform-CG ................[OK]
                                    Cpp-Template ......................[OK]
-                                   Cpp-Template-CG .................[FAIL]
+                                   Cpp-Template-CG ...................[OK]
                                    Cpp_StrangeStream .................[OK]
 
  * Pre-conditions:
 
     The forth test
         test-pre-conditions-4.py ANSI-C ..............................[OK]
-                                 Cpp-Path-CG .......................[FAIL]
+                                 Cpp-Path-CG .........................[OK]
                                  Cpp-Template ........................[OK]
 
  * Pseudo Ambgiguous Post Condition:
 
     Part I
         test-pseudo_ambiguous_post_conditions.py ANSI-C ..............[OK]
-                                                 ANSI-C-CG .........[FAIL]
+                                                 ANSI-C-CG ...........[OK]
                                                  ANSI-C-PathTemplate .[OK]
                                                  ANSI-C-PlainMemory ..[OK]
                                                  Cpp .................[OK]
                                                  Cpp-Path ............[OK]
-                                                 Cpp-Path-CG .......[FAIL]
+                                                 Cpp-Path-CG .........[OK]
                                                  Cpp-Template ........[OK]
-                                                 Cpp-Template-CG ...[FAIL]
+                                                 Cpp-Template-CG .....[OK]
                                                  Cpp_StrangeStream ...[OK]
     Part II
         test-pseudo_ambiguous_post_conditions-2.py ANSI-C ............[OK]
-                                                   ANSI-C-CG .......[FAIL]
+                                                   ANSI-C-CG .........[OK]
                                                    ANSI-C-PathTemplate [OK]
                                                    ANSI-C-PlainMemory [OK]
                                                    Cpp ...............[OK]
                                                    Cpp-Path ..........[OK]
-                                                   Cpp-Path-CG .....[FAIL]
+                                                   Cpp-Path-CG .......[OK]
                                                    Cpp-Template ......[OK]
-                                                   Cpp-Template-CG .[FAIL]
+                                                   Cpp-Template-CG ...[OK]
                                                    Cpp_StrangeStream .[OK]
 
  * Simple:
 
     Begin of Line (BOL), End of Line (EOL)
         test-bol-eol.py ANSI-C .......................................[OK]
-                        ANSI-C-CG ..................................[FAIL]
+                        ANSI-C-CG ....................................[OK]
                         ANSI-C-PathTemplate ..........................[OK]
                         ANSI-C-PlainMemory ...........................[OK]
                         Cpp ..........................................[OK]
                         Cpp-Path .....................................[OK]
-                        Cpp-Path-CG ................................[FAIL]
+                        Cpp-Path-CG ..................................[OK]
                         Cpp-PathUniform ..............................[OK]
-                        Cpp-PathUniform-CG .........................[FAIL]
+                        Cpp-PathUniform-CG ...........................[OK]
                         Cpp-Template .................................[OK]
-                        Cpp-Template-CG ............................[FAIL]
+                        Cpp-Template-CG ..............................[OK]
                         Cpp_StrangeStream ............................[OK]
     Keywords 'for', 'forest', 'forester', and 'formidable'
         test-simple-5.py ANSI-C ......................................[OK]
-                         ANSI-C-CG .................................[FAIL]
+                         ANSI-C-CG ...................................[OK]
                          ANSI-C-PathTemplate .........................[OK]
                          ANSI-C-PlainMemory ..........................[OK]
                          Cpp .........................................[OK]
                          Cpp-Path ....................................[OK]
-                         Cpp-Path-CG ...............................[FAIL]
+                         Cpp-Path-CG .................................[OK]
                          Cpp-Template ................................[OK]
-                         Cpp-Template-CG ...........................[FAIL]
+                         Cpp-Template-CG .............................[OK]
                          Cpp_StrangeStream ...........................[OK]
     Maximum Length Match
         test-simple-2.py ANSI-C ......................................[OK]
-                         ANSI-C-CG .................................[FAIL]
+                         ANSI-C-CG ...................................[OK]
                          ANSI-C-PathTemplate .........................[OK]
                          ANSI-C-PlainMemory ..........................[OK]
                          Cpp .........................................[OK]
                          Cpp-Path ....................................[OK]
-                         Cpp-Path-CG ...............................[FAIL]
+                         Cpp-Path-CG .................................[OK]
                          Cpp-PathUniform .............................[OK]
-                         Cpp-PathUniform-CG ........................[FAIL]
+                         Cpp-PathUniform-CG ..........................[OK]
                          Cpp-Template ................................[OK]
-                         Cpp-Template-CG ...........................[FAIL]
+                         Cpp-Template-CG .............................[OK]
                          Cpp_StrangeStream ...........................[OK]
     Reload Init State
         test-continue-without-return-2.py ANSI-C .....................[OK]
-                                          ANSI-C-CG ................[FAIL]
+                                          ANSI-C-CG ..................[OK]
                                           Cpp ........................[OK]
     Reload Init State
         test-pre-conditions.py ANSI-C ................................[OK]
-                               ANSI-C-CG ...........................[FAIL]
+                               ANSI-C-CG .............................[OK]
                                Cpp ...................................[OK]
     Reload Init State
         test-simple-3.py ANSI-C ......................................[OK]
-                         ANSI-C-CG .................................[FAIL]
+                         ANSI-C-CG ...................................[OK]
                          Cpp .........................................[OK]
     Reload Init State
         test-simple-6.py ANSI-C ......................................[OK]
                          Cpp-Template ................................[OK]
     Tiny Expressions
         test-simple.py ANSI-C ........................................[OK]
-                       ANSI-C-CG ...................................[FAIL]
+                       ANSI-C-CG .....................................[OK]
                        ANSI-C-PathTemplate ...........................[OK]
                        ANSI-C-PlainMemory ............................[OK]
                        Cpp ...........................................[OK]
                        Cpp-Path ......................................[OK]
-                       Cpp-Path-CG .................................[FAIL]
+                       Cpp-Path-CG ...................................[OK]
                        Cpp-PathUniform ...............................[OK]
-                       Cpp-PathUniform-CG ..........................[FAIL]
+                       Cpp-PathUniform-CG ............................[OK]
                        Cpp-Template ..................................[OK]
-                       Cpp-Template-CG .............................[FAIL]
+                       Cpp-Template-CG ...............................[OK]
                        Cpp_StrangeStream .............................[OK]
 
  * Single DFA_State:
@@ -2348,71 +2316,10 @@ quex/output/core/TEST                                                <no date>
                                          B-UTF8 ......................[OK]
                                          C ...........................[OK]
                                          C-UTF8 ......................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-mode-changes.py _ ANSI-C-CG
-    [FAIL] test-backward_loading.py _ ANSI-C-CG
-                                  \__ Cpp-Path-CG
-                                  \__ Cpp-PathUniform-CG
-                                  \__ Cpp-Template-CG
-    [FAIL] test-position_adaption.py _ ANSI-C-CG
-                                   \__ Cpp-Path-CG
-                                   \__ Cpp-PathUniform-CG
-                                   \__ Cpp-Template-CG
-    [FAIL] test-no-backward-reloading.py _ ANSI-C-CG
-                                       \__ Cpp-Path-CG
-                                       \__ Cpp-PathUniform-CG
-                                       \__ Cpp-Template-CG
-    [FAIL] test-continue-without-return.py _ ANSI-C-CG
-                                         \__ Cpp-Path-CG
-                                         \__ Cpp-PathUniform-CG
-                                         \__ Cpp-Template-CG
-    [FAIL] test-post-conditions-2.py _ ANSI-C-CG
-                                   \__ Cpp-Path-CG
-                                   \__ Cpp-PathUniform-CG
-                                   \__ Cpp-Template-CG
-    [FAIL] test-post-conditions.py _ ANSI-C-CG
-    [FAIL] test-post-conditions-3.py _ ANSI-C-CG
-    [FAIL] test-pre-conditions-3.py _ ANSI-C-CG
-                                  \__ Cpp-Path-CG
-                                  \__ Cpp-PathUniform-CG
-                                  \__ Cpp-Template-CG
-    [FAIL] test-pre-conditions-2.py _ ANSI-C-CG
-                                  \__ Cpp-Path-CG
-                                  \__ Cpp-PathUniform-CG
-                                  \__ Cpp-Template-CG
-    [FAIL] test-pre-post-condition.py _ ANSI-C-CG
-                                    \__ Cpp-Path-CG
-                                    \__ Cpp-PathUniform-CG
-                                    \__ Cpp-Template-CG
-    [FAIL] test-pre-conditions-4.py _ Cpp-Path-CG
-    [FAIL] test-pseudo_ambiguous_post_conditions.py _ ANSI-C-CG
-                                                  \__ Cpp-Path-CG
-                                                  \__ Cpp-Template-CG
-    [FAIL] test-pseudo_ambiguous_post_conditions-2.py _ ANSI-C-CG
-                                                    \__ Cpp-Path-CG
-                                                    \__ Cpp-Template-CG
-    [FAIL] test-bol-eol.py _ ANSI-C-CG
-                         \__ Cpp-Path-CG
-                         \__ Cpp-PathUniform-CG
-                         \__ Cpp-Template-CG
-    [FAIL] test-simple-5.py _ ANSI-C-CG
-                          \__ Cpp-Path-CG
-                          \__ Cpp-Template-CG
-    [FAIL] test-simple-2.py _ ANSI-C-CG
-                          \__ Cpp-Path-CG
-                          \__ Cpp-PathUniform-CG
-                          \__ Cpp-Template-CG
-    [FAIL] test-continue-without-return-2.py _ ANSI-C-CG
-    [FAIL] test-pre-conditions.py _ ANSI-C-CG
-    [FAIL] test-simple-3.py _ ANSI-C-CG
-    [FAIL] test-simple.py _ ANSI-C-CG
-                        \__ Cpp-Path-CG
-                        \__ Cpp-PathUniform-CG
-                        \__ Cpp-Template-CG
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -2506,21 +2413,15 @@ quex/code_base/buffer/bytes/TEST                                     <no date>
 quex/code_base/extra/accumulator/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Accumulator
-        accumulator.exe Character ...........................[MAKE FAILED]
-                        Mix .................................[MAKE FAILED]
-                        N-Character .........................[MAKE FAILED]
-                        N-String ............................[MAKE FAILED]
-                        String ..............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] accumulator.exe _ Character
-                         \__ Mix
-                         \__ N-Character
-                         \__ N-String
-                         \__ String
+        accumulator.exe Character ....................................[OK]
+                        Mix ..........................................[OK]
+                        N-Character ..................................[OK]
+                        N-String .....................................[OK]
+                        String .......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -3492,7 +3393,7 @@ SUMMARY:
     Fails: N:  Verdict: Directory:                                                    
 
         8  238   [FAIL] TEST                                                          
-        5  56    [FAIL] demo/C/TEST                                                   
+        4  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
@@ -3522,7 +3423,7 @@ SUMMARY:
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-        5  5     [FAIL] ............../extra/accumulator/TEST                         
+           5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            10      [OK] ............../lexeme_converter/TEST                          
            3       [OK] ............../token/TEST                                     
@@ -3530,7 +3431,7 @@ SUMMARY:
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
            27      [OK] .............................../template/TEST                 
-       30  38    [FAIL] .........../loop/TEST                                         
+           38      [OK] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
         1  17    [FAIL] .........../operations/TEST                                   
            51      [OK] .........../state_machine/TEST                                
@@ -3546,17 +3447,17 @@ SUMMARY:
            58      [OK] ..../input/TEST                                               
            2       [OK] ........../files/TEST                                         
            27      [OK] ........../regular_expression/TEST                            
-       60  205   [FAIL] ..../output/core/TEST                                         
+           205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
            33      [OK] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  ____   ____            
-    |  ___|_ _(_) |___     / ||___ \ |___ \     __  __
-    | |_ / _` | | / __|    | |  __) |  __) |    \ \/ /
-    |  _| (_| | | \__ \    | | / __/  / __/      >  < 
-    |_|  \__,_|_|_|___/    |_||_____||_____|    /_/\_\
+     _____     _ _          ____    __             
+    |  ___|_ _(_) |___     |___ \  / /_      __  __
+    | |_ / _` | | / __|      __) || '_ \     \ \/ /
+    |  _| (_| | | \__ \     / __/ | (_) |     >  < 
+    |_|  \__,_|_|_|___/    |_____| \___/     /_/\_\
                                                                    (1701 tests)
 
 ===============================================================================

@@ -124,9 +124,8 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
                                                  CounterPrintF   = CounterPrintF)
 
     result = language_defines + result
-    if Language == "Cpp": test_analyzer_dir = "test_cpp"
-    else:                 test_analyzer_dir = "test_c"
-    result = result.replace("$$TEST_ANALYZER_DIR$$", test_analyzer_dir)
+    result = result.replace("$$TEST_ANALYZER_DIR$$",    test_analyzer_dir(Language))
+    result = result.replace("$$COMPUTED_GOTOS_CHECK$$", computed_gotos_check_str())
     return result
 
 def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=1024, 
@@ -166,9 +165,8 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
                                                  DoorIdOnSkipRangeOpenF=True, 
                                                  CounterPrintF=CounterPrintF) 
     result = language_defines + result
-    if Language == "Cpp": test_analyzer_dir = "test_cpp"
-    else:                 test_analyzer_dir = "test_c"
-    result = result.replace("$$TEST_ANALYZER_DIR$$", test_analyzer_dir)
+    result = result.replace("$$TEST_ANALYZER_DIR$$",    test_analyzer_dir(Language))
+    result = result.replace("$$COMPUTED_GOTOS_CHECK$$", computed_gotos_check_str())
     return result
 
 def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSequence, 
@@ -227,9 +225,8 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
                                                  DoorIdOnSkipRangeOpenF=True, 
                                                  CounterPrintF="short") 
     result = language_defines + result
-    if Language == "Cpp": test_analyzer_dir = "test_cpp"
-    else:                 test_analyzer_dir = "test_c"
-    result = result.replace("$$TEST_ANALYZER_DIR$$", test_analyzer_dir)
+    result = result.replace("$$TEST_ANALYZER_DIR$$",    test_analyzer_dir(Language))
+    result = result.replace("$$COMPUTED_GOTOS_CHECK$$", computed_gotos_check_str())
     return result
 
 def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
@@ -285,11 +282,10 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
     on_indentation_txt = indentation_handler.do(AuxMode(), ["M", "M2"]).replace("$on_indentation", "QUEX_NAME(M_on_indentation)")
 
     Setup.analyzer_class_name = "TestAnalyzer"
-    if Language == "Cpp": test_analyzer_dir = "test_cpp"
-    else:                 test_analyzer_dir = "test_c"
-    result = adapt.do(main_txt + on_indentation_txt, test_analyzer_dir)
+    result = adapt.do(main_txt + on_indentation_txt, test_analyzer_dir(Language))
     result = language_defines + result
-    result = result.replace("$$TEST_ANALYZER_DIR$$", test_analyzer_dir)
+    result = result.replace("$$TEST_ANALYZER_DIR$$",    test_analyzer_dir(Language))
+    result = result.replace("$$COMPUTED_GOTOS_CHECK$$", computed_gotos_check_str())
     return result
     
 
@@ -329,9 +325,7 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
     txt = txt.replace(Lng._SOURCE_REFERENCE_END(), "")
 
     Setup.analyzer_class_name = "TestAnalyzer"
-    if Language == "Cpp": test_analyzer_dir = "test_cpp"
-    else:                 test_analyzer_dir = "test_c"
-    return adapt.do(txt, test_analyzer_dir)
+    return adapt.do(txt, test_analyzer_dir(Language))
 
 def my_own_mr_unit_test_function(SourceCode, EndStr, 
                                  LocalVariableDB={}, ReloadF=False, 
@@ -457,9 +451,9 @@ $$END_STR$$
         goto $$SKIP_RANGE_OPEN$$;
         goto $$REENTRY$$;
         goto $$REENTRY2$$;
-#       if ! defined(QUEX_OPTION_COMPUTED_GOTOS)
-        QUEX_GOTO_STATE(0);
-#       endif
+$$<not-computed-gotos>-------------
+        goto QUEX_LABEL_STATE_ROUTER;
+$$-----------------------------
         /* Avoid unused variable error */
         (void)target_state_else_index;
         (void)target_state_index;

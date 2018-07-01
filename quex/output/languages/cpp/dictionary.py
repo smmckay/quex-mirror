@@ -728,7 +728,7 @@ class Language(dict):
                + "#   endif\n"
 
     def ADRESS_LABEL_REFERENCE(self, Adr):
-        if Setup.computed_gotos_f: return "&&_##%i" % Adr
+        if Setup.computed_gotos_f: return "&&_%i" % Adr
         else:                      return "%i" % Adr
 
     @typed(DoorId=DoorID)

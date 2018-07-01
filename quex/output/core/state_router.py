@@ -10,15 +10,14 @@ def do(StateRouterInfoList, dial_db):
     """
     # NOTE: Do not use 'IfDoorIdReferencedCode' because the state router may 
     #       possibly not be tagged as 'gotoed', event if it is used.
-    if   Setup.computed_gotos_f:  code = []
-    elif not StateRouterInfoList: code = []
-    else:                         code = __get_code(StateRouterInfoList)
-
     result = [ 
-        "    __quex_assert_no_passage();\n"       \
+        "    __quex_assert_no_passage();\n",
+        "    %s /* prevent unused label */\n" % Lng.GOTO(DoorID.global_state_router(dial_db), dial_db),
         "%s\n" % Lng.LABEL(DoorID.global_state_router(dial_db), dial_db) 
     ]
-    result.extend(code)
+
+    if not  Setup.computed_gotos_f and StateRouterInfoList:
+        result.extend(__get_code(StateRouterInfoList))
     return result
 
 def __get_code(StateRouterInfoList):

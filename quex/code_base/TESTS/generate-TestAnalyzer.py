@@ -97,21 +97,30 @@ def append_variable_definitions(FileName):
     fh.write("bool UserMementoPack_UnitTest_return_value = true;\n")
     fh.close()
 
-if sys.argv[1] == "C++":
-    output_dir = "test_cpp"
+if "computed-gotos" in sys.argv:
+    dir_suffix = "_cg"
+    Setup.computed_gotos_f = True
+else:
+    dir_suffix = ""
+
+if "C++" in sys.argv:
+    output_dir = "test_cpp%s" % dir_suffix
     mode_db = code("C++")
     # os.system("cp test_cpp/TestAnalyzer Debug_TestAnalyzer")
-    add_engine_stuff(mode_db, "test_cpp/TestAnalyzer", TokenClassImplementationF=True)
-    os.rename("test_cpp/TestAnalyzer.cpp", "test_cpp/TestAnalyzer-dummy.cpp")
-    append_variable_definitions("test_cpp/TestAnalyzer-dummy.cpp")
+    add_engine_stuff(mode_db, "%s/TestAnalyzer" % output_dir, TokenClassImplementationF=True)
+    os.rename("%s/TestAnalyzer.cpp" % output_dir, 
+              "%s/TestAnalyzer-dummy.cpp" % output_dir)
+    append_variable_definitions("%s/TestAnalyzer-dummy.cpp" % output_dir)
 
-elif sys.argv[1] == "C":
-    output_dir = "test_c"
+elif "C" in sys.argv:
+    output_dir = "test_c%s" % dir_suffix
     mode_db = code("C")
-    add_engine_stuff(mode_db, "test_c/TestAnalyzer.h",
+    add_engine_stuff(mode_db, "%s/TestAnalyzer.h" % output_dir,
                      TokenClassImplementationF=True)
-    os.rename("test_c/TestAnalyzer.c", "test_c/TestAnalyzer-dummy.c")
-    append_variable_definitions("test_c/TestAnalyzer-dummy.c")
+    os.rename("%s/TestAnalyzer.c" % output_dir, 
+              "%s/TestAnalyzer-dummy.c" % output_dir)
+    append_variable_definitions("%s/TestAnalyzer-dummy.c" % output_dir)
 
 else:
     print "pass 'C' or C++' as first command line argument"
+

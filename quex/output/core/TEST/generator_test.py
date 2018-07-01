@@ -143,16 +143,14 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
     Setup.buffer_setup("", 1, "unicode")
 
     CompileOptionStr = ""
-    computed_goto_f  = False
+    Setup.computed_gotos_f  = False
     FullLanguage     = Language
     if Language.find("StrangeStream") != -1:
         CompileOptionStr += " -DQUEX_OPTION_STRANGE_ISTREAM_IMPLEMENTATION_EXT "
 
     if Language.find("-CG") != -1:
         Language = Language.replace("-CG", "")
-        Setup.computed_goto_f = True
-        CompileOptionStr += " -DQUEX_OPTION_COMPUTED_GOTOS_EXT "
-        computed_goto_f   = True
+        Setup.computed_gotos_f = True
 
     if Language == "Cpp-Template":
         Language = "Cpp"
@@ -201,7 +199,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
         QuexBufferSize = len(test_str) + 2
 
     test_program = create_main_function(Language, test_str, QuexBufferSize, 
-                                        ComputedGotoF=computed_goto_f)
+                                        ComputedGotoF=Setup.computed_gotos_f)
 
     state_machine_code = create_state_machine_function(PatternActionPairList, 
                                                        adapted_dict, 
@@ -222,24 +220,19 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
 
     source_code =   create_common_declarations(Language, QuexBufferSize, 
                                                QuexBufferFallbackN, BufferLimitCode, 
-                                               ComputedGotoF=computed_goto_f) \
+                                               ComputedGotoF=Setup.computed_gotos_f) \
                   + state_machine_code \
                   + test_program
 
     # Verify, that Templates and Pathwalkers are really generated
     __verify_code_generation(FullLanguage, source_code)
 
-    if Language.startswith("Cpp"): test_analyzer_dir = "test_cpp"
-    else:                          test_analyzer_dir = "test_c"
-    source_code = "%s%s" % (language_defines, adapt.do(source_code, test_analyzer_dir))
+    source_code = "%s%s" % (language_defines, adapt.do(source_code, test_analyzer_dir(Language)))
 
     source_code = source_code.replace("$$TEST_ANALYZER_DIR$$",
-                                      test_analyzer_dir)
-    if computed_goto_f:   
-        check_str = "{ TestAnalyzer_goto_label_t fails_if_not_computed_goto_labels = (void*)0; (void)fails_if_not_computed_goto_labels; }"
-    else:
-        check_str = "{ long fails_if_computed_goto_labels = (TestAnalyzer_goto_label_t)0; (void)fails_if_computed_goto_labels; }" 
-    source_code = source_code.replace("$$COMPUTED_GOTOS_CHECK$$", check_str)
+                                      test_analyzer_dir(Language))
+    
+    source_code = source_code.replace("$$COMPUTED_GOTOS_CHECK$$", computed_gotos_check_str())
     
 
     compile_and_run(Language, source_code, AssertsActionvation_str, CompileOptionStr, 
@@ -390,8 +383,6 @@ def create_common_declarations(Language, QuexBufferSize,
     txt += "#define QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION_EXT\n" 
     txt += "#define QUEX_OPTION_UNIT_TEST_EXT\n" 
 
-    if Language == "Cpp": test_analyzer_dir = "test_cpp"
-    else:                 test_analyzer_dir = "test_c"
     txt += test_program_common_declarations.replace("$$BUFFER_FALLBACK_N$$", 
                                                     repr(QuexBufferFallbackN)) 
     txt  = txt.replace("$$BUFFER_SIZE$$", "%s" % QuexBufferSize)
@@ -767,6 +758,17 @@ test_program_db = {
     }\n""",
 }
 
+def test_analyzer_dir(Language):
+    if Language.find("Cpp") != -1: result = "test_cpp"
+    else:                          result = "test_c"
+    if Setup.computed_gotos_f: result += "_cg"
+    return result
+
+def computed_gotos_check_str():
+    if Setup.computed_gotos_f:   
+        return "{ TestAnalyzer_goto_label_t fails_if_not_computed_goto_labels = (void*)0; (void)fails_if_not_computed_goto_labels; }"
+    else:
+        return "{ long fails_if_computed_goto_labels = (TestAnalyzer_goto_label_t)0; (void)fails_if_computed_goto_labels; }" 
 
 def __verify_code_generation(FullLanguage, SourceCode):
     def check_occurence(String, Code):
