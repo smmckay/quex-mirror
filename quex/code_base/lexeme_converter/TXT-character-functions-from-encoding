@@ -1,4 +1,4 @@
-QUEX_INLINE void
+void
 QUEX_NAME(lexeme_to_utf32_character)(const QUEX_TYPE_LEXATOM** input_pp, uint32_t** output_pp)
 {
     uint32_t          unicode;
@@ -8,7 +8,7 @@ QUEX_NAME(lexeme_to_utf32_character)(const QUEX_TYPE_LEXATOM** input_pp, uint32_
 $$BODY_UTF32$$
 }
 
-QUEX_INLINE void
+void
 QUEX_NAME(lexeme_to_utf16_character)(const QUEX_TYPE_LEXATOM** input_pp, uint16_t** output_pp)
 {
     uint32_t          unicode;
@@ -18,7 +18,7 @@ QUEX_NAME(lexeme_to_utf16_character)(const QUEX_TYPE_LEXATOM** input_pp, uint16_
 $$BODY_UTF16$$
 }
 
-QUEX_INLINE void
+void
 QUEX_NAME(lexeme_to_utf8_character)(const QUEX_TYPE_LEXATOM**  input_pp, uint8_t** output_pp)
 {
     uint32_t          unicode;

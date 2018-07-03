@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <../../../../code_base/TESTS/minimum-definitions.h>
-#define  __quex_assert assert
 #include "Conv/converter-from-lexeme"
 #include "Conv/converter-from-lexeme.i"
+#include <test_cpp/lib/quex/MemoryManager.i>
 
 #define __MY_STRING(X)   # X
 #define MY_STRING(X)     __MY_STRING(X)

@@ -14,9 +14,9 @@ main(int argc, char** argv)
     Simple_Token*        token_p = NULL;
     size_t               number_of_tokens = 0;
     const char*          FileName = (argc == 1) ? "example.txt" : argv[1];
-#   if   defined(QUEX_OPTION_CONVERTER_ICONV)
+#   if   defined(QUEX_OPTION_CONVERTER_ICONV_EXT)
     Simple_Converter*    converter = Simple_Converter_IConv_new("UTF8", NULL);
-#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+#   elif defined(QUEX_OPTION_CONVERTER_ICU_EXT)
     Simple_Converter*    converter = Simple_Converter_ICU_new("UTF8", NULL);
 #   else
 #   define               converter NULL

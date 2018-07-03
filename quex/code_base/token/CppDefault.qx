@@ -138,7 +138,6 @@ inline std::ostream&
 operator<<(std::ostream& ostr, const $$TOKEN_CLASS$$& Tok)
 { ostr << Tok.get_string(); return ostr; }
 $$NAMESPACE_CLOSE$$
-#include <$$OUTPUT_DIR$$/converter-from-lexeme.i>
 #include <$$OUTPUT_DIR$$/lib/lexeme_base.i>
    }
 }

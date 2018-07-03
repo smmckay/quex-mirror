@@ -6,6 +6,7 @@
 #include "test_c/lib/buffer/Buffer.i"
 #include "test_c/lib/quex/MemoryManager"
 #include "test_c/lib/quex/MemoryManager.i"
+#include "test_c/converter-from-lexeme.i"
 #include <hwut_unit.h>
 
 typedef struct {

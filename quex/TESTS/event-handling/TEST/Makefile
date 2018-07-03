@@ -20,16 +20,17 @@ endif
 COMPILER = gcc
 
 LD0 := $(COMPILER) -Wno-deprecated -Wall -Werror -ggdb \
-	 -I./ -I. -IEHLexer/lib \
-	 -DQUEX_OPTION_DEBUG_SHOW_MODES_EXT        \
-	 -DQUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK_EXT  \
-	 # -DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER_EXT
+	 -I./ -I. -IEHLexer/lib                            \
+	 -DQUEX_OPTION_DEBUG_SHOW_MODES_EXT                \
+	 -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT
 	 # -fsanitize=address 
 
-LD := $(LD0) 
+LD := $(LD0) \
+	  -DQUEX_OPTION_ASSERTS_EXT   
 
-LD4     := $(LD) -DQUEX_SETTING_BUFFER_SIZE_EXT=4
-LD65536 := $(LD) -DQUEX_SETTING_BUFFER_SIZE_EXT=65536
+LD4     := $(LD) -DQUEX_SETTING_BUFFER_SIZE_EXT=4 \
+	             -DQUEX_OPTION_ASSERTS_EXT   
+LD65536 := $(LD0) -DQUEX_SETTING_BUFFER_SIZE_EXT=65536
 
 QUEX  := $(QUEX_PATH)/quex-exe.py --suppress 3 --language C --token-id-prefix TK_ --no-count-lines --no-count-columns
 QUEX2 := $(QUEX_PATH)/quex-exe.py --suppress 3 --language C --token-id-prefix TK_ --no-count-lines
@@ -55,9 +56,9 @@ on_bad_lexatom.exe: on_bad_lexatom.qx
 	$(LD65536) -DQUEX_OPTION_ASSERTS_DISABLED_EXT ./lexer.c EHLexer/EHLexer.c -o $@ 
 
 on_buffer_overflow.exe: on_buffer_overflow.qx 
-	$(QUEX) -i $< -o EHLexer --odir ut 
+	$(QUEX) -i $< -o EHLexer --odir ut --emm
 	$(LD4) ./lexer.c ut/EHLexer.c -o $@ -Iut/lib -I../../../code_base/TESTS\
-	       -DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER_EXT \
+	       -DQUEX_OPTION_UT_MEMORY_MANAGER \
 		   -DUNIT_TEST_IN_UT
 
 on_buffer_before_change.exe: on_buffer_before_change.qx 

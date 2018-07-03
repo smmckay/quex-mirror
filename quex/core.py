@@ -1,4 +1,3 @@
-import quex.output.languages.cpp.source_package  as     source_package
 #
 import quex.input.files.core                     as     quex_file_parser
 #                                                
@@ -14,6 +13,7 @@ import quex.output.token.core                    as     token_class
 import quex.output.token.id_generator            as     token_id_maker
 import quex.output.analyzer.modes                as     mode_classes
 import quex.output.languages.graphviz.core       as     grapviz_generator
+import quex.output.languages.cpp.source_package  as     source_package
 
 import quex.token_db   as     token_db
 from   quex.blackboard import setup as Setup, \
@@ -39,6 +39,7 @@ def _generate(mode_db):
         content_table = lexeme_converter.do()
         do_converter_info(content_table[0][1], content_table[1][1])
         _write_all(content_table)
+        source_package.do(Setup.output_directory, ["quex"])
         return
 
     content_table = _get_token_class()

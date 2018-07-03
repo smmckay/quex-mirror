@@ -24,16 +24,13 @@ MYFLAGS = \
 
 CC = g++ $(MYFLAGS) -DQUEX_INLINE=inline
 
-post-categorizer-%.exe: post-categorizer-%.cpp ut
+post-categorizer-%.exe: post-categorizer-%.cpp 
 	$(CC) -I./. $< post-categorizer-common.cpp -o $@ 
 
-post-categorizer-%.E: post-categorizer-%.cpp ut
+post-categorizer-%.E: post-categorizer-%.cpp 
 	$(CC) -I./. $< post-categorizer-common.cpp -E > $@ 
 
-ut:
-	quex --co -o TestAnalyzer --odir ut --encoding unicode --bet uint8_t --csn lexeme --debug-exception
-
 clean: 
-	rm -rf $(PROGRAMS) ut *.o *.E
+	rm -rf $(PROGRAMS) *.o *.E
 
 

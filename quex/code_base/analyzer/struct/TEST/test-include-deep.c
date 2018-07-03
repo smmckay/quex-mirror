@@ -12,7 +12,7 @@
 #include "test_c/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
 #include "test_c/lib/buffer/lexatoms/converter/icu/Converter_ICU"
 #include "test_c/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
-#include "MemoryManager_UnitTest.i"
+#include "test_c/lib/quex/MemoryManager_UnitTest.i"
 #include <hwut_unit.h>
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;

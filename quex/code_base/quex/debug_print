@@ -173,7 +173,7 @@ $$INC: buffer/Buffer_print$$
 #    define __quex_optional_statistics(StateIdx) /* empty */
 #endif
 
-#ifdef     QUEX_OPTION_DEBUG_SHOW_EXT
+#ifdef     QUEX_OPTION_DEBUG_SHOW_MODES_EXT
 #    define __quex_debug_show_mode_transition(me, ModeP)                                       \
         if( me->__current_mode_p != 0x0 ) {                                                    \
             __QUEX_STD_fprintf(stderr, "| Mode change from %s\n", me->__current_mode_p->name); \

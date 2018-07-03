@@ -16,11 +16,11 @@
 #define  QUEX_OPTION_PLAIN_C_EXT
 
 #include "minimum-definitions.h"
-#include "MemoryManager_UnitTest.i"
 #include "test_c/lib/definitions"
 #include "test_c/lib/buffer/Buffer"
-#include "test_c/lib/quex/MemoryManager"
 #include "test_c/lib/buffer/Buffer.i"
+#include "test_c/lib/quex/MemoryManager"
+#include "test_c/lib/quex/MemoryManager_UnitTest.i"
 
 #include <hwut_unit.h>
 

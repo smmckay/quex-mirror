@@ -128,7 +128,7 @@ dir_db = {
     "quex/": [
         "standard_functions", "debug_print", "enums", "operations",
         "bom",            "bom.i",  
-        "MemoryManager",  "MemoryManager.i"
+        "MemoryManager",  "MemoryManager.i", "MemoryManager_UnitTest.i"
     ],
     "quex/compatibility/": [
         "iconv-argument-types.h",

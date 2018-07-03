@@ -10,7 +10,7 @@ $$INC: buffer/lexatoms/LexatomLoader$$
 $$INC: buffer/asserts$$
 $$INC: buffer/asserts.i$$
 $$INC: buffer/Buffer_print$$
-
+$$INC: ../converter-from-lexeme$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

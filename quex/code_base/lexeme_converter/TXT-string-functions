@@ -1,4 +1,4 @@
-QUEX_INLINE void
+void
 QUEX_NAME(lexeme_nnzt_to_$$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM**      source_pp, 
                                             const QUEX_TYPE_LEXATOM*        SourceEnd, 
                                             $$DRAIN_CODE_UNIT_TYPE$$**      drain_pp,  
@@ -29,7 +29,7 @@ QUEX_NAME(lexeme_nnzt_to_$$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM**      sour
     *source_pp = source_iterator;
 }
 
-QUEX_INLINE $$DRAIN_CODE_UNIT_TYPE$$*
+$$DRAIN_CODE_UNIT_TYPE$$*
 QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM*         SourceBegin, 
                                         $$DRAIN_CODE_UNIT_TYPE$$*        drain_p,  
                                         const $$DRAIN_CODE_UNIT_TYPE$$*  DrainEnd)
@@ -72,7 +72,7 @@ QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM*         SourceB
 }
 
 $$<Cpp && std-lib>-------------------------------------------------------------
-QUEX_INLINE std::basic_string<$$DRAIN_CODE_UNIT_TYPE$$>
+std::basic_string<$$DRAIN_CODE_UNIT_TYPE$$>
 QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source)
 {
     /* Save iteration over string with existing character converters.

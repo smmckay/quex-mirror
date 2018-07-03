@@ -1,4 +1,4 @@
-QUEX_INLINE void
+void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
 QUEX_NAME(lexeme_to_utf8_character)(const QUEX_TYPE_LEXATOM** input_pp, 
                                     uint8_t**                 output_pp)
@@ -24,7 +24,7 @@ QUEX_NAME(lexeme_to_utf8_character)(const QUEX_TYPE_LEXATOM** input_pp,
     }
 }
 
-QUEX_INLINE void
+void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
 QUEX_NAME(lexeme_to_utf16_character)(const QUEX_TYPE_LEXATOM** input_pp, 
                                      uint16_t**                output_pp)
@@ -77,7 +77,7 @@ QUEX_NAME(lexeme_to_utf16_character)(const QUEX_TYPE_LEXATOM** input_pp,
     *input_pp = iterator;
 }
 
-QUEX_INLINE void
+void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
 QUEX_NAME(lexeme_to_utf32_character)(const QUEX_TYPE_LEXATOM** input_pp, 
                                      uint32_t**                output_pp)

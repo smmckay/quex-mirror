@@ -103,6 +103,12 @@ if "computed-gotos" in sys.argv:
 else:
     dir_suffix = ""
 
+if "emm" in sys.argv:
+    dir_suffix += "_emm"
+    Setup.memory_management_extern_f = True
+else:
+    Setup.memory_management_extern_f = False
+
 if "C++" in sys.argv:
     output_dir = "test_cpp%s" % dir_suffix
     mode_db = code("C++")

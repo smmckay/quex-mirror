@@ -3,8 +3,10 @@ chmod a+rx TEST/valgrindi.sh
 pushd quex/code_base/TESTS/
 rm -rf test_c test_cpp 
 python generate-TestAnalyzer.py C
+python generate-TestAnalyzer.py C   emm
 python generate-TestAnalyzer.py C   computed-gotos
 python generate-TestAnalyzer.py C++ 
+python generate-TestAnalyzer.py C++ emm
 python generate-TestAnalyzer.py C++ computed-gotos
 popd
 

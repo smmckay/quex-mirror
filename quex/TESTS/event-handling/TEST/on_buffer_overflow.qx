@@ -4,7 +4,6 @@ token { X; }
 
 header {
 #include "ut/lib/quex/MemoryManager"
-#define  __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_I
 }
 
 mode X :

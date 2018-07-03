@@ -159,7 +159,6 @@ extern const char*       $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* 
             return buffer;
         }
 
-#include <$$OUTPUT_DIR$$/converter-from-lexeme.i>
 #include <$$OUTPUT_DIR$$/lib/lexeme_base.i>
    }
 }

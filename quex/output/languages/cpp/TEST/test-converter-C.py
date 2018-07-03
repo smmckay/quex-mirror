@@ -33,7 +33,8 @@ def test(CodecName):
                            "-D__QUEX_CODEC=%s " % CodecName,
                            "-DQUEX_OPTION_LITTLE_ENDIAN_EXT"])
 
-    compile_str = "g++ -ggdb -I./ %s converter-tester.cpp -o converter-tester" % define_str
+    compile_str = "g++ -ggdb -I./ -I../../../../code_base/TESTS/ -I%s converter-tester.cpp -o converter-tester" % define_str
+
     print "##", compile_str
     os.system(compile_str)
 

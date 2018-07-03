@@ -17,7 +17,7 @@ TEST                                                                 <no date>
     3022603 0.49.2 Using external buffer with Quex lexer
         bug-3022603.sh ...............................................[OK]
     3025173 0.49.2 Custom Token struct for quex
-        bug-3025173.sh .............................................[FAIL]
+        bug-3025173.sh ...............................................[OK]
     3032877 -b, --buffer-element-size enhancement
         feature-3032877.sh codec .....................................[OK]
                            normal ....................................[OK]
@@ -135,7 +135,7 @@ TEST                                                                 <no date>
                          shell_comments ..............................[OK]
     2161098 0.32.1 Range Skipper Line Number Counter
         bug-2161098.sh c_comments ....................................[OK]
-                       funny_comments ................................[OK]
+                       funny_comments ..........................[TIME_OUT]
                        shell_comments ................................[OK]
     2209142 0.33.1-pre-release: RE not suited for comment elimination
         bug-2209142.sh error .........................................[OK]
@@ -166,7 +166,7 @@ TEST                                                                 <no date>
     3157923 Memory Leak by Components
         bug-3157923.sh ...............................................[OK]
     3513568 0.62.2 Memory Leak when using ICU
-        bug-3513568.sh .............................................[FAIL]
+        bug-3513568.sh ...............................................[OK]
 
  * inhenriksen:
 
@@ -238,7 +238,7 @@ TEST                                                                 <no date>
  * nazim-can-bedir:
 
     2896732 0.46.2 - Memory leak
-        bug-2896732.sh .............................................[FAIL]
+        bug-2896732.sh ...............................................[OK]
 
  * nobody:
 
@@ -424,7 +424,7 @@ TEST                                                                 <no date>
                        case-4 ........................................[OK]
                        case-5 ........................................[OK]
     2798423 0.39.4 token_type default __copy function does not compile
-        bug-2798423.sh .............................................[FAIL]
+        bug-2798423.sh ...............................................[OK]
     2799244 0.39.5 attempts to call unimplemented token set() function
         bug-2799244.sh error .........................................[OK]
                        good-1 ........................................[OK]
@@ -496,11 +496,8 @@ TEST                                                                 <no date>
 -------------------------------------------------------------------------------
     [FAIL] bug-293.sh _ bad
                     \__ good
-    [FAIL] bug-3025173.sh
     [FAIL] bug-3486388.sh
-    [FAIL] bug-3513568.sh
-    [FAIL] bug-2896732.sh
-    [FAIL] bug-2798423.sh
+    [FAIL] bug-2161098.sh _ funny_comments
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -1125,15 +1122,15 @@ quex/TESTS/event-handling/TEST                                       <no date>
  * Errors:
 
     'on_buffer_overflow'
-        on_buffer_overflow.qx empty ................................[FAIL]
-                              trigger ..............................[FAIL]
+        on_buffer_overflow.qx empty ..................................[OK]
+                              trigger ................................[OK]
     Customized 'on_skip_range_open' event
         on_skip_range_open-customized.qx customized ..................[OK]
     Default 'on_skip_range_open' event
         on_skip_range_open.qx default ................................[OK]
     on_bad_lexatom
-        on_bad_lexatom.qx bad-utf16 ................................[FAIL]
-                          good-utf16 ...............................[FAIL]
+        on_bad_lexatom.qx bad-utf16 ..................................[OK]
+                          good-utf16 .................................[OK]
 
  * Indentation:
 
@@ -1162,15 +1159,10 @@ quex/TESTS/event-handling/TEST                                       <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       error ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] on_buffer_overflow.qx _ empty
-                               \__ trigger
-    [FAIL] on_bad_lexatom.qx _ bad-utf16
-                           \__ good-utf16
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -1448,7 +1440,7 @@ quex/TESTS/source-package/TEST                                       <no date>
                   codec-utf16 ........................................[OK]
                   codec-utf8 .........................................[OK]
                   customized-token-class .............................[OK]
-                  manual-token-class ...............................[FAIL]
+                  manual-token-class .................................[OK]
                   no-counter .........................................[OK]
                   plain ..............................................[OK]
     C++
@@ -1456,16 +1448,13 @@ quex/TESTS/source-package/TEST                                       <no date>
                     codec-utf16 ......................................[OK]
                     codec-utf8 .......................................[OK]
                     customized-token-class ...........................[OK]
-                    manual-token-class .............................[FAIL]
+                    manual-token-class ...............................[OK]
                     no-counter .......................................[OK]
                     plain ............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-c.sh _ manual-token-class
-    [FAIL] test-cpp.sh _ manual-token-class
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   Token Class                                  
@@ -1478,13 +1467,11 @@ quex/TESTS/token-class/TEST                                          <no date>
                 no-namespace .........................................[OK]
                 token ................................................[OK]
  * With token policy 'queue'.
-        simple-queue.exe ....................................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] simple-queue.exe
+        simple-queue.exe .............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                    Token Passing Policies (Queue vs. Single)                   
@@ -1495,16 +1482,13 @@ quex/TESTS/token-policies/TEST                                       <no date>
  * Token Policy 'queue':
 
     Pseudo Analysis
-        queue.exe ...........................................[MAKE FAILED]
+        queue.exe ....................................................[OK]
     Real Analysis
-        queue-real.exe ......................................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] queue.exe
-    [FAIL] queue-real.exe
+        queue-real.exe ...............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  FSM Code Base                                 
@@ -1524,7 +1508,7 @@ quex/code_base/analyzer/TEST                                         <no date>
 quex/code_base/lexeme_converter/TEST                                 <no date>
 -------------------------------------------------------------------------------
  * Test of complete character set on base converters (utf8, utf16, utf32)
-        characters ...................................................[OK]
+        characters ..........................................[MAKE FAILED]
  * utf16 to utf8, utf16, and utf32
         from-utf16 Drain_ToSmall .....................................[OK]
                    Source_Empty ......................................[OK]
@@ -1537,10 +1521,12 @@ quex/code_base/lexeme_converter/TEST                                 <no date>
         from-utf8 Drain_ToSmall ......................................[OK]
                   Source_Empty .......................................[OK]
                   Source_TestFile ....................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] characters
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -2423,15 +2409,21 @@ quex/code_base/buffer/bytes/TEST                                     <no date>
 quex/code_base/extra/accumulator/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Accumulator
-        accumulator.exe Character ....................................[OK]
-                        Mix ..........................................[OK]
-                        N-Character ..................................[OK]
-                        N-String .....................................[OK]
-                        String .......................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        accumulator.exe Character ...........................[MAKE FAILED]
+                        Mix .................................[MAKE FAILED]
+                        N-Character .........................[MAKE FAILED]
+                        N-String ............................[MAKE FAILED]
+                        String ..............................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] accumulator.exe _ Character
+                         \__ Mix
+                         \__ N-Character
+                         \__ N-String
+                         \__ String
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -2747,7 +2739,7 @@ quex/engine/state_machine/transformation/TEST                        <no date>
 quex/output/languages/cpp/TEST                                       <no date>
 -------------------------------------------------------------------------------
  * Files for Packaging vs. Files in Code Base
-        package-file-db.py ...........................................[OK]
+        package-file-db.py .........................................[FAIL]
  * Name and Namespace Replacement
         name_replacement.py C ........................................[OK]
                             C++ ......................................[OK]
@@ -2779,10 +2771,10 @@ quex/output/languages/cpp/TEST                                       <no date>
  * Converter:
 
     Determine UTF-8 Range Map for Codec
-        test-converter-C.py cp037 ..................................[FAIL]
-                            cp1256 .................................[FAIL]
-                            cp737 ..................................[FAIL]
-                            cp866 ..................................[FAIL]
+        test-converter-C.py cp037 ....................................[OK]
+                            cp1256 ...................................[OK]
+                            cp737 ....................................[OK]
+                            cp866 ....................................[OK]
     Determine UTF-8 Range Map for Codec
         test-converter-x.py 1 ........................................[OK]
                             2 ........................................[OK]
@@ -2797,10 +2789,7 @@ quex/output/languages/cpp/TEST                                       <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] test-converter-C.py _ cp037
-                             \__ cp1256
-                             \__ cp737
-                             \__ cp866
+    [FAIL] package-file-db.py
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3407,7 +3396,7 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        7  238   [FAIL] TEST                                                          
+        4  238   [FAIL] TEST                                                          
         4  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
@@ -3418,16 +3407,16 @@ SUMMARY:
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-        4  23    [FAIL] ........../event-handling/TEST                                
+           23      [OK] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
            32      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
-        2  14    [FAIL] ........../source-package/TEST                                
-        1  5     [FAIL] ........../token-class/TEST                                   
-        2  2     [FAIL] ........../token-policies/TEST                                
+           14      [OK] ........../source-package/TEST                                
+           5       [OK] ........../token-class/TEST                                   
+           2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TESTS/general/TEST                             
            1       [OK] ............../analyzer/TEST                                  
            11      [OK] ......................./struct/TEST                           
@@ -3438,9 +3427,9 @@ SUMMARY:
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-           5       [OK] ............../extra/accumulator/TEST                         
+        5  5     [FAIL] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
-           10      [OK] ............../lexeme_converter/TEST                          
+        1  10    [FAIL] ............../lexeme_converter/TEST                          
            3       [OK] ............../token/TEST                                     
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
@@ -3464,15 +3453,15 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
            205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        4  33    [FAIL] .........../languages/cpp/TEST                                
+        1  33    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  _____           
-    |  ___|_ _(_) |___     |___ / |___  |    __  __
-    | |_ / _` | | / __|      |_ \    / /     \ \/ /
-    |  _| (_| | | \__ \     ___) |  / /       >  < 
-    |_|  \__,_|_|_|___/    |____/  /_/       /_/\_\
+     _____     _ _          ____    ___            
+    |  ___|_ _(_) |___     |___ \  ( _ )     __  __
+    | |_ / _` | | / __|      __) | / _ \     \ \/ /
+    |  _| (_| | | \__ \     / __/ | (_) |     >  < 
+    |_|  \__,_|_|_|___/    |_____| \___/     /_/\_\
                                                                    (1701 tests)
 
 ===============================================================================
