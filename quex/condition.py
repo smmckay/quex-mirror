@@ -57,6 +57,10 @@ def do(Condition):
         return required_support_begin_of_line()
     elif Condition == "computed-gotos":
         return Setup.computed_gotos_f
+    elif Condition == "memory-management-extern":
+        return Setup.memory_management_extern_f
+    elif Condition == "unit-test":
+        return Setup.unit_test_f
     else:                                                                      
         error.log("Code generation: found unknown condition '<%s>'." % Condition)
 

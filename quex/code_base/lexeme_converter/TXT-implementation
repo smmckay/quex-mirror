@@ -30,15 +30,14 @@
  * => Thus, they are placed in the analyzer's namespace.
  *
  * 2010 (C) Frank-Rene Schaefer; 
- * ABSOLUTELY NO WARRANTY                                                    */
+ * ABSOLUTELY NO WARRANTY                                                     */
 #ifndef __QUEX_INCLUDE_GUARD__$$INCLUDE_GUARD_SUFFIX$$_I
 #define __QUEX_INCLUDE_GUARD__$$INCLUDE_GUARD_SUFFIX$$_I
 
 #include "$$CONVERTER_HEADER$$"
 
-#if ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE_EXT)
-$$INC: quex/MemoryManager$$
-#endif
+/* Only with 'std-lib': Memory manager required (see below).                  */
+$$INC: <std-lib> quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

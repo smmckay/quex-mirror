@@ -6,7 +6,9 @@
 #ifndef QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_I
 #define QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_I
 
-#ifndef QUEX_OPTION_USER_DEFINED_MEMORY_MANAGER_EXT
+$$<memory-management-extern>---------------------------------------------------
+#error "This file is not supposed to be included in the context of external memory management."
+$$-----------------------------------------------------------------------------
 
 $$INC: definitions$$
 $$INC: quex/MemoryManager$$
@@ -198,8 +200,6 @@ QUEX_NAME_LIB(strlcpy)(char* dst, const char* src, size_t siz)
 
 QUEX_NAMESPACE_QUEX_CLOSE
  
-#endif /* QUEX_OPTION_USER_DEFINED_MEMORY_MANAGER_EXT */
-
 #endif /* QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_I */
 
 

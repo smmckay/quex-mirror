@@ -14,7 +14,7 @@
 $$TYPE_DEFINITIONS$$
 
 #define QUEX_SETTING_MAX_MODE_CLASS_N    ($$MAX_MODE_CLASS_N$$)
-#define QUEX_SETTING_MODE_INITIAL_P      (&$$QUEX_SETTING_MODE_INITIAL$$)
+#define QUEX_SETTING_MODE_INITIAL_P      (&$$QUEX_SETTING_MODE_INITIAL_P$$)
 
 #if defined(QUEX_SETTING_MODE_STACK_SIZE_EXT)
 #   define QUEX_SETTING_MODE_STACK_SIZE         QUEX_SETTING_MODE_STACK_SIZE_EXT
@@ -63,19 +63,6 @@ $$TYPE_DEFINITIONS$$
 #else
 #   define QUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE                (512)
 #endif
-
-#if  defined(QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE_EXT)
-#    define QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE  QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE_EXT
-#else
-#    define QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE                               (64)
-#endif
-
-#if  defined(QUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT)
-#    define QUEX_SETTING_TRANSLATION_BUFFER_SIZE    QUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT
-#else
-#    define QUEX_SETTING_TRANSLATION_BUFFER_SIZE    ((size_t)65536)
-#endif
-
 
 /* If one mode requires indentation support, then the lexical analyser class
  * must be setup for indentation counting. The following flag is defined or

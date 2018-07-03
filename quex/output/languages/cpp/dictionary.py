@@ -423,8 +423,7 @@ class Language(dict):
         if variable.constant_f: const_str = "const "
         else:                   const_str = ""
 
-        if variable.initial_value: init_value_str = variable.init_value
-        else:                      init_value_str = ""
+        init_value_str = self._interpreted_initial_value(variable.initial_value)
 
         return "%s%s %s%s;" % (const_str, variable.type, variable.name, init_value_str)
 
@@ -1219,9 +1218,16 @@ class Language(dict):
         self.REPLACE_INDENT(txt_list)
         return get_plain_strings(txt_list, dial_db)
 
+    def _interpreted_initial_value(self, Value):
+        if Value == "<goto-label-void>": 
+            if Setup.computed_gotos_f: return "(QUEX_TYPE_GOTO_LABEL)0"
+            else:                      return "(QUEX_TYPE_GOTO_LABEL)-1"
+        else:
+            return Value
+
     def VARIABLE_DEFINITION(self, variable, LT, LN):
         variable_type = variable.variable_type
-        variable_init = variable.initial_value
+        variable_init = self._interpreted_initial_value(variable.initial_value)
         variable_name = variable.name
 
         if variable.element_n is not None: 
@@ -1264,7 +1270,6 @@ class Language(dict):
             for variable in sorted(variable_list, key=lambda v: not v.priority_f)
             if condition.do(variable.condition)
         ) + "\n"
-         
 
     def RAISE_ERROR_FLAG(self, Name):
         return "self.error_code_set_if_first(%s);\n" % Name

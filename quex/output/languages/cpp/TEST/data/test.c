@@ -7,8 +7,8 @@ Lexer_TEST_MODE_counter_on_arbitrary_lexeme(struct Lexer_tag* me, Lexer_lexatom_
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
 #   define QUEX_LABEL_STATE_ROUTER _51
     Lexer_lexatom_t    input                   = (Lexer_lexatom_t)(0x00);
-    Lexer_goto_label_t target_state_else_index = QUEX_GOTO_LABEL_VOID;
-    Lexer_goto_label_t target_state_index      = QUEX_GOTO_LABEL_VOID;
+    Lexer_goto_label_t target_state_else_index = (Lexer_goto_label_t)-1;
+    Lexer_goto_label_t target_state_index      = (Lexer_goto_label_t)-1;
     Lexer_lexatom_t*   loop_restart_p          = (Lexer_lexatom_t*)0x0;
     (void)me;
     me->counter._column_number_at_begin = me->counter._column_number_at_end;

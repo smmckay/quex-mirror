@@ -39,7 +39,7 @@ ARGUMENT_LIST: --bet UChar --encoding utf8
 typedef UChar EasyLexer_lexatom_t;
 
 _____________________________________________________________________
-ARGUMENT_LIST: --bet UChar --encoding utf8 --converter-ucs-coding-name ASCII
+ARGUMENT_LIST: --bet UChar --encoding utf8
 
 typedef UChar EasyLexer_lexatom_t;
 

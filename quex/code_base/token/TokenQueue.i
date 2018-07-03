@@ -179,16 +179,15 @@ QUEX_NAME(TokenQueue_push_text)(QUEX_NAME(TokenQueue)* me,
     QUEX_NAME(TokenQueue_push)(me, Id);
     return ownership_transferred_to_token_f;
 }
-
 $$-----------------------------------------------------------------------------
-$$<not-token-take-text>--------------------------------------------------------
 
+$$<not-token-take-text>--------------------------------------------------------
 QUEX_INLINE bool             
 QUEX_NAME(TokenQueue_push_text)(QUEX_NAME(TokenQueue)* me,
                                 QUEX_TYPE_TOKEN_ID     Id,
                                 QUEX_TYPE_LEXATOM*     BeginP,
                                 QUEX_TYPE_LEXATOM*     EndP)
-/* Push a token and set its 'text' member.                                    */
+/* Notify that this function is meaningless without 'take_text' support.      */
 {
     bool ownership_transferred_to_token_f = false;
     (void)me; (void)Id; (void)BeginP; (void)EndP;

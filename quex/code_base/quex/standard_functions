@@ -68,6 +68,6 @@ $$<C>--------------------------------------------------------------------------
 #define QUEX_INPUT_HANDLE_TYPE  /* stdio.h's */ FILE 
 $$-----------------------------------------------------------------------------
 
-#define __QUEX_STD_strlcpy(DEST, SRC, MAX) QUEX_NAME_LIB(strlcpy)((DEST), (SRC), (size_t)(MAX))
+#define __QUEX_STD_strlcpy(DEST, SRC, MAX) QUEX_GNAME_LIB(strlcpy)((DEST), (SRC), (size_t)(MAX))
 
 #endif /* QUEX_INCLUDE_GUARD__QUEX__STANDARD_FUNCTIONS */

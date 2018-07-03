@@ -270,7 +270,7 @@ PrepareAfterReload
    Registers:    TargetStateElseIndex(w),  TargetStateIndex(w), 
    Cost:         1
    C-code: {
-           target_state_index = QUEX_LABEL(0); target_state_else_index = QUEX_LABEL(1);
+           target_state_index = 0; target_state_else_index = 1;
    }
 
 QuexAssertNoPassage

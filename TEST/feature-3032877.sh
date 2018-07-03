@@ -40,7 +40,7 @@ for option in {u8,u16,u32,uint8_t,uint16_t,uint32_t,wchar_t,UChar}; do
     perform_test
 done
 
-argument_list="--bet $option $converter --converter-ucs-coding-name ASCII"
+argument_list="--bet $option $converter"
 perform_test
 
 if [[ $1 == "codec" ]]; then

@@ -5,8 +5,8 @@ from copy import copy
 candidate_db = {
 # Name                             Type(0),                         InitialValue(2),               PriorityF(3)
 "input":                          ["QUEX_TYPE_LEXATOM",             "(QUEX_TYPE_LEXATOM)(0x00)",   False],
-"target_state_index":             ["QUEX_TYPE_GOTO_LABEL",          "QUEX_GOTO_LABEL_VOID",        False],
-"target_state_else_index":        ["QUEX_TYPE_GOTO_LABEL",          "QUEX_GOTO_LABEL_VOID",        False],
+"target_state_index":             ["QUEX_TYPE_GOTO_LABEL",          "<goto-label-void>",           False],
+"target_state_else_index":        ["QUEX_TYPE_GOTO_LABEL",          "<goto-label-void>",           False],
 "last_acceptance":                ["QUEX_TYPE_ACCEPTANCE_ID",       None,                          False],
 "PositionRegisterN":              ["const size_t",                  None,                          False],
 "position":                       ["QUEX_TYPE_LEXATOM*",  None,                                    False],
@@ -17,12 +17,12 @@ candidate_db = {
 #                                 
 # (*) Path Compression
 "path_iterator":                  ["const QUEX_TYPE_LEXATOM*",       "((const QUEX_TYPE_LEXATOM*)0x0)", False],
-"path_end_state":                 ["QUEX_TYPE_GOTO_LABEL",             "QUEX_GOTO_LABEL_VOID",  False], 
-"path_walker_%i_path_%i":         ["const QUEX_TYPE_LEXATOM* const", None,                                False],
-"path_walker_%i_path_base":       ["const QUEX_TYPE_LEXATOM",        None,                                True],
-"path_walker_%i_path_%i_states":  ["const QUEX_TYPE_GOTO_LABEL* const",None,                                False],
-"path_walker_%i_state_base":      ["const QUEX_TYPE_GOTO_LABEL",       None,                                True],
-"path_walker_%i_reference":       ["const QUEX_TYPE_LEXATOM* const", None,                                False],
+"path_end_state":                 ["QUEX_TYPE_GOTO_LABEL",             "<goto-label-void>",             False], 
+"path_walker_%i_path_%i":         ["const QUEX_TYPE_LEXATOM* const", None,                              False],
+"path_walker_%i_path_base":       ["const QUEX_TYPE_LEXATOM",        None,                              True],
+"path_walker_%i_path_%i_states":  ["const QUEX_TYPE_GOTO_LABEL* const",None,                            False],
+"path_walker_%i_state_base":      ["const QUEX_TYPE_GOTO_LABEL",       None,                            True],
+"path_walker_%i_reference":       ["const QUEX_TYPE_LEXATOM* const", None,                              False],
 #
 # (*) Template Compression
 "state_key":                                    ["ptrdiff_t",                     "(ptrdiff_t)0",           False],
@@ -94,7 +94,7 @@ class VariableDB:
             return None, None
         else:
             assert type(Condition_ComputedGoto) == bool
-            return "QUEX_OPTION_COMPUTED_GOTOS", not Condition_ComputedGoto
+            return "<condition: computed gotos>", not Condition_ComputedGoto
 
     def require(self, Name, Initial=None, Index=None, Condition_ComputedGoto=None, Type=None, Condition=None):
         global candidate_db

@@ -50,8 +50,6 @@ typedef int Lexer_goto_label_t;
         me->counter._line_number_at_begin = me->counter._line_number_at_end;    \
         me->counter._column_number_at_begin = me->counter._column_number_at_end;
 
-#define QUEX_OPTION_COUNTER_COLUMN
-#define QUEX_OPTION_COUNTER_LINE
 
 void
 DEF_COUNTER_FUNCTION(struct Lexer_tag*  me, 

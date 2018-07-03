@@ -71,8 +71,7 @@ QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM*         SourceB
     return terminating_zero_p;
 }
 
-$$<Cpp>------------------------------------------------------------------------
-#if ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE_EXT)
+$$<Cpp && std-lib>-------------------------------------------------------------
 QUEX_INLINE std::basic_string<$$DRAIN_CODE_UNIT_TYPE$$>
 QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source)
 {
@@ -107,6 +106,5 @@ QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATO
     QUEX_GNAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
     return result;
 }
-#endif
 $$-----------------------------------------------------------------------------
 

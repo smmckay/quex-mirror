@@ -13,14 +13,6 @@
 #define QUEX_HASH_INIT_VALUE  5381
 #define QUEX_HASH_NEXT(H, C)  ((((H) << 5) + (H)) + (C))
 
-/* Support of computed goto */
-$$<computed-gotos>-------------------------------------------------------------
-#   define QUEX_GOTO_LABEL_VOID       (QUEX_TYPE_GOTO_LABEL)(0x0)
-$$-----------------------------------------------------------------------------
-$$<not-computed-gotos>---------------------------------------------------------
-#   define QUEX_GOTO_LABEL_VOID       (QUEX_TYPE_GOTO_LABEL)(-1)
-$$-----------------------------------------------------------------------------
-
 #define QUEX_LEXEME_TERMINATING_ZERO_SET(BUFFER)                \
      do { (BUFFER)->_lexatom_at_lexeme_start = (BUFFER)->_read_p[0]; \
           (BUFFER)->_read_p[0]               = (QUEX_TYPE_LEXATOM)0; } while(0)

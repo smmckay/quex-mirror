@@ -42,48 +42,6 @@ QUEX_NAME(Counter_resources_absent)(QUEX_NAME(Counter)* me)
     return true;
 }
 
-#if 0
-QUEX_INLINE void    
-QUEX_NAME(Counter_count)(QUEX_NAME(Counter)*        me, 
-                         const QUEX_TYPE_LEXATOM* LexemeBegin, 
-                         const QUEX_TYPE_LEXATOM* LexemeEnd)
-{
-    const QUEX_TYPE_LEXATOM* it = LexemeBegin;
-
-    __QUEX_COUNTER_SHIFT_VALUES(*me);
-
-    while( it != LexemeEnd )
-    {
-        __QUEX_COUNTER_RULES(*me, it);
-    }
-
-    QUEX_NAME(Counter_assert_consistency)(me); 
-}
-
-#   if ! defined(__QUEX_COUNTER_RULES_NEWLINE)
-#   define __QUEX_COUNTER_RULES_NEWLINE(counter, iterator) \
-           if( *iterator == (QUEX_TYPE_LEXATOM)'\n' ) {  \
-               (counter)._line_number_at_end += 1;         \
-               (counter)._column_number_at_end = 0;        \
-           }
-#   endif
-
-QUEX_INLINE void    
-QUEX_NAME(Counter_count_newlines)(QUEX_NAME(Counter)*        me, 
-                                  const QUEX_TYPE_LEXATOM* LexemeBegin, 
-                                  const QUEX_TYPE_LEXATOM* LexemeEnd)
-{
-    const QUEX_TYPE_LEXATOM* it = LexemeBegin;
-
-    __QUEX_COUNTER_SHIFT_VALUES(*me);
-
-    while( it != LexemeEnd )
-    {
-        __QUEX_COUNTER_RULES_NEWLINE(*me, it);
-    }
-    QUEX_NAME(Counter_assert_consistency)(me); 
-}
-#endif
 
 QUEX_INLINE void 
 QUEX_NAME(Counter_print_this)(QUEX_NAME(Counter)* me)

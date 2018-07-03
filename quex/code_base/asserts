@@ -18,7 +18,6 @@ $$-----------------------------------------------------------------------------
 #   ifndef  __quex_assert_no_passage
 #   define  __quex_assert_no_passage()    do { QUEX_NAME(MF_error_code_set_if_first)(&self, E_Error_DFA_DropIntoOtherState); return; } while ( 0 )
 #   endif
-#   define  __QUEX_IF_ASSERTS(EXPRESSION) EXPRESSION
 #   define  QUEX_IF_ASSERTS_poison(BEGIN, END) \
             do { \
                 if( END > BEGIN )  \
@@ -28,7 +27,6 @@ $$-----------------------------------------------------------------------------
 #else
 #   define  __quex_assert(X)              /* no assert */
 #   define  __quex_assert_no_passage()    /* no assert */
-#   define  __QUEX_IF_ASSERTS(EXPRESSION) /* empty */
 #   define  QUEX_IF_ASSERTS_poison(BEGIN, END) /* empty */
 #endif
 
