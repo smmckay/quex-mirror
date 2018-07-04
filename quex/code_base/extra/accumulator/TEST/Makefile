@@ -16,7 +16,7 @@ MYFLAGS   := -ggdb -Wall -Werror  \
 
 CC        := g++ $(MYFLAGS) -ggdb -DQUEX_INLINE=inline
 
-test_cpp/TestAnalyzer-dummy.cpp: test_cpp
+test_cpp/TestAnalyzer-dummy.cpp: # test_cpp
 	mkdir -p test_cpp
 	cp $(TESTENV)/test_cpp/TestAnalyzer* ./test_cpp
 	
@@ -36,7 +36,7 @@ accumulator.exe: accumulator.cpp test_cpp/TestAnalyzer-dummy.cpp
 
 test_cpp:
 	# python $(TESTENV)/code_base_instatiation.py test_cpp
-	quex --co -o TestAnalyzer --odir test_cpp --encoding unicode --bet char --csn lexeme
+	# quex --co -o TestAnalyzer --odir test_cpp --encoding unicode --bet char --csn lexeme
 
 clean: 
 	rm -rf *.o *.E tmp.* test_cpp $(PROGRAMS)

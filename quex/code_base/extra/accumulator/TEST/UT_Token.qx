@@ -11,7 +11,7 @@ token_type {
         column_number : size_t;
    }
    distinct {
-       text   :  std::basic_string<char>;
+       text   :  std::basic_string<QUEX_TYPE_LEXATOM>;
        number :  size_t;
    }
 
@@ -47,7 +47,7 @@ token_type {
 
    take_text {
         /* It cannot be assumed that the lexeme is zero terminated. */
-       const char* B = (const char*)Begin;
+       const QUEX_TYPE_LEXATOM* B = (const uint8_t*)Begin;
         __quex_assert(End >= Begin);
         self.text.assign(B, (size_t)(End-Begin));
 
@@ -69,7 +69,6 @@ token_type {
         operator<<(std::ostream& ostr, const $$TOKEN_CLASS$$& Tok)
         { ostr << Tok.get_string(); return ostr; }
 
-   #include "test_cpp/converter-from-lexeme.i"
    }
 }
 
