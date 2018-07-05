@@ -717,12 +717,12 @@ class Language(dict):
         return "return %s;" % Value
 
     def CALL_MODE_HAS_ENTRY_FROM(self, ModeName):
-        return   "#   ifdef QUEX_OPTION_ASSERTS_EXT\n" \
+        return   "#   ifdef QUEX_OPTION_ASSERTS\n" \
                + "    QUEX_NAME(%s).has_entry_from(FromMode);\n" % ModeName \
                + "#   endif\n"
 
     def CALL_MODE_HAS_EXIT_TO(self, ModeName):
-        return   "#   ifdef QUEX_OPTION_ASSERTS_EXT\n" \
+        return   "#   ifdef QUEX_OPTION_ASSERTS\n" \
                + "    QUEX_NAME(%s).has_exit_to(ToMode);\n" % ModeName \
                + "#   endif\n"
 

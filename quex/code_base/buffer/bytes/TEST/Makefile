@@ -10,7 +10,7 @@ FLAGS    :=  -ggdb -Wall -Werror \
 			 -DQUEX_NAMESPACE_MAIN_CLOSE='' \
 			 -DQUEX_NAMESPACE_MAIN_OPEN='' \
 			 -DQUEX_TYPE_STREAM_POSITION=long \
-			 -DQUEX_OPTION_ASSERTS_EXT \
+			 -DQUEX_OPTION_ASSERTS \
 			 -I$(HWUT_PATH)/support/C \
 			 -I$(QUEX_PATH)/quex/code_base \
 			 -I$(QUEX_PATH)/quex/code_base/TEST \

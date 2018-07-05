@@ -350,7 +350,7 @@ QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER* me,
                                size_t              BufferMemorySize,
                                QUEX_TYPE_LEXATOM*  BufferEndOfContentP /* = 0 */)
 {
-#   ifdef QUEX_OPTION_ASSERTS_EXT
+#   ifdef QUEX_OPTION_ASSERTS
     size_t               memory_size = BufferMemoryBegin ? BufferMemorySize 
                                        :                   QUEX_SETTING_BUFFER_SIZE;
     QUEX_TYPE_LEXATOM*   iterator = 0x0;
@@ -401,12 +401,12 @@ QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER* me,
 QUEX_INLINE void
 QUEX_NAME(Asserts_construct)()
 {
-#   if      defined(QUEX_OPTION_ASSERTS_EXT) \
+#   if      defined(QUEX_OPTION_ASSERTS) \
        && ! defined(QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT)
     __QUEX_STD_printf(__QUEX_MESSAGE_ASSERTS_INFO);
 #   endif
 
-#   if defined(QUEX_OPTION_ASSERTS_EXT) 
+#   if defined(QUEX_OPTION_ASSERTS) 
     if( QUEX_SETTING_BUFFER_LIMIT_CODE == QUEX_SETTING_PATH_TERMINATION_CODE ) {
         QUEX_ERROR_EXIT("Path termination code (PTC) and buffer limit code (BLC) must be different.\n");
     }

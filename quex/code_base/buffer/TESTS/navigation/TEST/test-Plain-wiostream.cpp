@@ -38,7 +38,7 @@ test(bool BinaryF, size_t BPC)
     QUEX_NAME(ByteLoader)*    byte_loader;
     QUEX_NAME(LexatomLoader*) filler;
     const size_t              MemorySize  = true ? 5 : 16;
-    QUEX_TYPE_LEXATOM_EXT         memory[MemorySize];
+    QUEX_TYPE_LEXATOM_EXT     memory[MemorySize];
 
     sh << L"Fest gemauert in der Erden\n";
     sh.seekg(0);

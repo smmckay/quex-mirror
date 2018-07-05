@@ -3,11 +3,11 @@
 #define QUEX_INCLUDE_GUARD__ASSERTS
 
 #if    ! defined(QUEX_INDICATE_CONFIGURATION_FILE_PASSED) \
-    && ! defined(QUEX_OPTION_ASSERTS_EXT)
+    && ! defined(QUEX_OPTION_ASSERTS)
 #   error "Asserts included before configuration file. However, configuration file CONTROLS asserts!"
 #endif
 
-#ifdef QUEX_OPTION_ASSERTS_EXT
+#ifdef QUEX_OPTION_ASSERTS
 $$<Cpp>--------------------------------------------------------------------------
 #   include <cassert>
 $$-----------------------------------------------------------------------------

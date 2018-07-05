@@ -231,7 +231,7 @@ QUEX_NAME(Buffer_init_analyzis)(QUEX_NAME(Buffer)*   me)
         /* ReadP                          */ me->content_begin(me),
         /* LexatomStartP                  */ me->content_begin(me),
         /* LexatomAtLexemeStart           */ (QUEX_TYPE_LEXATOM)0,
-        /* LexatomBeforeLexemeStart       */ QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC,
+        /* LexatomBeforeLexemeStart       */ QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_ENCODING,
         /* BackupLexatomIndexOfReadP      */ (QUEX_TYPE_STREAM_POSITION)-1);
     }
 }

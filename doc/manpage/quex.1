@@ -811,44 +811,7 @@ By default, the buffer element type is determined by the buffer element size.
 .RE
 
 
-.TP
-.BI "--endian little|big|<system>"
-
-.RS
-There are two types of byte ordering for integer number depending on the CPU. For creating a lexical analyzer engine on the same CPU type as quex runs then this option is not required, since quex finds this out by its own. If you create an engine for a different platform, you must know its byte ordering scheme, i.e. little endian or big endian, and specify it after 
-.BR "--endian" .
-
-
-According to the setting of this option one of the three macros is defined in the header files: 
-
-
-.Bl -bullet
- * QUEX_OPTION_ENDIAN_SYSTEM 
- * QUEX_OPTION_ENDIAN_LITTLE 
- * QUEX_OPTION_ENDIAN_BIG 
-
-.El
-Those macros are of primary use for character code converters. The converters need to know what the analyser engines number representation is. However, the user might want to use them for his own special purposes (using 
-.B "#ifdef QUEX_OPTION_ENDIAN_BIG ... #endif"
-). 
-
-
-.RE
-
-
 The implementation of customized converters is supported by the following options. 
-
-.TP
-.BI "--converter-ucs-coding-name, --cucn name"
-
-.RS
-Determines what string is passed to the converter so that it converters a encoding into Unicode. In general, this is not necessary. But, if a unknown user defined type is specified via '--buffer-element-type' then this option must be specified. 
-
-By default it is defined based on the buffer element type. 
-
-
-.RE
-
 
 .TP
 .BI "--converter-only, --co "

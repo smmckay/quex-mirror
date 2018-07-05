@@ -19,9 +19,9 @@ int
 main(int argc, char** argv) 
 {        
     Lexer_Token*   token;
-#   if   defined(QUEX_OPTION_CONVERTER_ICONV)
+#   if   defined(QUEX_DEMO_OPTION_CONVERTER_ICONV)
     Lexer_Converter*    converter = Lexer_Converter_IConv_new("UTF8", NULL);
-#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+#   elif defined(QUEX_DEMO_OPTION_CONVERTER_ICU)
     Lexer_Converter*    converter = Lexer_Converter_ICU_new("UTF8", NULL);
 #   else
 #   define              converter NULL

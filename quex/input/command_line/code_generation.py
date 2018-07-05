@@ -14,7 +14,6 @@ from   quex.constants  import E_Compression
 
 from   operator import itemgetter
 import re
-import sys
 
 
 def prepare(command_line, argv):

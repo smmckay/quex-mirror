@@ -6,7 +6,7 @@
 
 $$INC: buffer/Buffer$$
 
-#if defined(QUEX_OPTION_ASSERTS_EXT)
+#if defined(QUEX_OPTION_ASSERTS)
 
 #define __QUEX_LEXEME_VALID_BASIC_CHECK()                        \
     if( buffer->_read_p < buffer->begin(buffer) ) {              \

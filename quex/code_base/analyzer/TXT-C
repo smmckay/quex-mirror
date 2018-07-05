@@ -64,7 +64,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Memento_
 
     const struct QUEX_NAME(Mode_tag)*   __current_mode_p; 
     QUEX_NAME(AnalyzerFunctionP)        current_analyzer_function;
-#   if defined(QUEX_OPTION_ASSERTS_EXT)
+#   if defined(QUEX_OPTION_ASSERTS)
     QUEX_NAME(AnalyzerFunctionP)        DEBUG_analyzer_function_at_entry;
 #   endif
     $$<count>       QUEX_NAME(Counter)  counter;$$
@@ -89,7 +89,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT $$LEXER_CLASS_NAME
     const QUEX_NAME(Mode)*          __current_mode_p; 
     /* Shortcut to current mode's analyzer function.                          */
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
-#   if defined(QUEX_OPTION_ASSERTS_EXT)
+#   if defined(QUEX_OPTION_ASSERTS)
     /* Backup of analyzer's function pointer => mode change detection.        */
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
 #   endif

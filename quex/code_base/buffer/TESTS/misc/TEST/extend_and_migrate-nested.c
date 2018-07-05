@@ -27,11 +27,12 @@
  *          not repeated here.
  *
  * (C) Frank-Rene Schaefer.                                                   */
-/* #define  QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE */
+/* #define  QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE_EXT */
 
 #include <common.h>
 #include "test_c/lib/quex/MemoryManager_UnitTest.i"
 #include "test_c/lib/buffer/Buffer"
+#include "test_c/converter-from-lexeme.i"
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 

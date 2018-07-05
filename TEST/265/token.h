@@ -50,7 +50,7 @@ extern uint32_t  Common_LexemeNullObject;
        extern const char* 
        Common_Token_pretty_char_text(struct Common_Token_tag* me, char*   buffer, size_t  BufferSize); 
 
-#      if ! defined(QUEX_OPTION_WCHAR_T_DISABLED)
+#      if ! defined(QUEX_OPTION_WCHAR_T_DISABLED_EXT)
        extern const wchar_t* 
        Common_Token_pretty_wchar_text(struct Common_Token_tag* me, wchar_t*  buffer, size_t BufferSize); 
 #      endif

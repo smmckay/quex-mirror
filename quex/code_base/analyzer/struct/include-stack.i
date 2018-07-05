@@ -243,7 +243,7 @@ QUEX_NAME(Memento_construct)(QUEX_TYPE_MEMENTO* memento,
     memento->_parent_memento           = me->_parent_memento;
     memento->__current_mode_p          = me->__current_mode_p; 
     memento->current_analyzer_function = me->current_analyzer_function;
-#   if defined(QUEX_OPTION_ASSERTS_EXT)
+#   if defined(QUEX_OPTION_ASSERTS)
     memento->DEBUG_analyzer_function_at_entry = me->DEBUG_analyzer_function_at_entry;
 #   endif
     $$<count>       memento->counter                       = me->counter;$$ /* Plain copy is ok.  */ 
@@ -310,7 +310,7 @@ QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
 
     me->__current_mode_p                 = memento->__current_mode_p; 
     me->current_analyzer_function        = memento->current_analyzer_function;
-#   if defined(QUEX_OPTION_ASSERTS_EXT)
+#   if defined(QUEX_OPTION_ASSERTS)
     me->DEBUG_analyzer_function_at_entry = memento->DEBUG_analyzer_function_at_entry;
 #   endif
     $$<count>       me->counter                       = memento->counter;$$

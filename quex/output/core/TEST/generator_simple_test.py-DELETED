@@ -7,7 +7,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={},
        Language="ANSI-C-PlainMemory", 
        QuexBufferSize=15, # DO NOT CHANGE!
        QuexBufferFallbackN=-1, ShowBufferLoadsF=False,
-       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS_EXT",
+       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS",
        TokenQueueF=False):
 
     setup_buffer(BufferLimitCode)

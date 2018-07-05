@@ -139,7 +139,7 @@ QUEX_INLINE void    QUEX_NAME(RawBuffer_init)(QUEX_NAME(RawBuffer)* me,
                                               uint8_t* Begin, size_t SizeInBytes);
 QUEX_INLINE void    QUEX_NAME(RawBuffer_print_this)(QUEX_NAME(RawBuffer)*  me);
 
-#ifdef QUEX_OPTION_ASSERTS_EXT
+#ifdef QUEX_OPTION_ASSERTS
 #   define QUEX_ASSERT_RAW_BUFFER(BI)                         \
     __quex_assert(0 != BI);                                         \
     __quex_assert((BI)->next_to_convert_p >= (BI)->begin);     \

@@ -163,7 +163,7 @@ QUEX_NAME(LexatomLoader_load)(QUEX_NAME(LexatomLoader)*  me,
      *                                                                       */
     loaded_n = (ptrdiff_t)me->derived.load_lexatoms(me, LoadP, (size_t)LoadN,
                                                     end_of_stream_f, encoding_error_f);
-#   ifdef QUEX_OPTION_ASSERTS_EXT
+#   ifdef QUEX_OPTION_ASSERTS
     {
         const QUEX_TYPE_LEXATOM* p;
         /* The buffer limit code is not to appear inside the loaded content. */

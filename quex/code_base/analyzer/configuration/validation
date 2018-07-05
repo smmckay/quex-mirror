@@ -6,7 +6,7 @@
  *                                                                    
  * (C) 2009-2018 Frank-Rene Schaefer                                          */
 
-#if defined(QUEX_OPTION_ASSERTS_EXT) && defined (QUEX_OPTION_ASSERTS_DISABLED_EXT)
+#if defined(QUEX_OPTION_ASSERTS) && defined (QUEX_OPTION_ASSERTS_DISABLED_EXT)
 #   error "Ambiguous configuration options."
 #endif
 

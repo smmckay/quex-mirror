@@ -1,7 +1,6 @@
 #ifndef QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__ICONV_ARGUMENT_TYPES_H
 #define QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__ICONV_ARGUMENT_TYPES_H
 
-
 $$<Cpp>------------------------------------------------------------------------
 /* NOTE: At the time of this writing 'iconv' is delivered on different 
  *       systems with different definitions for the second argument. The 

@@ -6,7 +6,6 @@
 $$INC: buffer/lexatoms/LexatomLoader$$
 $$INC: buffer/lexatoms/LexatomLoader_Converter$$
 $$INC: quex/MemoryManager$$
-$$INC: quex/compatibility/iconv-argument-types.h$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

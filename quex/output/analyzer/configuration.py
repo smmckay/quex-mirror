@@ -5,32 +5,17 @@ import quex.output.analyzer.adapt       as     adapt
 from   quex.blackboard  import setup as Setup, Lng
 import quex.token_db    as     token_db
 import quex.blackboard  as     blackboard
-from   quex.constants   import E_IncidenceIDs
 from   quex.DEFINITIONS import QUEX_VERSION
 
 import time
 
 def do(Mode_PrepPrepDB):
-    BeginOfLineSupportF = blackboard.required_support_begin_of_line()
-
     LexerClassName = Setup.analyzer_class_name
 
     txt = Lng.open_template(Lng.analyzer_configuration_file())
 
-    # -- check if exit/entry handlers have to be active
-    entry_handler_active_f = any(
-        mode.incidence_db.has_key(E_IncidenceIDs.MODE_ENTRY)
-        for mode in Mode_PrepPrepDB.values()
-    )
-    exit_handler_active_f = any(
-        mode.incidence_db.has_key(E_IncidenceIDs.MODE_EXIT)
-        for mode in Mode_PrepPrepDB.values()
-    )
-
     # token_repetition_token_id_list empty => token_repetition_support_txt = ""
     token_descr = token_db.token_type_definition
-    token_repetition_support_f =    token_db.support_repetition() 
-    token_take_text_support_f  =    token_db.support_take_text() 
 
     token_repetition_support_txt = (" %s " % Lng.OR).join(
         Lng.EQUAL("TokenID", token_id_str)
@@ -42,7 +27,6 @@ def do(Mode_PrepPrepDB):
     else:
         analyzer_derived_class_name = Setup.analyzer_class_name
 
-    codec_name              = Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name)
     include_guard_extension = Lng.INCLUDE_GUARD(Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space) 
                                                 + "__" + Setup.analyzer_class_name)
 

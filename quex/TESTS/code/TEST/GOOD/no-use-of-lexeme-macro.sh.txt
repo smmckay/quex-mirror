@@ -1,5 +1,5 @@
 The Lexeme macro does some safety checks when compiled with
-QUEX_OPTION_ASSERTS_EXT. These checks are sometimes nonsense in
+QUEX_OPTION_ASSERTS. These checks are sometimes nonsense in
 generated code. This test checks that no code is generated
 that referes to the Lexeme macros.
 
@@ -12,8 +12,8 @@ Following lines are suppossed to be accepted:
 ./engine/state_machine/TEST_help/walk.py:17:    __print(__get_step_list(Dfa, Lexeme))
 ./engine/state_machine/TEST_help/walk.py:74:def __get_step_list(Dfa, Lexeme):
 ./engine/state_machine/TEST_help/walk.py:77:    for input_position, lexatom in enumerate(Lexeme):
-./input/command_line/validation.py:87:            error.log("Lexeme-converter-only-mode requires explicit definition of encoding.\n"
-./input/command_line/validation.py:90:            error.log("Lexeme-converter-only-mode requires explicit definition of the code unit type.\n"
+./input/command_line/validation.py:82:            error.log("Lexeme-converter-only-mode requires explicit definition of encoding.\n"
+./input/command_line/validation.py:85:            error.log("Lexeme-converter-only-mode requires explicit definition of the code unit type.\n"
 ./input/files/code_fragment.py:22:lexeme_re = re.compile(r"^Lexeme\b")
 ./input/files/code_fragment.py:254:        argument_list = ["Lexeme"]
 ./input/files/code_fragment.py:282:        error.log("Assignment of token member with 'Lexeme' directly being involved. The\n" + 
@@ -28,16 +28,16 @@ Following lines are suppossed to be accepted:
 ./input/files/code_fragment.py:338:                      "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
 ./input/files/mode.py:309:                            "L": "pass Lexeme to token constructor.",
 ./input/files/mode.py:357:                            "L": "pass Lexeme to token constructor.",
-./output/analyzer/modes.py:100:    const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
-./output/analyzer/modes.py:104:    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
-./output/analyzer/modes.py:263:                                      ("QUEX_TYPE_LEXATOM*",    "Lexeme")]],
-./output/analyzer/modes.py:99:    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
-./output/counter/run_time.py:106:            "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
-./output/counter/run_time.py:109:            "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
-./output/counter/run_time.py:110:            "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
-./output/counter/run_time.py:113:            "    %s = LexemeBegin;\n" % IteratorName
-./output/counter/run_time.py:133:           + "     __quex_assert(%s == LexemeEnd);\n" % IteratorName \
-./output/counter/run_time.py:87:        + "%s(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)\n" % FunctionName \
-./output/languages/cpp/dictionary.py:414:        return "%s((QUEX_TYPE_ANALYZER*)me, LexemeBegin, LexemeEnd);\n" % self.DEFAULT_COUNTER_FUNCTION_NAME(ModeName)
+./output/analyzer/modes.py:100:    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
+./output/analyzer/modes.py:101:    const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
+./output/analyzer/modes.py:105:    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
+./output/analyzer/modes.py:267:                                      ("QUEX_TYPE_LEXATOM*",    "Lexeme")]],
+./output/counter/run_time.py:105:            "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
+./output/counter/run_time.py:108:            "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
+./output/counter/run_time.py:109:            "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
+./output/counter/run_time.py:112:            "    %s = LexemeBegin;\n" % IteratorName
+./output/counter/run_time.py:132:           + "     __quex_assert(%s == LexemeEnd);\n" % IteratorName \
+./output/counter/run_time.py:86:        + "%s(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)\n" % FunctionName \
+./output/languages/cpp/dictionary.py:413:        return "%s((QUEX_TYPE_ANALYZER*)me, LexemeBegin, LexemeEnd);\n" % self.DEFAULT_COUNTER_FUNCTION_NAME(ModeName)
 ./output/languages/cpp/templates.py:116:    /* Lexeme setup: 
 ~/prj/quex/trunk/quex/TESTS/code/TEST

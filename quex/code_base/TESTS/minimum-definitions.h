@@ -1,7 +1,7 @@
 #include <assert.h>
 #include "test_c/lib/quex/compatibility/stdint.h"
-#ifndef   QUEX_OPTION_ASSERTS_EXT
-#  define QUEX_OPTION_ASSERTS_EXT
+#ifndef   QUEX_OPTION_ASSERTS
+#  define QUEX_OPTION_ASSERTS
 #endif
 
 #ifdef __cplusplus
@@ -35,7 +35,7 @@ typedef long TestAnalyzer_stream_position_t;
 #endif
 
 #define QUEX_SETTING_BUFFER_LIMIT_CODE                 0
-#define QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC 0x0A
+#define QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_ENCODING 0x0A
 
 #ifdef    QUEX_SETTING_BUFFER_SIZE_MIN_EXT
 #  define QUEX_SETTING_BUFFER_SIZE_MIN     QUEX_SETTING_BUFFER_SIZE_MIN_EXT

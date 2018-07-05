@@ -209,6 +209,10 @@ for Napier (positional location) numbers.
 
 The web project page at quex.org, or quex.sf.net provides futher information and documentation.
     
+.SH COMPILE OPTIONS
+
+$$COMPILE_OPTIONS$$
+
 .SH ENVIRONMENT VARIABLES
 
 The environment variable QUEX_PATH must point to the place where quex is installed.

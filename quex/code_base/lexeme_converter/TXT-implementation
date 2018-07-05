@@ -36,7 +36,7 @@ QUEX_NAME(lexeme_to_char_character)(const QUEX_TYPE_LEXATOM** source_pp,
     }
 }
 
-#if ! defined(QUEX_OPTION_WCHAR_T_DISABLED)
+#if ! defined(QUEX_OPTION_WCHAR_T_DISABLED_EXT)
 void
 QUEX_NAME(lexeme_to_wchar_t_character)(const QUEX_TYPE_LEXATOM** source_pp, 
                                        wchar_t**                 drain_pp)  

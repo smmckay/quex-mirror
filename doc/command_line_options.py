@@ -31,7 +31,7 @@ from quex.input.command_line.doc_generator import SectionHeader, Option, Item, \
                                                   VisitorSphinx, VisitorManPage
 from quex.DEFINITIONS import QUEX_VERSION
 
-content = [
+command_line_option_doc = [
 SectionHeader("Code Generation"),
 """
 This section lists the command line options to control code generation.
@@ -437,42 +437,9 @@ Option("__buffer_lexatom_type", "type name",
      By default, the buffer element type is determined by the buffer element 
      size.
      """),
-
-Option("buffer_byte_order", "little|big|<system>",
-       """
-        There are two types of byte ordering for integer number depending on the CPU.
-        For creating a lexical analyzer engine on the same CPU type as quex runs
-        then this option is not required, since quex finds this out by its own.
-        If you create an engine for a different platform, you must know its byte ordering
-        scheme, i.e. little endian or big endian, and specify it after \\v{--endian}. 
-        """,
-        """
-        According to the setting of this option one of the three macros is defined 
-        in the header files:
-        """,
-        List(
-        "QUEX_OPTION_ENDIAN_SYSTEM",
-        "QUEX_OPTION_ENDIAN_LITTLE",
-        "QUEX_OPTION_ENDIAN_BIG",
-        ),
-        """
-        Those macros are of primary use for character code converters. The
-        converters need to know what the analyser engines number representation
-        is. However, the user might want to use them for his own special
-        purposes (using \\v{#ifdef QUEX_OPTION_ENDIAN_BIG ... #endif}).
-        """),
 """
 The implementation of customized converters is supported by the following options.
 """,
-Option("converter_ucs_coding_name", "name", 
-     """
-     Determines what string is passed to the converter so that it converters
-     a encoding into Unicode. In general, this is not necessary. But, if a 
-     unknown user defined type is specified via '--buffer-element-type' then
-     this option must be specified.
-
-     By default it is defined based on the buffer element type.
-     """),
 Option("converter_only_f", None,
       """
       Only generates lexeme converter code for converters towards UTF8, UTF16,
@@ -860,12 +827,56 @@ to work on the internal Quex core.
 """
 ]
 
+command_line_option_doc = [
+SectionHeader("Control Macros"),
+"""
+This section lists the command line options to control code generation. The 
+following macros may be defined in order to controll the assertion behavior. 
+By default, all asserts are armed. That is, the tiniest deviation from desired
+behavior is detected and causes a program abortion. Lexers with armed asserts
+write a note to the standard output, so that the user is aware of it.
+
+For performance reasons and for reasons of predictability, assers may be
+deactivated, or at least the message that tells about them. This happens 
+by means of the following two macros.
+""",
+CMacro("QUEX_OPTION_ASSERTS_DISABLED_EXT", 
+       """
+       Disables Quex-related assertions and operations to support the detection
+       of usage against design.
+       """),
+CMacro("QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT", 
+       """
+       Disables the lexer's initial note that tells about the armed assertions.
+       """),
+"""Detailed analysis of the lexer's state and mode transitions can be enabled
+by means of the following options. With traces written to the standard output
+it can be analyzed how input causes state and mode transitions, as well how
+new data is loaded into the buffer.
+""",
+CMacro("QUEX_OPTION_DEBUG_SHOW_EXT", 
+       "Enables all tracing of states, modes, and reload behavior."),
+CMacro("QUEX_OPTION_DEBUG_SHOW_MODES_EXT", 
+       """Enables tracing of mode transitions."""),
+"""Some compilers do not support the type ``wchar_t``. With the following
+option such compilers can be dealt with.
+"""
+CMacro("QUEX_OPTION_WCHAR_T_DISABLED_EXT", 
+       """Disables any functionality related to ``wchar_t``"""),
+CMacro("QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE_EXT", "", ""),
+       ""),
+]
+
+
 def doc(Formatter, TemplateFile, OutFile):
-    global content
-    content_txt = Formatter.do(content)
+    global command_line_option_doc
+    global compile_option_doc
+    command_line_doc_txt   = Formatter.do(command_line_option_doc)
+    compile_option_doc_txt = Formatter.do(compile_option_doc)
     page = open(TemplateFile, "rb").read()
-    page = page.replace("$$OPTIONS$$", content_txt)
-    page = page.replace("$$VERSION$$", "%s" % QUEX_VERSION)
+    page = page.replace("$$OPTIONS$$",         command_line_doc_txt)
+    page = page.replace("$$COMPILE_OPTIONS$$", compile_option_doc_txt)
+    page = page.replace("$$VERSION$$",         "%s" % QUEX_VERSION)
     open(OutFile, "wb").write(page)
     print "Written: '%s'" % OutFile
 

@@ -7,7 +7,7 @@ if [[ $1 == "--hwut-info" ]]; then
 fi
 
 echo "The Lexeme macro does some safety checks when compiled with"
-echo "QUEX_OPTION_ASSERTS_EXT. These checks are sometimes nonsense in"
+echo "QUEX_OPTION_ASSERTS. These checks are sometimes nonsense in"
 echo "generated code. This test checks that no code is generated"
 echo "that referes to the Lexeme macros."
 echo

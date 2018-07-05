@@ -29,8 +29,10 @@
 
 #ifdef   __cplusplus
 #   include "test_cpp/lib/quex/MemoryManager.i"
+#   include "test_cpp/converter-from-lexeme.i"
 #else
 #   include "test_c/lib/quex/MemoryManager.i"
+#   include "test_c/converter-from-lexeme.i"
 #endif
 //#include "test_c/lib/buffer/asserts.i"
 

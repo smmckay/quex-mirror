@@ -62,7 +62,7 @@ $$EXIT-PROCEDURE$$
 
 $$ON_INDENTATION-PROCEDURE$$
 
-#ifdef QUEX_OPTION_ASSERTS_EXT
+#ifdef QUEX_OPTION_ASSERTS
 bool
 $has_base(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
@@ -288,7 +288,7 @@ def __get_function_declaration(Modes, FriendF=False):
 
     def prepare(name, txt):
         if name in ("has_base", "has_entry_from", "has_exit_to"):
-            new_txt  = "#ifdef QUEX_OPTION_ASSERTS_EXT\n"
+            new_txt  = "#ifdef QUEX_OPTION_ASSERTS\n"
             new_txt += txt
             new_txt += "#endif\n"
             return new_txt
@@ -364,7 +364,7 @@ $$<indentation>----------------------------------------------------------------
 $$-----------------------------------------------------------------------------
     /* on_entry          */ $on_entry,
     /* on_exit           */ $on_exit,
-#   if      defined(QUEX_OPTION_ASSERTS_EXT)
+#   if      defined(QUEX_OPTION_ASSERTS)
     /* has_base          */ $has_base,
     /* has_entry_from    */ $has_entry_from,
     /* has_exit_to       */ $has_exit_to,

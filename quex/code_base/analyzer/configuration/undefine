@@ -3,8 +3,8 @@
  *
  * Undefines all macros of the lexer's configuration file. This happens in
  * order to be able to safely include headers of multiple lexical analyzers. */
-#ifdef    QUEX_OPTION_ASSERTS_EXT
-#   undef QUEX_OPTION_ASSERTS_EXT
+#ifdef    QUEX_OPTION_ASSERTS
+#   undef QUEX_OPTION_ASSERTS
 #endif
 #ifdef    QUEX_SETTING_PATH_TERMINATION_CODE     
 #   undef QUEX_SETTING_PATH_TERMINATION_CODE    
@@ -48,8 +48,8 @@
 #ifdef    QUEX_SETTING_BUFFER_MIN_FALLBACK_N
 #   undef QUEX_SETTING_BUFFER_MIN_FALLBACK_N
 #endif
-#ifdef    QUEX_OPTION_WCHAR_T_DISABLED
-#   undef QUEX_OPTION_WCHAR_T_DISABLED
+#ifdef    QUEX_OPTION_WCHAR_T_DISABLED_EXT
+#   undef QUEX_OPTION_WCHAR_T_DISABLED_EXT
 #endif
 #ifdef    QUEX_SETTING_VERSION 
 #   undef QUEX_SETTING_VERSION           /* see analyzer/CppTemplate.txt */
@@ -81,8 +81,8 @@
 #ifdef    __QUEX_PURE_RETURN
 #   undef __QUEX_PURE_RETURN   
 #endif
-#ifdef    QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC
-#   undef QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC
+#ifdef    QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_ENCODING
+#   undef QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_ENCODING
 #endif
 #ifdef    QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT
 #   undef QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT

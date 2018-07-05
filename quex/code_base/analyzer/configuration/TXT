@@ -31,7 +31,7 @@ $$TYPE_DEFINITIONS$$
  * IT IS NOT SUPPOSED TO APPEAR IN THE NORMAL CHARACTER STREAM.               */
 #define QUEX_SETTING_BUFFER_LIMIT_CODE  ((QUEX_TYPE_LEXATOM)$$BUFFER_LIMIT_CODE$$)
 
-#define QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC  ('\n')
+#define QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_ENCODING  ('\n')
 
 /* NOTE: A cast to 'size_t' would it make impossible to use the macro in 
  *       pre-processor comparisons.                                           */

@@ -7,6 +7,7 @@ extern "C" {
 #include <string.h>
 }
 #include "common.h"
+#include "test_cpp/lib/quex/MemoryManager.i"
 
 #define UTF8_STRING_SIZE  6
 #define UTF16_STRING_SIZE 6

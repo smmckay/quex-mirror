@@ -87,7 +87,7 @@ QUEX_NAME(IndentationStack_init)(QUEX_NAME(IndentationStack)* me)
 }
 $$-----------------------------------------------------------------------------
 
-#ifdef QUEX_OPTION_ASSERTS_EXT
+#ifdef QUEX_OPTION_ASSERTS
 QUEX_INLINE void
 QUEX_NAME(Counter_assert_consistency)(QUEX_NAME(Counter)* me)
 {

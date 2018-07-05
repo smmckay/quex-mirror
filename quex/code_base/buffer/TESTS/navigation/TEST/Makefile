@@ -29,7 +29,7 @@ TESTS := \
 	     $(foreach FB, 0 1 2, test-Plain-wiostream-wchar_t-$(FB).exe) \
 	     $(foreach S, 1 2 4, $(foreach FB, 0 2, test-Converter-StrangeStream-$(S)-$(FB).exe)) 
 
-DEFS := -DQUEX_OPTION_ASSERTS_EXT \
+DEFS := -DQUEX_OPTION_ASSERTS \
 	    -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=7 \
         -DQUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE_EXT=5 
 

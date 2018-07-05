@@ -14,7 +14,7 @@ $$INC: definitions$$
 $$INC: analyzer/configuration/validation$$
 
 $$INC: buffer/lexatoms/converter/iconv/Converter_IConv$$
-$$INC: quex/compatibility/iconv-argument-types.h$$
+$$INC: buffer/lexatoms/converter/iconv/argument-types.h$$
 $$INC: quex/MemoryManager$$
 
 
@@ -85,7 +85,7 @@ QUEX_NAME(Converter_IConv_initialize)(QUEX_NAME(Converter)* alter_ego,
  * RETURNS: true, if success. false, else.                                    */
 {
     QUEX_NAME(Converter_IConv)* me              = (QUEX_NAME(Converter_IConv)*)alter_ego;
-    const bool                  little_endian_f = QUEX_SETTING_ENDIAN_IS_LITTLE();
+    const bool                  little_endian_f = QUEX_GNAME_LIB(system_is_little_endian)();
 
     if( ! FromCodec ) {
         me->handle = (iconv_t)-1;               /* mark 'not-initialized'.    */
@@ -182,7 +182,7 @@ QUEX_NAME(Converter_IConv_convert)(QUEX_NAME(Converter)*  alter_ego,
  *
  *  IF YOU GET A COMPILE ERROR HERE, THEN PLEASE HAVE A LOOK AT THE FILE:
  *
- *      quex/code_base/compatibility/iconv-argument-types.h
+ *      quex/buffer/lexatoms/converter/iconv/argument-types.h
  * 
  *  'iconv' is defined on different systems with different
  *  types of the second argument. There are two variants 'const char**'

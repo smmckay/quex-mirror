@@ -1,6 +1,6 @@
 makefile = Makefile
 cleaning ...
-make NDEBUG_F=-DQUEX_OPTION_ASSERTS_EXT   ##
+make NDEBUG_F=-DQUEX_OPTION_ASSERTS   ##
 tiny_lexer-core-engine.cpp:42: warning: ‘__QuexLexemeNullObject’ defined but not used
 executing ...
 ###############################################################################

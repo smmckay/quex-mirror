@@ -6,7 +6,7 @@ TEST_FILES = \
 		   bom-istream.exe
 INCLUDE := -I$(HWUT_PATH) -I. -I../../../TESTS -I../../../
 
-DEFS = -DQUEX_OPTION_ASSERTS_EXT $(INCLUDE) -ggdb 
+DEFS = -DQUEX_OPTION_ASSERTS $(INCLUDE) -ggdb 
 
 all: $(TEST_FILES)
 

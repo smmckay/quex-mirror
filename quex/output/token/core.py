@@ -302,7 +302,7 @@ helper_definitions_common = """
 #   define QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT
 #endif
 
-#ifdef QUEX_OPTION_ASSERTS_EXT
+#ifdef QUEX_OPTION_ASSERTS
 $$<Cpp> #   include <cassert>$$
 $$<C>   #   include <assert.h>$$
 #   define  __quex_assert(X)              assert(X)

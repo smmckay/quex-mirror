@@ -132,7 +132,7 @@ def __Setup_init_language_database(Language):
 def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-PlainMemory", 
        QuexBufferSize=15, # DO NOT CHANGE!
        SecondPatternActionPairList=[], QuexBufferFallbackN=0, ShowBufferLoadsF=False,
-       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS_EXT"):
+       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS"):
     assert type(TestStr) == list or isinstance(TestStr, (str, unicode))
 
     assert QuexBufferFallbackN >= 0
@@ -323,7 +323,7 @@ def compile(Language, SourceCode, AssertsActionvation_str="", StrangeStream_str=
     filename_tmp = "./tmp%s" % extension # DEBUG
 
     executable_name = "%s.exe" % filename_tmp
-    # NOTE: QUEX_OPTION_ASSERTS_EXT is defined by AssertsActionvation_str (or not)
+    # NOTE: QUEX_OPTION_ASSERTS is defined by AssertsActionvation_str (or not)
     try:    os.remove(executable_name)
     except: pass
     compile_str = compiler                + " " + \

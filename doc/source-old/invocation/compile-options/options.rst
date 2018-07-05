@@ -5,7 +5,7 @@ For the sake of simplicity only the positive options are mentioned. For each (or
 of the options below, there exists a sibling with a ``_DISABLED`` suffix. The option without
 the suffix enables something, the option with the suffix disables the 'something'.
 
-.. cmacro:: QUEX_OPTION_ASSERTS_EXT
+.. cmacro:: QUEX_OPTION_ASSERTS
 
    Explicitly enables asserts which are enabled by default anyway. 
    More of use is the sibling ``QUEX_OPTION_ASSERTS_EXT_DISABLED``. Disabling

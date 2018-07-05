@@ -7,8 +7,8 @@
  *
  * (C) Frank-Rene Schaefer                                                    */
 
-#ifndef QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_UNIT_TEST_I
-#define QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_UNIT_TEST_I
+#ifndef QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_STATIC_POOLS_I
+#define QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_STATIC_POOLS_I
 
 #ifdef   __cplusplus
 #include "test_cpp/lib/definitions"            
@@ -297,6 +297,6 @@ namespace quex {
 } /* namespace Quex */
 #endif
  
-#endif /*  QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_I */
+#endif /*   QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_STATIC_POOLS_I */
 
 

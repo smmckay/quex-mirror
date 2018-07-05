@@ -135,7 +135,7 @@ TEST                                                                 <no date>
                          shell_comments ..............................[OK]
     2161098 0.32.1 Range Skipper Line Number Counter
         bug-2161098.sh c_comments ....................................[OK]
-                       funny_comments ..........................[TIME_OUT]
+                       funny_comments ................................[OK]
                        shell_comments ................................[OK]
     2209142 0.33.1-pre-release: RE not suited for comment elimination
         bug-2209142.sh error .........................................[OK]
@@ -497,7 +497,6 @@ TEST                                                                 <no date>
     [FAIL] bug-293.sh _ bad
                     \__ good
     [FAIL] bug-3486388.sh
-    [FAIL] bug-2161098.sh _ funny_comments
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -990,7 +989,7 @@ quex/TESTS/bof-eos-context/TEST                                      <no date>
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ..................................[FAIL]
+        no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
@@ -999,10 +998,7 @@ quex/TESTS/code/TEST                                                 <no date>
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
- * Command Line Option Documentation
-        command_line_options-verify-doc.py man .....................[FAIL]
-                                           sphinx ..................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
@@ -1022,11 +1018,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] no-use-of-lexeme-macro.sh
     [FAIL] svn-status.sh
-    [FAIL] pyflakes-check.sh
-    [FAIL] command_line_options-verify-doc.py _ man
-                                            \__ sphinx
     [FAIL] include_guard.py _ convention
                           \__ undefinition
     [FAIL] macro-check.py
@@ -1508,7 +1500,7 @@ quex/code_base/analyzer/TEST                                         <no date>
 quex/code_base/lexeme_converter/TEST                                 <no date>
 -------------------------------------------------------------------------------
  * Test of complete character set on base converters (utf8, utf16, utf32)
-        characters ..........................................[MAKE FAILED]
+        characters ...................................................[OK]
  * utf16 to utf8, utf16, and utf32
         from-utf16 Drain_ToSmall .....................................[OK]
                    Source_Empty ......................................[OK]
@@ -1521,12 +1513,10 @@ quex/code_base/lexeme_converter/TEST                                 <no date>
         from-utf8 Drain_ToSmall ......................................[OK]
                   Source_Empty .......................................[OK]
                   Source_TestFile ....................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] characters
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -3390,12 +3380,12 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        4  238   [FAIL] TEST                                                          
+        3  238   [FAIL] TEST                                                          
         4  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        8  14    [FAIL] ........../code/TEST                                          
+        4  12    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3423,7 +3413,7 @@ SUMMARY:
            12      [OK] ......................................../icu/TEST             
            5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
-        1  10    [FAIL] ............../lexeme_converter/TEST                          
+           10      [OK] ............../lexeme_converter/TEST                          
            3       [OK] ............../token/TEST                                     
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
@@ -3451,11 +3441,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____   _____           
-    |  ___|_ _(_) |___     |___ \ |___ /     __  __
-    | |_ / _` | | / __|      __) |  |_ \     \ \/ /
-    |  _| (_| | | \__ \     / __/  ___) |     >  < 
-    |_|  \__,_|_|_|___/    |_____||____/     /_/\_\
-                                                                   (1701 tests)
+     _____     _ _          _  _____           
+    |  ___|_ _(_) |___     / ||___  |    __  __
+    | |_ / _` | | / __|    | |   / /     \ \/ /
+    |  _| (_| | | \__ \    | |  / /       >  < 
+    |_|  \__,_|_|_|___/    |_| /_/       /_/\_\
+                                                                   (1699 tests)
 
 ===============================================================================

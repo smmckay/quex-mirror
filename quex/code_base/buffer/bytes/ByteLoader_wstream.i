@@ -3,7 +3,7 @@
 #ifndef  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_WSTREAM_I
 #define  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_WSTREAM_I
 
-#if defined(__cplusplus) && ! defined(QUEX_OPTION_WCHAR_T_DISABLED)
+#if defined(__cplusplus) && ! defined(QUEX_OPTION_WCHAR_T_DISABLED_EXT)
 
 #include <fstream>
 #include <sstream>

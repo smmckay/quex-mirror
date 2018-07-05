@@ -42,6 +42,41 @@ class Option:
         default     = info[1]
         return visitor.do_Option(option_list, self.call_str, default, self.paragraph_list)
 
+class CMacro:
+    def __init__(self, Name, CallStr, *Paragraphs):
+        self.name           = Name
+        self.call_str       = CallStr
+        self.paragraph_list = list(Paragraphs)
+    def do(self, visitor):
+        info = SETUP_INFO.get(self.name)
+        if info is None:
+            print "Error: '%s' is not related to any option." % self.name
+            sys.exit()
+        if not info or len(info) != 2:
+            print "Error: '%s' deliver useless info '%s'." % (self.name, info)
+            sys.exit()
+        option_list = info[0]
+        default     = info[1]
+        return visitor.do_Option(option_list, self.call_str, default, self.paragraph_list)
+
+class CMacroSetting:
+    def __init__(self, Name, CallStr, *Paragraphs):
+        self.name           = Name
+        self.call_str       = CallStr
+        self.paragraph_list = list(Paragraphs)
+    def do(self, visitor):
+        info = SETUP_INFO.get(self.name)
+        if info is None:
+            print "Error: '%s' is not related to any option." % self.name
+            sys.exit()
+        if not info or len(info) != 2:
+            print "Error: '%s' deliver useless info '%s'." % (self.name, info)
+            sys.exit()
+        option_list = info[0]
+        default     = info[1]
+        return visitor.do_Option(option_list, self.call_str, default, self.paragraph_list)
+
+
 class Item:
     def __init__(self, Name, *Paragraphs):
         self.name           = Name
@@ -219,6 +254,17 @@ class VisitorSphinx(Visitor):
         return "%s.. code-block:: %s\n\n%s\n\n" % (self.nesting_indent(), Language, block)
 
     def do_Option(self, OptionList, CallStr, Default, ParagraphList):
+        options_str = reduce(lambda a, b: "%s, %s" % (a, b), OptionList)
+        content     = self.do(ParagraphList)
+        default     = self.format_default(Default)
+        if default is not None: default = "Default: %s\n\n" % default
+        else:                   default = ""
+        if CallStr is not None: call_str = CallStr
+        else:                   call_str = ""
+        return "%s.. cmdoption:: %s %s\n\n%s\n\n%s" \
+               % (self.nesting_indent(), options_str, call_str, content, default)
+
+    def do_CMacro(self, Option, CallStr, Default, ParagraphList):
         options_str = reduce(lambda a, b: "%s, %s" % (a, b), OptionList)
         content     = self.do(ParagraphList)
         default     = self.format_default(Default)

@@ -62,7 +62,7 @@ tiny_lexer_PROGRAM_analyser_function(QuexAnalyzerEngine* me)
      *       for that particular post context, then the post context position is used
      *       to reset the input position.                                              */
 #if    defined(KEKS_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MOOD_CHANGE) \
-    || defined(QUEX_OPTION_ASSERTS_EXT)
+    || defined(QUEX_OPTION_ASSERTS)
     me->DEBUG_analyser_function_at_entry = me->current_analyser_function;
 #endif
 __REENTRY:

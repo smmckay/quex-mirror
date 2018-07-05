@@ -15,7 +15,7 @@ MYFLAGS := -ggdb \
 	       -I. -I../../TESTS -I$(HWUT_PATH) \
            -DQUEX_OPTION_COUNTER_LINE_EXT  \
            -DQUEX_OPTION_COUNTER_COLUMN_EXT \
-		   -DQUEX_OPTION_ASSERTS_EXT
+		   -DQUEX_OPTION_ASSERTS
 
 CC = g++ $(MYFLAGS)
 

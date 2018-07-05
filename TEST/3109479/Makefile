@@ -11,7 +11,7 @@ ifndef QUEX_PATH
 endif
 
 
-CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_EXT
+CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS
 
 # (*) COMPILER SETTINGS ________________________________________________________
 #     (change COMPILER to whatever you use as compiler on the command line,

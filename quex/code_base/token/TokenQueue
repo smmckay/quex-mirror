@@ -61,7 +61,7 @@ QUEX_INLINE size_t           QUEX_NAME(TokenQueue_available_n)(QUEX_NAME(TokenQu
 QUEX_INLINE void             QUEX_NAME(TokenQueue_set_token_TERMINATION)(QUEX_NAME(TokenQueue)* me);
 
 
-#ifdef QUEX_OPTION_ASSERTS_EXT
+#ifdef QUEX_OPTION_ASSERTS
 #   define QUEX_ASSERT_TOKEN_QUEUE(me) \
         do {                                                     \
             QUEX_ASSERT_TOKEN_QUEUE_AFTER_SENDING((me));         \

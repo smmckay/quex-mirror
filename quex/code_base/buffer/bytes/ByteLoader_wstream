@@ -1,7 +1,7 @@
 #ifndef  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_WSTREAM
 #define  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_WSTREAM
 
-#if defined(__cplusplus) && ! defined(QUEX_OPTION_WCHAR_T_DISABLED)
+#if defined(__cplusplus) && ! defined(QUEX_OPTION_WCHAR_T_DISABLED_EXT)
 
 #include <istream>
 $$INC: buffer/bytes/ByteLoader$$

@@ -26,10 +26,10 @@ LD0 := $(COMPILER) -Wno-deprecated -Wall -Werror -ggdb \
 	 # -fsanitize=address 
 
 LD := $(LD0) \
-	  -DQUEX_OPTION_ASSERTS_EXT   
+	  -DQUEX_OPTION_ASSERTS   
 
 LD4     := $(LD) -DQUEX_SETTING_BUFFER_SIZE_EXT=4 \
-	             -DQUEX_OPTION_ASSERTS_EXT   
+	             -DQUEX_OPTION_ASSERTS   
 LD65536 := $(LD0) -DQUEX_SETTING_BUFFER_SIZE_EXT=65536
 
 QUEX  := $(QUEX_PATH)/quex-exe.py --suppress 3 --language C --token-id-prefix TK_ --no-count-lines --no-count-columns

@@ -150,7 +150,7 @@ def get_transition_function(iid_map, Codec):
 main_template = """
 /* From '.begin' the target map targets to '.target' until the next '.begin' is
  * reached.                                                                   */
-#define QUEX_OPTION_WCHAR_T_DISABLED
+#define QUEX_OPTION_WCHAR_T_DISABLED_EXT
 /* Prevent analyzer specific definition of '__quex_assert_no_passage' 
  * in 'lib/asserts'.                                                          */
 #define __quex_assert_no_passage()     assert(false)
@@ -294,7 +294,7 @@ except: pass
 if codec == "UTF8": qtc_str = "-DQUEX_TYPE_LEXATOM_EXT=uint8_t"
 else:               qtc_str = "-DQUEX_TYPE_LEXATOM_EXT=uint32_t"
 
-os.system("gcc -Wall -Werror -I. -I../../../code_base -DQUEX_OPTION_ASSERTS_EXT -DQUEX_INLINE=static %s -o test test.c -ggdb -std=c89" % qtc_str)
+os.system("gcc -Wall -Werror -I. -I../../../code_base -DQUEX_OPTION_ASSERTS -DQUEX_INLINE=static %s -o test test.c -ggdb -std=c89" % qtc_str)
 os.system("./test")
 
 if True:

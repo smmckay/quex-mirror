@@ -7,18 +7,18 @@
  *  'QUEX_OPTION_ASSERTS_DISABLED_EXT'  => solely prevent Quex's asserts.     
  *                                                                            */
 #if   defined(NDEBUG) 
-#   ifdef     QUEX_OPTION_ASSERTS_EXT
-#      warning "undef of QUEX_OPTION_ASSERTS_EXT triggered by 'NDEBUG'"
-#      undef  QUEX_OPTION_ASSERTS_EXT
+#   ifdef     QUEX_OPTION_ASSERTS
+#      warning "undef of QUEX_OPTION_ASSERTS triggered by 'NDEBUG'"
+#      undef  QUEX_OPTION_ASSERTS
 #   endif
 #elif defined(QUEX_OPTION_ASSERTS_DISABLED_EXT)
-#   ifdef     QUEX_OPTION_ASSERTS_EXT
-#      warning "undef of QUEX_OPTION_ASSERTS_EXT triggered by 'QUEX_OPTION_ASSERTS_DISABLED_EXT'"
-#      undef  QUEX_OPTION_ASSERTS_EXT
+#   ifdef     QUEX_OPTION_ASSERTS
+#      warning "undef of QUEX_OPTION_ASSERTS triggered by 'QUEX_OPTION_ASSERTS_DISABLED_EXT'"
+#      undef  QUEX_OPTION_ASSERTS
 #   endif
 #else
-#   ifndef    QUEX_OPTION_ASSERTS_EXT
-#      define QUEX_OPTION_ASSERTS_EXT
+#   ifndef    QUEX_OPTION_ASSERTS
+#      define QUEX_OPTION_ASSERTS
 #   endif
 #endif
 
@@ -49,7 +49,7 @@
  * not support 'wchart_t'.                                                */
 #if      (defined (__GLIBCPP__) || defined(__GLIBCXX__)) \
     && ! defined  (_GLIBCXX_USE_WCHAR_T)
-#   define  QUEX_OPTION_WCHAR_T_DISABLED
+#   define  QUEX_OPTION_WCHAR_T_DISABLED_EXT
 #endif
 
 /* If the user does not define a class declaration epilog, 
