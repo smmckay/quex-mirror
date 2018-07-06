@@ -41,9 +41,9 @@ main(int argc, char**argv)
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
         printf("Buffer_load_backward: (BPC=%i, FB=%i);\n",
                (int)sizeof(QUEX_TYPE_LEXATOM_EXT),
-               (int)QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
+               (int)QUEX_SETTING_BUFFER_FALLBACK_N);
         printf("CHOICES: ");
-        switch( QUEX_SETTING_BUFFER_MIN_FALLBACK_N ) {
+        switch( QUEX_SETTING_BUFFER_FALLBACK_N ) {
         case 0: printf("BufferSize-3,");
         case 1: printf("BufferSize-4,");
         case 2: printf("BufferSize-5;\n");

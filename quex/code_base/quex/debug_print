@@ -120,7 +120,7 @@ $$INC: buffer/Buffer_print$$
 #   define __quex_debug_reload_before()                              \
            __quex_debug1("reload ________________");                 \
            __quex_debug2("fallback bytes:  %i",                      \
-                         (int)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N)); \
+                         (int)(QUEX_SETTING_BUFFER_FALLBACK_N)); \
            __quex_debug1("(before)\n");                              \
            __quex_debug_buffer_info(me->buffer);
            

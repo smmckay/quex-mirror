@@ -23,8 +23,8 @@ QUEX_NAME(BufferMemory_construct)(QUEX_NAME(BufferMemory)*  me,
 
     if( Memory ) {
         /* If following assertion fails.
-         * =>  May, define '-DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0'           */
-        __quex_assert(Size >= QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 2);
+         * =>  May, define '-DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0'           */
+        __quex_assert(Size >= QUEX_SETTING_BUFFER_FALLBACK_N + 2);
         /* '>=' to allow a totally empty buffer, too.                         */
         
         me->_front    = Memory;

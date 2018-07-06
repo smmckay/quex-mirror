@@ -7,7 +7,7 @@
  * Moving depends on:   * _read_p, 
  *                      * _lexeme_start_p
  *                      * whether the buffer contains the end of file or not.
- *                      * QUEX_SETTING_BUFFER_MIN_FALLBACK_N
+ *                      * QUEX_SETTING_BUFFER_FALLBACK_N
  *                      * QUEX_TYPE_LEXATOM_EXT
  *
  * The last two are compile-time parameters. The first three may be
@@ -15,10 +15,10 @@
  *
  * EXPERIMENT: Setup buffer of 5 elements.
  *
- * Let this file be compiled with '-DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=3'
+ * Let this file be compiled with '-DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=3'
  * for all experiments. Multiple versions of compiled objects may exist:
  *
- *        QUEX_TYPE_LEXATOM_EXT  QUEX_SETTING_BUFFER_MIN_FALLBACK_N
+ *        QUEX_TYPE_LEXATOM_EXT  QUEX_SETTING_BUFFER_FALLBACK_N
  *          uint8_t             0
  *          uint8_t             1
  *          uint8_t             2
@@ -140,7 +140,7 @@ main(int argc, char** argv)
     if( cl_has(argc, argv, "--hwut-info") ) {
         printf("move_away_passed_content: (BPC=%i, FB=%i);\n", 
                (int)sizeof(QUEX_TYPE_LEXATOM_EXT),
-               (int)QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
+               (int)QUEX_SETTING_BUFFER_FALLBACK_N);
         printf("CHOICES: EoS, NoEoS;\n");
         return 0;
     }
@@ -187,11 +187,11 @@ main(int argc, char** argv)
         min_p = QUEX_MIN(buffer._read_p, buffer._lexeme_start_p);
         hwut_verify(memcmp(&backup[0], min_p, buffer.input.end_p - min_p) == 0);
 
-        if( ! end_of_stream_in_buffer_f && (min_p - &buffer._memory._front[1] >= QUEX_SETTING_BUFFER_MIN_FALLBACK_N) ) {
+        if( ! end_of_stream_in_buffer_f && (min_p - &buffer._memory._front[1] >= QUEX_SETTING_BUFFER_FALLBACK_N) ) {
             /* The move is only restricted by '_read_p', '_lexeme_start_p' and 
              * the fallback region size. Thus, ...                           */
-            hwut_verify(   (buffer._read_p         - &buffer._memory._front[1] == QUEX_SETTING_BUFFER_MIN_FALLBACK_N)
-                        || (buffer._lexeme_start_p - &buffer._memory._front[1] == QUEX_SETTING_BUFFER_MIN_FALLBACK_N));
+            hwut_verify(   (buffer._read_p         - &buffer._memory._front[1] == QUEX_SETTING_BUFFER_FALLBACK_N)
+                        || (buffer._lexeme_start_p - &buffer._memory._front[1] == QUEX_SETTING_BUFFER_FALLBACK_N));
         }
         else {
             hwut_verify(! move_distance);

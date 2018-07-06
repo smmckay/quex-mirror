@@ -43,7 +43,7 @@ main(int argc, char** argv)
     const size_t              BPC         = sizeof(QUEX_TYPE_LEXATOM_EXT);
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
         printf("Buffer Tell&Seek: LexatomLoader_Plain (BPC=%i, FALLBACK=%i);\n", 
-               (int)BPC, (int)QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
+               (int)BPC, (int)QUEX_SETTING_BUFFER_FALLBACK_N);
         printf("CHOICES: linear, stepping;\n"
                "SAME;\n");
         return 0;

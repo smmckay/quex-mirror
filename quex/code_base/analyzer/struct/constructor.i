@@ -359,10 +359,10 @@ QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER* me,
     if( BufferMemoryBegin ) {
         /* End of File must be inside the buffer, because we assume that the 
          * buffer contains all that is required.                              */
-        if( BufferMemorySize <= QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 2) {
+        if( BufferMemorySize <= QUEX_SETTING_BUFFER_FALLBACK_N + 2) {
             QUEX_ERROR_EXIT("\nConstructor: Provided memory size must be more than 2 greater than\n"
-                            "Constructor: QUEX_SETTING_BUFFER_MIN_FALLBACK_N. If in doubt, specify\n"
-                            "Constructor: -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 as compile option.\n");
+                            "Constructor: QUEX_SETTING_BUFFER_FALLBACK_N. If in doubt, specify\n"
+                            "Constructor: -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 as compile option.\n");
         }
         if(    BufferEndOfContentP < BufferMemoryBegin 
             || BufferEndOfContentP > (BufferMemoryBegin + BufferMemorySize - 1)) {

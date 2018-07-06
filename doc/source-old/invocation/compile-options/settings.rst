@@ -3,7 +3,7 @@ Settings
 
 Following settings can be made on the command line:
 
-.. cmacro:: QUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE
+.. cmacro:: QUEX_SETTING_LEXATOM_LOADER_SEEK_BUFFER_SIZE
 
    For seeking in character streams a temporary buffer is required. By means
    of this macro its size can be specified.
@@ -13,7 +13,7 @@ Following settings can be made on the command line:
    The buffer limit code is by default 0x0. If it is intended that this character
    code appears inside patterns, then it need to be reset by this setting.
 
-.. cmacro:: QUEX_SETTING_BUFFER_MIN_FALLBACK_N
+.. cmacro:: QUEX_SETTING_BUFFER_FALLBACK_N
 
    Buffers in quex keep a certain fall-back region when loading new content into
    the buffer. This prevents the lexer from reloading backwards if the input pointer

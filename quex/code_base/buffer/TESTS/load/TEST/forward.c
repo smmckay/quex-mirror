@@ -37,9 +37,9 @@ main(int argc, char**argv)
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
         printf("Buffer_load_forward: (BPC=%i, FB=%i);\n",
                (int)sizeof(QUEX_TYPE_LEXATOM_EXT),
-               (int)QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
+               (int)QUEX_SETTING_BUFFER_FALLBACK_N);
         printf("CHOICES: ");
-        switch( QUEX_SETTING_BUFFER_MIN_FALLBACK_N ) {
+        switch( QUEX_SETTING_BUFFER_FALLBACK_N ) {
         case 0: printf("BufferSize-3,");
         case 1: printf("BufferSize-4,");
         case 2: printf("BufferSize-5;\n");
@@ -119,7 +119,7 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
         if( on_overflow_count_before != common_on_overflow_count ) {
             /* In case the setup implies 'overflow', do not try again.       */
             hwut_verify(   LexemeStartPDelta
-                        >= (ptrdiff_t)(BufferElementN - QUEX_SETTING_BUFFER_MIN_FALLBACK_N - 2) );
+                        >= (ptrdiff_t)(BufferElementN - QUEX_SETTING_BUFFER_FALLBACK_N - 2) );
             return 0;
         }
     } 

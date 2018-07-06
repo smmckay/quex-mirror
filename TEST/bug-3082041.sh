@@ -9,7 +9,7 @@ tmp=`pwd`
 cd $bug/ 
 quex -i simple.qx -o EasyLexer
 g++ -I. test.cpp EasyLexer/EasyLexer.cpp -o test \
-    -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 \
+    -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 \
     -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT \
     -DQUEX_SETTING_BUFFER_SIZE_EXT=512 \
     -Wall -Werror >& tmp.txt

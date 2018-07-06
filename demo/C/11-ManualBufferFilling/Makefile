@@ -31,7 +31,7 @@ gavager-plain.exe:      lexer-gavager.c receiver.c plain/Lexer.c
 	$(LD_PLAIN)     -o $@ $^ 
           
 point-plain.exe:        lexer-point.c              plain/Lexer.c
-	$(LD_PLAIN)     -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 $^
+	$(LD_PLAIN)     -o $@ -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 $^
 
 feeder-converter.exe:   lexer-feeder.c receiver.c  converter/Lexer.c
 	$(LD_CONVERTER) -o $@ $^ 
@@ -40,7 +40,7 @@ gavager-converter.exe:  lexer-gavager.c receiver.c converter/Lexer.c
 	$(LD_CONVERTER) -o $@ $^ 
 
 point-converter.exe:    lexer-point.c              converter/Lexer.c
-	$(LD_CONVERTER) -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 $^ 
+	$(LD_CONVERTER) -o $@ -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 $^ 
           
 plain/Lexer.c: lexPlain.qx 
 	quex -i lexPlain.qx -o Lexer --odir plain --language C            

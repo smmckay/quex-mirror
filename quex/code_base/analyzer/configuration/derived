@@ -24,7 +24,7 @@
 
 #define __QUEX_PURE_RETURN   do { return; } while(0)
 
-#if  ! defined (QUEX_SETTING_BUFFER_MIN_FALLBACK_N)
+#if  ! defined (QUEX_SETTING_BUFFER_FALLBACK_N)
 #   if ! defined (QUEX_SETTING_BUFFER_SIZE) 
 #      error "QUEX_SETTING_BUFFER_SIZE not defined at this place."
 /* If compiler complains here, then 'QUEX_SETTING_BUFFER_SIZE' has probably
@@ -35,11 +35,11 @@
  * would be proper, but disables some math operations. Anything not-a-number
  * must be deleted from the QUEX_SETTING_BUFFER_SIZE definition.              */
 #   elif      QUEX_SETTING_BUFFER_SIZE >= 1024
-#      define QUEX_SETTING_BUFFER_MIN_FALLBACK_N  (256)
+#      define QUEX_SETTING_BUFFER_FALLBACK_N  (256)
 #   elif      QUEX_SETTING_BUFFER_SIZE >= 16
-#      define QUEX_SETTING_BUFFER_MIN_FALLBACK_N  (size_t)(QUEX_SETTING_BUFFER_SIZE >> 5)
+#      define QUEX_SETTING_BUFFER_FALLBACK_N  (size_t)(QUEX_SETTING_BUFFER_SIZE >> 5)
 #   else
-#      define QUEX_SETTING_BUFFER_MIN_FALLBACK_N  (0)
+#      define QUEX_SETTING_BUFFER_FALLBACK_N  (0)
 #   endif
 #endif
 

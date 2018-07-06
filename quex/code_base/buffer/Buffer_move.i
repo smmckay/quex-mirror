@@ -151,7 +151,7 @@ QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(QUEX_NAME(Buffer)*  me)
 {
     QUEX_TYPE_LEXATOM*  region_p;
     const ptrdiff_t     ContentSpaceSize = me->content_space_size(me);
-    const ptrdiff_t     FallBackN        = (ptrdiff_t)QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
+    const ptrdiff_t     FallBackN        = (ptrdiff_t)QUEX_SETTING_BUFFER_FALLBACK_N;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
     __quex_assert(FallBackN >= 0);
@@ -202,7 +202,7 @@ QUEX_NAME(Buffer_move_get_max_distance_towards_end)(QUEX_NAME(Buffer)* me)
     if( me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
         /* There is still content in the buffer that might be useful for
          * forward lexical analyis. Load only a decent amount backward.       */
-        move_distance_reasonable = QUEX_MAX((ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 256), 
+        move_distance_reasonable = QUEX_MAX((ptrdiff_t)(QUEX_SETTING_BUFFER_FALLBACK_N + 256), 
                                             me->content_space_size(me) / 4);
 
         if( me->_lexeme_start_p && me->_lexeme_start_p > me->_read_p ) {
@@ -246,7 +246,7 @@ QUEX_NAME(Buffer_move_get_distance_forward_to_contain)(QUEX_NAME(Buffer)*       
     QUEX_TYPE_STREAM_POSITION lexatom_index_begin = me->input.lexatom_index_begin;
     QUEX_TYPE_STREAM_POSITION lexatom_index_end   = lexatom_index_begin + me->content_size(me);
     QUEX_TYPE_STREAM_POSITION new_lexatom_index_begin;
-    QUEX_TYPE_STREAM_POSITION FallBackN           = QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
+    QUEX_TYPE_STREAM_POSITION FallBackN           = QUEX_SETTING_BUFFER_FALLBACK_N;
     /* Assert to emphasize: 
      *      'lexatom_index_to_be_contained != lexatom_index_end_of_stream'
      * is correct, even if 'lexatom_index_end_of_stream' is undefined (-1).   */

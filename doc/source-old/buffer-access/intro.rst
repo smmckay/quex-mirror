@@ -227,7 +227,7 @@ backwards in an arbitrary manner. This is not possible if the buffer is filled
 by the user. The maximum amount that can be navigated backwars [#f1]_ is determined 
 by the fallback region. Its size is determined by the macro
 
-        QUEX_SETTING_BUFFER_MIN_FALLBACK_N
+        QUEX_SETTING_BUFFER_FALLBACK_N
 
 determines the maximum length of the pre-condition pattern. If no pre-condition
 pattern is used, this might be neglected. 
