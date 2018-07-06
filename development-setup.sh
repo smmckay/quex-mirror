@@ -32,7 +32,7 @@ popd
 
 
 pushd doc
-python command_line_options.py
+#python command_line_options.py
 popd
 
 rm -f $(find -name "*.pyc")

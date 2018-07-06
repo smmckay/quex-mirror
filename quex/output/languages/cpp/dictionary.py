@@ -1456,9 +1456,13 @@ class Language(dict):
         # QUEX_NAME
         txt = self.replace_naming(txt)
 
-        # INCLUDE GUARDS
+        # INCLUDE GUARDS_______________________________________________________
+        # Include guards of token files are named according to token class.
         txt = self.Match_QUEX_INCLUDE_GUARD_TOKEN.sub(r"QUEX_INCLUDE_GUARD_%s__TOKEN__\1" % Setup.token_class_name_safe, txt)
-        txt = self.Match_QUEX_INCLUDE_GUARD_QUEX.sub(r"QUEX_INCLUDE_GUARD_%s__QUEX__\1"   % Setup._quex_lib_name_safe, txt)
+        # LIB_QUEX include guards are the same for all lexers
+        txt = self.Match_QUEX_INCLUDE_GUARD_QUEX.sub(r"QUEX_INCLUDE_GUARD_LIB_QUEX__\1", txt)
+        # Replace general include guard last.
+        # (Cannot change previous include guards)
         txt = self.Match_QUEX_INCLUDE_GUARD.sub(r"QUEX_INCLUDE_GUARD_%s__\1"              % Setup.analyzer_name_safe, txt)
         return txt
 

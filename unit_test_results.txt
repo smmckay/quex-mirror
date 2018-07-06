@@ -988,6 +988,8 @@ quex/TESTS/bof-eos-context/TEST                                      <no date>
                                                                                
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
+ * -----------------------------------------
+        no-meaningless-macro-definitions.sh ................[NO GOOD FILE]
  * Check that 'Lexeme' macro is not used.
         no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
@@ -996,9 +998,9 @@ quex/TESTS/code/TEST                                                 <no date>
         svn-status.sh ..............................................[FAIL]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .......................................[OK]
+                          real .....................................[FAIL]
  * Code Check with pyflakes
-        pyflakes-check.sh ............................................[OK]
+        pyflakes-check.sh ..........................................[FAIL]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
@@ -1018,7 +1020,10 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] no-meaningless-macro-definitions.sh
     [FAIL] svn-status.sh
+    [FAIL] function-check.sh _ real
+    [FAIL] pyflakes-check.sh
     [FAIL] include_guard.py _ convention
                           \__ undefinition
     [FAIL] macro-check.py
@@ -1121,7 +1126,7 @@ quex/TESTS/event-handling/TEST                                       <no date>
     Default 'on_skip_range_open' event
         on_skip_range_open.qx default ................................[OK]
     on_bad_lexatom
-        on_bad_lexatom.qx bad-utf16 ..................................[OK]
+        on_bad_lexatom.qx bad-utf16 ................................[FAIL]
                           good-utf16 .................................[OK]
 
  * Indentation:
@@ -1151,10 +1156,12 @@ quex/TESTS/event-handling/TEST                                       <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       error ..........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] on_bad_lexatom.qx _ bad-utf16
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -3374,6 +3381,7 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
+    [NO GOOD FILE] no-meaningless-macro-definitions.sh
 ===============================================================================
 
 SUMMARY:
@@ -3385,13 +3393,13 @@ SUMMARY:
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        4  12    [FAIL] ........../code/TEST                                          
+        7  13    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-           23      [OK] ........../event-handling/TEST                                
+        1  23    [FAIL] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
@@ -3441,11 +3449,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _____           
-    |  ___|_ _(_) |___     / ||___  |    __  __
-    | |_ / _` | | / __|    | |   / /     \ \/ /
-    |  _| (_| | | \__ \    | |  / /       >  < 
-    |_|  \__,_|_|_|___/    |_| /_/       /_/\_\
-                                                                   (1699 tests)
+     _____     _ _          ____   _           
+    |  ___|_ _(_) |___     |___ \ / |    __  __
+    | |_ / _` | | / __|      __) || |    \ \/ /
+    |  _| (_| | | \__ \     / __/ | |     >  < 
+    |_|  \__,_|_|_|___/    |_____||_|    /_/\_\
+                                                                   (1700 tests)
 
 ===============================================================================
