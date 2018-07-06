@@ -154,7 +154,7 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
         }
         else {
             /* Ensure, that the buffer limit code is restored.                */
-            me->input.end_p[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+            me->input.end_p[0] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
         }
         return false;
     }
@@ -326,7 +326,7 @@ QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me,
     }
 
     me->input.end_p    = &me->input.end_p[*loaded_n];
-    me->input.end_p[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    me->input.end_p[0] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
     return true;
 }
 

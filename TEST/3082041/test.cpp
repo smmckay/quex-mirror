@@ -31,10 +31,10 @@ test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
     EasyLexer_lexatom_t*  buffer_1 = (Size1 == 0) ? 0x0 : new EasyLexer_lexatom_t[Size1+2];
 
     if( Size0 ) {
-        buffer_0[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
-        buffer_0[Size0-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        buffer_0[0]       = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+        buffer_0[Size0-1] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
         end_of_content_p  = &buffer_0[ContentSize0+1];
-        *end_of_content_p = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        *end_of_content_p = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
         memset(&buffer_0[1], 'a', ContentSize0); 
     }
     else {
@@ -47,11 +47,11 @@ test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
     print_this(&qlex, 0, Size0, ContentSize0);
 
     if( Size1 ) {
-        buffer_1[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
-        buffer_1[Size1-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        buffer_1[0]       = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+        buffer_1[Size1-1] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
         memset(&buffer_1[1], 'b', ContentSize1);
         end_of_content_p  = &buffer_1[ContentSize1+1];
-        *end_of_content_p = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        *end_of_content_p = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
     }
     else {
         end_of_content_p = (EasyLexer_lexatom_t*)0;

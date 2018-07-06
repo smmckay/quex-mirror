@@ -3,7 +3,7 @@
 token { X; }
 
 header {
-#include "ut/lib/quex/MemoryManager"
+#include "EHLexer/lib/quex/MemoryManager"
 }
 
 mode X :

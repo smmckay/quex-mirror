@@ -143,7 +143,7 @@ def framework(txt, PWState, TheAnalyzer):
         path_walker_head = \
             ["    %s"            % Lng.IF_INPUT("==", "*path_iterator"),
              "        %s\n"      % Lng.PATH_ITERATOR_INCREMENT,
-             "        %s"        % Lng.IF("*path_iterator", "!=", "QUEX_SETTING_PATH_TERMINATION_CODE"),
+             "        %s"        % Lng.IF("*path_iterator", "!=", "QUEX_SETTING_BUFFER_LEXATOM_PATH_TERMINATION"),
              goto_next_door,
              "        %s\n"        % Lng.ELSE_FOLLOWS,                                  
              goto_terminal_door,
@@ -216,7 +216,7 @@ def require_data(PWState, TheAnalyzer):
 
             result.append("        ")
             result.extend("%i, " % x.trigger for x in step_list[:-1])
-            result.append("QUEX_SETTING_PATH_TERMINATION_CODE,")
+            result.append("QUEX_SETTING_BUFFER_LEXATOM_PATH_TERMINATION,")
             result.append("\n")
 
             offset += len(step_list)

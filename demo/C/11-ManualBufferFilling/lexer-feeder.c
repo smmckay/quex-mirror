@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#ifdef QUEX_EXAMPLE_WITH_CONVERTER
+#ifdef QUEX_DEMO_WITH_CONVERTER
 #   include "converter/Lexer.h"
 #   include "converter/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
 #   include "converter/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
@@ -71,7 +71,7 @@ main(int argc, char** argv)
 static void
 show_buffer(Lexer* lexer, const uint8_t* RawBeginP, const uint8_t* RawEndP)
 {
-#   ifdef QUEX_EXAMPLE_WITH_CONVERTER
+#   ifdef QUEX_DEMO_WITH_CONVERTER
     printf("     raw: ");
     Lexer_Buffer_print_content_core(1, RawBeginP, &RawEndP[-1], 
                                      (const uint8_t*)0, RawEndP,

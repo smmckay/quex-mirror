@@ -209,7 +209,6 @@ QUEX_NAME(TokenQueue_push_repeated)(QUEX_NAME(TokenQueue)* me,
 {
     QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);  
     __quex_assert(RepetitionN != 0);        
-    __quex_assert(QUEX_SETTING_TOKEN_ID_REPETITION_TEST(Id));
 
     QUEX_GNAME_TOKEN(repetition_n_set)(me->write_iterator, RepetitionN);
     QUEX_NAME(TokenQueue_push_core)(me, Id);
@@ -226,25 +225,13 @@ QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
     if( QUEX_NAME(TokenQueue_is_empty)(me) ) {        
         return (QUEX_TYPE_TOKEN*)0;
     }
-    else if( QUEX_SETTING_TOKEN_ID_REPETITION_TEST(me->read_iterator->id) ) {
+    else {
         repetition_count = QUEX_GNAME_TOKEN(repetition_n_get)(me->read_iterator);
-        if( repetition_count == 0 ) { 
-            /* This case should never occurr!                                 */
-            /* Repetition count == 0 => pop repeated token from queue.        */
-            ++(me->read_iterator);
-            if( QUEX_NAME(TokenQueue_is_empty)(me) ) {        
-                return (QUEX_TYPE_TOKEN*)0;
-            }
-        }
-        else if( repetition_count == 1 ) { 
-            /* Repetition will be 0, so remove token from the queue.          */
-            return me->read_iterator++;
-        }
-        else {
+        if( repetition_count > 1 ) { 
             QUEX_GNAME_TOKEN(repetition_n_set)(me->read_iterator, 
                       (QUEX_GNAME_TOKEN(repetition_n_get)(me->read_iterator) - 1));
             return me->read_iterator;  
-        } 
+        }
     }
     /* Tokens are in queue --> take next token from queue                    */ 
     return me->read_iterator++;

@@ -168,7 +168,7 @@ QUEX_NAME(LexatomLoader_load)(QUEX_NAME(LexatomLoader)*  me,
         const QUEX_TYPE_LEXATOM* p;
         /* The buffer limit code is not to appear inside the loaded content. */
         for(p=LoadP; p != &LoadP[loaded_n]; ++p) {
-            __quex_assert(*p != QUEX_SETTING_BUFFER_LIMIT_CODE);
+            __quex_assert(*p != QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
         }
     }
 #   endif

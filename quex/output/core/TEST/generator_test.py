@@ -581,7 +581,7 @@ void QUEX_NAME(M2_on_buffer_overflow)(void* me)              { return; }
 $$MODE_DEF_M2$$
 #endif
 
-const QUEX_NAME(Mode) *(QUEX_NAME(mode_db)[QUEX_SETTING_MAX_MODE_CLASS_N]) = {
+const QUEX_NAME(Mode) *(QUEX_NAME(mode_db)[256]) = {
    &QUEX_NAME(M)
 #  ifdef QUEX_UNIT_TEST_SECOND_MODE
    , 

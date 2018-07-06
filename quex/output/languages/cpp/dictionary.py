@@ -1440,12 +1440,18 @@ class Language(dict):
         def tid(Name):
             return "%s%s" % (Setup.token_id_prefix, Name)
 
+        ans = Setup.analyzer_name_safe
         replacements.extend([
             ("QUEX_SETTING_TOKEN_ID_UNINITIALIZED",  tid("UNINITIALIZED")),
             ("QUEX_SETTING_TOKEN_ID_TERMINATION",    tid("TERMINATION")),
             ("QUEX_SETTING_TOKEN_ID_INDENT",         tid("INDENT")),
             ("QUEX_SETTING_TOKEN_ID_DEDENT",         tid("DEDENT")),
             ("QUEX_SETTING_TOKEN_ID_NODENT",         tid("NODENT")),
+            #
+            ("QUEX_SETTING_BUILD_DATE",       "QUEX_SETTING_%s_BUILD_DATE"       % ans),
+            ("QUEX_SETTING_VERSION",          "QUEX_SETTING_%s_VERSION"          % ans),
+            ("QUEX_SETTING_ANALYZER_VERSION", "QUEX_SETTING_%s_ANALYZER_VERSION" % ans),
+
         ])
 
         txt = blue_print(Txt, replacements, CommonStart="QUEX_")
@@ -1545,7 +1551,7 @@ $$FOOTER$$
 cpp_reload_forward_str = """
     __quex_debug3("RELOAD_FORWARD: success->%i; failure->%i", 
                   (int)target_state_index, (int)target_state_else_index);
-    __quex_assert(*(me->buffer._read_p) == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    __quex_assert(*(me->buffer._read_p) == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
     
     __quex_debug_reload_before();                 
     /* Callbacks: 'on_buffer_before_change()' and 'on_buffer_overflow()'
@@ -1565,7 +1571,7 @@ cpp_reload_forward_str = """
 cpp_reload_backward_str = """
     __quex_debug3("RELOAD_BACKWARD: success->%i; failure->%i", 
                   (int)target_state_index, (int)target_state_else_index);
-    __quex_assert(input == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    __quex_assert(input == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
 
     __quex_debug_reload_before();                 
     /* Callbacks: 'on_buffer_before_change()' and 'on_buffer_overflow()'

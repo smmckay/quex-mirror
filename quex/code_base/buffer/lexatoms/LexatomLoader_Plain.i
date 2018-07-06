@@ -190,7 +190,7 @@ QUEX_NAME(LexatomLoader_Plain_fill_finish)(QUEX_NAME(LexatomLoader)*  alter_ego,
     /* Assert triggers => FilledEndP points WRONGLY BEHIND terminating zero. 
      * (FilledEndP, may point to it, at max.)                                */
     __quex_assert(   FilledEndP     <= insertion_p 
-                  || FilledEndP[-1] != QUEX_SETTING_BUFFER_LIMIT_CODE);
+                  || FilledEndP[-1] != QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
 
     /* Copying of content is done, already, by caller.                       */
     /* Inserted number of lexatoms = End - Begin.                            */

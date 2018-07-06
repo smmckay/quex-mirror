@@ -231,7 +231,7 @@ QUEX_NAME(Buffer_init_analyzis)(QUEX_NAME(Buffer)*   me)
         /* ReadP                          */ me->content_begin(me),
         /* LexatomStartP                  */ me->content_begin(me),
         /* LexatomAtLexemeStart           */ (QUEX_TYPE_LEXATOM)0,
-        /* LexatomBeforeLexemeStart       */ QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_ENCODING,
+        /* LexatomBeforeLexemeStart       */ QUEX_SETTING_BUFFER_LEXATOM_NEWLINE,
         /* BackupLexatomIndexOfReadP      */ (QUEX_TYPE_STREAM_POSITION)-1);
     }
 }
@@ -306,7 +306,7 @@ QUEX_NAME(Buffer_init_content_core)(QUEX_NAME(Buffer)* me,
     me->input.lexatom_index_end_of_stream = LI_EndOfStream;
     if( EndOfFileP ) {
         me->input.end_p    = EndOfFileP;
-        me->input.end_p[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        me->input.end_p[0] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
         QUEX_IF_ASSERTS_poison(&me->content_end(me)[1], me->content_space_end(me));
     }
     else {
@@ -334,7 +334,7 @@ QUEX_NAME(Buffer_register_content)(QUEX_NAME(Buffer)*        me,
         __quex_assert(EndOfInputP >= me->content_begin(me));
 
         me->input.end_p    = EndOfInputP;
-        me->input.end_p[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        me->input.end_p[0] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
     }
 
     if( CharacterIndexBegin != (QUEX_TYPE_STREAM_POSITION)-1 ) {
@@ -478,7 +478,7 @@ QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
         return;
     }
 
-    *(me->content_end(me)) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LIMIT_CODE;
+    *(me->content_end(me)) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
 
     me->input.lexatom_index_begin -= offset;
 

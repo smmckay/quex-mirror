@@ -163,9 +163,9 @@ self_include_push(uint32_t n)
         memory_it        = new_memory_end;
         assert(&memory[MemorySize] >= memory_it);
 
-        new_memory[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
-        new_memory_end[-1]  = QUEX_SETTING_BUFFER_LIMIT_CODE;
-        new_memory_eos_p[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        new_memory[0]       = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+        new_memory_end[-1]  = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+        new_memory_eos_p[0] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
 
         lx->include_push_memory(lx, "memory", new_memory, (size_t)(new_memory_size), 
                                 new_memory_eos_p);
@@ -217,7 +217,7 @@ self_setup_pointers(uint32_t n)
 
     *(lx->buffer.input.end_p)  = 0x5A;
     lx->buffer.input.end_p     = end_p_new;
-    *(lx->buffer.input.end_p)  = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    *(lx->buffer.input.end_p)  = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
     lx->buffer._read_p         = read_p_new;
     lx->buffer._lexeme_start_p = read_p_new;
 }

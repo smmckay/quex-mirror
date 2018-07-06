@@ -76,7 +76,7 @@ instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
     ptrdiff_t            memory_size = EndOfStreamInBufferF ? MemorySize : ContentSize + 2;
 
     end_p  = &memory[ContentSize + 1];
-    *end_p = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    *end_p = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
 
     /* Filler = 0x0, otherwise, buffer would start loading content */
     assert(memory_size <= MemorySize);

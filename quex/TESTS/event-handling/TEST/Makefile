@@ -84,4 +84,4 @@ transit%.exe: transit%.qx lexer.c
 
 # (*) HELPERS __________________________________________________________________
 clean:	
-	rm -rf EHLexer* EasyLexer* *.exe lexer.o lexer token_ids *.bak $(TEST_FILES)
+	rm -rf EHLexer* EasyLexer* *.exe lexer.o lexer token_ids *.bak $(TEST_FILES) ut

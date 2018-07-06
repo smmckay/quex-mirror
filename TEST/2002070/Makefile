@@ -6,7 +6,7 @@ all: lexer-iconv lexer-icu
 
 lexer-iconv: Simple/Simple.cpp text.345
 	$(LDCPP_ICONV) Simple/Simple.cpp ../lexer.cpp -o $@ $(DEF_SIZE) \
-		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=1024 > tmp.txt 2>&1
+		-DQUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE_EXT=1024 > tmp.txt 2>&1
 	@cat tmp.txt
 	@rm  tmp.txt
 	

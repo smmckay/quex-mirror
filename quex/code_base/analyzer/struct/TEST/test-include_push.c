@@ -119,8 +119,8 @@ self_include_push_on_memory(int argc, char** argv, bool PopF)
     uint8_t memory[65536];
 
     memset(&memory[0], 0x5A, sizeof(memory));
-    memory[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
-    memory[65536-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    memory[0]       = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    memory[65536-1] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
 
     UserConstructor_UnitTest_return_value = true; /* Shall not be called! */
 
@@ -299,8 +299,8 @@ self_memory()
     uint8_t memory[65536];
 
     memset(&memory[0], 0x5A, sizeof(memory));
-    memory[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
-    memory[65536-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    memory[0]       = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    memory[65536-1] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
 
     backup = *lx;
     {

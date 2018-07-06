@@ -36,9 +36,9 @@ QUEX_NAME(BUFFER_ASSERT_limit_codes_in_place_core)(const QUEX_NAME(Buffer)* B)
     if( ! (*B)._memory._front && ! (*B)._memory._back ) {                    
         return;
     }
-    __quex_assert((*B).begin(B)[0]              == QUEX_SETTING_BUFFER_LIMIT_CODE);    
-    __quex_assert((*B).content_space_end(B)[0]  == QUEX_SETTING_BUFFER_LIMIT_CODE);    
-    __quex_assert((*B).content_end(B)[0]        == QUEX_SETTING_BUFFER_LIMIT_CODE);   
+    __quex_assert((*B).begin(B)[0]              == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);    
+    __quex_assert((*B).content_space_end(B)[0]  == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);    
+    __quex_assert((*B).content_end(B)[0]        == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);   
 }
 
 QUEX_INLINE void
@@ -100,7 +100,7 @@ QUEX_NAME(BUFFER_ASSERT_NO_BUFFER_LIMIT_CODE_core)(const QUEX_TYPE_LEXATOM* Begi
     __quex_assert(Begin <= End);
 
     for(iterator = Begin; iterator != End; ++iterator) {
-        if( *iterator != QUEX_SETTING_BUFFER_LIMIT_CODE ) continue;
+        if( *iterator != QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER ) continue;
 
         if( iterator == Begin ) {
             QUEX_ERROR_EXIT("Buffer limit code character appeared as first character in buffer.\n"

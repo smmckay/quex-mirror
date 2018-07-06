@@ -14,7 +14,6 @@ $$INC: definitions$$
 $$INC: analyzer/configuration/validation$$
 
 $$INC: buffer/lexatoms/converter/iconv/Converter_IConv$$
-$$INC: buffer/lexatoms/converter/iconv/argument-types.h$$
 $$INC: quex/MemoryManager$$
 
 
@@ -172,38 +171,50 @@ QUEX_NAME(Converter_IConv_initialize_by_bom_id)(QUEX_NAME(Converter)* alter_ego,
     return me->base.initialize(alter_ego, name, NULL);
 }
 
+$$<Cpp>------------------------------------------------------------------------
+/* NOTE: At the time of this writing 'iconv' is delivered on different 
+ *       systems with different definitions for the second argument. The 
+ *       following 'hack' by Howard Jeng does the adaption automatically. */
+struct QUEX_ADAPTER_ICONV_2ND_ARG {
+    QUEX_ADAPTER_ICONV_2ND_ARG(uint8_t ** in) : data(in) {}
+    uint8_t ** data;
+    operator const char **(void) const { return (const char **)(data); }
+    operator       char **(void) const { return (      char **)(data); }
+}; 
+$$-----------------------------------------------------------------------------
+
+$$<C>--------------------------------------------------------------------------
+#if defined(QUEX_OPTION_ICONV_2ND_ARG_CONST_CHARPP_EXT)
+#    define QUEX_ADAPTER_ICONV_2ND_ARG(ARG)  ((const char**)(ARG))
+#else
+#    define QUEX_ADAPTER_ICONV_2ND_ARG(ARG)  ((char**)(ARG))
+#endif
+$$-----------------------------------------------------------------------------
+
 QUEX_INLINE E_LoadResult 
-QUEX_NAME(Converter_IConv_convert)(QUEX_NAME(Converter)*  alter_ego, 
-                                   uint8_t**              source, const uint8_t*              SourceEnd,
-                                   QUEX_TYPE_LEXATOM**  drain,  const QUEX_TYPE_LEXATOM*  DrainEnd)
+QUEX_NAME(Converter_IConv_convert)(QUEX_NAME(Converter)*     alter_ego, 
+                                   uint8_t**                 source, 
+                                   const uint8_t*            SourceEnd,
+                                   QUEX_TYPE_LEXATOM**       drain,  
+                                   const QUEX_TYPE_LEXATOM*  DrainEnd)
 /* RETURNS:  true  --> User buffer is filled as much as possible with 
  *                     converted lexatoms.
  *           false --> More raw bytes are needed to fill the user buffer.           
  *
- *  IF YOU GET A COMPILE ERROR HERE, THEN PLEASE HAVE A LOOK AT THE FILE:
- *
- *      quex/buffer/lexatoms/converter/iconv/argument-types.h
- * 
- *  'iconv' is defined on different systems with different
- *  types of the second argument. There are two variants 'const char**'
- *  and 'char **'.  If you get an error here, consider defining 
- *
- *            -DQUEX_SETTING_ICONV_2ND_ARG_CONST_CHARPP_EXT
- *
- *  as a compile option. If you know of an elegant solution to solve the 
- *  problem for plain 'C', then please, let me know 
- *  <fschaef@users.sourceforge.net>.                                     */
+ *  <fschaef@users.sourceforge.net>.                                          */
 {
     QUEX_NAME(Converter_IConv)* me                  = (QUEX_NAME(Converter_IConv)*)alter_ego;
     size_t                      source_bytes_left_n = (size_t)(SourceEnd - *source);
     size_t                      drain_bytes_left_n  = (size_t)(DrainEnd - *drain)*sizeof(QUEX_TYPE_LEXATOM);
     size_t                      report;
     
-    /* Avoid strange error reports from 'iconv' in case that the source 
-     * buffer is empty.                                                  */
+    /* Compilation error for second argument in some versions of IConv?
+     * => define "QUEX_OPTION_ICONV_2ND_ARG_CONST_CHARPP_EXT"                */
     report = iconv(me->handle, 
-                   __QUEX_ADAPTER_ICONV_2ND_ARG(source), &source_bytes_left_n,
+                   QUEX_ADAPTER_ICONV_2ND_ARG(source), &source_bytes_left_n,
                    (char**)drain,                        &drain_bytes_left_n);
+    /* Avoid strange error reports from 'iconv' in case that the source 
+     * buffer is empty.                                                      */
 
     if( report != (size_t)-1 ) { 
         /* No Error => Raw buffer COMPLETELY converted.                      */

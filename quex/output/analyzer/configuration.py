@@ -14,13 +14,7 @@ def do(Mode_PrepPrepDB):
 
     txt = Lng.open_template(Lng.analyzer_configuration_file())
 
-    # token_repetition_token_id_list empty => token_repetition_support_txt = ""
     token_descr = token_db.token_type_definition
-
-    token_repetition_support_txt = (" %s " % Lng.OR).join(
-        Lng.EQUAL("TokenID", token_id_str)
-        for token_id_str in token_db.token_repetition_token_id_list
-    )
 
     if Setup.analyzer_derived_class_name != "":
         analyzer_derived_class_name = Setup.analyzer_derived_class_name
@@ -32,9 +26,6 @@ def do(Mode_PrepPrepDB):
 
     def namespace(NameSpaceList):
         return Lng.NAMESPACE_REFERENCE(NameSpaceList, TrailingDelimiterF=False)
-
-    if not token_repetition_support_txt:
-        token_repetition_support_txt = Lng.FALSE
 
     txt = blue_print(txt, 
             [
@@ -59,7 +50,6 @@ def do(Mode_PrepPrepDB):
              ["$$TYPE_DEFINITIONS$$",           Lng.type_definitions()],
              ["$$TOKEN_PREFIX$$",               Setup.token_id_prefix],
              ["$$TOKEN_QUEUE_SIZE$$",           repr(Setup.token_queue_size)],
-             ["$$TOKEN_REPEAT_TEST$$",          token_repetition_support_txt],
              ["$$USER_LEXER_VERSION$$",         Setup.user_application_version_id],
              ])
 

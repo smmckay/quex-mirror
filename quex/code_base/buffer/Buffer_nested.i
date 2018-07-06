@@ -197,7 +197,7 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     else if( new_memory_root_p == root->begin(root) ) {
         /* Old memory object IS NOT REPLACED--CONTENT AT SAME ADDRESS.        */
         me->_memory._back    = &new_memory_root_p[new_size-1];
-        me->_memory._back[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        me->_memory._back[0] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
         verdict_f = true;
     }
     else {
@@ -267,7 +267,7 @@ QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
         }
         root->_memory.ownership = Ownership;
         /* Limit codes for '_front' and '_end' have been set during 'memcpy'. */
-        me->_memory._back[0]  = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        me->_memory._back[0]  = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
         verdict_f = true;
     }
 
@@ -312,8 +312,8 @@ QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
         if( previous ) {
             previous->_memory._back   -= nesting_freed;
             it->_memory._front        -= nesting_freed;
-            previous->_memory._back[0] = (QUEX_TYPE_LEXATOM)(QUEX_SETTING_BUFFER_LIMIT_CODE);
-            it->_memory._front[0]      = (QUEX_TYPE_LEXATOM)(QUEX_SETTING_BUFFER_LIMIT_CODE);
+            previous->_memory._back[0] = (QUEX_TYPE_LEXATOM)(QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
+            it->_memory._front[0]      = (QUEX_TYPE_LEXATOM)(QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
         }
 
         QUEX_NAME(Buffer_move_towards_begin)(it, move_distance + nesting_freed,
@@ -361,7 +361,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
     }
     __quex_assert(me->content_end(me) <= &new_memory_root[NewRootSize-1]);
     me->_memory._back    = &new_memory_root[NewRootSize - 1];
-    me->_memory._back[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    me->_memory._back[0] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 }
 

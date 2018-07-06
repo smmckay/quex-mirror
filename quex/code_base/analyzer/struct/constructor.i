@@ -379,12 +379,12 @@ QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER* me,
         /* The memory provided must be initialized. If it is not, then that's wrong.
          * Try to detect me by searching for BLC and PTC.                         */
         for(iterator = BufferMemoryBegin + 1; iterator != BufferEndOfContentP; ++iterator) {
-            if(    *iterator == QUEX_SETTING_BUFFER_LIMIT_CODE 
-                || *iterator == QUEX_SETTING_PATH_TERMINATION_CODE ) {
+            if(    *iterator == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER 
+                || *iterator == QUEX_SETTING_BUFFER_LEXATOM_PATH_TERMINATION ) {
                 QUEX_ERROR_EXIT("\nConstructor: Buffer limit code and/or path termination code appeared in buffer\n"
                                 "Constructor: when pointed to user memory. Note, that the memory pointed to must\n"
-                                "Constructor: be initialized! You might redefine QUEX_SETTING_PATH_TERMINATION_CODE\n"
-                                "Constructor: and/or QUEX_SETTING_PATH_TERMINATION_CODE; or use command line arguments\n"
+                                "Constructor: be initialized! You might redefine QUEX_SETTING_BUFFER_LEXATOM_PATH_TERMINATION\n"
+                                "Constructor: and/or QUEX_SETTING_BUFFER_LEXATOM_PATH_TERMINATION; or use command line arguments\n"
                                 "Constructor: '--buffer-limit' and '--path-termination'.");
             }
         }
@@ -407,7 +407,7 @@ QUEX_NAME(Asserts_construct)()
 #   endif
 
 #   if defined(QUEX_OPTION_ASSERTS) 
-    if( QUEX_SETTING_BUFFER_LIMIT_CODE == QUEX_SETTING_PATH_TERMINATION_CODE ) {
+    if( QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER == QUEX_SETTING_BUFFER_LEXATOM_PATH_TERMINATION ) {
         QUEX_ERROR_EXIT("Path termination code (PTC) and buffer limit code (BLC) must be different.\n");
     }
 #   endif

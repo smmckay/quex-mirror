@@ -78,6 +78,4 @@ def support_take_text():
         return token_type_definition.take_text is not None 
 
 def support_repetition():
-    global token_repetition_token_id_list
-    return    token_repetition_token_id_list \
-           or Setup.token_class_support_repetition_f
+    return token_repetition_token_id_list or Setup.token_class_support_repetition_f

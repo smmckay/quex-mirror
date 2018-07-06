@@ -20,7 +20,7 @@ iconv-lexer: lexer.cpp
 	$(CC) lexer.cpp Simple/Simple.cpp  -o $@ \
 		  -DQUEX_SETTING_BUFFER_SIZE_EXT=20                     \
 		  -DQUEX_OPTION_CONVERTER_ICONV                         \
-		  -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=20         \
+		  -DQUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE_EXT=20         \
 		  -DQUEX_SETTING_TEST_UTF8               
 
 icu-lexer: lexer.cpp 
@@ -29,14 +29,14 @@ icu-lexer: lexer.cpp
 		  `icu-config --ldflags`                            \
 		  -DQUEX_SETTING_BUFFER_SIZE_EXT=20                     \
 		  -DQUEX_OPTION_CONVERTER_ICU                           \
-		  -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=20         \
+		  -DQUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE_EXT=20         \
 		  -DQUEX_SETTING_TEST_UTF8               
 
 lexer: lexer.cpp 
 	quex -i simple.qx common.qx -o Simple --debug-exception
 	$(CC) lexer.cpp Simple/Simple.cpp  -o $@ \
 		 -DQUEX_SETTING_BUFFER_SIZE_EXT=14                 \
-		 -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=9           
+		 -DQUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE_EXT=9           
 		 #-DQUEX_OPTION_DEBUG_SHOW_EXT                      \
 
 lexer-x: lexer-x.cpp
@@ -44,7 +44,7 @@ lexer-x: lexer-x.cpp
 	echo Must call quex here
 	$(CC) lexer-x.cpp Simple/Simple.cpp  -o $@ \
 		 -DQUEX_SETTING_BUFFER_SIZE_EXT=14                      \
-		 -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=9           
+		 -DQUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE_EXT=9           
 
 hwut-info:
 	@echo $(FILES)

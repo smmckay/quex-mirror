@@ -115,9 +115,9 @@ verify_content(QUEX_NAME(Buffer)* me)
     (void)lexatom_index_at_end_p;
     (void)expected;
 
-    hwut_verify(me->begin(me)[0]             == QUEX_SETTING_BUFFER_LIMIT_CODE);
-    hwut_verify(me->content_space_end(me)[0] == QUEX_SETTING_BUFFER_LIMIT_CODE);
-    hwut_verify(me->content_end(me)[0]       == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    hwut_verify(me->begin(me)[0]             == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
+    hwut_verify(me->content_space_end(me)[0] == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
+    hwut_verify(me->content_end(me)[0]       == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
 
     /* If end_p does not stand on buffer boarder, then it must stand according
      * to the 'lexatom_index_begin' at the end of the pseudo files content.*/
@@ -152,9 +152,9 @@ verify_ucs4_content(QUEX_NAME(Buffer)* me)
     (void)lexatom_index_at_end_p;
     (void)expected;
 
-    hwut_verify(me->begin(me)[0] == QUEX_SETTING_BUFFER_LIMIT_CODE);
-    hwut_verify(me->content_space_end(me)[0]    == QUEX_SETTING_BUFFER_LIMIT_CODE);
-    hwut_verify(me->content_end(me)[0]              == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    hwut_verify(me->begin(me)[0] == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
+    hwut_verify(me->content_space_end(me)[0]    == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
+    hwut_verify(me->content_end(me)[0]              == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
 
     /* If end_p does not stand on buffer boarder, then it must stand according
      * to the 'lexatom_index_begin' at the end of the pseudo files content.*/
@@ -193,10 +193,10 @@ before_setup(BufferBefore_t* me, QUEX_NAME(Buffer)* buffer,
 
     me->read_p              = buffer->_read_p;
     me->read_m1             = buffer->_read_p == buffer->_memory._front ? 
-                              QUEX_SETTING_BUFFER_LIMIT_CODE : buffer->_read_p[-1];
+                              QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER : buffer->_read_p[-1];
     me->lexeme_start_p      = buffer->_lexeme_start_p;
     me->lexeme_start_m1     = buffer->_lexeme_start_p == buffer->_memory._front ? 
-                              QUEX_SETTING_BUFFER_LIMIT_CODE : buffer->_lexeme_start_p[-1];
+                              QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER : buffer->_lexeme_start_p[-1];
 
     me->lexatom_index_begin = buffer->input.lexatom_index_begin;
 
@@ -231,7 +231,7 @@ before_check_consistency(BufferBefore_t*    me,
     else if( buffer->_backup_lexatom_index_of_lexeme_start_p == (TestAnalyzer_stream_position_t)-1 ) {
         hwut_verify(me->lexeme_start_p - buffer->_lexeme_start_p == Delta);
         if(    buffer->_lexeme_start_p > &buffer->_memory._front[1] 
-            && me->lexeme_start_m1 != QUEX_SETTING_BUFFER_LIMIT_CODE ) {
+            && me->lexeme_start_m1 != QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER ) {
             hwut_verify(buffer->_lexeme_start_p[-1] == me->lexeme_start_m1);
         }
     }
@@ -245,7 +245,7 @@ before_check_consistency(BufferBefore_t*    me,
     }
 
     if(    buffer->_read_p > &buffer->_memory._front[1] 
-        && me->read_m1 != QUEX_SETTING_BUFFER_LIMIT_CODE ) {
+        && me->read_m1 != QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER ) {
         hwut_verify(buffer->_read_p[-1] == me->read_m1);
     }
 
@@ -256,7 +256,7 @@ before_check_consistency(BufferBefore_t*    me,
     else               count = verify_ucs4_content(buffer);
 
     hwut_verify(count == buffer->input.end_p - &buffer->_memory._front[1]);
-    hwut_verify(buffer->input.end_p[0] == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    hwut_verify(buffer->input.end_p[0] == QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
 
     return;
 }

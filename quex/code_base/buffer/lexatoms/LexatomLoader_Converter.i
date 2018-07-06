@@ -79,7 +79,7 @@ QUEX_NAME(LexatomLoader_Converter_new)(QUEX_NAME(ByteLoader)* byte_loader,
 { 
     QUEX_NAME(LexatomLoader_Converter)*  me;
     /* UTF-8 char can be 6 bytes long => min. size of translation buffer.    */
-    __quex_assert(QUEX_SETTING_TRANSLATION_BUFFER_SIZE >= 6);  
+    __quex_assert(QUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE >= 6);  
 
     if( ! converter ) {
         return (QUEX_NAME(LexatomLoader)*)0;
@@ -104,7 +104,7 @@ QUEX_NAME(LexatomLoader_Converter_new)(QUEX_NAME(ByteLoader)* byte_loader,
     }
 
     QUEX_NAME(LexatomLoader_Converter_construct)(me, byte_loader, converter, 
-                                                 QUEX_SETTING_TRANSLATION_BUFFER_SIZE);
+                                                 QUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE);
 
     return &me->base;
 
@@ -355,7 +355,7 @@ QUEX_NAME(LexatomLoader_Converter_fill_finish)(QUEX_NAME(LexatomLoader)* alter_e
     /* Assert triggers => FilledEndP points WRONGLY BEHIND terminating zero. 
      * (FilledEndP, may point to it, at max.)                                */
     __quex_assert(   FilledEndP     <= raw->next_to_convert_p 
-                  || FilledEndP[-1] != QUEX_SETTING_BUFFER_LIMIT_CODE);
+                  || FilledEndP[-1] != QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER);
 
     raw->fill_end_p = FilledEndP;   
     QUEX_ASSERT_RAW_BUFFER(raw);

@@ -144,7 +144,7 @@ converter, or a customized converter. Converters must be derived from
 'Converter'.  The implementations of 'Converter_ICU' and 'Converter_IConv' may
 serve as a template for customized solutions. Also, with the above allocator
 the size of the translation buffer may be chosen independently from
-QUEX_SETTING_TRANSLATION_BUFFER_SIZE.
+QUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE.
 
 Quex allows also analyzers running on memory where the user points to. 
 In that case, it is assumed that the user takes care of all filling. The

@@ -3,7 +3,7 @@
 #include <assert.h>
 #include "receiver.h"
 
-#ifdef QUEX_EXAMPLE_WITH_CONVERTER
+#ifdef QUEX_DEMO_WITH_CONVERTER
 #   include "converter/Lexer"
     static ELEMENT_TYPE receiver_data[] = 
        "Ελληνικά • Euskara • فارسی • Frysk • Galego • 한국어 • हिन्दी bye";

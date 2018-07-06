@@ -80,18 +80,18 @@ common_clone(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
             subject->_memory._front[i]   = (QUEX_TYPE_LEXATOM_EXT)('a' + i);
         }
         else if( i == end_offset ) {
-            reference->_memory._front[i] = QUEX_SETTING_BUFFER_LIMIT_CODE;
-            subject->_memory._front[i]   = QUEX_SETTING_BUFFER_LIMIT_CODE;
+            reference->_memory._front[i] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+            subject->_memory._front[i]   = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
         }
         else {
             reference->_memory._front[i] = (QUEX_TYPE_LEXATOM_EXT)(0xAA);
             subject->_memory._front[i]   = (QUEX_TYPE_LEXATOM_EXT)(0xBB);
         }
     }
-    reference->_memory._front[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
-    reference->_memory._back[0]  = QUEX_SETTING_BUFFER_LIMIT_CODE;
-    subject->_memory._front[0]   = QUEX_SETTING_BUFFER_LIMIT_CODE;
-    subject->_memory._back[0]    = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    reference->_memory._front[0] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    reference->_memory._back[0]  = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    subject->_memory._front[0]   = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    subject->_memory._back[0]    = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
     QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
     QUEX_BUFFER_ASSERT_CONSISTENCY(subject);
 }

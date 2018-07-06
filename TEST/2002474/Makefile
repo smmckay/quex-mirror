@@ -4,7 +4,7 @@ X = Simple
 LIB_CONV  = `icu-config --ldflags --cppflags`
 
 DEFINES := -DQUEX_SETTING_BUFFER_SIZE_EXT=64 \
-		   -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=64 \
+		   -DQUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE_EXT=64 \
 	       -DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' 
 
 # C++ Versions ________________________________________________________________

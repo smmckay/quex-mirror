@@ -13,7 +13,7 @@ main(int argc, char** argv)
 
 
 #   if 1
-    uint8_t memory[] { QUEX_SETTING_BUFFER_LIMIT_CODE, 'x', QUEX_SETTING_BUFFER_LIMIT_CODE };
+    uint8_t memory[] { QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER, 'x', QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER };
 
     // Dumlyzer*  dl = new Dumlyzer((QUEX_NAME(ByteLoader)*)0, NULL);
     dl = new Dumlyzer(&memory[0], 3, &memory[3-1]);

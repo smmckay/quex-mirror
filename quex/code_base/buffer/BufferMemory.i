@@ -30,8 +30,8 @@ QUEX_NAME(BufferMemory_construct)(QUEX_NAME(BufferMemory)*  me,
         me->_front    = Memory;
         me->_back     = &Memory[Size-1];
         me->ownership = Ownership;
-        me->_front[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
-        me->_back[0]  = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        me->_front[0] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+        me->_back[0]  = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
     } else {
         me->_front    = (QUEX_TYPE_LEXATOM*)0;
         me->_back     = me->_front;
@@ -111,9 +111,9 @@ QUEX_NAME(BufferMemory_check_chunk)(const QUEX_TYPE_LEXATOM* Front,
             || ! EndOfFileP
             || EndOfFileP    <= Front 
             || EndOfFileP    >  Back  
-            || Front[0]      != QUEX_SETTING_BUFFER_LIMIT_CODE    
-            || Back[0]       != QUEX_SETTING_BUFFER_LIMIT_CODE 
-            || EndOfFileP[0] != QUEX_SETTING_BUFFER_LIMIT_CODE ) {
+            || Front[0]      != QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER    
+            || Back[0]       != QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER 
+            || EndOfFileP[0] != QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER ) {
         return false;
     }
     else  {
