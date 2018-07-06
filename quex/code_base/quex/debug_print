@@ -165,7 +165,7 @@ $$INC: buffer/Buffer_print$$
 
 #endif /* ! QUEX_OPTION_DEBUG_SHOW_EXT */
 
-#ifdef QUEX_OPTION_STATISTICS_NOT_YET_IMPLEMENTED
+#ifdef QUEX_OPTION_NOT_YET_IMPLEMENTED_STATISTICS_EXT
 #    define __quex_optional_statistics(StateIdx) \
             QUEX_NAME(statistics_state_count)(QUEX_NAME(statistics_state_ ## StateIdx), \
                                               *(me->buffer._read_p));

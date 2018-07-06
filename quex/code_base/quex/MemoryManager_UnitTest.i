@@ -6,17 +6,11 @@
  * 'MemoryManager_UnitTest_t'.                                                        
  *
  * (C) Frank-Rene Schaefer                                                    */
-
 #ifndef QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_UNIT_TEST_I
 #define QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_UNIT_TEST_I
 
-#ifdef   __cplusplus
-#include "test_cpp/lib/definitions"            
-#include "test_cpp/lib/quex/MemoryManager"
-#else
-#include "test_c/lib/definitions"            
-#include "test_c/lib/quex/MemoryManager" 
-#endif
+$$INC: quex/compatibility/stdint.h$$
+$$INC: quex/MemoryManager$$
 
 typedef struct {
     int allocation_n;
