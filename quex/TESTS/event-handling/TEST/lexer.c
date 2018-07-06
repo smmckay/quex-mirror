@@ -1,13 +1,9 @@
 #include<string.h>
 #include<stdio.h>
 
-#if defined(UNIT_TEST_IN_UT)
-#   include "ut/EHLexer.h"
-#else
-#   include "EHLexer/EHLexer.h"
-#endif
-#ifdef      QUEX_OPTION_UT_MEMORY_MANAGER
-#   include "../../../code_base/quex/MemoryManager_UnitTest.i"
+#include "EHLexer/EHLexer.h"
+#ifdef      UNIT_TEST_MEMORY_MANAGER
+#   include "EHLexer/lib/quex/MemoryManager_UnitTest.i"
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 #endif
 
@@ -24,7 +20,7 @@ main(int argc, char** argv)
     char                file_name[256];
     EHLexer             qlex;
 
-#   ifdef QUEX_OPTION_UT_MEMORY_MANAGER
+#   ifdef UNIT_TEST_MEMORY_MANAGER
     memset((void*)&MemoryManager_UnitTest, 0, sizeof(MemoryManager_UnitTest_t));
     MemoryManager_UnitTest.allocation_addmissible_f = 1;
 #   endif
@@ -37,7 +33,7 @@ main(int argc, char** argv)
     fprintf(stderr, "| [START]\n");
     FLUSH();
 
-#   ifdef QUEX_OPTION_UT_MEMORY_MANAGER
+#   ifdef UNIT_TEST_MEMORY_MANAGER
     MemoryManager_UnitTest.allocation_addmissible_f = 0;
     MemoryManager_UnitTest.reallocate_limit_byte_n  = 0;
 #   endif
