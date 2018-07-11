@@ -13,7 +13,7 @@ lexer-icu: Simple/Simple.cpp
 	@rm  tmp.txt
 
 Simple/Simple.cpp: indigo.qx
-	@quex -i indigo.qx -o Simple -b 4 --debug-exception
+	@quex --cbm -i indigo.qx -o Simple -b 4 --debug-exception
 
 
 clean:

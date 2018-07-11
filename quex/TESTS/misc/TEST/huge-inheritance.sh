@@ -6,7 +6,7 @@ case $1 in
 
     *)
         echo "No output is good output:"
-        quex -i huge-inheritance.qx -o Simple \
+        quex --cbm -i huge-inheritance.qx -o Simple \
              --debug-limit-recursion 64 \
              --debug-exception
         echo "<terminated>"

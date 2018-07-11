@@ -19,7 +19,7 @@ for file in $file_list; do
     stat --printf "modified %y %Y\nchanged  %z %Z\n" $file >> before.txt
 done
 
-quex -i nonsense.qx --foreign-token-id-file token_ids.h --token-class-file token.h \
+quex --cbm -i nonsense.qx --foreign-token-id-file token_ids.h --token-class-file token.h \
     --derived-class-file derived.h --dc Derived --encoding-file codec.dat \
      -o EasyLexer --suppress 1 0 --foreign-token-id-file-show --debug-exception 2>&1 
 

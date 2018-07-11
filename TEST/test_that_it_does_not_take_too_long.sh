@@ -8,7 +8,7 @@ extra_options=$3
 quex_application=$QUEX_PATH/quex-exe.py
 
 # Start the process _________________________________________________________________
-$quex_application -i $file $extra_options &
+$quex_application --cbm -i $file $extra_options &
 
 # Give it a couple of seconds _______________________________________________________
 time=0

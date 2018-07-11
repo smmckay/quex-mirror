@@ -8,7 +8,7 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i error-$1.qx -o Simple # --debug-exception
+quex --cbm -i error-$1.qx -o Simple # --debug-exception
 
 # cleansening
 rm -rf Simple*

@@ -79,7 +79,7 @@ QUEX_NAME(LexatomLoader_Converter_new)(QUEX_NAME(ByteLoader)* byte_loader,
 { 
     QUEX_NAME(LexatomLoader_Converter)*  me;
     /* UTF-8 char can be 6 bytes long => min. size of translation buffer.    */
-    __quex_assert(QUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE >= 6);  
+    __quex_assert(QUEX_SETTING_BUFFER_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE >= 6);  
 
     if( ! converter ) {
         return (QUEX_NAME(LexatomLoader)*)0;
@@ -104,7 +104,7 @@ QUEX_NAME(LexatomLoader_Converter_new)(QUEX_NAME(ByteLoader)* byte_loader,
     }
 
     QUEX_NAME(LexatomLoader_Converter_construct)(me, byte_loader, converter, 
-                                                 QUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE);
+                                                 QUEX_SETTING_BUFFER_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE);
 
     return &me->base;
 

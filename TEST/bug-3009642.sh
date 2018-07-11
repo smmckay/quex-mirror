@@ -11,13 +11,13 @@ cd $bug/
 echo "Check whether the begin of line support flag is set propperly."
 echo 
 echo "(1) A grammar with a begin of line pre-condition."
-quex -i with-begin-of-line.qx -o Simple --debug-exception
+quex --cbm -i with-begin-of-line.qx -o Simple --debug-exception
 cd Simple
 grep _lexatom_before_lexeme_start Simple.cpp | sort -u
 cd ..
 
 echo "(2) A grammar without a begin of line pre-condition."
-quex -i without-begin-of-line.qx -o Simple --debug-exception
+quex --cbm -i without-begin-of-line.qx -o Simple --debug-exception
 cd Simple
 grep _lexatom_before_lexeme_start Simple.cpp
 cd ..

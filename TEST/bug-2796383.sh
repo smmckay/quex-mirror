@@ -8,7 +8,7 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i $1.qx -o Simple --suppress 15 
+quex --cbm -i $1.qx -o Simple --suppress 15 
 cat Simple/Simple-token | awk '/set\_/ { print; } /get\_/ { print; } /union/ { print; } /content/ { print; }'
 
 # cleansening

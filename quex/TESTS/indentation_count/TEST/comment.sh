@@ -11,7 +11,7 @@ txt_file=data/comment-$1.txt
 buffer_size=25
 
 if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
-    quex -i $qx_file -o Simple --language C --debug-exception
+    quex --cbm -i $qx_file -o Simple --language C --debug-exception
     gcc -ggdb \
         -I.                                              \
         Simple/Simple.c                                  \

@@ -1,5 +1,5 @@
 br_scan:
-	quex -i scan.qx -o br_scan \
+	quex --cbm -i scan.qx -o br_scan \
 		 --token-class-file token.h --token-id-prefix BR_TKN_ \
 		 --foreign-token-id-file gramma.h --token-class blackray::Token \
 		 --debug-exception 
@@ -12,13 +12,13 @@ check: br_scan
 		-o check 
 
 mixMemberAssignWithManualTokenClass:
-	quex -i scan-error.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token
+	quex --cbm -i scan-error.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token
 
 tokenTypeAlongWithManualTokenClass:
-	quex -i CppDefault.qx scan.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token
+	quex --cbm -i CppDefault.qx scan.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token
 
 tokenTypeWithoutTokenClassSpecification:
-	quex -i scan.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h  
+	quex --cbm -i scan.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h  
 
 clean:
 	rm -rf check check tmp.txt br_scan*

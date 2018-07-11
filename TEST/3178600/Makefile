@@ -29,7 +29,7 @@ lexer:          example.c EasyLexer/EasyLexer.c
 	$(LD) -o $@ $^
           
 EasyLexer/EasyLexer.c: example.qx $(QUEX_CORE)
-	quex -i         example.qx   \
+	quex --cbm -i         example.qx   \
 	     -o   EasyLexer    \
 		 --comment-state-machine \
 		 --language C          --debug-exception

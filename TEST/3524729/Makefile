@@ -4,7 +4,7 @@ all lexer: Lexer-token
 
 Lexer-token:
 	@echo Generate token class _______________________________________________
-	quex -i token_type.qx --token-class-only --debug-exception
+	quex --cbm -i token_type.qx --token-class-only --debug-exception
 
 clean:
 	rm -rf Lexer* tmp.txt

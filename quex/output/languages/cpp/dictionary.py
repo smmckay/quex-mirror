@@ -1374,47 +1374,72 @@ class Language(dict):
            self.GOTO(door_id, dial_db)
         ]
 
-    def type_definitions(self, excluded=set()):
-        if Setup._debug_QUEX_TYPE_LEXATOM_EXT: type_lexatom = "QUEX_TYPE_LEXATOM_EXT"
-        else:                                  type_lexatom = Setup.lexatom.type
-
-        token_descr = token_db.token_type_definition
-        if Setup.computed_gotos_f: type_goto_label  = "void*"
-        else:                      type_goto_label  = "int32_t"
-
-        type_def_list = [
-            ("lexatom_t",         type_lexatom),
-            ("token_id_t",        token_descr.token_id_type),
-            ("token_line_n_t",    token_descr.line_number_type.get_pure_text()),
-            ("token_column_n_t",  token_descr.column_number_type.get_pure_text()),
-            ("acceptance_id_t",   "int"),
-            ("indentation_t",     "int"),
-            ("stream_position_t", "intmax_t"),
-            ("goto_label_t",      type_goto_label)
-        ]
-
-        if not blackboard.required_support_indentation_count():
-            excluded.add("indentation_t")
-
-        acn = Setup.analyzer_class_name
-        if Setup._debug_QUEX_TYPE_LEXATOM_EXT:
-            def_str =   "#ifndef    QUEX_TYPE_LEXATOM_EXT\n" \
-                      + "#   define QUEX_TYPE_LEXATOM_EXT %s\n" % Setup.lexatom.type \
-                      + "#endif\n"
-        else:
-            def_str =   "#ifdef     QUEX_TYPE_LEXATOM_EXT\n" \
-                      + "#   error \"QUEX_TYPE_LEXATOM_EXT has been defined, but lexer was not generated with '--debug-QUEX_TYPE_LEXATOM_EXT'.\"\n" \
-                      + "#endif\n"
-
-        def_str += "\n".join("typedef %s %s_%s;" % (original, acn, customized_name) 
-                             for customized_name, original in type_def_list 
-                             if customized_name not in excluded)
-
-        return self.FRAME_IN_NAMESPACE_MAIN(def_str)
-
     def FRAME_IN_NAMESPACE_MAIN(self, Code):
-        return "QUEX_NAMESPACE_MAIN_OPEN\n%s\nQUEX_NAMESPACE_MAIN_CLOSE\n" % Code
+        open_str  = self.NAMESPACE_OPEN(Setup.analyzer_name_space)
+        close_str = self.NAMESPACE_CLOSE(Setup.analyzer_name_space)
+        if open_str:  open_str = "%s\n" % open_str
+        if close_str: close_str = "%s\n" % close_str
+        return "".join([open_str, Code, close_str])
 
+    def ERROR_IF_DEFINED_AND_NOT_CONFIGURATION_BY_MACRO(self, ShortNameList):
+        def ifdefined(Name, FirstF):
+            if FirstF:
+                return "#if    defined(QUEX_SETTING_%s_EXT)" % Name
+            else:
+                return "   ||  defined(QUEX_SETTING_%s_EXT)" % Name
+            
+        if Setup.configuration_by_macros_f:
+            return ""
+        else:
+            L = len(ShortNameList)
+            return "\n".join([
+                " \\\n".join(ifdefined(name, i==0) for i, name in enumerate(ShortNameList)),
+                "#   error \"*_EXT macro detected but code not generated with '--config-by-macro'\"",
+                "#endif"
+            ])
+
+    def QUEX_TYPE_DEF(self, Original, TypeName):
+        type_name = "%s_%s" % (Setup.analyzer_name_safe, TypeName)
+        if Setup.configuration_by_cmake_f:
+            original_type_str = "@QUEX_TYPE_%s_%s@" % (Setup.analyzer_name_safe, Original) 
+        else:
+            original_type_str = Original
+
+        if Setup.configuration_by_macros_f:
+            return "\n".join([
+                "#ifdef QUEX_TYPE_%s_EXT" % TypeName,
+                "   typedef QUEX_TYPE_%s_EXT %s;" % (TypeName, type_name),
+                "#else",
+                "   typedef %s %s;" % (original_type_str, type_name),
+                "#endif",
+            ])
+        elif Setup.configuration_by_cmake_f:
+            return "typedef @QUEX_TYPE_%s_%s@ %s;" % (Setup.analyzer_name_safe, Original, type_name) 
+        else:
+            return "typedef %s %s;" % (Original, type_name) 
+
+    def QUEX_SETTING_DEF(self, Name, Value):
+        """If 'configuration_by_macros_f' is set, then setting parameters may
+        be defined by according macros on the command line.
+        """
+        # variable_name = "QUEX_SETTING_%s_%s" % (Setup.analyzer_name_safe, Name)
+        variable_name = "QUEX_SETTING_%s" % Name
+        if Setup.configuration_by_cmake_f:
+            value_str = "@QUEX_SETTING_%s_%s@" % (Setup.analyzer_name_safe, variable_name)
+        else:
+            value_str = "%s" % Value
+
+        if Setup.configuration_by_macros_f:
+            return "\n".join([
+                "#ifdef QUEX_SETTING_%s_EXT" % Name,
+                "#   define %s QUEX_SETTING_%s_EXT" % (variable_name, Name),
+                "#else",
+                "#   define %s %s"                  % (variable_name, value_str),
+                "#endif",
+            ])
+        else:
+            return "#define %s %s" % (variable_name, value_str)
+                   
     def adapt_to_configuration(self, Txt):
         if not Txt: return Txt
 

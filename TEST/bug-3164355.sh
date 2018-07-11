@@ -8,6 +8,6 @@ fi
 tmp=`pwd`
 cd $bug/ 
 echo "No output is good output"
-quex -i error.qx -o Simple
+quex --cbm -i error.qx -o Simple
 rm -rf Simple*
 cd $tmp

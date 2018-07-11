@@ -9,13 +9,13 @@ tmp=`pwd`
 cd $bug/ 
 
 echo "One TokenID _________________________________________"
-quex -i 1.qx -o Simple
+quex --cbm -i 1.qx -o Simple
 
 echo "No TokenID implicitly defined _______________________"
-quex -i 2.qx -o Simple
+quex --cbm -i 2.qx -o Simple
 
 echo "Three TokenIDs ______________________________________"
-quex -i 3.qx -o Simple
+quex --cbm -i 3.qx -o Simple
 
 # cleansening
 rm -rf Simple*

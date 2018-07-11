@@ -10,7 +10,7 @@ cd $bug/
 x=$1
 
 cat test-$x.qx; 
-quex -i test-$x.qx -o Simple
+quex --cbm -i test-$x.qx -o Simple
 
 rm -rf Simple*
 cd $tmp

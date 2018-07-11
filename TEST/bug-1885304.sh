@@ -27,12 +27,12 @@ rm -rf Dos* Unix* tmp*.txt
 # Generate code from a dos formatted file
 echo "Confirm, that 'dos.qx' contains 0x0A 0x0D as newline characters"
 cat dos.qx | awk 'BEGIN { RS="--never--" } /\x0d\x0a/ { print; }' | wc
-quex -i dos.qx  -o Xanther --odir Dos
+quex --cbm -i dos.qx  -o Xanther --odir Dos
 
 # Generate code from a unix formatted file
 echo "Confirm, that 'unix' contains NO 0x0A 0x0D as newline characters"
 cat unix.qx | awk 'BEGIN { RS="--never--" } /\x0d\x0a/ { print; }' | wc
-quex -i unix.qx -o Xanther --odir Unix
+quex --cbm -i unix.qx -o Xanther --odir Unix
 
 echo "Watch out, that output from unix file format is the same as from dos format."
 echo "DATE stamps are ignored"

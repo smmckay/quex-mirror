@@ -9,15 +9,15 @@ fi
 tmp=`pwd`
 cd $bug/ 
 echo "(1)"
-quex -i error.qx -o Simple
+quex --cbm -i error.qx -o Simple
 echo
 
 echo "(2)"
-quex -i error-2.qx -o Simple
+quex --cbm -i error-2.qx -o Simple
 echo
 
 echo "(3)"
-quex -i error-3.qx -o Simple
+quex --cbm -i error-3.qx -o Simple
 echo
 
 # cleansening

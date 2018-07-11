@@ -7,6 +7,6 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i error.qx -o Engin-e
+quex --cbm -i error.qx -o Engin-e
 rm -rf Engin-e*
 cd $tmp

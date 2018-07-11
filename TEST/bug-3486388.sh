@@ -7,8 +7,8 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i simple.qx -o Otto  --language C
-quex -i simple.qx -o Fritz --language C
+quex --cbm -i simple.qx -o Otto  --language C
+quex --cbm -i simple.qx -o Fritz --language C
 gcc  -c lexer.c >& tmp.txt -I.
 cat tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ ' | head -n 1
 rm -rf tmp.txt Fritz* Otto*

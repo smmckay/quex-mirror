@@ -8,11 +8,11 @@ fi
 tmp=`pwd`
 cd $bug/ 
 echo "Use Case (1)"
-quex -i error.qx 
+quex --cbm -i error.qx 
 echo 
 
 echo "Use Case (2)"
-quex -i error-2.qx 
+quex --cbm -i error-2.qx 
 echo 
 
 rm -rf Lexer

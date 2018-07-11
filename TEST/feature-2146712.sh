@@ -17,7 +17,7 @@ case $1 in
     "NoWrite")  odir=h/i/j/not-writeable; mkdir -p $odir; chmod u-w $odir;;
 esac
 
-quex -i simple.qx --output-directory $odir
+quex --cbm -i simple.qx --output-directory $odir
 find -path "*.svn*" -prune -or -print | grep $odir | grep -v lib | sort
 
 # cleansening

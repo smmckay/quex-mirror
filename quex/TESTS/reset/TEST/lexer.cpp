@@ -16,14 +16,14 @@ main(int argc, char** argv)
 {        
 
     Simple_Token*   token_p = 0x0;
-#   if   defined (QUEX_SETTING_TEST_UTF8)
+#   if   defined (QUEX_UT_SETTING_TEST_UTF8)
     const char*    file_name = "example-hindi.utf8";
 #   else
     const char*    file_name = "example.txt";
 #   endif
-#   if defined(QUEX_OPTION_CONVERTER_ICONV)
+#   if defined(QUEX_UT_OPTION_CONVERTER_ICONV)
     Simple_Converter*  converter = Simple_Converter_IConv_new("UTF8", NULL);
-#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+#   elif defined(QUEX_UT_OPTION_CONVERTER_ICU)
     Simple_Converter*  converter = Simple_Converter_ICU_new("UTF8", NULL);
 #   else
 #   define             converter NULL
@@ -36,11 +36,11 @@ main(int argc, char** argv)
         return 0;
     }
     if( strcmp(argv[1], "--hwut-info") == 0 ) {
-#       if   defined(QUEX_OPTION_CONVERTER_ICONV)
+#       if   defined(QUEX_UT_OPTION_CONVERTER_ICONV)
         printf("Reset w/ QuexLexatomLoader: Converter_IConv;\n");
-#       elif defined(QUEX_OPTION_CONVERTER_ICU)
+#       elif defined(QUEX_UT_OPTION_CONVERTER_ICU)
         printf("Reset w/ QuexLexatomLoader: Converter_ICU;\n");
-#       elif defined(QUEX_SETTING_TEST_UTF8)
+#       elif defined(QUEX_UT_SETTING_TEST_UTF8)
         printf("Reset w/ QuexLexatomLoader: Plain w/ Engine Codec;\n");
 #       else
         printf("Reset w/ QuexLexatomLoader: Plain;\n");

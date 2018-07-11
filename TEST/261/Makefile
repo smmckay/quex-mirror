@@ -21,13 +21,13 @@ CC := $(LDC)        \
      # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT 
    
 case1:
-	quex -i                 case1.qx  \
+	quex --cbm -i           case1.qx  \
 	     -o                 Simple  \
 		 --token-id-offset  0x1000     --debug-exception --language C
 	$(CC) -o $@ ../lexer.c Simple/Simple.c `icu-config --ldflags`      
           
 case2:
-	quex -i                 case2.qx  \
+	quex --cbm -i           case2.qx  \
 	     -o                 Simple  \
 		 --token-id-offset  0x1000     --debug-exception --language C
 	$(CC) -o $@ ../lexer.c Simple/Simple.c `icu-config --ldflags`      

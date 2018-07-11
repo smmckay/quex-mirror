@@ -15,7 +15,7 @@ hwut-info:
 	@echo $(TESTS) 
 
 simple-queue.exe: lexer.cpp  token.qx send-via-name.qx
-	quex -i token.qx send-via-name.qx -o Simple \
+	quex --cbm -i token.qx send-via-name.qx -o Simple \
 		 --suppress 15
 	$(CC) -I. lexer.cpp $(ENGINE) -o $@
 

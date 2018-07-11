@@ -9,17 +9,17 @@ fi
 tmp=`pwd`
 cd $bug/ 
 echo "(1)"
-quex -i error.qx 
+quex --cbm -i error.qx 
 echo "(2)"
-quex -i error-1.qx 
+quex --cbm -i error-1.qx 
 echo "(3)"
-quex -i error-2.qx 
+quex --cbm -i error-2.qx 
 echo "(4)"
-quex -i error-3.qx 
+quex --cbm -i error-3.qx 
 echo "(5)"
-quex -i error-4.qx 
+quex --cbm -i error-4.qx 
 echo "(6)"
-quex -i error-5.qx 
+quex --cbm -i error-5.qx 
 
 rm -rf Lexer
 cd $tmp

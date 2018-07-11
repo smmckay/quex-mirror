@@ -7,19 +7,19 @@ DEFINES := -DQUEX_SETTING_BUFFER_SIZE_EXT=64            \
 
 lex_iconv: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o Simple --bet wchar_t --debug-exception
+	@quex --cbm -i simple.qx -o Simple --bet wchar_t --debug-exception
 	@echo "Compiling"
 	$(LDCPP_ICONV) Simple/Simple.cpp ../lexer.cpp $(DEFINES) -o $@
 
 lex_icu: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o Simple --bet wchar_t 
+	@quex --cbm -i simple.qx -o Simple --bet wchar_t 
 	@echo "Compiling"
 	$(LDCPP_ICU) Simple/Simple.cpp ../lexer.cpp $(DEFINES) -o $@ $(LIB_ICU)
 
 lex_codec: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o Simple --encoding utf8  
+	@quex --cbm -i simple.qx -o Simple --encoding utf8  
 	@echo "Compiling"
 	$(LDCPP) Simple/Simple.cpp ../lexer.cpp $(DEFINES) -o $@
 clean:

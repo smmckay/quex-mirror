@@ -8,7 +8,7 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i error.qx -o Simple --language C 
+quex --cbm -i error.qx -o Simple --language C 
 gcc -I./ Simple/Simple.c ../lexer.c -o lexer \
     -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT
 

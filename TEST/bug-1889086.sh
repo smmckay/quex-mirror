@@ -10,16 +10,16 @@ cd $bug
 ../quex_pathify.sh --string `pwd`
 echo "tokens in .qx files _____________________________________"
 echo '(1)'
-quex -i error-1.qx -o Simple
+quex --cbm -i error-1.qx -o Simple
 echo '(2)'
-quex -i error-2.qx -o Simple
+quex --cbm -i error-2.qx -o Simple
 echo '(3)'
-quex -i error-3.qx -o Simple
+quex --cbm -i error-3.qx -o Simple
 echo 
 echo "tokens on command line __________________________________"
 echo '(1)'
-quex --token-id-prefix TKN-
+quex --cbm --token-id-prefix TKN-
 echo '(2)'
-quex --token-id-prefix SMOEREBROED
+quex --cbm --token-id-prefix SMOEREBROED
 rm -rf Lexer Simple  Simple.cpp  Simple-token_ids
 cd $tmp

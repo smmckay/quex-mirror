@@ -6,7 +6,7 @@ hwut-info:
 	@echo explicit.exe implicit.exe
 
 %.c: %.qx
-	quex -i $< -o $* --language C
+	quex --cbm -i $< -o $* --language C
 
 # -DQUEX_OPTION_DEBUG_SHOW_EXT 
 %.exe: %.c lexer.c 

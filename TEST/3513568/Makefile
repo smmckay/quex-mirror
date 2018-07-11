@@ -19,13 +19,13 @@ COMMON_TOKEN_OPTIONS = --token-class-file Common-token.h \
 	   	 	           # --no-message-on-extra-options \
 
 Lexer/Lexer.c:  boeck.qx Common-token.c 
-	quex -i $< -o Lexer -b 4 $(COMMON_TOKEN_OPTIONS) \
+	quex --cbm -i $< -o Lexer -b 4 $(COMMON_TOKEN_OPTIONS) \
 		 --language C --suppress 15 \
 		 --token-id-prefix TKN_ \
 		 --suppress 1 # --debug-exception
 
 Common-token.c: 
-	quex -i token_ids.qx token_type.qx \
+	quex --cbm -i token_ids.qx token_type.qx \
 		 -b 4                          \
 		 -o Common  --odir .           \
 		 --token-class Token           \

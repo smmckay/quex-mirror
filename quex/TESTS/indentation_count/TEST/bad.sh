@@ -12,7 +12,7 @@ else
     buffer_size=11
 fi
 
-quex -i src/bad-$1.qx -o Simple --language C --debug-exception
+quex --cbm -i src/bad-$1.qx -o Simple --language C --debug-exception
 gcc -I. -I. -Wall -Werror                   \
     Simple/Simple.c lexer2nd.c -o lexer \
     -DPRINT_TOKEN                                    \

@@ -5,92 +5,72 @@
 #ifndef QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION
 #define QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION
 
-#define QUEX_SETTING_VERSION           "$$QUEX_VERSION$$"
-#define QUEX_SETTING_BUILD_DATE        "$$LEXER_BUILD_DATE$$"
-#define QUEX_SETTING_ANALYZER_VERSION  "$$USER_LEXER_VERSION$$"
-
-#define QUEX_INDICATE_CONFIGURATION_FILE_PASSED
-
+/*______________________________________________________________________________
+ * TYPE DEFINITIONS                                                 -- ADAPTABLE
+ *                                                                            */
 $$TYPE_DEFINITIONS$$
 
-#define QUEX_SETTING_MODE_INITIAL_P             (&$$QUEX_SETTING_MODE_INITIAL_P$$)
+/*______________________________________________________________________________
+ * CONFIGURATION PARAMETERS (I)                                     -- ADAPTABLE 
+ *                                                                            */
+$$ADAPTABLE$$
 
-#if defined(QUEX_SETTING_MODE_STACK_SIZE_EXT)
-#   define QUEX_SETTING_MODE_STACK_SIZE         QUEX_SETTING_MODE_STACK_SIZE_EXT
-#else
-#   define QUEX_SETTING_MODE_STACK_SIZE                               (size_t)64
+/*______________________________________________________________________________
+ * CONFIGURATION PARAMETERS (II)                                    -- IMMUTABLE 
+ *                                                                            */
+$$IMMUTABLE$$
+
+/*______________________________________________________________________________
+ * DERIVED SETTINGS                                                 -- IMMUTABLE
+ *                                                                            */
+$$ERROR_IF_NO_CONFIGURATION_BY_MACRO$$
+
+#if QUEX_SETTING_BUFFER_SIZE < QUEX_SETTING_BUFFER_SIZE_MIN
+#   undef  QUEX_SETTING_BUFFER_SIZE_MIN
+#   define QUEX_SETTING_BUFFER_SIZE_MIN                 QUEX_SETTING_BUFFER_SIZE
 #endif
 
-/* BLC -- Buffer Limit Code:
+/* If compiler complains here, then 'QUEX_SETTING_BUFFER_SIZE' has probably
+ * be defined as something different than a pure integer!                     */
+#if QUEX_SETTING_BUFFER_SIZE_MIN <= QUEX_SETTING_BUFFER_MIN_FALLBACK_N
+#   ifdef  QUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT
+#       warning "QUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT has no effect!"
+#       warning "QUEX_SETTING_BUFFER_MIN_FALLBACK_N adapted due to constraints to QUEX_SETTING_BUFFER_SIZE."
+#   endif
+#   define QUEX_SETTING_BUFFER_MIN_FALLBACK_N  (size_t)(QUEX_SETTING_BUFFER_SIZE_MIN >> 5)
+#endif
+
+/* Asserts are enabled by default. The lexer emits a warning message and tells
+ * how to deactivate them. Asserts can be DEACTIVATED as follows.
  *
- * This code is used as a delimiter for buffer borders. When the analyzer
- * hits a character with such a code, it knows that a border or the
- * end of file has been reached. 
- *
- * IT IS NOT SUPPOSED TO APPEAR IN THE NORMAL CHARACTER STREAM.               */
-#define QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER  ((QUEX_TYPE_LEXATOM)$$BUFFER_LIMIT_CODE$$)
-
-#define QUEX_SETTING_BUFFER_LEXATOM_NEWLINE        ('\n')
-
-/* NOTE: A cast to 'size_t' would it make impossible to use the macro in 
- *       pre-processor comparisons.                                           */
-#if defined(QUEX_SETTING_BUFFER_SIZE_EXT)
-#   define  QUEX_SETTING_BUFFER_SIZE                QUEX_SETTING_BUFFER_SIZE_EXT
-#else
-     /* Plain number required. Pre-processor might depend on it.              */
-#    define QUEX_SETTING_BUFFER_SIZE                                      131072
+ *  'NDEBUG' (from Standard 'assert.h') => avoid surprises.
+ *  'QUEX_OPTION_ASSERTS_DISABLED_EXT'  => solely prevent Quex's asserts.     
+ *                                                                            */
+#if defined(NDEBUG) 
+#   ifdef     QUEX_OPTION_ASSERTS
+#      warning "undef 'QUEX_OPTION_ASSERTS' by 'NDEBUG'"
+#      undef  QUEX_OPTION_ASSERTS
+#   endif
+#elif defined(QUEX_OPTION_ASSERTS_DISABLED_EXT)
+#   ifdef     QUEX_OPTION_ASSERTS
+#      warning "undef 'QUEX_OPTION_ASSERTS' by 'QUEX_OPTION_ASSERTS_DISABLED_EXT'"
+#      undef  QUEX_OPTION_ASSERTS
+#   endif
+#elif ! defined(QUEX_OPTION_ASSERTS)
+#   define QUEX_OPTION_ASSERTS
 #endif
 
-/* Lowest buffer size to consider, such that when a buffer is smaller, then 
- * the resulting frequency of buffer reloads causes a 'unbearable' performance
- * decrease.
- *
- * A fine-tuned setting of this values considers: the memory read-access speed, 
- * the I/O speed, the max. expected lexeme sizem, and the expected average size 
- * of input streams. In most cases 32K will do well.     
- *
- * Tuning this value only makes sense in environment where lots of files are
- * included or where lexemes can become very large.                          */
-#if  defined(QUEX_SETTING_BUFFER_SIZE_MIN_EXT) 
-#    define QUEX_SETTING_BUFFER_SIZE_MIN       QUEX_SETTING_BUFFER_SIZE_MIN_EXT
-#else 
-#    define QUEX_SETTING_BUFFER_SIZE_MIN                                  32768
+/* Special Case MinGW: At the time of this writing (2009y09m23d) it does 
+ * not support 'wchart_t'.                                                    */
+#if (defined (__GLIBCPP__) || defined(__GLIBCXX__)) && ! defined  (_GLIBCXX_USE_WCHAR_T)
+#   define  QUEX_OPTION_WCHAR_T_DISABLED_EXT
 #endif
 
-#if  defined(QUEX_SETTING_LEXATOM_LOADER_SEEK_BUFFER_SIZE_EXT)
-#   define QUEX_SETTING_LEXATOM_LOADER_SEEK_BUFFER_SIZE  QUEX_SETTING_LEXATOM_LOADER_SEEK_BUFFER_SIZE_EXT
-#else
-#   define QUEX_SETTING_LEXATOM_LOADER_SEEK_BUFFER_SIZE                (512)
+/* No external definition of QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT
+ * => define as empty.                                                        */
+#ifndef   QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT
+#  define QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT
 #endif
 
-/* If one mode requires indentation support, then the lexical analyser class
- * must be setup for indentation counting. The following flag is defined or
- * undefined by the lexical analyser generator quex.                         */
-#if defined(QUEX_SETTING_INDENTATION_STACK_SIZE_EXT)
-#   define QUEX_SETTING_INDENTATION_STACK_SIZE   QUEX_SETTING_INDENTATION_STACK_SIZE_EXT
-#else
-#   define QUEX_SETTING_INDENTATION_STACK_SIZE   (64)
-#endif
-  
-/* PTC -- Path Termination code:
- * 
- * Only required for path compression (see option '--path-compression' and 
- * '--path-compression-uniform' for quex on the command line). PTC must be 
- * different from the BLC so that the pathwalker does not get confuses if
- * the input pointer stands on a buffer border and at the same time the
- * path iterator stands at the end of the path. 
- *
- * IT IS NOT SUPPOSED TO APPEAR IN THE NORMAL CHARACTER STREAM.               */
-#define QUEX_SETTING_BUFFER_LEXATOM_PATH_TERMINATION  ((QUEX_TYPE_LEXATOM)$$PATH_TERMINATION_CODE$$)
-
-#if defined(QUEX_SETTING_TOKEN_QUEUE_SIZE_EXT)
-#   define QUEX_SETTING_TOKEN_QUEUE_SIZE            QUEX_SETTING_TOKEN_QUEUE_SIZE_EXT
-#else
-#   define QUEX_SETTING_TOKEN_QUEUE_SIZE            ((size_t)$$TOKEN_QUEUE_SIZE$$)
-#endif
-
-#define    QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ($$TOKEN_REPEAT_TEST$$)
-
-$$INC: analyzer/configuration/derived$$
-
+#define QUEX_INDICATE_CONFIGURATION_FILE_PASSED
 #endif /* QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION */

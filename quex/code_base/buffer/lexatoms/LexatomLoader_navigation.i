@@ -172,14 +172,14 @@ QUEX_NAME(LexatomLoader_lexatom_index_step_to)(QUEX_NAME(LexatomLoader)*       m
  *
  * RETURNS: true - success; false - else.                                    */
 { 
-    const QUEX_TYPE_STREAM_POSITION ChunkSize = QUEX_SETTING_LEXATOM_LOADER_SEEK_BUFFER_SIZE;
-    QUEX_TYPE_LEXATOM               chunk[QUEX_SETTING_LEXATOM_LOADER_SEEK_BUFFER_SIZE];
+    const QUEX_TYPE_STREAM_POSITION ChunkSize = QUEX_SETTING_BUFFER_LEXATOM_LOADER_SEEK_BUFFER_SIZE;
+    QUEX_TYPE_LEXATOM               chunk[QUEX_SETTING_BUFFER_LEXATOM_LOADER_SEEK_BUFFER_SIZE];
     QUEX_TYPE_STREAM_POSITION       remaining_n      = TargetCI - me->lexatom_index_next_to_fill;
     bool                            end_of_stream_f  = false;
     bool                            encoding_error_f = false;
     size_t                          loaded_n;
 
-    __quex_assert(QUEX_SETTING_LEXATOM_LOADER_SEEK_BUFFER_SIZE >= 1);
+    __quex_assert(QUEX_SETTING_BUFFER_LEXATOM_LOADER_SEEK_BUFFER_SIZE >= 1);
 
     for(; remaining_n > ChunkSize; remaining_n -= ChunkSize ) {
         loaded_n = me->derived.load_lexatoms(me, &chunk[0], (size_t)ChunkSize, 

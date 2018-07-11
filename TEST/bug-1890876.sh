@@ -8,10 +8,10 @@ fi
 tmp=`pwd`
 cd $bug/ 
 echo "(1)"
-quex -i error.qx 
+quex --cbm -i error.qx 
 echo
 echo "(2)"
-quex -i error-2.qx 
+quex --cbm -i error-2.qx 
 echo
 rm -rf Lexer
 cd $tmp

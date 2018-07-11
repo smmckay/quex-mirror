@@ -2,7 +2,7 @@
 source $HWUT_PATH/support/bash/hwut_unit.sh
 
 function build_lexer {
-    quex -i overflow-and-reallocate.qx -o EHLexer --language C
+    quex --cbm -i overflow-and-reallocate.qx -o EHLexer --language C
     gcc lexer2nd.c EHLexer/EHLexer.c  \
         -I. -DPRINT_TOKEN \
         -DQUEX_SETTING_BUFFER_SIZE_EXT=4 \

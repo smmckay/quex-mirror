@@ -68,3 +68,13 @@ class EncodingTrafoByTable(EncodingTrafo, list):
 
         return verdict_f, None
 
+    def _do_single(self, Code): 
+        """Unicode character is translated to itself.
+        """
+        number_set = NumberSet.from_range(Code, Code+1)
+        number_set.transform_by_table(self)
+
+        # A single code element can only produce a single character!
+        assert number_set.has_size_one()
+        return [ number_set.get_the_only_element() ]
+

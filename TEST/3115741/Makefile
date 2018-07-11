@@ -42,7 +42,7 @@ example.o: $(QUEX_PATH)/TEST/lexer.c  Simple/Simple.c
 	$(CC) -DPRINT_LINE_COLUMN_NUMBER $< -o $@ 
 
 Simple/Simple.c: $(QX_FILE) 
-	quex -i $(QX_FILE) -o Simple --language C --debug-exception
+	quex --cbm -i $(QX_FILE) -o Simple --language C --debug-exception
 
 clean:	
 	rm -rf Simple* *.o *.bak lexer

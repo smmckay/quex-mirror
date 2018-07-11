@@ -98,6 +98,16 @@ class EncodingTrafo:
         sm = hopcroft_minimization.do(sm, CreateNewStateMachineF=False)
         return all_complete_f, sm
 
+    @typed(Code=(int, long))
+    def do_single(self, Code): 
+        """Translate a single character code from unicode to the engine's
+        encoding. The result is a sequence of code values.
+        """
+        result = self._do_single(Code)
+        assert isinstance(result, (list, tuple))
+        assert all(isinstance(x, (int, long)) for x in result)
+        return result
+
     def _add_transition_to_bad_lexatom_detector(self, target_map, BadLexatomSi, CodeUnitIndex):
         # A state with an empty target map is not supposed to handle input.
         # => drop-out without bad-lexatom check.
@@ -152,6 +162,11 @@ class EncodingTrafoNone(EncodingTrafo):
         # Do nothing
         return True, None
 
+    def _do_single(self, Code):
+        """No translation: character is translated to itself.
+        """
+        return [ Code ]
+
 class EncodingTrafoUnicode(EncodingTrafo):
     DEFAULT_LEXATOM_TYPE_SIZE = 1 # Byte
 
@@ -187,6 +202,11 @@ class EncodingTrafoUnicode(EncodingTrafo):
             # range.
             number_set.intersect_with(self.source_set)
             return False, None
+
+    def _do_single(self, Code): 
+        """Unicode character is translated to itself.
+        """
+        return [ Code ]
 
     def adapt_ranges_to_lexatom_type_range(self, LexatomTypeRange):
         self.source_set.mask_interval(LexatomTypeRange)

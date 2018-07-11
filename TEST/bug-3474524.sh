@@ -7,7 +7,7 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i simple.qx --language dot --debug-exception
+quex --cbm -i simple.qx --language dot --debug-exception
 cat ONE_AND_ONLY.dot
 rm ONE_AND_ONLY.dot -rf Lexer
 cd $tmp

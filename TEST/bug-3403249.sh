@@ -8,7 +8,7 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i $1.qx -b 2 -o Simple >& tmp.txt
+quex --cbm -i $1.qx -b 2 -o Simple >& tmp.txt
 cat tmp.txt 
 cd Simple
 if [ -e Simple ]; then

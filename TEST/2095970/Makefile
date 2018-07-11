@@ -27,7 +27,7 @@ Simple.E: Simple/Simple.cpp
 	$(CC) -E $< -o $@ 
 
 Simple/Simple.cpp: $(EXT_MODE_FILE)
-	quex -i $(EXT_MODE_FILE) common.qx token.qx -o Simple $(EXT_TOKEN_QUEUE_FLAG) > tmp.txt 2>&1
+	quex --cbm -i $(EXT_MODE_FILE) common.qx token.qx -o Simple $(EXT_TOKEN_QUEUE_FLAG) > tmp.txt 2>&1
 
 
 # (*) HELPERS __________________________________________________________________

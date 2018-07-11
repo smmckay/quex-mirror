@@ -9,7 +9,7 @@ test: Simple/Simple.c ../lexer.c
 		-DPRINT_TOKEN                  
 
 Simple/Simple.c: test.qx
-	quex -i $< -o Simple --language C --encoding utf8
+	quex --cbm -i $< -o Simple --language C --encoding utf8
 
 clean:
 	rm -rf Simple* test *.o

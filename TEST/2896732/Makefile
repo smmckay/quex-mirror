@@ -1,7 +1,7 @@
 include ../Makefile.lexer
 
 lexer:
-	quex -i uXa.qx -o Lexer \
+	quex --cbm -i uXa.qx -o Lexer \
 		 --token-id-prefix QUEX_UUID_ --token-id-offset 1114114 \
 		 -b 2 --suppress 15
 	$(LDCPP_ICU) -o uXa uXa.cpp Lexer/Lexer.cpp \

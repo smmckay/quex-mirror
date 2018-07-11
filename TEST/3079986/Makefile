@@ -3,7 +3,7 @@ simple.qx:
 
 Lexer: simple.qx
 	@echo "(0) quexify -- no output is good output"
-	@quex -i simple.qx --token-id-prefix scope1::scope2::scope3::TKN_ \
+	@quex --cbm -i simple.qx --token-id-prefix scope1::scope2::scope3::TKN_ \
 		  --foreign-token-id-file Parserbase-$(TESTCASE).h \
 		  --debug-exception 2>&1
 

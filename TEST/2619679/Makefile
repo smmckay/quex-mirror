@@ -29,7 +29,7 @@ $(APPLICATION): ../lexer-simply.cpp Simple/Simple.cpp
 		  ../lexer-simply.cpp Simple/Simple.cpp 
           
 Simple/Simple.cpp: $(MODE_FILES) 
-	quex -i $(MODE_FILES) -o Simple
+	quex --cbm -i $(MODE_FILES) -o Simple
 
 # (*) HELPERS __________________________________________________________________
 clean:	

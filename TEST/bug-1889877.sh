@@ -7,7 +7,7 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i error.qx 
+quex --cbm -i error.qx 
 
 rm -rf Lexer
 cd $tmp

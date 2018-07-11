@@ -15,24 +15,24 @@ lexer: lexer.cpp IConv/Lexer.cpp Codec/Lexer.cpp
 		 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED_EXT
 
 IConv/Lexer.cpp:    iconv.qx
-	quex -i $< -o IConv::Lexer --odir IConv -b 4 \
+	quex --cbm -i $< -o IConv::Lexer --odir IConv -b 4 \
 		 --token-id-prefix ICONV_TKN_
 
 Codec/Lexer.cpp:    codec.qx
-	quex -i $< -o Codec::Lexer --odir Codec --encoding utf8 --bet wchar_t  \
+	quex --cbm -i $< -o Codec::Lexer --odir Codec --encoding utf8 --bet wchar_t  \
 		 --token-id-prefix CODEC_TKN_
 
 Message0:      codec.qx  
-	quex -i $< -o X --encoding utf16 --bet u8  # => Error u8 cannot hold utf16
+	quex --cbm -i $< -o X --encoding utf16 --bet u8  # => Error u8 cannot hold utf16
 
 Message1:      codec.qx
-	quex -i $< -o X --encoding utf16 --bet u16 --token-id-prefix CODEC_TKN_ # => Ok, 'u16' can hold utf16
+	quex --cbm -i $< -o X --encoding utf16 --bet u16 --token-id-prefix CODEC_TKN_ # => Ok, 'u16' can hold utf16
 
 Message2:      codec.qx
-	quex -i $< -o X --encoding utf16 --bet u32 --token-id-prefix CODEC_TKN_  # => Ok, 'u32' can hold utf32
+	quex --cbm -i $< -o X --encoding utf16 --bet u32 --token-id-prefix CODEC_TKN_  # => Ok, 'u32' can hold utf32
 
 Message3:      codec.qx
-	quex -i $< -o X --encoding utf16 --bet int16_t --token-id-prefix CODEC_TKN_  # => Error, range 'i16' = 32768
+	quex --cbm -i $< -o X --encoding utf16 --bet int16_t --token-id-prefix CODEC_TKN_  # => Error, range 'i16' = 32768
 
 clean:
 	@rm -rf lexer X Lexer

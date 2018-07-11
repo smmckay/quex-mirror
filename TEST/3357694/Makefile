@@ -13,7 +13,7 @@ Simple.o: Simple/Simple.c
 	$(CC) -o $@ $< 
 
 Simple/Simple.c: 
-	quex -b 2 -i test.qx -o Simple --language C $(ADD_OPTION) --debug-exception
+	quex --cbm -b 2 -i test.qx -o Simple --language C $(ADD_OPTION) --debug-exception
 
 clean:
 	rm -rf Simple* *.o test

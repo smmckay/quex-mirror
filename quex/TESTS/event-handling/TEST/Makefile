@@ -29,11 +29,13 @@ LD := $(LD0) \
 	  -DQUEX_OPTION_ASSERTS   
 
 LD4     := $(LD) -DQUEX_SETTING_BUFFER_SIZE_EXT=4 \
+	             -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 \
 	             -DQUEX_OPTION_ASSERTS   
-LD65536 := $(LD0) -DEHLexer_SETTING_BUFFER_SIZE_EXT=65536
+LD65536 := $(LD0) -DQUEX_SETTING_BUFFER_SIZE_EXT=65536 \
+	              -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=256 \
 
-QUEX  := $(QUEX_PATH)/quex-exe.py --suppress 3 --language C --token-id-prefix TK_ --no-count-lines --no-count-columns
-QUEX2 := $(QUEX_PATH)/quex-exe.py --suppress 3 --language C --token-id-prefix TK_ --no-count-lines
+QUEX  := $(QUEX_PATH)/quex-exe.py --cbm --suppress 3 --language C --token-id-prefix TK_ --no-count-lines --no-count-columns
+QUEX2 := $(QUEX_PATH)/quex-exe.py --cbm --suppress 3 --language C --token-id-prefix TK_ --no-count-lines
 
 # (*) RULES ____________________________________________________________________
 # -- application

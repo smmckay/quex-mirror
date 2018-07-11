@@ -8,15 +8,15 @@ fi
 tmp=`pwd`
 cd $bug/ 
 echo "Original Error:"
-quex -i error.qx -o Simple
+quex --cbm -i error.qx -o Simple
 echo
 
 echo "Second Use Case:"
-quex -i error-2.qx -o Simple
+quex --cbm -i error-2.qx -o Simple
 echo
 
 echo "Third Use Case:"
-quex -i error-3.qx -o Simple # --debug-exception
+quex --cbm -i error-3.qx -o Simple # --debug-exception
 echo
 
 rm -rf Simple

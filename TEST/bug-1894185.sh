@@ -8,11 +8,11 @@ fi
 tmp=`pwd`
 cd $bug/ 
 echo '(1)'
-quex -i error.qx -o Simple
+quex --cbm -i error.qx -o Simple
 echo
 
 echo '(2)'
-quex -i error-2.qx -o Simple
+quex --cbm -i error-2.qx -o Simple
 
 # cleansening
 rm -rf Simple

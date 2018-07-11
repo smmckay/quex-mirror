@@ -16,7 +16,7 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i token-type.qx --token-class-only  --debug-exception
+quex --cbm -i token-type.qx --token-class-only  --debug-exception
 cat Lexer/Lexer-token | grep -e "position_[0123456789]\+;$" | awk '{ print substr($0, index($0, "position")+9); }' | tr -d ';' > occurrence_sequence.txt
 wc occurrence_sequence.txt
 sort -n occurrence_sequence.txt > sorted_by_occurrence.txt

@@ -17,7 +17,7 @@ lexer-icu: Simple/Simple.cpp text.345
 	# @rm  tmp.txt
 
 Simple/Simple.cpp: simple.qx
-	@quex -i $< -o Simple --bet wchar_t --debug-exception
+	@quex --cbm -i $< -o Simple --bet wchar_t --debug-exception
 
 text.345: 
 	bzip2 -kd text.345.bz2

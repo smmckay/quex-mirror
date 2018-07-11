@@ -22,11 +22,11 @@ all: error good
 
 # -- application
 error: ../lexer-simply.cpp 
-	@quex -i error.qx -o Simple > tmp.txt 2>&1
+	@quex --cbm -i error.qx -o Simple > tmp.txt 2>&1
 	@$(LDCPP) $< Simple/Simple.cpp -DPRINT_LINE_COLUMN -o $@ -ggdb
 
 good: ../lexer-simply.cpp 
-	@quex -i good.qx -o Simple --debug-exception > tmp.txt 2>&1
+	@quex --cbm -i good.qx -o Simple --debug-exception > tmp.txt 2>&1
 	@$(LDCPP) $< Simple/Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
 
 # (*) HELPERS __________________________________________________________________

@@ -18,14 +18,14 @@ C:   lexer/tiny_lexer.c
 
 
 lexer/tiny_lexer.cpp: 
-	quex -i cpp.qx -o tiny_lexer --odir lexer \
+	quex --cbm -i cpp.qx -o tiny_lexer --odir lexer \
 		 --token-id-offset 2 --token-id-prefix TKN_ \
 		 --debug-exception
 	@echo Code Generation Done
 
 
 lexer/tiny_lexer.c: 
-	quex -i cpp.qx -o tiny_lexer --odir lexer \
+	quex --cbm -i cpp.qx -o tiny_lexer --odir lexer \
 		 --token-id-offset 2 --token-id-prefix TKN_ \
 		 --language C --debug-exception
 	@echo Code Generation Done

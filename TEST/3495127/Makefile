@@ -11,7 +11,7 @@ Simple.E: Simple/Simple.c
 
 Simple/Simple.c: queue.qx
 	@echo "Call to quex"
-	quex -i queue.qx -o Simple --language C --debug-exception ##
+	quex --cbm -i queue.qx -o Simple --language C --debug-exception ##
 	cat Simple/Simple.c | awk '! /\# *line/' > tmp.c; mv tmp.c Simple/Simple.c
 
 clean:

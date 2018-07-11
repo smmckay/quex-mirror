@@ -10,7 +10,7 @@ lexer: Simple/Simple.cpp ../lexer-simply.cpp
 	$(CPP) -E $^ > $@ 
 
 Simple/Simple.cpp: ecmascript.qx
-	quex -i ecmascript.qx                           \
+	quex --cbm -i ecmascript.qx                     \
 		-o  Simple                                  \
 		--foreign-token-id-file ecmascript_yacc.hpp \
 		--template-compression                      \

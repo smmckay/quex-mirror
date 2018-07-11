@@ -8,7 +8,7 @@ fi
 tmp=`pwd`
 cd $bug/ 
 
-quex -i simple.qx -o Simple --language C --debug-exception 2>&1
+quex --cbm -i simple.qx -o Simple --language C --debug-exception 2>&1
 gcc  -I. ../lexer.c Simple/Simple.c -o lexer \
      -DPRINT_TOKEN \
      -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT 2>&1 

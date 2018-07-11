@@ -10,6 +10,12 @@ def parse(Txt_or_File, AllowNothingIsFineF=False):
 
     pattern, dummy = __parse(Txt_or_File, AllowNothingIsFineF=AllowNothingIsFineF)
 
+    if     pattern.pre_context_trivial_begin_of_line_f \
+       and len(blackboard.setup.buffer_encoding.do_single(ord('\n'))) != 1:
+        error.log("Pre-context 'begin-of-line' cannot be implemented with given encoding.\n"
+                  "Number of code units for character 'newline' must be exactly 1.", 
+                  fh=Txt_or_File)
+
     return pattern
 
 def parse_non_precontexted_pattern(Txt_or_File, Name, Terminator, AllowNothingIsFineF=False):

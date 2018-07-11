@@ -10,7 +10,7 @@ all: simple/simple.c main.c
 	gcc -E -I$(QUEX_PATH) $(QUEX_PARAMS) -I. $(CFLAGS) $< -o $@
 
 simple/simple.c: simple.qx Makefile
-	quex -i $< --language C --debug-exception -o simple
+	quex --cbm -i $< --language C --debug-exception -o simple
 
 clean:
 	touch simple.qx

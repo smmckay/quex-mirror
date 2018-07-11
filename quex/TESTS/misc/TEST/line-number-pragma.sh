@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
-    quex -i line-number-pragma.qx -o LineNumberPragma
+    quex --cbm -i line-number-pragma.qx -o LineNumberPragma
 fi
 
 file_list='LineNumberPragma LineNumberPragma-token LineNumberPragma.cpp'

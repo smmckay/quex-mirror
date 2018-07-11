@@ -12,17 +12,17 @@ CC := $(LDCPP) -o lexer
 all: $(INPUT)
 
 funny_comments: 
-	quex -i token.qx $(PREFIX)funny_comments.qx -o Simple --debug-exception
+	quex --cbm -i token.qx $(PREFIX)funny_comments.qx -o Simple --debug-exception
 	$(CC) Simple/Simple*.cpp ../lexer-simply.cpp \
 		$(DEFINES) -DQUEX_SETTING_BUFFER_SIZE_EXT=11
 
 shell_comments: 
-	quex -i token.qx $(PREFIX)shell_comments.qx -o Simple --debug-exception
+	quex --cbm -i token.qx $(PREFIX)shell_comments.qx -o Simple --debug-exception
 	$(CC) Simple/Simple*.cpp ../lexer-simply.cpp \
 		$(DEFINES) -DQUEX_SETTING_BUFFER_SIZE_EXT=4
 
 c_comments: 
-	quex -i token.qx $(PREFIX)c_comments.qx     -o Simple --debug-exception
+	quex --cbm -i token.qx $(PREFIX)c_comments.qx     -o Simple --debug-exception
 	$(CC) Simple/Simple*.cpp ../lexer-simply.cpp \
 		$(DEFINES) -DQUEX_SETTING_BUFFER_SIZE_EXT=4
 

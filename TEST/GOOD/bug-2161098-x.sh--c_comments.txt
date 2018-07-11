@@ -1,19 +1,6 @@
-quex -i token.qx nested-c_comments.qx     -o Simple --debug-exception
+quex --cbm -i token.qx nested-c_comments.qx     -o Simple --debug-exception
 g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT     -pedantic        -o lexer Simple/Simple*.cpp ../lexer-simply.cpp \
 	-DPRINT_LINE_COLUMN -DQUEX_OPTION_COUNTER_LINE_EXT -DQUEX_OPTION_COUNTER_COLUMN_EXT  -DQUEX_SETTING_BUFFER_SIZE_EXT=4
-## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'
-##
-## Asserts activated! Lexical analyzer is 'paranoid'!
-## => Even smallest misbehavior causes program exit.
-##    This helps to find subtle errors.
-##
-## Note however: the paranoia is a heavy load on performance!
-##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED_EXT'
-##
-## Report any bug at
-##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 ## An Assert-Abortion might be an intended element of the experiment.
 (1, 1)  	1 ''
 (1, 6)  	6 ''

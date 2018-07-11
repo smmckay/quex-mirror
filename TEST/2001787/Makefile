@@ -17,7 +17,7 @@ lexer-icu: Simple/Simple.cpp
 
 
 Simple/Simple.cpp: simple.qx
-	@quex -i $< -o Simple --bet wchar_t --debug-exception
+	@quex --cbm -i $< -o Simple --bet wchar_t --debug-exception
 
 
 clean:

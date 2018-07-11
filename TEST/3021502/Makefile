@@ -1,7 +1,7 @@
 include ../Makefile.lexer
 
 all:
-	quex -i simple.qx --language C -o Simple 
+	quex --cbm -i simple.qx --language C -o Simple 
 	$(LDC) point.c Simple/Simple.c -o a.out 
 
 clean:

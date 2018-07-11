@@ -17,8 +17,8 @@ if [[ $choice == "--hwut-info" ]]; then
 fi
 
 if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
-    quex -i challenge-with-tiny-buffer-sizes-overflow.qx -o Simple --language C
-    gcc -I. lexer.c Simple/Simple.c -o lexer -DQUEX_SETTING_BUFFER_SIZE_EXT=5
+    quex --cbm -i challenge-with-tiny-buffer-sizes-overflow.qx -o Simple --language C
+    gcc -I. lexer.c Simple/Simple.c -o lexer -DQUEX_SETTING_BUFFER_SIZE_EXT=5 -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0
 fi
 
 function test_this {

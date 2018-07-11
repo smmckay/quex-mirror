@@ -218,6 +218,8 @@ SETUP_INFO = {
     "_debug_reference_original_paths_f": [["--debug-original-paths"],          SetupParTypes.FLAG], 
     "_debug_QUEX_TYPE_LEXATOM_EXT":   [["--debug-QUEX_TYPE_LEXATOM_EXT"],      SetupParTypes.FLAG], 
     "quex_lib":                       [["--ql", "--quex-lib"],                 ""],    
+    "configuration_by_macros_f":      [["--cbm",  "--config-by-macros"],        SetupParTypes.FLAG],    
+    "configuration_by_cmake_f":       [["--cbcm", "--config-by-cmake"],        SetupParTypes.FLAG],    
     "analyzer_class":                 [["-o", "--analyzer-class"],             ""],    
     "analyzer_derived_class_file":    [["--derived-class-file"],               ""],
     "analyzer_derived_class_name":    [["--derived-class", "--dc"],            ""],

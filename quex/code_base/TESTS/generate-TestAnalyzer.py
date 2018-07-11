@@ -37,7 +37,8 @@ def code(Language):
     global tail_str
     command_line.do(["-i", "nothing.qx", "-o", "TestAnalyzer", 
                      "--odir", output_dir, "--language", Language,
-                     "--debug-QUEX_TYPE_LEXATOM_EXT"])
+                     "--debug-QUEX_TYPE_LEXATOM_EXT", 
+                     "--config-by-macros"])
     mode_db = quex_file_parser.do(Setup.input_mode_files)
 
     core._generate(mode_db)

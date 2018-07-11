@@ -8,7 +8,7 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i test.qx -o Simple --path-compression-uniform --template-compression --language C  --debug-exception >&1
+quex --cbm -i test.qx -o Simple --path-compression-uniform --template-compression --language C  --debug-exception >&1
 
 cd Simple
 awk '( /Simple_[XY]_analyzer_function/ && ! /=/) || /__quex_debug_path_walker_state/ || /__quex_debug_template_state/' Simple.c

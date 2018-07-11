@@ -18,7 +18,7 @@ lexer:   ../lexer.cpp  Simple/Simple.cpp
 	$(LDCPP) -o $@ $^
           
 Simple/Simple.cpp: masm.qx 
-	quex -i masm.qx  -o  Simple --debug-exception 
+	quex --cbm -i masm.qx  -o  Simple --debug-exception 
 
 # (*) HELPERS __________________________________________________________________
 clean:	

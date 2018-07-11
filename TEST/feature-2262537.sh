@@ -8,10 +8,10 @@ fi
 tmp=`pwd`
 cd $bug/ 
 echo "Error Case:\n"
-quex -i error.qx -o Simple
+quex --cbm -i error.qx -o Simple
 
 echo "Good Case:\n"
-quex -i test.qx -o Simple
+quex --cbm -i test.qx -o Simple
 
 # cleansening
 rm -rf Simple Simple.cpp Simple-* *.o tmp.txt

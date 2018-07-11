@@ -8,7 +8,7 @@ all: Simple/Simple.c
 
 Simple/Simple.c: simple.qx
 	@echo "Call to quex"
-	quex -i $< -o Simple --language C --debug-exception
+	quex --cbm -i $< -o Simple --language C --debug-exception
 
 
 clean:

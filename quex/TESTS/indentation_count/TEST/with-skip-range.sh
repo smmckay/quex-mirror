@@ -9,7 +9,7 @@ qx_file=src/with-skip-$1.qx
 txt_file=data/with-skip-$1.txt
 buffer_size=1024
 
-quex -i $qx_file -o Simple --language C --debug-exception
+quex --cbm -i $qx_file -o Simple --language C --debug-exception
 
 gcc \
  -ggdb -I.                                        \

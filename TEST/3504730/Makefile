@@ -10,7 +10,7 @@ LD = $(LDC)
 
 # (*) RULES ____________________________________________________________________
 simple: $(QUEX_PATH)/TEST/lexer.c  
-	quex -i                 simple.qx  \
+	quex --cbm -i     simple.qx  \
 	     -o           Simple     \
 		 --token-id-offset  0x1000     \
 		 --language         C          \
@@ -18,7 +18,7 @@ simple: $(QUEX_PATH)/TEST/lexer.c
 	$(LDC) $^ Simple/Simple.c -o $@ -DPRINT_TOKEN 
 
 more: $(QUEX_PATH)/TEST/lexer.c 
-	quex -i                 more.qx  \
+	quex --cbm -i      more.qx  \
 	     -o           Simple   \
 		 --token-id-offset  0x1000   \
 		 --language         C        \

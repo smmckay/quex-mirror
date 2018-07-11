@@ -7,8 +7,8 @@ case $1 in
         ;;
 
     *)
-        quex -i comment.qx --odir WithOut 
-        quex -i comment.qx --odir With   \
+        quex --cbm -i comment.qx --odir WithOut 
+        quex --cbm -i comment.qx --odir With   \
              --comment-state-machine \
              --comment-mode-patterns \
              --comment-transitions   \

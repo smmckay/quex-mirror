@@ -11,7 +11,7 @@ tmp=`pwd`
 cd $bug/ 
 echo "(*) Full Error"
 echo
-quex -i $1.qx -o Simple
+quex --cbm -i $1.qx -o Simple
 if [[ $1 == "error" ]]; then
     echo "(*) No String Accumulator"
     echo

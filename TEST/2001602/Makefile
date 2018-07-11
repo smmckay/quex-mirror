@@ -11,19 +11,19 @@ all: lex_icu lex_iconv lex_codec
 
 lex_iconv: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) -b 2 --debug-exception
+	@quex --cbm -i simple.qx -o $(X) -b 2 --debug-exception
 	@echo "Compiling"
 	$(LDCPP_ICONV) $(X)/$(X).cpp ../lexer.cpp $(DEFINES) -o $@ 
 
 lex_icu: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) -b 2 --debug-exception
+	@quex --cbm -i simple.qx -o $(X) -b 2 --debug-exception
 	@echo "Compiling"
 	$(LDCPP_ICU) $(X)/$(X).cpp ../lexer.cpp $(DEFINES) -o $@ $(LIB_ICU)
 
 lex_codec: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) --encoding utf8 --debug-exception
+	@quex --cbm -i simple.qx -o $(X) --encoding utf8 --debug-exception
 	@echo "Compiling"
 	$(LDCPP) $(X)/$(X).cpp ../lexer.cpp $(DEFINES) -o $@ 
 

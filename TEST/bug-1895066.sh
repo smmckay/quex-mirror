@@ -8,7 +8,7 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i error.qx -o Simple
+quex --cbm -i error.qx -o Simple
 
 echo
 echo 'Output from constructed header:_______________________________________'

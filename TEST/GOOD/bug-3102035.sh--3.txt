@@ -5,6 +5,6 @@
 ##   Case3.c:151: error: previous definition of ‘STATE_39’ was here
 ##
 ## would appear. If they do not, then everything is fine.
-quex -i case3.qx  -o Case3 --odir Simple --language C --debug-exception
+quex --cbm -i case3.qx  -o Case3 --odir Simple --language C --debug-exception
 gcc -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT     -Wno-deprecated  -I./ -I<<QUEX_PATH>> -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT -W -Wconversion -pedantic -DQUEX_SETTING_BUFFER_SIZE_EXT=4  -DPRINT_TOKEN -DPRINT_LINE_COLUMN_NUMBER -c Simple/Case3.c -o Case3.o
 rm Simple/Case3.c

@@ -7,11 +7,11 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i error.qx -o Simple --token-id-offset 0x100
+quex --cbm -i error.qx -o Simple --token-id-offset 0x100
 echo
-quex -i error.qx -o Simple --token-id-offset 0x10f
+quex --cbm -i error.qx -o Simple --token-id-offset 0x10f
 echo
-quex -i error.qx -o Simple --token-id-offset foo
+quex --cbm -i error.qx -o Simple --token-id-offset foo
 echo
 
 

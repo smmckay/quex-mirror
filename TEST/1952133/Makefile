@@ -44,7 +44,7 @@ Simple.o: Simple/Simple.c
 	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT $< -ggdb -o $@
 
 Simple/Simple.c: simple.qx
-	@quex -i simple.qx -o Simple --language C --debug-exception > tmp.txt 2>&1
+	@quex --cbm -i simple.qx -o Simple --language C --debug-exception > tmp.txt 2>&1
 
 # (*) HELPERS __________________________________________________________________
 mostlyclean:
