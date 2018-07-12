@@ -12,6 +12,12 @@ $$INC: quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
+QUEX_INLINE void
+QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
+                                                    QUEX_TYPE_LEXATOM* old_memory_root,
+                                                    QUEX_TYPE_LEXATOM* new_memory_root,
+                                                    ptrdiff_t          NewRootSize);
+
 QUEX_INLINE bool
 QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
                                    QUEX_NAME(Buffer)*        nesting,
@@ -167,6 +173,7 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     ptrdiff_t           required_size;
     ptrdiff_t           new_size;
     QUEX_NAME(Buffer)*  root = me;
+    QUEX_NAME(Buffer)*  focus = me;
     bool                verdict_f = false;
     
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
@@ -183,6 +190,13 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
 
     if( SizeAdd <= 0 || required_size >= new_size ) {
         return false;
+    }
+
+    /* Buffers must be informed about change early! Reallocation is not 
+     * predictable. When memory extension fails and new memory is copied, then
+     * nothing can be guaranteed about old content.                           */
+    for(focus = me; focus ; focus = focus->_memory.including_buffer) {
+        QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(focus);
     }
 
     new_memory_root_p = (QUEX_TYPE_LEXATOM*)QUEX_GNAME_LIB(MemoryManager_reallocate)(
@@ -232,6 +246,7 @@ QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
  *          false, if newly allocated memory is too small.                    */
 {
     QUEX_NAME(Buffer)* root;
+    QUEX_NAME(Buffer)* focus;
     QUEX_TYPE_LEXATOM* old_memory_root_p;
     QUEX_TYPE_LEXATOM* old_content_end_p = me->content_end(me);
     ptrdiff_t          required_size;
@@ -257,6 +272,10 @@ QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
         __QUEX_STD_memcpy((void*)&memory[0], 
                           (void*)&old_memory_root_p[0],
                           (size_t)required_size * sizeof(QUEX_TYPE_LEXATOM));
+
+        for(focus = me; focus ; focus = focus->_memory.including_buffer) {
+            QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(focus);
+        }
 
         /* Adapt this and all nesting buffers to new memory location.         */
         QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(me, old_memory_root_p,
@@ -346,14 +365,14 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
     QUEX_NAME(Buffer)* focus = (QUEX_NAME(Buffer)*)0;
     QUEX_TYPE_LEXATOM* new_memory;
     ptrdiff_t          buffer_size;
+    /* NOT: QUEX_BUFFER_ASSERT_CONSISTENCY(me)
+     *      Because, memory and its content may have been moved!              */
     
     /* Migration impossible, if the memory is not large enough for content.   */
     __quex_assert(me->content_end(me) - old_memory_root <= NewRootSize);
 
     /* Adapt this and all nesting buffers to new memory location.             */
     for(focus = me; focus ; focus = focus->_memory.including_buffer) {
-
-        QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(focus);
 
         new_memory  = &new_memory_root[focus->begin(focus) - old_memory_root];
         buffer_size = focus->size(focus);

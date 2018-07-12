@@ -18,7 +18,7 @@ hwut-info:
 	@echo $(TESTS)
 
 queue.exe:       lexer.cpp simple.qx 
-	quex -i simple.qx -o Simple 
+	quex --cbm -i simple.qx -o Simple 
 	$(CC) -I. lexer.cpp Simple/Simple.cpp -lefence -o $@
 
 %.o: %.cpp

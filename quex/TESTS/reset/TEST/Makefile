@@ -3,7 +3,7 @@ FILES = lexer codec-lexer iconv-lexer icu-lexer lexer-x
 
 CC = g++ -I. \
 	 -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT \
-	 -ggdb -Wall -fsanitize=address
+	 -ggdb -Wall # -fsanitize=address
      # -DQUEX_OPTION_DEBUG_SHOW_EXT 
 	 # 
 

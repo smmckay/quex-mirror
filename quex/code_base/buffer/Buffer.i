@@ -32,11 +32,6 @@ QUEX_INLINE void      QUEX_NAME(Buffer_on_overflow_DEFAULT)(void*              a
 QUEX_INLINE void      QUEX_NAME(Buffer_on_before_buffer_change_DEFAULT)(void*  aux,
                                                                         const  QUEX_TYPE_LEXATOM*, 
                                                                         const  QUEX_TYPE_LEXATOM*);
-QUEX_INLINE void      QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
-                                                                          QUEX_TYPE_LEXATOM* old_memory_root,
-                                                                          QUEX_TYPE_LEXATOM* new_memory_root,
-                                                                          ptrdiff_t          NewRootSize);
-
 QUEX_INLINE void      QUEX_NAME(Buffer_member_functions_assign)(QUEX_NAME(Buffer)* me);
 
 QUEX_INLINE void

@@ -17,7 +17,7 @@ QUEX_NAMESPACE_QUEX_OPEN
 
 uint8_t*
 QUEX_NAME_LIB(MemoryManager_allocate)(const size_t       ByteN, 
-                                   E_MemoryObjectType Type)
+                                      E_MemoryObjectType Type)
 {
     uint8_t* me = 0;
     (void)Type;
@@ -35,8 +35,8 @@ QUEX_NAME_LIB(MemoryManager_allocate)(const size_t       ByteN,
 
 uint8_t*
 QUEX_NAME_LIB(MemoryManager_reallocate)(void*              old_memory,
-                                     const size_t       NewByteN, 
-                                     E_MemoryObjectType Type)
+                                        const size_t       NewByteN, 
+                                        E_MemoryObjectType Type)
 /* Attempts to find a bigger chunk of memory for 'old_memory'--if possible 
  * at the same location, so that copying is not necessary.
  *
@@ -50,7 +50,27 @@ QUEX_NAME_LIB(MemoryManager_reallocate)(void*              old_memory,
  *                     (old_memory is DEALLOCATED)                            */
 {
     (void)Type;
+#   ifdef QUEX_OPTION_ASSERTS
+    /* (0) allocate new memory,
+     * (1) copy memory,
+     * (2) poison old memory,
+     * (3) free old memory,
+     * => Ensure that application does not rely on freed memory.              */
+    uint8_t* new_memory = QUEX_NAME_LIB(MemoryManager_allocate)(NewByteN, Type);
+    if( ! new_memory ) {
+        return (uint8_t*)0;
+    }
+    else {
+        __QUEX_STD_memcpy(new_memory, old_memory, NewByteN);
+        /* Cannot make assumptions about the old's memory size, except >= 1.
+         * => Poison one byte will at least trigger buffer limit code error.  */
+        ((uint8_t*)old_memory)[0] = 0xFF;
+        QUEX_NAME_LIB(MemoryManager_free)(old_memory, Type);
+        return new_memory;
+    }
+#   else
     return (uint8_t*)__QUEX_STD_realloc(old_memory, NewByteN);
+#   endif
 }
        
 void 
