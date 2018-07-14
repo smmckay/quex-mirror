@@ -40,9 +40,12 @@ QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me,
                             QUEX_TYPE_LEXATOM*        memory,
                             const size_t              MemorySize,
                             QUEX_TYPE_LEXATOM*        EndOfFileP,
+                            const ptrdiff_t           FallbackN,
                             E_Ownership               Ownership,
                             QUEX_NAME(Buffer)*        IncludingBuffer)
 {
+    __quex_assert(QUEX_SETTING_BUFFER_SIZE_MIN <= QUEX_SETTING_BUFFER_SIZE);
+
     /* Ownership of InputMemory is passed to 'me->_memory'.                  */
     QUEX_NAME(BufferMemory_construct)(&me->_memory, memory, MemorySize, 
                                       Ownership, IncludingBuffer); 
@@ -51,11 +54,11 @@ QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me,
     QUEX_NAME(Buffer_member_functions_assign)(me);
 
     /* Event handlers.                                                       */
-    QUEX_NAME(Buffer_callbacks_set)(me, (void (*)(void*))0,
-                                         (void (*)(void*))0, (void*)0);
+    QUEX_NAME(Buffer_callbacks_set)(me, (void (*)(void*))0, (void (*)(void*))0, (void*)0);
 
     /* Initialize.                                                           */
     QUEX_NAME(Buffer_init)(me, EndOfFileP);
+    me->_fallback_n = FallbackN;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 }
@@ -241,9 +244,10 @@ QUEX_NAME(Buffer_init_analyzis_core)(QUEX_NAME(Buffer)*        me,
 {
     (void)LexatomBeforeLexemeStart;
 
-    me->_read_p                         = ReadP;
-    me->_lexeme_start_p                 = LexatomStartP;
-    me->_lexatom_at_lexeme_start        = LexatomAtLexemeStart;                                   
+    me->_read_p                  = ReadP;
+    me->_lexeme_start_p          = LexatomStartP;
+    me->_lexatom_at_lexeme_start = LexatomAtLexemeStart;                                   
+    me->_fallback_n              = 0; /* To be set upon mode entry */
     $$<begin-of-line-context> me->_lexatom_before_lexeme_start    = LexatomBeforeLexemeStart;$$
     me->_backup_lexatom_index_of_lexeme_start_p = BackupLexatomIndexOfReadP;
 }

@@ -118,6 +118,7 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
     QUEX_NAME(Buffer_construct)(&me->buffer, new_filler,
                                 new_memory, QUEX_SETTING_BUFFER_SIZE, 
                                 (QUEX_TYPE_LEXATOM*)0,
+                                QUEX_SETTING_BUFFER_FALLBACK_N,
                                 E_Ownership_LEXICAL_ANALYZER,
                                 (QUEX_NAME(Buffer)*)0);
 
@@ -163,6 +164,7 @@ QUEX_NAME(from_memory)(QUEX_TYPE_ANALYZER* me,
     QUEX_NAME(Buffer_construct)(&me->buffer, 
                                 (QUEX_NAME(LexatomLoader)*)0,
                                 Memory, MemorySize, EndOfFileP,
+                                QUEX_SETTING_BUFFER_FALLBACK_N,
                                 E_Ownership_EXTERNAL,
                                 (QUEX_NAME(Buffer)*)0);
 
@@ -357,9 +359,6 @@ QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER* me,
 
     __quex_assert(memory_size == 0 || memory_size > 2);
     if( BufferMemoryBegin ) {
-        /* NOTE: 'Size < BUFFER_FALLBACK_N + 2' is conceivable;
-         *       maintaining 'fallback_n' is only tried, not guaranteed!      */
-
         /* End of File must be inside the buffer, because we assume that the 
          * buffer contains all that is required.                              */
         if(    BufferEndOfContentP < BufferMemoryBegin 

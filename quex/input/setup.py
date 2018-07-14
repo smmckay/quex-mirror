@@ -217,6 +217,7 @@ SETUP_INFO = {
     "_debug_limit_recursion":         [["--debug-limit-recursion"],            0], 
     "_debug_reference_original_paths_f": [["--debug-original-paths"],          SetupParTypes.FLAG], 
     "_debug_QUEX_TYPE_LEXATOM_EXT":   [["--debug-QUEX_TYPE_LEXATOM_EXT"],      SetupParTypes.FLAG], 
+    "error_on_arbitrary_length_of_pre_context_f": [["--error-on-arbitrary-length-of-pre-context", "--eoalopc"],  SetupParTypes.FLAG],
     "quex_lib":                       [["--ql", "--quex-lib"],                 ""],    
     "configuration_by_macros_f":      [["--cbm",  "--config-by-macros"],        SetupParTypes.FLAG],    
     "configuration_by_cmake_f":       [["--cbcm", "--config-by-cmake"],        SetupParTypes.FLAG],    

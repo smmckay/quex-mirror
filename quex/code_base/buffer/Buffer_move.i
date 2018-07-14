@@ -54,6 +54,8 @@ QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me,
         QUEX_IF_ASSERTS_poison(&me->content_end(me)[1], me->content_space_end(me));
     }
 
+    /* Compliance to fallback number cannot be checked here.
+     * Function is used to broadly.                                           */
     return me->content_space_end(me) - me->content_end(me);
 }
 
@@ -151,10 +153,10 @@ QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(QUEX_NAME(Buffer)*  me)
 {
     QUEX_TYPE_LEXATOM*  region_p;
     const ptrdiff_t     ContentSpaceSize = me->content_space_size(me);
-    const ptrdiff_t     FallBackN        = (ptrdiff_t)QUEX_SETTING_BUFFER_FALLBACK_N;
+    const ptrdiff_t     FallBackN = me->_fallback_n;
+    __quex_assert(FallBackN >= 0);
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-    __quex_assert(FallBackN >= 0);
 
     if( me->_read_p - me->_lexeme_start_p >= ContentSpaceSize - FallBackN ) { 
         /* OVERFLOW: If stretch from _read_p to _lexeme_start_p 
@@ -188,12 +190,11 @@ QUEX_NAME(Buffer_move_get_max_distance_towards_end)(QUEX_NAME(Buffer)* me)
  *   > 1  number of positions that the content may be moved towards the
  *        begin of the buffer.                                                */
 {
-    ptrdiff_t  backward_walk_distance;  
-    ptrdiff_t  move_distance;
-    ptrdiff_t  move_distance_reasonable;
-    ptrdiff_t  move_distance_max;
-    ptrdiff_t  move_distance_nominal;
-    const ptrdiff_t FallBackN = (ptrdiff_t)QUEX_SETTING_BUFFER_FALLBACK_N;
+    ptrdiff_t       backward_walk_distance;  
+    ptrdiff_t       move_distance;
+    ptrdiff_t       move_distance_reasonable;
+    ptrdiff_t       move_distance_max;
+    ptrdiff_t       move_distance_nominal;
 
     /* Move distance restrict by: -- begin of stream (lexatom_index_begin == 0)
      *                            -- '_read_p' must remain in buffer.         */
@@ -203,7 +204,7 @@ QUEX_NAME(Buffer_move_get_max_distance_towards_end)(QUEX_NAME(Buffer)* me)
     if( me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
         /* There is still content in the buffer that might be useful for
          * forward lexical analyis. Load only a decent amount backward.       */
-        move_distance_reasonable = QUEX_MAX(FallBackN + 256, me->content_space_size(me) / 4);
+        move_distance_reasonable = QUEX_MAX(256, me->content_space_size(me) / 4);
 
         if( me->_lexeme_start_p && me->_lexeme_start_p > me->_read_p ) {
             backward_walk_distance = me->_lexeme_start_p - me->_read_p;
@@ -246,7 +247,9 @@ QUEX_NAME(Buffer_move_get_distance_forward_to_contain)(QUEX_NAME(Buffer)*       
     QUEX_TYPE_STREAM_POSITION lexatom_index_begin = me->input.lexatom_index_begin;
     QUEX_TYPE_STREAM_POSITION lexatom_index_end   = lexatom_index_begin + me->content_size(me);
     QUEX_TYPE_STREAM_POSITION new_lexatom_index_begin;
-    QUEX_TYPE_STREAM_POSITION FallBackN           = QUEX_SETTING_BUFFER_FALLBACK_N;
+    const ptrdiff_t           FallBackN = me->_fallback_n;
+    __quex_assert(FallBackN >= 0);
+
     /* Assert to emphasize: 
      *      'lexatom_index_to_be_contained != lexatom_index_end_of_stream'
      * is correct, even if 'lexatom_index_end_of_stream' is undefined (-1).   */

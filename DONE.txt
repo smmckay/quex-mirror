@@ -1,3 +1,5 @@
+-- fallback number is determined by Quex.
+   Macro replaced by 'buffer._fallback_n' set upon mode entry.
 -- removed default namespace 'quex'
 -- refactored lexeme converter helper functions
 -- removal of macro-generated code

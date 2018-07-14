@@ -1,6 +1,6 @@
 
 No output is good output (make)
-quex -i                     ecmascript.qx    \
+quex --cbm -i               ecmascript.qx    \
 	 --analyzer-class       ecmascript_lexer \
 	 --token-id-prefix      TOK_             \
 	 --template-compression                  \

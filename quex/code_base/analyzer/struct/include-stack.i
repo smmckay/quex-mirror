@@ -152,6 +152,7 @@ QUEX_NAME(MF_include_push_memory)(QUEX_TYPE_ANALYZER* me,
     QUEX_NAME(Buffer_construct)(&new_buffer, 
                                 (QUEX_NAME(LexatomLoader)*)0,
                                 Memory, MemorySize, EndOfFileP,
+                                QUEX_SETTING_BUFFER_FALLBACK_N,
                                 E_Ownership_EXTERNAL,
                                 (QUEX_NAME(Buffer)*)0);
     new_buffer.event = me->buffer.event;              /* Plain copy suffices. */

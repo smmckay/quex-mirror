@@ -1,3 +1,4 @@
+import quex.input.files.mode                    as     mode
 import quex.output.analyzer.indentation_handler as     indentation_handler
 from   quex.engine.misc.string_handling         import blue_print
 from   quex.blackboard                          import setup as Setup, \
@@ -225,10 +226,12 @@ def get_IsOneOfThoseCode(ModeNameList, CheckBaseModeF=False,
             ["(%s)->has_base(Mode)" % mp] for mp in mode_pointer_list
         )
 
-    txt = Lng.CONDITION_SEQUENCE(condition_list,
-                                 [Lng.RETURN_THIS(Lng.TRUE)] * len(condition_list),
-                                 Lng.RETURN_THIS(Lng.FALSE))
-    return txt
+    if condition_list:
+        return Lng.CONDITION_SEQUENCE(condition_list,
+                                      [Lng.RETURN_THIS(Lng.TRUE)] * len(condition_list),
+                                      Lng.RETURN_THIS(Lng.FALSE))
+    else:
+        return [ Lng.RETURN_THIS(Lng.FALSE) ]
 
 def get_related_code_fragments(ModeDb):
     """

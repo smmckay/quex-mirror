@@ -10,7 +10,6 @@ from   quex.engine.misc.file_in              import skip_whitespace, \
                                                     read_identifier, \
                                                     EndOfStreamException
 
-from   quex.blackboard import mode_prep_prep_db
 import quex.blackboard as     blackboard
 
 from   collections import namedtuple
@@ -18,7 +17,7 @@ import types
 from   copy import copy
 
 def __get_mode_name_list():
-    return mode_prep_prep_db.keys()
+    return blackboard.mode_db.keys()
 
 class SkipRangeData(dict): 
     def __init__(self, OpenerPattern, CloserPattern, CoreDict=None):

@@ -41,9 +41,9 @@ main(int argc, char**argv)
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
         printf("Buffer_load_backward: (BPC=%i, FB=%i);\n",
                (int)sizeof(QUEX_TYPE_LEXATOM_EXT),
-               (int)QUEX_SETTING_BUFFER_FALLBACK_N);
+               (int)QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT);
         printf("CHOICES: ");
-        switch( QUEX_SETTING_BUFFER_FALLBACK_N ) {
+        switch( QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT ) {
         case 0: printf("BufferSize-3,");
         case 1: printf("BufferSize-4,");
         case 2: printf("BufferSize-5;\n");
@@ -98,6 +98,8 @@ walk_backward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
                                 &memory[0], BufferElementN,
                                 (QUEX_TYPE_LEXATOM_EXT*)0, E_Ownership_EXTERNAL,
                                 (QUEX_NAME(Buffer)*)0); 
+
+    buffer._fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
 
     QUEX_NAME(Buffer_callbacks_set)(&buffer,
                                          common_on_content_change,

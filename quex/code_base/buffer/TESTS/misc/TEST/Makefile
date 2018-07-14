@@ -12,19 +12,19 @@ CC    := gcc -ggdb -Wall -Werror \
 all: $(TESTS)
 
 construct_destruct_included.exe: construct_destruct_included.c 
-	$(CC) -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=1 $< -o $@
+	$(CC) -DQUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT=1 $< -o $@
 
 extend_and_migrate.exe: extend_and_migrate.c common.c 
-	$(CC) -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 $< common.c -o $@
+	$(CC) -DQUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT=0 $< common.c -o $@
 
 extend_and_migrate-nested.exe: extend_and_migrate-nested.c common.c 
-	$(CC) -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 $< common.c -o $@
+	$(CC) -DQUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT=0 $< common.c -o $@
 
 negotiate_extend.exe: negotiate_extend.c common.c 
-	$(CC) -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 $< common.c -o $@
+	$(CC) -DQUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT=0 $< common.c -o $@
 	    
 %.E: %.c
-	$(CC) -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=1 $^ -E > $@
+	$(CC) -DQUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT=1 $^ -E > $@
 
 hwut-info:
 	@echo $(TESTS)

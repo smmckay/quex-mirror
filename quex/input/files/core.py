@@ -25,9 +25,11 @@ import quex.token_db                            as     token_db
 from   quex.input.regular_expression.exception  import RegularExpressionException
 
 def do(file_list):
-    if     len(file_list) == 0 \
-       and not (Setup.token_class_only_f or Setup.converter_only_f): 
+    if not file_list and not (Setup.token_class_only_f or Setup.converter_only_f): 
         error.log("No input files.")
+
+    mode_prep_prep_db = {} # mode name --> Mode_PrepPrep object
+    #                      # later: Mode_PrepPrep is transformed into Mode objects.
 
     # If a foreign token-id file was presented even the standard token ids
     # must be defined there.
@@ -41,24 +43,21 @@ def do(file_list):
         # read all modes until end of file
         try:
             while 1 + 1 == 2:
-                parse_section(fh)
+                parse_section(fh, mode_prep_prep_db)
         except EndOfStreamException:
             pass
         except RegularExpressionException, x:
             error.log(x.message, fh)
         
     if token_db.token_type_definition is None:
-        parse_default_token_definition()
+        parse_default_token_definition(mode_prep_prep_db)
 
-    if blackboard.mode_prep_prep_db:
-        return mode.finalize_modes(blackboard.mode_prep_prep_db)
-    else:
-        return dict()
-
+    if mode_prep_prep_db: return mode_prep_prep_db 
+    else:                 return dict()
 
 default_token_type_definition_triggered_by_mode_definition_f = False
 
-def parse_section(fh):
+def parse_section(fh, mode_prep_prep_db):
     global default_token_type_definition_triggered_by_mode_definition_f
 
     # NOTE: End of File is supposed to be reached when trying to read a new
@@ -166,10 +165,10 @@ def parse_section(fh):
             # When the first mode is parsed then a token_type definition must be 
             # present. If not, the default token type definition is considered.
             if token_db.token_type_definition is None:
-                parse_default_token_definition()
+                parse_default_token_definition(mode_prep_prep_db)
                 default_token_type_definition_triggered_by_mode_definition_f = True
 
-            mode.parse(fh)
+            mode.parse(fh, mode_prep_prep_db)
             return
 
         else:
@@ -305,8 +304,8 @@ def parse_token_id_definitions(fh, NamesOnlyF=False):
     else:
         return # Changes are applied to 'token_db.token_id_db'
 
-def parse_default_token_definition():
+def parse_default_token_definition(mode_prep_prep_db):
     sub_fh = Lng.open_template_fh(Lng.token_default_file())
-    parse_section(sub_fh)
+    parse_section(sub_fh, mode_prep_prep_db)
     sub_fh.close()
 

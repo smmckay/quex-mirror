@@ -73,37 +73,17 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
              [1] reload state BACKWARD, to be generated later.
     """
 
-    if SM is None: 
-        return [], None
+    if SM is None: return [], None
 
-    txt, analyzer = __do_state_machine(SM, engine.BACKWARD_PRE_CONTEXT, dial_db) 
+    fallback_txt  = _get_pre_context_fallback_definition(SM)
 
-    backup_position = Lng.REGISTER_NAME(E_R.BackupStreamPositionOfLexemeStartP)
+    analyzer_txt, \
+    analyzer      = __do_state_machine(SM, engine.BACKWARD_PRE_CONTEXT, dial_db) 
 
-    txt.append("\n".join([
-        Lng.LABEL(DoorID.global_end_of_pre_context_check(dial_db)),
-        #-------------------
-        Lng.IF(backup_position, "!=", "((QUEX_TYPE_STREAM_POSITION)-1)"),
-            # "QUEX_NAME(Buffer_print_content)(&me->buffer);\n",
-            # "std::cout << std::endl;\n",
-            Lng.IF("false", "==", Lng.BUFFER_SEEK(backup_position)),
-                Lng.RAISE_ERROR_FLAG("E_Error_File_SeekFailed"),
-                Lng.RETURN,
-            Lng.END_IF,
-            Lng.LEXEME_START_SET(PositionStorage=None), # use '_read_p'
-            # "std::cout << \"lexst \" << me->buffer._lexeme_start_p[0] << std::endl;",
-            # "std::cout << \"readp \" << me->buffer._read_p[0] << std::endl;",
-            # "QUEX_NAME(Buffer_print_content)(&me->buffer);\n",
-            # "std::cout << std::endl;\n",
-            Lng.ASSIGN(backup_position, "((QUEX_TYPE_STREAM_POSITION)-1)"),
-        Lng.ELSE_FOLLOWS,
-            #-----------------------
-            # -- set the input stream back to the real current position.
-            #    during backward lexing the analyzer went backwards, so it needs to be reset.
-            Lng.INPUT_P_TO_LEXEME_START(),
-        Lng.END_IF,
-    ]))
-    txt.append("\n")
+    epilog_txt    = _get_pre_context_epilog_definition(dial_db)
+
+    txt = analyzer_txt
+    txt.extend(epilog_txt)
 
     for sm_id in PreContextSmIdList:
         variable_db.require("pre_context_%i_fulfilled_f", Index = sm_id)
@@ -283,3 +263,43 @@ _increment_actions_for_utf16 = [
      1, "else                                            { iterator += 1; }\n", 
 ]
     
+def _get_pre_context_fallback_definition(SM):
+    fallback_n = SM.longest_path_to_first_acceptance()
+    if fallback_n is not None: fallback_n_str = "%s" % fallback_n
+    else:                      fallback_n_str = "0"
+
+    return [
+        "%s\n" % Lng.ASSIGN("me->buffer._fallback_n", "QUEX_SETTING_BUFFER_FALLBACK_N"),
+        "%s\n" % Lng.ASSERT("QUEX_SETTING_BUFFER_SIZE > me->buffer._fallback_n + 3"),
+        "%s\n" % Lng.ASSERT("QUEX_SETTING_BUFFER_SIZE_MIN > me->buffer._fallback_n + 3"),
+        "%s\n" % Lng.ASSERT("me->buffer.size(&me->buffer) > me->buffer._fallback_n + 3")
+    ]
+
+def _get_pre_context_epilog_definition(dial_db):
+    backup_position = Lng.REGISTER_NAME(E_R.BackupStreamPositionOfLexemeStartP)
+
+    txt = [
+        Lng.LABEL(DoorID.global_end_of_pre_context_check(dial_db)),
+        #-------------------
+        Lng.IF(backup_position, "!=", "((QUEX_TYPE_STREAM_POSITION)-1)"),
+            # "QUEX_NAME(Buffer_print_content)(&me->buffer);\n",
+            # "std::cout << std::endl;\n",
+            Lng.IF("false", "==", Lng.BUFFER_SEEK(backup_position)),
+                Lng.RAISE_ERROR_FLAG("E_Error_File_SeekFailed"),
+                Lng.RETURN,
+            Lng.END_IF,
+            Lng.LEXEME_START_SET(PositionStorage=None), # use '_read_p'
+            # "std::cout << \"lexst \" << me->buffer._lexeme_start_p[0] << std::endl;",
+            # "std::cout << \"readp \" << me->buffer._read_p[0] << std::endl;",
+            # "QUEX_NAME(Buffer_print_content)(&me->buffer);\n",
+            # "std::cout << std::endl;\n",
+            Lng.ASSIGN(backup_position, "((QUEX_TYPE_STREAM_POSITION)-1)"),
+        Lng.ELSE_FOLLOWS,
+            #-----------------------
+            # -- set the input stream back to the real current position.
+            #    during backward lexing the analyzer went backwards, so it needs to be reset.
+            Lng.INPUT_P_TO_LEXEME_START(),
+        Lng.END_IF,
+    ]
+
+    return [ "%s\n" % line for line in txt ]

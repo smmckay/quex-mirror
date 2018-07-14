@@ -211,6 +211,7 @@ QUEX_NAME(MF_reset_memory)(QUEX_TYPE_ANALYZER*  me,
     QUEX_NAME(Buffer_construct)(&me->buffer, 
                                 (QUEX_NAME(LexatomLoader)*)0,
                                 Memory, MemorySize, EndOfFileP,
+                                QUEX_SETTING_BUFFER_FALLBACK_N,
                                 E_Ownership_EXTERNAL,
                                 (QUEX_NAME(Buffer)*)0);
     return true;

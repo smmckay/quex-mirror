@@ -25,21 +25,6 @@ $$IMMUTABLE$$
  *                                                                            */
 $$ERROR_IF_NO_CONFIGURATION_BY_MACRO$$
 
-#if QUEX_SETTING_BUFFER_SIZE < QUEX_SETTING_BUFFER_SIZE_MIN
-#   undef  QUEX_SETTING_BUFFER_SIZE_MIN
-#   define QUEX_SETTING_BUFFER_SIZE_MIN                 QUEX_SETTING_BUFFER_SIZE
-#endif
-
-/* If compiler complains here, then 'QUEX_SETTING_BUFFER_SIZE' has probably
- * be defined as something different than a pure integer!                     */
-#if QUEX_SETTING_BUFFER_SIZE_MIN <= QUEX_SETTING_BUFFER_MIN_FALLBACK_N
-#   ifdef  QUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT
-#       warning "QUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT has no effect!"
-#       warning "QUEX_SETTING_BUFFER_MIN_FALLBACK_N adapted due to constraints to QUEX_SETTING_BUFFER_SIZE."
-#   endif
-#   define QUEX_SETTING_BUFFER_MIN_FALLBACK_N  (size_t)(QUEX_SETTING_BUFFER_SIZE_MIN >> 5)
-#endif
-
 /* Asserts are enabled by default. The lexer emits a warning message and tells
  * how to deactivate them. Asserts can be DEACTIVATED as follows.
  *

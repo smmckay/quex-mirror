@@ -78,6 +78,7 @@ main(int argc, char** argv)
                                         memory, MemorySize, end_p,
                                         E_Ownership_LEXICAL_ANALYZER,
                                         (QUEX_NAME(Buffer)*)0);
+            including._fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
 
             including.input.end_p  = end_p;
             including._read_p = read_p;
@@ -90,6 +91,7 @@ main(int argc, char** argv)
             including._lexeme_start_p = including._read_p;
             verdict = QUEX_NAME(Buffer_nested_construct)(&included, &including, 
                                                          (QUEX_NAME(LexatomLoader)*)0);
+            included._fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
 
             split_n += self_check_construction(&including, &included, 
                                                &memory[MemorySize], 

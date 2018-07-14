@@ -4,8 +4,7 @@ tmpfile=$(mktemp --suffix $(basename $1))
 make "$@" >& $tmpfile
 
 cat $tmpfile \
-    | awk '   /[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ \
-           || /[Ee][Rr][Rr][Oo][Rr]/'        \
+    | awk '/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || (/[Ee][Rr][Rr][Oo][Rr]/ && ! /--error/)'        \
     | awk '    ! /out of range/              \
             && ! /getline/                   \
             && ! /-Werror/                   \

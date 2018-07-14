@@ -14,6 +14,10 @@ class BasicMode:
         self.bipd_sm_db,            \
         self.pre_context_sm_id_list = self.__prepare(PatternList)
 
+    def longest_pre_context(self):
+        if not self.pre_context_sm: return None
+        return self.pre_context_sm.longest_path_to_first_acceptance()
+
     def __prepare(self, PatternList):
         # -- setup of state machine lists and id lists
         core_sm_list,                 \

@@ -1,3 +1,7 @@
+-- Use flag '"--error-on-arbitrary-length-of-pre-context"' whenever feeder, gavager, or pointer is used.
+-- FallbackN ensures that 'N' lexatoms backwards are always available!
+-- BUFFER_SIZE_MIN must fit the lexeme. => important for include optimization
+
 /* Assert Strategy:
  *
  * Asserts are enabled by default. The lexer emits a warning message and tells

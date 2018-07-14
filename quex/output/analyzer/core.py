@@ -9,8 +9,7 @@ from   quex.DEFINITIONS import QUEX_PATH, \
 import quex.token_db    as     token_db
 import quex.blackboard  as     blackboard
 from   quex.blackboard  import setup as Setup, \
-                               Lng, \
-                               mode_prep_prep_db
+                               Lng
 
 def do(ModeDB, Epilog):
     assert not Epilog # If this never triggers, delete 'Epilog'
@@ -78,7 +77,7 @@ def do_implementation(ModeDB, MemberFunctionSignatureList):
 
     func_txt = Lng.open_template(Lng.analyzer_template_i_file())
 
-    if mode_prep_prep_db: 
+    if blackboard.mode_db: 
         map_token_ids_to_names_str = token_id_maker.do_map_id_to_name_cases()
     else:                 
         map_token_ids_to_names_str = ""

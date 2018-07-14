@@ -41,9 +41,9 @@ SIZE_1     := -DQUEX_TYPE_LEXATOM_EXT=uint8_t
 SIZE_2     := -DQUEX_TYPE_LEXATOM_EXT=uint16_t
 SIZE_4     := -DQUEX_TYPE_LEXATOM_EXT=uint32_t
 SIZE_WC    := -DQUEX_TYPE_LEXATOM_EXT=wchar_t
-FALLBACK_0 := -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 
-FALLBACK_1 := -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=1 
-FALLBACK_2 := -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=2
+FALLBACK_0 := -DQUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT=0 
+FALLBACK_1 := -DQUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT=1 
+FALLBACK_2 := -DQUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT=2
 
 CFLAGS := -ggdb -Wall -Werror $(INCLUDES) $(DEFS) \
 	      -fsanitize=address basic_functionality.c
@@ -61,61 +61,57 @@ hwut-end: clean
 
 # RULES _______________________________________________________________________
 #
-%-4-0.exe: %.c basic_functionality.c ut
+%-4-0.exe: %.c basic_functionality.c 
 	$(CC) $(SIZE_4) $(FALLBACK_0) $< $(XLIBS) -o $@ 
-%-4-1.exe: %.c basic_functionality.c  ut
+%-4-1.exe: %.c basic_functionality.c  
 	$(CC) $(SIZE_4) $(FALLBACK_1) $< $(XLIBS) -o $@
-%-4-2.exe: %.c basic_functionality.c  ut
+%-4-2.exe: %.c basic_functionality.c  
 	$(CC) $(SIZE_4) $(FALLBACK_2) $< $(XLIBS) -o $@
 
-%-4-0.exe: %.cpp basic_functionality.c  ut
+%-4-0.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_4) $(FALLBACK_0) $< $(XLIBS) -o $@
-%-4-1.exe: %.cpp basic_functionality.c  ut
+%-4-1.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_4) $(FALLBACK_1) $< $(XLIBS) -o $@
-%-4-2.exe: %.cpp basic_functionality.c  ut
+%-4-2.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_4) $(FALLBACK_2) $< $(XLIBS) -o $@
 
-%-2-0.exe: %.c basic_functionality.c  ut
+%-2-0.exe: %.c basic_functionality.c  
 	$(CC) $(SIZE_2) $(FALLBACK_0) $< $(XLIBS) -o $@
-%-2-1.exe: %.c basic_functionality.c  ut
+%-2-1.exe: %.c basic_functionality.c  
 	$(CC) $(SIZE_2) $(FALLBACK_1) $< $(XLIBS) -o $@
-%-2-2.exe: %.c basic_functionality.c  ut
+%-2-2.exe: %.c basic_functionality.c  
 	$(CC) $(SIZE_2) $(FALLBACK_2) $< $(XLIBS) -o $@
 
-%-wchar_t-0.exe: %.cpp basic_functionality.c  ut-cpp
+%-wchar_t-0.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_WC) $(FALLBACK_0) $< $(XLIBS) -o $@
-%-wchar_t-1.exe: %.cpp basic_functionality.c  ut-cpp
+%-wchar_t-1.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_WC) $(FALLBACK_1) $< $(XLIBS) -o $@
-%-wchar_t-2.exe: %.cpp basic_functionality.c  ut-cpp
+%-wchar_t-2.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_WC) $(FALLBACK_2) $< $(XLIBS) -o $@
 
-%-2-0.exe: %.cpp basic_functionality.c  ut-cpp
+%-2-0.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_WC) $(FALLBACK_0) $< $(XLIBS) -o $@
-%-2-1.exe: %.cpp basic_functionality.c  ut-cpp
+%-2-1.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_WC) $(FALLBACK_1) $< $(XLIBS) -o $@
-%-2-2.exe: %.cpp basic_functionality.c  ut-cpp
+%-2-2.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_WC) $(FALLBACK_2) $< $(XLIBS) -o $@
 
-%-1-0.exe: %.c basic_functionality.c  ut
+%-1-0.exe: %.c basic_functionality.c
 	$(CC) $(SIZE_1) $(FALLBACK_0) $< $(XLIBS) -o $@
-%-1-1.exe: %.c basic_functionality.c  ut
+%-1-1.exe: %.c basic_functionality.c
 	$(CC) $(SIZE_1) $(FALLBACK_1) $< $(XLIBS) -o $@
-%-1-2.exe: %.c basic_functionality.c  ut
+%-1-2.exe: %.c basic_functionality.c
 	$(CC) $(SIZE_1) $(FALLBACK_2) $< $(XLIBS) -o $@
 
-%-1-0.exe: %.cpp basic_functionality.c  ut-cpp
+%-1-0.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_1) $(FALLBACK_0) $< $(XLIBS) -o $@
-%-1-1.exe: %.cpp basic_functionality.c  ut-cpp
+%-1-1.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_1) $(FALLBACK_1) $< $(XLIBS) -o $@
-%-1-2.exe: %.cpp basic_functionality.c  ut-cpp
+%-1-2.exe: %.cpp basic_functionality.c  
 	$(CCP) $(SIZE_1) $(FALLBACK_2) $< $(XLIBS) -o $@
 
-
-ut-cpp:
-ut:
-
 clean: 
-	rm -rf $(TESTS) ut ut-cpp
+	rm -rf $(TESTS) 
 	rm -rf *-gen.[ch]
 	rm -rf *-gen.[ch].[ch]   # some unattended build results ...
 	rm -rf *.exe

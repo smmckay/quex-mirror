@@ -78,6 +78,8 @@ $$-----------------------------------------------------------------------------
 QUEX_INLINE void
 QUEX_NAME(Feeder_feed)(QUEX_NAME(Feeder)* me, const void* BeginP, const void* EndP)
 {
+    __quex_assert(BeginP);
+    __quex_assert(EndP);
     /* Copy buffer content into the analyzer's buffer-as much as possible.
      * 'fill()' returns a pointer to the first not-eaten byte.                */
     me->external_chunk.end_p   = EndP;
@@ -105,7 +107,7 @@ QUEX_NAME(Feeder_deliver)(QUEX_NAME(Feeder)* me)
              * can be filled. Buffer size must be large enough to hold a 
              * complete token queue for one step (including skipped data).    */
             QUEX_NAME(MF_error_code_set_if_first)(me->base.lexer, 
-                                               E_Error_Buffer_Feeder_CannotAbsorbMoreContent);
+                                                  E_Error_Buffer_Feeder_CannotAbsorbMoreContent);
             return (QUEX_TYPE_TOKEN*)0;
         }
 

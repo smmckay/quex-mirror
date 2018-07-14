@@ -1381,6 +1381,28 @@ class Language(dict):
         if close_str: close_str = "%s\n" % close_str
         return "".join([open_str, Code, close_str])
 
+    def HELP_IF_CONFIGURATION_BY_CMAKE(self, SettingList):
+        if not Setup.configuration_by_cmake_f: return ""
+        txt = [
+            "/*______________________________________________________________________________"
+            "   Configuration by CMake."
+            "   Template to be pasted into 'CMakeLists.txt'."
+            ""
+        ]
+        txt.extend([
+            "set(QUEX_SETTING_%s_%s_EXT %s)" % (name, Setup.analyzer_name_safe, value) 
+            for name, value in SettingList 
+        ])
+        txt.extend([
+            "",
+            "configure_file(",
+            '    "%s.in"' % configuration_file_name_cmake,
+            '    "%s"'    % configuration_file_name,
+            ')',
+            "______________________________________________________________________________*/"
+        ])
+
+        return "\n".join(txt)
     def ERROR_IF_DEFINED_AND_NOT_CONFIGURATION_BY_MACRO(self, ShortNameList):
         def ifdefined(Name, FirstF):
             if FirstF:
@@ -1585,7 +1607,16 @@ cpp_reload_forward_str = """
     __quex_debug_reload_after($$LOAD_RESULT$$);
 
     switch( $$LOAD_RESULT$$ ) {
-    case E_LoadResult_DONE:           $$GOTO target_state_index$$      
+    case E_LoadResult_DONE: {
+        /* FallbackN must be maintained at any cost!                          */
+        __quex_assert(   ! me->buffer.input.lexatom_index_begin
+                      || ! me->buffer._lexeme_start_p
+                      ||   me->buffer._lexeme_start_p - me->buffer.content_begin(&me->buffer) >= me->buffer._fallback_n);
+        __quex_assert(   ! me->buffer.input.lexatom_index_begin
+                      || ! me->buffer._read_p
+                      ||   me->buffer._read_p        - me->buffer.content_begin(&me->buffer) >= me->buffer._fallback_n);
+        $$GOTO target_state_index$$      
+    }
     case E_LoadResult_NO_MORE_DATA:   $$GOTO target_state_else_index$$ 
     case E_LoadResult_ENCODING_ERROR: goto $$ON_BAD_LEXATOM$$;
     case E_LoadResult_OVERFLOW:       QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;

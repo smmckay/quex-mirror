@@ -6,10 +6,12 @@ $$INC: buffer/Buffer$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE void*
+QUEX_INLINE const void*
 QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)*  me, 
                        const void*         ContentBegin,
                        const void*         ContentEnd)
+/* RETURNS: Pointer to first element that has not been filled into buffer.
+ *          == ContentBegin, in case that nothing has been filled.          */
 {
     ptrdiff_t      copy_n;
     void*          begin_p;
@@ -17,15 +19,21 @@ QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)*  me,
 
     /* Prepare the buffer for the reception of new input and acquire the
      * border pointers of where new content can be filled.                   */
-    me->fill_prepare(me, &begin_p, &end_p);
+    if( ! ContentBegin ) {
+        return (void*)ContentBegin;
+    }
+    else if( ! me->fill_prepare(me, &begin_p, &end_p) ) {
+        return (void*)ContentBegin;
+    }
+    __quex_assert(ContentEnd);
 
     /* Copy as much as possible of the new content into the designated
      * region in memory. This may be the engine's buffer or a 'raw' buffer
      * whose content still needs to be converted.                            */
     copy_n = (ptrdiff_t)QUEX_GNAME_LIB(MemoryManager_insert)((uint8_t*)begin_p,  
-                                                     (uint8_t*)end_p,
-                                                     (uint8_t*)ContentBegin, 
-                                                     (uint8_t*)ContentEnd);
+                                                             (uint8_t*)end_p,
+                                                             (uint8_t*)ContentBegin, 
+                                                             (uint8_t*)ContentEnd);
 
     /* Flush into buffer what has been filled from &begin[0] to 
      * &begin[inserted_byte_n].                                              */
@@ -33,10 +41,10 @@ QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)*  me,
 
     /* Report a pointer to the first content element that has not yet 
      * been treated (== ContentEnd if all complete).                         */
-    return (void*)&((uint8_t*)ContentBegin)[copy_n];
+    return (const void*)&((uint8_t*)ContentBegin)[copy_n];
 }
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me, 
                                void**              begin_p, 
                                const void**        end_p)
@@ -56,7 +64,7 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
         && ! QUEX_NAME(Buffer_callbacks_on_cannot_move_towards_begin)(me, &move_distance) ) {
         *begin_p = (void*)0;
         *end_p   = (const void*)0;
-        return;
+        return false;
     }
 
     if( move_distance ) {
@@ -69,14 +77,21 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
     if( 0 == free_space ) {
         *begin_p = (void*)0;
         *end_p   = (const void*)0;
-        return;
+        return false;
     }
 
     /* Get the pointers for the border where to fill content.               */
     me->filler->derived.fill_prepare(me->filler, me, begin_p, end_p);
 
+    if( *end_p <= *begin_p ) {
+        *begin_p = (void*)0;
+        *end_p   = (const void*)0;
+        return false;
+    }
+
     __quex_assert(*end_p >= *begin_p);
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    return true;
 }
 
 QUEX_INLINE void

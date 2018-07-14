@@ -86,6 +86,7 @@ instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
                                 &memory[0], memory_size, end_p, 
                                 E_Ownership_EXTERNAL,
                                 (QUEX_NAME(Buffer)*)0);
+    buffer->_fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
 
     memory_fill_with_content(&memory[0], MemorySize, 
                              &content[0], ContentSize);

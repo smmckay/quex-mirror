@@ -1,5 +1,6 @@
 #
 import quex.input.files.core                     as     quex_file_parser
+import quex.input.files.mode                     as     mode
 #                                                
 from   quex.engine.misc.tools                    import flatten_list_of_lists
 from   quex.engine.misc.file_operations          import write_safely_and_close
@@ -18,6 +19,7 @@ import quex.output.languages.cpp.source_package  as     source_package
 import quex.token_db   as     token_db
 from   quex.blackboard import setup as Setup, \
                               Lng
+import quex.blackboard as     blackboard
 
 def do():
     """Generates state machines for all modes. Each mode results into 
@@ -27,10 +29,21 @@ def do():
     if Setup.language == "DOT": 
         return do_plot()
 
-    if not Setup.converter_only_f:
-        mode_db = quex_file_parser.do(Setup.input_mode_files)
-    else:
+    if Setup.converter_only_f:
         mode_db = None
+    elif Setup.token_class_only_f:
+        mode_prep_prep_db = quex_file_parser.do(Setup.input_mode_files)
+        if mode_prep_prep_db:
+            error.log("Mode definition found in input files, while in token class \n"
+                      "generation mode.")
+        mode_db = None
+    else:
+        mode_prep_prep_db = quex_file_parser.do(Setup.input_mode_files)
+        # Finalization of Mode_PrepPrep --> Mode
+        # requires consideration of inheritance and transition rules.
+        mode_db = mode.finalize_modes(mode_prep_prep_db)
+
+    blackboard.mode_db = mode_db # Announce!
 
     _generate(mode_db)
 
@@ -60,22 +73,6 @@ def _generate(mode_db):
 
         source_package.do(Setup.output_directory)
         return
-
-def analyzer_functions_get(ModeDB):
-    # (*) Get list of modes that are actually implemented
-    #     (abstract modes only serve as common base)
-    mode_name_list = ModeDB.keys()  
-
-    code = flatten_list_of_lists( 
-        engine_generator.do_with_counter(mode, mode_name_list) for mode in ModeDB.itervalues() 
-    )
-
-    code.append(
-        engine_generator.comment_match_behavior(ModeDB.itervalues())
-    )
-
-    # generate frame for analyser code
-    return Lng.FRAME_IN_NAMESPACE_MAIN("".join(code))
 
 def do_plot():
     mode_db = quex_file_parser.do(Setup.input_mode_files)
@@ -124,30 +121,43 @@ def do_token_class_info():
     comment.append("<<<QUEX-OPTIONS>>>")
     return Lng.ML_COMMENT("".join(comment), IndentN=0)
 
-def _prepare_analyzers(mode_db): 
-    # (*) implement the lexer mode-specific analyser functions
-    function_analyzers_implementation \
-                            = analyzer_functions_get(mode_db)
+def _get_analyzers(mode_db): 
 
-    # (*) Implement the 'quex' core class from a template
-    # -- do the coding of the class framework
-    configuration_header    = configuration.do(mode_db)
+    configuration_header              = configuration.do(mode_db)
+
     analyzer_header, \
-    member_function_signature_list = analyzer_class.do(mode_db, Epilog="") 
-    analyzer_implementation = analyzer_class.do_implementation(mode_db, 
-                                                               member_function_signature_list) 
-    mode_implementation     = mode_classes.do(mode_db)
+    member_function_signature_list    = analyzer_class.do(mode_db, Epilog="") 
 
-    # Engine (Source Code)
+    mode_implementation               = mode_classes.do(mode_db)
+    function_analyzers_implementation = _analyzer_functions_get(mode_db)
+    analyzer_implementation           = analyzer_class.do_implementation(mode_db, 
+                                                                         member_function_signature_list) 
+
     engine_txt = "\n".join([Lng.ENGINE_TEXT_EPILOG(),
                             mode_implementation,
                             function_analyzers_implementation,
                             analyzer_implementation,
                             "\n"])
 
-    return configuration_header, \
-           analyzer_header, \
-           engine_txt
+    return [
+        (configuration_header, Setup.output_configuration_file),
+        (analyzer_header,      Setup.output_header_file),
+        (engine_txt,           Setup.output_code_file),
+    ]
+
+def _analyzer_functions_get(ModeDB):
+    mode_name_list = ModeDB.keys()  
+
+    code = flatten_list_of_lists( 
+        engine_generator.do_with_counter(mode, mode_name_list) for mode in ModeDB.itervalues() 
+    )
+
+    code.append(
+        engine_generator.comment_match_behavior(ModeDB.itervalues())
+    )
+
+    # generate frame for analyser code
+    return Lng.FRAME_IN_NAMESPACE_MAIN("".join(code))
 
 def _get_token_class():
     """RETURNS: [0] List of (source code, file-name)
@@ -162,17 +172,6 @@ def _get_token_class():
     return [
         (class_token_header,         token_db.token_type_definition.get_file_name()),
         (class_token_implementation, Setup.output_token_class_file_implementation),
-    ]
-
-def _get_analyzers(mode_db):
-    configuration_header, \
-    analyzer_header,      \
-    engine_txt            = _prepare_analyzers(mode_db)
-
-    return [
-        (configuration_header, Setup.output_configuration_file),
-        (analyzer_header,      Setup.output_header_file),
-        (engine_txt,           Setup.output_code_file),
     ]
 
 def _write_all(content_table):

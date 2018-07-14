@@ -5,7 +5,9 @@ import quex.engine.state_machine.cut.stem_and_branches           as     stem_and
 import quex.engine.state_machine.algebra.reverse                 as     reverse
 import quex.engine.state_machine.construction.sequentialize      as     sequentialize
 from   quex.engine.state_machine.construction.setup_post_context import DFA_Newline
+import quex.engine.misc.error                                    as     error
 from   quex.constants                                            import E_AcceptanceCondition
+from   quex.blackboard                                           import setup as Setup
 
 def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamPreContextF):
     """Sets up a pre-condition to the given state machine. This process
@@ -56,6 +58,9 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamP
 
     # (*) Once an acceptance state is reached no further analysis is necessary.
     stem_and_branches.prune_branches(reverse_pre_context)
+    if     Setup.error_on_arbitrary_length_of_pre_context_f \
+       and reverse_pre_context.longest_path_to_first_acceptance() is None:
+        error.log("Pre-context contains patterns of arbitrary length to first acceptance backwards.")
 
     # (*) Clean up what has been done by inversion (and optionally 'BeginOfLinePreContextF')
     #     AFTER 'prune_branches' (!)

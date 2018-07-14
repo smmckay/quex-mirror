@@ -40,10 +40,11 @@ QUEX_NAMESPACE_MAIN_CLOSE
 int
 main(int argc, char** argv)
 {
-    const size_t              BPC         = sizeof(QUEX_TYPE_LEXATOM_EXT);
+    const size_t  BPC = sizeof(QUEX_TYPE_LEXATOM_EXT);
+
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
         printf("Buffer Tell&Seek: LexatomLoader_Plain (BPC=%i, FALLBACK=%i);\n", 
-               (int)BPC, (int)QUEX_SETTING_BUFFER_FALLBACK_N);
+               (int)BPC, (int)QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT);
         printf("CHOICES: linear, stepping;\n"
                "SAME;\n");
         return 0;
@@ -91,6 +92,8 @@ test_file(bool BinaryF, const char* FileStem)
     QUEX_NAME(Buffer_construct)(&buffer, filler, &memory[0], MemorySize, 0, 
                                 E_Ownership_EXTERNAL, 
                                 (QUEX_NAME(Buffer)*)0);
+
+    buffer._fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
 
     /* REFERENCE file and INPUT file are the SAME.                           */
     hwut_verify(basic_functionality(&buffer, file_name));

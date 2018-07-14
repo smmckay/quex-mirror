@@ -62,7 +62,7 @@ main(int argc, char** argv)
 
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
         printf("Buffer Tell&Seek: LexatomLoader_Converter StrangeStream (BPC=%i, FALLBACK=%i);\n", 
-               (int)BPC, (int)QUEX_SETTING_BUFFER_FALLBACK_N);
+               (int)BPC, (int)QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT);
         printf("CHOICES: ICU-stepping,\n"
                "         IConv-linear,\n"
                "         ICU-stepping-cls;\n"
@@ -143,6 +143,7 @@ test_file(E_ConverterTestType CTT, const char* Codec, bool LinearF, bool ClueLes
 
     QUEX_NAME(Buffer_construct)(&buffer, filler, &memory[0], MemorySize, 0, 
                                 E_Ownership_EXTERNAL, (QUEX_NAME(Buffer)*)0);
+    buffer._fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
     __quex_assert(filler->byte_n_per_lexatom == -1);
 
     /* REFERENCE file and INPUT file are the SAME.                           */

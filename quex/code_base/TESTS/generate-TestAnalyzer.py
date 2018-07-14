@@ -4,6 +4,7 @@ import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.command_line.core              as command_line
+import quex.input.files.mode                     as mode
 import quex.input.files.core                     as quex_file_parser
 import quex.output.analyzer.core                 as analyzer_class
 import quex.output.analyzer.adapt                as adapt
@@ -39,7 +40,9 @@ def code(Language):
                      "--odir", output_dir, "--language", Language,
                      "--debug-QUEX_TYPE_LEXATOM_EXT", 
                      "--config-by-macros"])
-    mode_db = quex_file_parser.do(Setup.input_mode_files)
+    mode_prep_prep_db = quex_file_parser.do(Setup.input_mode_files)
+    mode_db = mode.finalize_modes(mode_prep_prep_db)
+
 
     core._generate(mode_db)
 

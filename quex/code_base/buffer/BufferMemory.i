@@ -22,8 +22,6 @@ QUEX_NAME(BufferMemory_construct)(QUEX_NAME(BufferMemory)*  me,
     __quex_assert(E_Ownership_is_valid(Ownership));    
 
     if( Memory ) {
-        /* NOTE: 'Size < BUFFER_FALLBACK_N + 2' is conceivable;
-         *       maintaining 'fallback_n' is only tried, not guaranteed!      */
         me->_front    = Memory;
         me->_back     = &Memory[Size-1];
         me->ownership = Ownership;

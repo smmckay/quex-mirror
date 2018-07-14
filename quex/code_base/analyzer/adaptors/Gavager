@@ -19,7 +19,7 @@ struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Gavager) {
 
 public:
     QUEX_NAME(Gavager)(QUEX_TYPE_ANALYZER*, QUEX_TYPE_TOKEN_ID);
-    void              access(void**       begin_p, 
+    bool              access(void**       begin_p, 
                              const void** end_p);
     bool              gavage(ptrdiff_t    ReceivedN);
     QUEX_TYPE_TOKEN*  deliver();
@@ -30,7 +30,7 @@ $$<C>--------------------------------------------------------------------------
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Gavager_tag) {
     QUEX_NAME(FeederBase)  base;
 
-    void              (*access)(struct QUEX_NAME(Gavager_tag)* me,
+    bool              (*access)(struct QUEX_NAME(Gavager_tag)* me,
                                 void**                         begin_p, 
                                 const void**                   end_p);
     bool              (*gavage)(struct QUEX_NAME(Gavager_tag)* me, 
@@ -44,7 +44,7 @@ $$-----------------------------------------------------------------------------
 QUEX_INLINE void  QUEX_NAME(Gavager_construct)(QUEX_NAME(Gavager)*  me, 
                                                QUEX_TYPE_ANALYZER*  lexer,
                                                QUEX_TYPE_TOKEN_ID   StreamTerminatingTokenId);
-QUEX_INLINE void  QUEX_NAME(Gavager_access)(QUEX_NAME(Gavager)* me,
+QUEX_INLINE bool  QUEX_NAME(Gavager_access)(QUEX_NAME(Gavager)* me,
                                             void**              begin_p, 
                                             const void**        end_p);
 QUEX_INLINE bool  QUEX_NAME(Gavager_gavage)(QUEX_NAME(Gavager)* me, 

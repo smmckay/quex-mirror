@@ -1,5 +1,5 @@
 (1) Generate 'OK-Sources' and Compile
-quex -i scan.qx -o br_scan \
+quex --cbm -i scan.qx -o br_scan \
 	 --token-class-file token.h --token-id-prefix BR_TKN_ \
 	 --foreign-token-id-file gramma.h --token-class blackray::Token \
 	 --debug-exception 
@@ -7,19 +7,6 @@ g++ -Wall -Werror br_scan/br_scan.cpp example.cpp \
 	-I. \
 	-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT \
 	-o check 
-## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'
-##
-## Asserts activated! Lexical analyzer is 'paranoid'!
-## => Even smallest misbehavior causes program exit.
-##    This helps to find subtle errors.
-##
-## Note however: the paranoia is a heavy load on performance!
-##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED_EXT'
-##
-## Report any bug at
-##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 token.id: 5; token.number: 0;
 token.id: 5; token.number: 1;
 token.id: 5; token.number: 2;
@@ -27,17 +14,17 @@ token.id: 5; token.number: 3;
 token.id: 5; token.number: 4;
 token.id: 1; token.number: 0;
 (2) Mix member assignments with manually written token class.
-quex -i scan-error.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token
+quex --cbm -i scan-error.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token
 scan-error.qx:5:error: Member assignments in brief token senders are inadmissible
 scan-error.qx:5:error: with manually written token classes. User provided file 'token.h'.
 Makefile:16: recipe for target 'mixMemberAssignWithManualTokenClass' failed
 (3) Provide a 'token_type' definition together with a manually written class.
-quex -i CppDefault.qx scan.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token
+quex --cbm -i CppDefault.qx scan.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token
 CppDefault.qx:1:error: Section 'token_type' is intended to generate a token class.
 CppDefault.qx:1:error: However, the manually written token class file ''token.h''has been specified on the command line.
 Makefile:19: recipe for target 'tokenTypeAlongWithManualTokenClass' failed
 (4) Manually written token class without '--token-class' definition
-quex -i scan.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h  
+quex --cbm -i scan.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h  
 command line: The use of a manually written token class requires that the name of the class
 command line: is specified on the command line via the '--token-class' option.
 Makefile:22: recipe for target 'tokenTypeWithoutTokenClassSpecification' failed

@@ -641,6 +641,47 @@ class DFA(object):
 
         return result
 
+    def contains_cycles(self):
+        for si, predecessor_si_list in self.get_predecessor_db():
+            if si in predecessor_si_list: return True
+        return False
+
+    def longest_path_to_first_acceptance(self):
+        """Find the longest path to first acceptance state.
+
+        'First acceptance state' is an acceptance state which can be
+        reached without passing by another acceptance state.
+
+        This function is useful for pre-contexts, where the arrival at
+        the first acceptance state is sufficient. With the longest path
+        possible to such a state a reasonable 'fallback number' can be
+        determined, i.e. the number of lexatoms to maintain inside the
+        buffer upon reload.
+
+        RETURNS: Number of lexatoms to reach the first acceptance state.
+                 None, if path is not unique.
+        """
+        worklist   = [(self.init_state_index, 0, set([self.init_state_index]))]
+        max_length = -1
+        done_set   = set()
+        while worklist:
+            si, length, predecessor_set = worklist.pop()
+            if self.states[si].is_acceptance():
+                if length > max_length: max_length = length
+                # NOT: si -> done_set, otherwise the acceptance could not be 
+                #                      entered from elsewhere.
+                # NOT: successors -> worklist, because anything behind the 
+                #                              acceptance state is meaningless.
+            else:
+                new_predecessor_set = predecessor_set.copy()
+                new_predecessor_set.add(si)
+                for target_si in self.states[si].target_map.get_map().iterkeys():
+                    if target_si in predecessor_set: return None
+                    worklist.append((target_si, length+1, new_predecessor_set))
+
+        if max_length == -1: return None
+        else:                return max_length
+
     def iterable_init_state_transitions(self):
         for target_si, trigger_set in self.get_init_state().target_map:
             yield target_si, trigger_set

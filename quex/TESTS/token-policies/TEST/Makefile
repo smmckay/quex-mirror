@@ -19,11 +19,11 @@ hwut-info:
 	@echo $(TESTS)
 
 queue.exe:            lexer.cpp 
-	quex -i simple.qx -o TPLex 
+	quex --cbm -i simple.qx -o TPLex 
 	$(CC) -I. -DUNIT_TEST_PSEUDO_ANALYSIS lexer.cpp $(ENGINE) -lefence -o $@
 
 queue-real.exe:       lexer.cpp  
-	quex -i real.qx -o TPLex 
+	quex --cbm -i real.qx -o TPLex 
 	$(CC) -I. lexer.cpp $(ENGINE) -lefence -o $@
 
 %.E: %.cpp

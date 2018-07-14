@@ -124,6 +124,11 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Buffer_t
     /* (*) Iterator positions for lexical analysis                            */
     QUEX_TYPE_LEXATOM*       _read_p;                                        
     QUEX_TYPE_LEXATOM*       _lexeme_start_p;                                
+    /* If, for a given mode, the pre-contexts have a definite maximum length,
+     * then the number of lexatoms to be maintained backwards upon reload can
+     * be determined: the 'fallback number'. Even if not, the fallback number
+     * may prevent costly reload procedures.                                 */
+    ptrdiff_t                _fallback_n;
 
     /* (*) When data from a different stream position is loaded than what is 
      *     required for the current analysis step, the current position is 
@@ -142,10 +147,10 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Buffer_t
     QUEX_TYPE_LEXATOM      _lexatom_at_lexeme_start;      
     $$<begin-of-line-context> QUEX_TYPE_LEXATOM      _lexatom_before_lexeme_start;$$
 
-    void*                (*fill)(struct QUEX_NAME(Buffer_tag)*  me, 
+    const void*          (*fill)(struct QUEX_NAME(Buffer_tag)*  me, 
                                  const void*                    ContentBegin,
                                  const void*                    ContentEnd);
-    void                 (*fill_prepare)(struct QUEX_NAME(Buffer_tag)*  me, 
+    bool                 (*fill_prepare)(struct QUEX_NAME(Buffer_tag)*  me, 
                                          void**                         begin_p, 
                                          const void**                   end_p);
     void                 (*fill_finish)(struct QUEX_NAME(Buffer_tag)* me,
@@ -181,6 +186,7 @@ QUEX_INLINE void  QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*                
                                               QUEX_TYPE_LEXATOM*                    memory,
                                               const size_t                          MemorySize,
                                               QUEX_TYPE_LEXATOM*                    EndOfFileP,
+                                              const ptrdiff_t                       FallbackN,
                                               E_Ownership                           Ownership,
                                               QUEX_NAME(Buffer)*                    IncludingBuffer);
 QUEX_INLINE bool  QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*                   me,
@@ -312,10 +318,10 @@ QUEX_INLINE void       QUEX_NAME(Buffer_callbacks_on_buffer_overflow)(QUEX_NAME(
 /* Member functions __________________________________________________________*/
 
 /* User's manual buffer filling.                                              */
-QUEX_INLINE void*                QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)*  me, 
+QUEX_INLINE const void*          QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)*  me, 
                                                         const void*         ContentBegin,
                                                         const void*         ContentEnd);
-QUEX_INLINE void                 QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me, 
+QUEX_INLINE bool                 QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me, 
                                                                 void**              begin_p, 
                                                                 const void**        end_p);
 QUEX_INLINE void                 QUEX_NAME(Buffer_fill_finish)(QUEX_NAME(Buffer)* me,

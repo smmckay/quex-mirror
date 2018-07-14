@@ -28,7 +28,7 @@
  * E_LoadResult_NO_MORE_DATA => EOS must be set.
  *
  */
-#define BufferElementN (QUEX_SETTING_BUFFER_FALLBACK_N + 5)
+#define BufferElementN (QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT + 5)
 
 #include "commonly_pasted.c"
 #include "test_c/lib/buffer/lexatoms/LexatomLoader.i"
@@ -74,7 +74,7 @@ main(int argc, char**argv)
         printf("CHOICES: DONE, NO_SPACE_FOR_LOAD, NO_MORE_DATA, BAD_LEXATOM;\n");
         return 0;
     }
-    __quex_assert(QUEX_SETTING_BUFFER_FALLBACK_N == 2);
+    __quex_assert(QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT == 2);
 
     hwut_if_choice("DONE")              self_DONE();
     hwut_if_choice("NO_SPACE_FOR_LOAD") self_NO_SPACE_FOR_LOAD();
@@ -156,6 +156,7 @@ self_setup(ptrdiff_t       LexemePOffset,  /* = LexemeP - Buffer's Front */
                                 &self.memory[0], BufferElementN,
                                 (QUEX_TYPE_LEXATOM_EXT*)0, E_Ownership_EXTERNAL,
                                 (QUEX_NAME(Buffer)*)0); 
+    self.buffer._fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
 
     QUEX_NAME(Buffer_callbacks_set)(&self.buffer,
                                          common_on_content_change,
@@ -218,7 +219,7 @@ self_DONE()
                /* ErrorCodePosition */ -1);
     hwut_verify(self_load(false) == E_LoadResult_DONE);
 
-    for(lexeme_p_offset  = QUEX_SETTING_BUFFER_FALLBACK_N + 1;
+    for(lexeme_p_offset  = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT + 1;
         lexeme_p_offset <= BufferElementN - 2;
         ++lexeme_p_offset) 
     {
@@ -231,7 +232,7 @@ self_DONE()
     }
 
 #   if 0
-    for(lexeme_p_offset  = QUEX_SETTING_BUFFER_FALLBACK_N + 1;
+    for(lexeme_p_offset  = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT + 1;
         lexeme_p_offset <= BufferElementN - 2;
         ++lexeme_p_offset) 
     {
@@ -243,7 +244,7 @@ self_DONE()
         hwut_verify(self_load(false) == E_LoadResult_DONE);
     }
 
-    for(lexeme_p_offset  = QUEX_SETTING_BUFFER_FALLBACK_N + 1;
+    for(lexeme_p_offset  = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT + 1;
         lexeme_p_offset <= BufferElementN - 2;
         ++lexeme_p_offset) 
     {
@@ -265,7 +266,7 @@ self_NO_SPACE_FOR_LOAD()
     /* (1.b) Lexeme starts at begin + (<=FallbackN) 
      *     => E_LoadResult_DONE */
     for(lexeme_p_offset  = 0;
-        lexeme_p_offset <= QUEX_SETTING_BUFFER_FALLBACK_N;
+        lexeme_p_offset <= QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
         ++lexeme_p_offset) 
     {
         self_setup(/* LexemePOffset     */ lexeme_p_offset,

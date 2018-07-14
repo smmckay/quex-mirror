@@ -19,13 +19,13 @@ from   quex.engine.misc.file_in           import EndOfStreamException, \
                                                  optional_flags
 from   quex.output.token.id_generator     import token_id_db_enter
 import quex.token_db   as token_db
-import quex.blackboard as blackboard
+import quex.blackboard as     blackboard
 from   quex.blackboard import setup as Setup, \
                               Lng, \
                               standard_incidence_db
 from   StringIO import StringIO
 
-def parse(fh):
+def parse(fh, mode_prep_prep_db):
     """This function parses a mode description and enters it into the 
     'blackboard.mode_prep_prep_db'. Modes are represented by Mode_PrepPrep
     objects.
@@ -38,13 +38,13 @@ def parse(fh):
 
     # NOTE: constructor does register this mode in the mode_db
     new_mode = Mode_PrepPrep(mode_name, SourceRef.from_FileHandle(fh))
-    if new_mode.name in blackboard.mode_prep_prep_db:
+    if new_mode.name in mode_prep_prep_db:
         error.log("Mode '%s' has been defined twice.\n" % new_mode.name,
                   new_mode.sr, DontExitF=True)
         error.log("Earlier definition here.",
-                  blackboard.mode_prep_prep_db[new_mode.name].sr)
+                  mode_prep_prep_db[new_mode.name].sr)
 
-    blackboard.mode_prep_prep_db[new_mode.name] = new_mode
+    mode_prep_prep_db[new_mode.name] = new_mode
 
     # (*) inherited modes / option_db
     skip_whitespace(fh)

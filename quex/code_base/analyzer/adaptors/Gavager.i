@@ -55,9 +55,9 @@ QUEX_NAME(Gavager)::QUEX_NAME(Gavager)(QUEX_TYPE_ANALYZER* lexer,
                                        QUEX_TYPE_TOKEN_ID  StreamTerminatingTokenId)
 { QUEX_NAME(Gavager_construct)(this, lexer, StreamTerminatingTokenId); }
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(Gavager)::access(void** begin_p, const void** end_p)
-{ QUEX_NAME(Gavager_access)(this, begin_p, end_p); }
+{ return QUEX_NAME(Gavager_access)(this, begin_p, end_p); }
 
 QUEX_INLINE bool
 QUEX_NAME(Gavager)::gavage(ptrdiff_t ReceivedN)
@@ -86,7 +86,7 @@ $$<C>--------------------------------------------------------------------------
 $$-----------------------------------------------------------------------------
 }
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(Gavager_access)(QUEX_NAME(Gavager)* me,
                           void** begin_p, const void** end_p)
 /* Provides access to internal buffer to be filled. 
@@ -97,7 +97,7 @@ QUEX_NAME(Gavager_access)(QUEX_NAME(Gavager)* me,
  *                the first element behind it.                               */
 {
     QUEX_NAME(Buffer)* buffer = &me->base.lexer->buffer;
-    buffer->fill_prepare(&me->base.lexer->buffer, begin_p, end_p);
+    return buffer->fill_prepare(&me->base.lexer->buffer, begin_p, end_p);
 }
 
 QUEX_INLINE bool

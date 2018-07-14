@@ -9,7 +9,7 @@
 COMPILER := g++ -ggdb -pedantic -Wconversion -Wall -Werror -W
 LD       := $(COMPILER) -I./ $(ADD_FLAGS) 
 LD_PLAIN     := $(LD) -DQUEX_SETTING_BUFFER_SIZE_EXT=13 
-LD_CONVERTER := $(LD) -DQUEX_SETTING_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE_EXT=6 \
+LD_CONVERTER := $(LD) -DQUEX_SETTING_BUFFER_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE_EXT=6 \
 	                  -DQUEX_SETTING_BUFFER_SIZE_EXT=16            \
 			          -DQUEX_TYPE_LEXATOM_EXT=wchar_t              \
 			          -DQUEX_DEMO_WITH_CONVERTER            \
@@ -25,28 +25,30 @@ FILES := feeder-plain.exe  feeder-converter.exe  \
 all: $(FILES)
 
 feeder-plain.exe:       lexer-feeder.cpp receiver.cpp  plain/Lexer.cpp
-	$(LD_PLAIN)     -o $@ -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=3 $^ 
+	$(LD_PLAIN)     -o $@ $^ 
           
 gavager-plain.exe:      lexer-gavager.cpp receiver.cpp plain/Lexer.cpp
-	$(LD_PLAIN)     -o $@ -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=3 $^ 
+	$(LD_PLAIN)     -o $@ $^ 
           
 point-plain.exe:        lexer-point.cpp                plain/Lexer.cpp
-	$(LD_PLAIN)     -o $@ -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 $^
+	$(LD_PLAIN)     -o $@ $^
 
 feeder-converter.exe:   lexer-feeder.cpp receiver.cpp  converter/Lexer.cpp
-	$(LD_CONVERTER) -o $@ -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=3 $^ 
+	$(LD_CONVERTER) -o $@ $^ 
 
 gavager-converter.exe:  lexer-gavager.cpp receiver.cpp converter/Lexer.cpp
-	$(LD_CONVERTER) -o $@ -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=3 $^ 
+	$(LD_CONVERTER) -o $@ $^ 
 
 point-converter.exe:    lexer-point.cpp                converter/Lexer.cpp
-	$(LD_CONVERTER) -o $@ -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 $^ 
+	$(LD_CONVERTER) -o $@ $^ 
           
 plain/Lexer.cpp: lexPlain.qx 
-	quex --cbm -i lexPlain.qx -o Lexer --odir plain 
+	quex --cbm --error-on-arbitrary-length-of-pre-context \
+		 -i lexPlain.qx -o Lexer --odir plain 
 
 converter/Lexer.cpp: lexConverter.qx 
-	quex --cbm -i lexConverter.qx -o Lexer --odir converter \
+	quex --cbm --error-on-arbitrary-length-of-pre-context \
+		 -i lexConverter.qx -o Lexer --odir converter \
 		 --buffer-element-type wchar_t 
 
 clean:	

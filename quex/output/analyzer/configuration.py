@@ -11,7 +11,10 @@ from   quex.DEFINITIONS import QUEX_VERSION
 import time
 from   itertools import chain
 
-def do(Mode_PrepPrepDB):
+def do(ModeDb):
+    assert ModeDb
+
+
     txt = Lng.open_template(Lng.analyzer_configuration_file())
 
     lexatom_loader_seek_buffer_size = 512
@@ -24,27 +27,35 @@ def do(Mode_PrepPrepDB):
     elif buffer_size_min >= 16:   fallback_n = buffer_size >> 4
     else:                         fallback_n = 0
 
+    longest_pre_context = max(m.longest_pre_context() for m in ModeDb.itervalues())
+    if longest_pre_context:
+        fallback_n = mode.pre_context_.longest_path_to_first_acceptance()
+    else:
+        # Assert: any specification has taken care of constraint:
+        assert not Setup.error_on_arbitrary_length_of_pre_context_f
+        fallback_n = 0
 
     adaptable_list = [
-        ("BUFFER_FALLBACK_N",                    "%s" % fallback_n),
-        ("BUFFER_SIZE",                          "%s" % buffer_size),
-        ("BUFFER_SIZE_MIN",                      "%s" % buffer_size_min),
-        ("INDENTATION_STACK_SIZE",               "%s" % indentation_stack_size),
+        ("BUFFER_SIZE",                            "%s" % buffer_size),
+        ("BUFFER_FALLBACK_N",                      "%s" % fallback_n),
+        ("BUFFER_SIZE_MIN",                        "QUEX_SETTING_BUFFER_SIZE"),
+        ("INDENTATION_STACK_SIZE",                 "%s" % indentation_stack_size),
         ("BUFFER_LEXATOM_LOADER_CONVERTER_BUFFER_SIZE", "(size_t)%s" % converter_buffer_size),
         ("BUFFER_LEXATOM_LOADER_SEEK_BUFFER_SIZE", lexatom_loader_seek_buffer_size),
-        ("MODE_STACK_SIZE",                      "(size_t)%s" % mode_stack_size), 
-        ("TOKEN_QUEUE_SIZE",                     "(size_t)%s" % repr(Setup.token_queue_size)),
+        ("MODE_STACK_SIZE",                        "(size_t)%s" % mode_stack_size), 
+        ("TOKEN_QUEUE_SIZE",                       "(size_t)%s" % repr(Setup.token_queue_size)),
     ]
     immutable_list = [
-        ("VERSION",                           '"%s"' % QUEX_VERSION),
-        ("ANALYZER_VERSION",                  '"%s"' % Setup.user_application_version_id),
-        ("BUILD_DATE",                        '"%s"' % time.asctime()),
-        ("MODE_INITIAL_P",                    '&%s'  % Lng.NAME_IN_NAMESPACE_MAIN(blackboard.initial_mode.get_pure_text())),
-        ("BUFFER_LEXATOM_BUFFER_BORDER",      "0x%X" % Setup.buffer_limit_code),
-        ("BUFFER_LEXATOM_NEWLINE",            _lexatom_newline_in_engine_encoding()),
-        ("BUFFER_LEXATOM_PATH_TERMINATION",  "0x%X" % Setup.path_limit_code),
-
+        ("VERSION",                         '"%s"' % QUEX_VERSION),
+        ("ANALYZER_VERSION",                '"%s"' % Setup.user_application_version_id),
+        ("BUILD_DATE",                      '"%s"' % time.asctime()),
+        ("MODE_INITIAL_P",                  '&%s'  % Lng.NAME_IN_NAMESPACE_MAIN(blackboard.initial_mode.get_pure_text())),
+        ("BUFFER_LEXATOM_BUFFER_BORDER",    "0x%X" % Setup.buffer_limit_code),
+        ("BUFFER_LEXATOM_NEWLINE",          _lexatom_newline_in_engine_encoding()),
+        ("BUFFER_LEXATOM_PATH_TERMINATION", "0x%X" % Setup.path_limit_code),
+        ("BUFFER_FALLBACK_N",               "%s"   % fallback_n),
     ]
+
     adaptable_txt = [ Lng.QUEX_SETTING_DEF(name, value) for name, value in adaptable_list ]
     immutable_txt = [ Lng.QUEX_SETTING_DEF(name, value) for name, value in immutable_list ]
 
@@ -54,10 +65,11 @@ def do(Mode_PrepPrepDB):
          ["$$ADAPTABLE$$",        "\n".join(adaptable_txt)],
          ["$$IMMUTABLE$$",        "\n".join(immutable_txt)],
          ["$$TYPE_DEFINITIONS$$", _type_definitions()],
+         ["$$HELP_IF_CONFIGURATION_BY_CMAKE$$", Lng.HELP_IF_CONFIGURATION_BY_CMAKE(adaptable_list + immutable_list)],
          ["$$ERROR_IF_NO_CONFIGURATION_BY_MACRO$$", Lng.ERROR_IF_DEFINED_AND_NOT_CONFIGURATION_BY_MACRO(setting_list)],
      ])
 
-    return adapt.do(txt, Setup.output_directory)
+    return txt # adapt.do(txt, Setup.output_directory)
 
 def _type_definitions():
     token_descr = token_db.token_type_definition

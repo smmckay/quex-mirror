@@ -71,6 +71,7 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
     E_Ownership         ownership;
     QUEX_NAME(Buffer)*  nesting_buffer_p = (QUEX_NAME(Buffer)*)0;
 
+
     QUEX_BUFFER_ASSERT_CONSISTENCY(nesting);
 
     if( QUEX_NAME(Buffer_resources_absent)(nesting) ) {
@@ -82,8 +83,7 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
         available_size = QUEX_NAME(Buffer_nested_free_front)(nesting);
     }
 
-
-    if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_SIZE_MIN) ) {
+    if( available_size < (ptrdiff_t)QUEX_SETTING_BUFFER_SIZE_MIN ) {
         /* (2) AVAILABLE SIZE still too SMALL
          *     => Allocate new memory for new buffer.                         */                    
         memory_size = (size_t)(QUEX_SETTING_BUFFER_SIZE);
@@ -110,8 +110,8 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
     }
 
     QUEX_NAME(Buffer_construct)(me, filler, memory, memory_size, 
-                                (QUEX_TYPE_LEXATOM*)0, ownership, 
-                                nesting_buffer_p);
+                                (QUEX_TYPE_LEXATOM*)0, me->_fallback_n,
+                                ownership, nesting_buffer_p);
     
     me->event = nesting->event;               /* Plain copy suffices. */
 
@@ -337,6 +337,7 @@ QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
 
         QUEX_NAME(Buffer_move_towards_begin)(it, move_distance + nesting_freed,
                                              (QUEX_TYPE_LEXATOM**)0, 0);
+        /* Asserts in 'Buffer_move_towards_begin()' => FallbackN maintained!  */
 
         /* Adapt pointers added 'move_distance + nesting_freed' to lexatom
          * index. Must subtract 'nesting_freed'.                              */

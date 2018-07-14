@@ -1,5 +1,5 @@
 Generate token class _______________________________________________
-quex -i token_type.qx --token-class-only --debug-exception
+quex --cbm -i token_type.qx --token-class-only --debug-exception
 info: Analyzers using this token class must be generated with
 info:
 info:      --token-class-file Lexer/Lexer-token

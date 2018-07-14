@@ -97,15 +97,6 @@ def standard_incidence_db_get_incidence_id(TerminalType):
         if terminal_type == TerminalType: return incidence_id
     return None
 
-#-----------------------------------------------------------------------------------------
-# mode_prep_prep_db: storing the mode information into a dictionary:
-#            key  = mode name
-#            item = Mode_PrepPrep object
-#
-# Mode_PrepPrep-s are the direct product of parsing. They are later translated into
-# Mode-s.
-#-----------------------------------------------------------------------------------------
-mode_prep_prep_db = {}
 
 #-----------------------------------------------------------------------------------------
 # mode_db: storing the mode information into a dictionary:

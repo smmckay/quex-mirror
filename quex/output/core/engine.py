@@ -40,7 +40,6 @@ def do_with_counter(Mode, ModeNameList):
     txt.extend(analyzer_txt)
     return txt
 
-
 def do_core(Mode):
     """Produces main code for an analyzer function which can detect patterns given in
     the 'PatternList' and has things to be done mentioned in 'TerminalDb'. 

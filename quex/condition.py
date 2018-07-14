@@ -3,8 +3,7 @@ import quex.engine.misc.error as     error
 from   quex.constants         import E_IncidenceIDs
 from   quex.blackboard        import setup as Setup, \
                                      required_support_indentation_count, \
-                                     required_support_begin_of_line, \
-                                     mode_prep_prep_db
+                                     required_support_begin_of_line
 
 def do(Condition):
     """Determines whether a condition for code generation holds."""

@@ -68,6 +68,7 @@ common_clone(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
                                 memory, reference_size, &memory[reference_size-1],
                                 E_Ownership_LEXICAL_ANALYZER,
                                 (QUEX_NAME(Buffer)*)0);
+    subject->_fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
 
     subject->input.end_p     = &subject->_memory._front[reference->input.end_p     - reference->_memory._front];
     subject->_read_p         = &subject->_memory._front[reference->_read_p         - reference->_memory._front];
