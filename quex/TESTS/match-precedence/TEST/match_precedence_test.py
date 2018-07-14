@@ -15,15 +15,15 @@ blackboard.setup.language_db = languages.db["C++"]()
 from   StringIO import StringIO
 
 def do(TxtList, DELETED_Op):
-    blackboard.mode_prep_prep_db.clear()
+    mode_prep_prep_db = {}
     for txt in TxtList:
         sh = StringIO(txt)
         sh.name = "<string>"
-        mode.parse(sh)
+        mode.parse(sh, mode_prep_prep_db)
 
     blackboard.initial_mode = CodeUser("X", SourceRef.from_FileHandle(sh))
 
-    mode_prep_db = mode.__finalize_modes_prep(blackboard.mode_prep_prep_db)
+    mode_prep_db = mode.__finalize_modes_prep(mode_prep_prep_db)
     for x in sorted(mode_prep_db.itervalues(), key=lambda x: x.name):
         print "Mode: '%s'" % x.name
         for i, pattern in enumerate(x.pattern_list):
