@@ -29,7 +29,7 @@ def do(ModeDb):
 
     longest_pre_context = max(m.longest_pre_context() for m in ModeDb.itervalues())
     if longest_pre_context:
-        fallback_n = mode.pre_context_.longest_path_to_first_acceptance()
+        fallback_n = "%s" % longest_pre_context
     else:
         # Assert: any specification has taken care of constraint:
         assert not Setup.error_on_arbitrary_length_of_pre_context_f
