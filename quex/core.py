@@ -75,10 +75,11 @@ def _generate(mode_db):
         return
 
 def do_plot():
-    mode_db = quex_file_parser.do(Setup.input_mode_files)
+    mode_prep_prep_db = quex_file_parser.do(Setup.input_mode_files)
+    mode_db           = mode.finalize_modes(mode_prep_prep_db)
 
-    for mode in mode_db.itervalues():        
-        plotter = grapviz_generator.Generator(mode)
+    for m in mode_db.itervalues():        
+        plotter = grapviz_generator.Generator(m)
         plotter.do(Option=Setup.character_display)
 
 def do_converter_info(HeaderFileName, SourceFileName):
