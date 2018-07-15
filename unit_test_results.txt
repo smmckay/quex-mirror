@@ -61,7 +61,7 @@ TEST                                                                 <no date>
  * clemwang:
 
     3474524 0.62.3 Escape characters in --language dot plot of [:space:]
-        bug-3474524.sh .............................................[FAIL]
+        bug-3474524.sh ...............................................[OK]
     3478018 0.62.3 errmsg about missing { when missing }
         bug-3478018.sh ...............................................[OK]
     3479354 Reversed (right to left) Pattern Definition
@@ -161,8 +161,8 @@ TEST                                                                 <no date>
         bug-3102035.sh 1 .............................................[OK]
                        2 .............................................[OK]
                        3 .............................................[OK]
-                       4 ...........................................[FAIL]
-                       5 ...........................................[FAIL]
+                       4 .............................................[OK]
+                       5 .............................................[OK]
     3157923 Memory Leak by Components
         bug-3157923.sh ...............................................[OK]
     3513568 0.62.2 Memory Leak when using ICU
@@ -256,8 +256,8 @@ TEST                                                                 <no date>
     3142578 Output token identifier definition
         feature-3142578.sh ...........................................[OK]
     3402386 Option --language dot
-        feature-3402386.sh hex .....................................[FAIL]
-                           utf8 ....................................[FAIL]
+        feature-3402386.sh hex .......................................[OK]
+                           utf8 ......................................[OK]
     3403249 0.61.2 Non UTF8 encoding for *.qx files not detected.
         bug-3403249.sh GBK ...........................................[OK]
                        utf16 .........................................[OK]
@@ -272,8 +272,8 @@ TEST                                                                 <no date>
  * otsakiridis:
 
     3075601 0.52.1 Pre-Context with Codec utf8
-        bug-3075601.sh utf16 .......................................[FAIL]
-                       utf8 ........................................[FAIL]
+        bug-3075601.sh utf16 .........................................[OK]
+                       utf8 ..........................................[OK]
 
  * patrikj-kt:
 
@@ -443,14 +443,14 @@ TEST                                                                 <no date>
  * wryun:
 
     2819022 0.41.2 Pre-condition match causes issues
-        bug-2819022.sh 0 ...........................................[FAIL]
-                       1 ...........................................[FAIL]
-                       2 ...........................................[FAIL]
-                       3 ...........................................[FAIL]
+        bug-2819022.sh 0 .............................................[OK]
+                       1 .............................................[OK]
+                       2 .............................................[OK]
+                       3 .............................................[OK]
     2819023 0.41.2 Valid pattern definition fails
         bug-2819023.sh ...............................................[OK]
     2819043 0.41.2 Infinite recursion error
-        bug-2819043.sh .............................................[FAIL]
+        bug-2819043.sh ...............................................[OK]
     2819045 0.41.2 Some internal assertion fails on...
         bug-2819045.sh 0 .............................................[OK]
                        1 .............................................[OK]
@@ -496,21 +496,9 @@ TEST                                                                 <no date>
 -------------------------------------------------------------------------------
     [FAIL] bug-293.sh _ bad
                     \__ good
-    [FAIL] bug-3474524.sh
     [FAIL] bug-3486388.sh
     [FAIL] bug-3510261.sh
-    [FAIL] bug-3102035.sh _ 4
-                        \__ 5
     [FAIL] bug-2395200.sh _ lexer
-    [FAIL] feature-3402386.sh _ hex
-                            \__ utf8
-    [FAIL] bug-3075601.sh _ utf16
-                        \__ utf8
-    [FAIL] bug-2819022.sh _ 0
-                        \__ 1
-                        \__ 2
-                        \__ 3
-    [FAIL] bug-2819043.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -625,11 +613,11 @@ demo/C/TEST                                                          <no date>
  * 11-ManualBufferFilling:
 
     Manual Buffer Filling (w/o Converter)
-        11-ManualBufferFilling.sh feeder-converter .................[FAIL]
-                                  feeder-plain .....................[FAIL]
-                                  gavager-converter ................[FAIL]
-                                  gavager-plain ....................[FAIL]
-                                  point-plain ......................[FAIL]
+        11-ManualBufferFilling.sh feeder-converter ...................[OK]
+                                  feeder-plain .......................[OK]
+                                  gavager-converter ..................[OK]
+                                  gavager-plain ......................[OK]
+                                  point-plain ........................[OK]
 
  * 12-EngineEncoding:
 
@@ -667,11 +655,6 @@ demo/C/TEST                                                          <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] 11-ManualBufferFilling.sh _ feeder-converter
-                                   \__ feeder-plain
-                                   \__ gavager-converter
-                                   \__ gavager-plain
-                                   \__ point-plain
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
@@ -771,11 +754,11 @@ demo/Cpp/TEST                                                        <no date>
  * 11-ManualBufferFilling:
 
     Manual Buffer Filling (w/o Converter)
-        11-ManualBufferFilling.sh feeder-converter .................[FAIL]
-                                  feeder-plain .....................[FAIL]
-                                  gavager-converter ................[FAIL]
-                                  gavager-plain ....................[FAIL]
-                                  point-plain ......................[FAIL]
+        11-ManualBufferFilling.sh feeder-converter ...................[OK]
+                                  feeder-plain .......................[OK]
+                                  gavager-converter ..................[OK]
+                                  gavager-plain ......................[OK]
+                                  point-plain ........................[OK]
 
  * 12-EngineEncoding:
 
@@ -813,11 +796,6 @@ demo/Cpp/TEST                                                        <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] 11-ManualBufferFilling.sh _ feeder-converter
-                                   \__ feeder-plain
-                                   \__ gavager-converter
-                                   \__ gavager-plain
-                                   \__ point-plain
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
@@ -993,28 +971,19 @@ quex/input/TEST                                                      <no date>
 quex/TESTS/bof-eos-context/TEST                                      <no date>
 -------------------------------------------------------------------------------
  * explicit
-        explicit.exe bos-and-eos.txt ........................[MAKE FAILED]
-                     bos-eos.txt ............................[MAKE FAILED]
-                     bos-x-x-eos.txt ........................[MAKE FAILED]
-                     not-bos-eos.txt ........................[MAKE FAILED]
+        explicit.exe bos-and-eos.txt .................................[OK]
+                     bos-eos.txt .....................................[OK]
+                     bos-x-x-eos.txt .................................[OK]
+                     not-bos-eos.txt .................................[OK]
  * implicit
-        implicit.exe bos-and-eos.txt ........................[MAKE FAILED]
-                     bos-eos.txt ............................[MAKE FAILED]
-                     bos-x-x-eos.txt ........................[MAKE FAILED]
-                     not-bos-eos.txt ........................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] explicit.exe _ bos-and-eos.txt
-                      \__ bos-eos.txt
-                      \__ bos-x-x-eos.txt
-                      \__ not-bos-eos.txt
-    [FAIL] implicit.exe _ bos-and-eos.txt
-                      \__ bos-eos.txt
-                      \__ bos-x-x-eos.txt
-                      \__ not-bos-eos.txt
+        implicit.exe bos-and-eos.txt .................................[OK]
+                     bos-eos.txt .....................................[OK]
+                     bos-x-x-eos.txt .................................[OK]
+                     not-bos-eos.txt .................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                         Test Collection on Source Code                         
@@ -1339,17 +1308,17 @@ quex/TESTS/match-precedence/TEST                                     <no date>
 quex/TESTS/misc/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Challenges with Buffer Size 5
-        challenge-with-tiny-buffer-sizes.sh PRE_LONG_X .............[FAIL]
-                                            PRE_LONG_X_DTC .........[FAIL]
-                                            PRE_LONG_X_PC ..........[FAIL]
-                                            PRE_X ..................[FAIL]
-                                            PRE_X_DTC ..............[FAIL]
-                                            PRE_X_PC ...............[FAIL]
+        challenge-with-tiny-buffer-sizes.sh PRE_LONG_X ...............[OK]
+                                            PRE_LONG_X_DTC ...........[OK]
+                                            PRE_LONG_X_PC ............[OK]
+                                            PRE_X ....................[OK]
+                                            PRE_X_DTC ................[OK]
+                                            PRE_X_PC .................[OK]
  * Customized codec files (option --encoding-file)
         customized_codec.sh ..........................................[OK]
  * Exception occurred -- please, report a bug under
-        line-number-pragma.sh qx ...................................[FAIL]
-                              source ...............................[FAIL]
+        line-number-pragma.sh qx .....................................[OK]
+                              source .................................[OK]
  * FSM DFA_State Tracer
         debug_show.sh ................................................[OK]
  * Inadmissible commonalities
@@ -1370,44 +1339,23 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Challenges with Buffer Size 5:
 
     Extend on Overflow
-        challenge-with-tiny-buffer-sizes-overflow-error.sh PRE_LONG_X [FAIL]
-                                                           PRE_LONG_X_DTC [FAIL]
-                                                           PRE_LONG_X_PC [FAIL]
-                                                           PRE_X ...[FAIL]
-                                                           PRE_X_DTC [FAIL]
-                                                           PRE_X_PC [FAIL]
+        challenge-with-tiny-buffer-sizes-overflow-error.sh PRE_LONG_X [OK]
+                                                           PRE_LONG_X_DTC [OK]
+                                                           PRE_LONG_X_PC [OK]
+                                                           PRE_X .....[OK]
+                                                           PRE_X_DTC .[OK]
+                                                           PRE_X_PC ..[OK]
     Extend on Overflow
-        challenge-with-tiny-buffer-sizes-overflow.sh PRE_LONG_X ....[FAIL]
-                                                     PRE_LONG_X_DTC [FAIL]
-                                                     PRE_LONG_X_PC .[FAIL]
-                                                     PRE_X .........[FAIL]
-                                                     PRE_X_DTC .....[FAIL]
-                                                     PRE_X_PC ......[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] challenge-with-tiny-buffer-sizes.sh _ PRE_LONG_X
-                                             \__ PRE_LONG_X_DTC
-                                             \__ PRE_LONG_X_PC
-                                             \__ PRE_X
-                                             \__ PRE_X_DTC
-                                             \__ PRE_X_PC
-    [FAIL] line-number-pragma.sh _ qx
-                               \__ source
-    [FAIL] challenge-with-tiny-buffer-sizes-overflow-error.sh _ PRE_LONG_X
-                                                            \__ PRE_LONG_X_DTC
-                                                            \__ PRE_LONG_X_PC
-                                                            \__ PRE_X
-                                                            \__ PRE_X_DTC
-                                                            \__ PRE_X_PC
-    [FAIL] challenge-with-tiny-buffer-sizes-overflow.sh _ PRE_LONG_X
-                                                      \__ PRE_LONG_X_DTC
-                                                      \__ PRE_LONG_X_PC
-                                                      \__ PRE_X
-                                                      \__ PRE_X_DTC
-                                                      \__ PRE_X_PC
+        challenge-with-tiny-buffer-sizes-overflow.sh PRE_LONG_X ......[OK]
+                                                     PRE_LONG_X_DTC ..[OK]
+                                                     PRE_LONG_X_PC ...[OK]
+                                                     PRE_X ...........[OK]
+                                                     PRE_X_DTC .......[OK]
+                                                     PRE_X_PC ........[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -3451,11 +3399,11 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       17  238   [FAIL] TEST                                                          
-        9  56    [FAIL] demo/C/TEST                                                   
-        9  56    [FAIL] ..../Cpp/TEST                                                 
+        5  238   [FAIL] TEST                                                          
+        4  56    [FAIL] demo/C/TEST                                                   
+        4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
-        8  8     [FAIL] quex/TESTS/bof-eos-context/TEST                               
+           8       [OK] quex/TESTS/bof-eos-context/TEST                               
         7  13    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
@@ -3467,7 +3415,7 @@ SUMMARY:
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-       20  32    [FAIL] ........../misc/TEST                                          
+           32      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            14      [OK] ........../source-package/TEST                                
         1  5     [FAIL] ........../token-class/TEST                                   
@@ -3512,11 +3460,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  _____           
-    |  ___|_ _(_) |___     |___  ||___  |    __  __
-    | |_ / _` | | / __|       / /    / /     \ \/ /
-    |  _| (_| | | \__ \      / /    / /       >  < 
-    |_|  \__,_|_|_|___/     /_/    /_/       /_/\_\
+     _____     _ _          ____   _____           
+    |  ___|_ _(_) |___     |___ \ |___  |    __  __
+    | |_ / _` | | / __|      __) |   / /     \ \/ /
+    |  _| (_| | | \__ \     / __/   / /       >  < 
+    |_|  \__,_|_|_|___/    |_____| /_/       /_/\_\
                                                                    (1704 tests)
 
 ===============================================================================

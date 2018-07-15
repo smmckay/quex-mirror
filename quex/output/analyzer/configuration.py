@@ -27,9 +27,10 @@ def do(ModeDb):
     elif buffer_size_min >= 16:   fallback_n = buffer_size >> 4
     else:                         fallback_n = 0
 
-    longest_pre_context = max(m.longest_pre_context() for m in ModeDb.itervalues())
-    if longest_pre_context:
-        fallback_n = "%s" % longest_pre_context
+    pre_context_lengths = [m.longest_pre_context() for m in ModeDb.itervalues()]
+    pre_context_lengths = [l for l in pre_context_lengths if l is not None]
+    if pre_context_lengths:
+        fallback_n = "%s" % max(pre_context_lengths)
     else:
         # Assert: any specification has taken care of constraint:
         assert not Setup.error_on_arbitrary_length_of_pre_context_f

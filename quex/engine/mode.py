@@ -15,7 +15,7 @@ class BasicMode:
         self.pre_context_sm_id_list = self.__prepare(PatternList)
 
     def longest_pre_context(self):
-        if not self.pre_context_sm: return None
+        if not self.pre_context_sm: return 0
         return self.pre_context_sm.longest_path_to_first_acceptance()
 
     def __prepare(self, PatternList):
