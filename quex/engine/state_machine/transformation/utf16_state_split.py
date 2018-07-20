@@ -41,7 +41,7 @@ from   quex.engine.misc.interval_handling                   import Interval, Num
 from   quex.constants import INTEGER_MAX
 
 
-ForbiddenRange = Interval(0xD800, 0xE000)
+ForbiddenRange = Interval(0xD800, 0xE000) # This range is fordbidden in Unicode
 
 class EncodingTrafoUTF16(EncodingTrafoBySplit):
     DEFAULT_LEXATOM_TYPE_SIZE = 2 # [Byte]
@@ -70,7 +70,7 @@ class EncodingTrafoUTF16(EncodingTrafoBySplit):
 
         RETURNS: True, if number set is not empty. False, else.
         """
-        global ForbiddenRange
+        global ForbiddenRange 
         number_set.subtract(ForbiddenRange)
         number_set.mask(0, 0x110000)
         return not number_set.is_empty()

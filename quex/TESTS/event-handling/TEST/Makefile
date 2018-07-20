@@ -54,9 +54,8 @@ on_load_failure.exe: on_load_failure.qx
 	$(LD0) -DQUEX_SETTING_BUFFER_SIZE_EXT=6 ./lexer-probed.c EHLexer/EHLexer.c -o $@ 
 
 on_bad_lexatom.exe: on_bad_lexatom.qx 
-	$(QUEX) -i $< -o EHLexer --encoding utf16
-	# $(LD65536) -DQUEX_OPTION_ASSERTS_DISABLED_EXT ./lexer.c EHLexer/EHLexer.c -o $@ 
-	$(LD65536) ./lexer.c EHLexer/EHLexer.c -o $@ 
+	$(QUEX) -i $< -o EHLexer --encoding utf16 --no-count
+	$(LD65536) ./lexer.c EHLexer/EHLexer.c -o $@ -DQUEX_OPTION_DEBUG_SHOW_EXT
 
 on_buffer_overflow.exe: on_buffer_overflow.qx 
 	$(QUEX) -i $< -o EHLexer --emm

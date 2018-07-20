@@ -9,7 +9,7 @@ from   quex.engine.misc.tools                      import typed
 from   quex.output.counter.pattern                 import map_SmLineColumnCountInfo_to_code
 
 import quex.blackboard as blackboard
-from   quex.blackboard import Lng
+from   quex.blackboard import Lng, setup as Setup
 from   quex.constants  import E_IncidenceIDs, \
                               E_TerminalType
 
@@ -19,6 +19,12 @@ def _aux_adorn_nothing(Code):
 def _aux_adorn_on_skip_range_open(Code):
     return CodeTerminal([
         "%s\n" % Lng.DEFINE_NESTED_RANGE_COUNTER(), 
+        Lng.SOURCE_REFERENCED(Code)
+    ])
+
+def _aux_adorn_on_bad_lexatom(Code):
+    return CodeTerminal([
+        "%s\n" % Lng.DEFINE_BAD_LEXATOM(), 
         Lng.SOURCE_REFERENCED(Code)
     ])
 
@@ -34,7 +40,7 @@ aux_db = {
       "tokens can be filled after the termination token.",
      ),
     E_TerminalType.BAD_LEXATOM:     
-     (_aux_adorn_nothing, "BAD_LEXATOM", True,
+     (_aux_adorn_on_bad_lexatom, "BAD_LEXATOM", True,
       "Bad lexatom detection FORCES a return from the lexical analyzer, so that no\n" \
       "tokens can be filled after the termination token.",
      ),
@@ -149,12 +155,6 @@ class TerminalFactory:
         adorned_code        = self.__adorn_user_code(Code, MatchF=False)
 
         text = [ 
-            #Lng.IF_END_OF_FILE(),
-            #    self.__counter_code(None),
-            #    Lng.GOTO(DoorID.continue_without_on_after_match()),
-            #Lng.IF_INPUT_P_EQUAL_LEXEME_START_P(FirstF=False),
-            #    Lng.INPUT_P_INCREMENT(),
-            #Lng.END_IF,
             self.__counter_code(None),
             #
             adorned_code,
@@ -259,7 +259,7 @@ class TerminalFactory:
         
         # No indentation handler => Empty string.
         text = [ 
-            Lng.DEFAULT_COUNTER_CALL(self.mode_name),
+            self.__counter_code(LCCI=None),
             self.txt_indentation_handler_call,
             #
             adorned_code,

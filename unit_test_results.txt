@@ -96,7 +96,7 @@ TEST                                                                 <no date>
         bug-261.sh 1 .................................................[OK]
                    2 .................................................[OK]
     3510261 0.61.2 Failed ydd (0xFF) and begin of line pattern
-        bug-3510261.sh .............................................[FAIL]
+        bug-3510261.sh ...............................................[OK]
 
  * eabrams:
 
@@ -243,7 +243,7 @@ TEST                                                                 <no date>
  * nobody:
 
     2395200 assert  in QuexLexatomLoader_load_forward (The StrangeStream Issue)
-        bug-2395200.sh lexer .......................................[FAIL]
+        bug-2395200.sh lexer .........................................[OK]
     2841726 0.44.2 Unknown exception on unicode properties
         bug-2841726.sh ...............................................[OK]
     2891125 0.45.1 bug in -- version
@@ -497,8 +497,6 @@ TEST                                                                 <no date>
     [FAIL] bug-293.sh _ bad
                     \__ good
     [FAIL] bug-3486388.sh
-    [FAIL] bug-3510261.sh
-    [FAIL] bug-2395200.sh _ lexer
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -1049,6 +1047,8 @@ quex/TESTS/command-line/TEST                                         <no date>
                                                                                
 quex/TESTS/did-you-mean/TEST                                         <no date>
 -------------------------------------------------------------------------------
+ * Command line arguments
+        command-line-args.sh .........................................[OK]
  * Explicit Token Type Member Assignment
         token_type-member-name.sh ....................................[OK]
  * UCS Character Code Names
@@ -1083,15 +1083,13 @@ quex/TESTS/drop-outs/TEST                                            <no date>
 quex/TESTS/entry-exit/TEST                                           <no date>
 -------------------------------------------------------------------------------
  * With Errors
-        bad.sh .....................................................[FAIL]
+        bad.sh .......................................................[OK]
  * Without Errors
         good.sh ......................................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] bad.sh
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               Errors and Warnings                              
@@ -1126,12 +1124,13 @@ quex/TESTS/event-handling/TEST                                       <no date>
         on_buffer_overflow.qx empty ..................................[OK]
                               trigger ................................[OK]
     Customized 'on_skip_range_open' event
-        on_skip_range_open-customized.qx customized ..................[OK]
+        on_skip_range_open-customized.qx customized ................[FAIL]
     Default 'on_skip_range_open' event
-        on_skip_range_open.qx default ................................[OK]
-    on_bad_lexatom
-        on_bad_lexatom.qx bad-utf16 ................................[FAIL]
-                          good-utf16 .................................[OK]
+        on_skip_range_open.qx default ..............................[FAIL]
+    on_bad_lexatom (Encoding UTF16)
+        on_bad_lexatom.qx bad-utf16-1st ....................[NO GOOD FILE]
+                          bad-utf16-2nd ....................[NO GOOD FILE]
+                          good-utf16 ...............................[FAIL]
 
  * Indentation:
 
@@ -1165,7 +1164,11 @@ quex/TESTS/event-handling/TEST                                       <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] on_bad_lexatom.qx _ bad-utf16
+    [FAIL] on_skip_range_open-customized.qx _ customized
+    [FAIL] on_skip_range_open.qx _ default
+    [FAIL] on_bad_lexatom.qx _ bad-utf16-1st
+                           \__ bad-utf16-2nd
+                           \__ good-utf16
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -1316,9 +1319,6 @@ quex/TESTS/misc/TEST                                                 <no date>
                                             PRE_X_PC .................[OK]
  * Customized codec files (option --encoding-file)
         customized_codec.sh ..........................................[OK]
- * Exception occurred -- please, report a bug under
-        line-number-pragma.sh qx .....................................[OK]
-                              source .................................[OK]
  * FSM DFA_State Tracer
         debug_show.sh ................................................[OK]
  * Inadmissible commonalities
@@ -1333,8 +1333,13 @@ quex/TESTS/misc/TEST                                                 <no date>
                                    plain .............................[OK]
  * Respect max. recursion depth upon base mode inclusion.
         huge-inheritance.sh ..........................................[OK]
+ * Run with --config-by-cmake
+        cmake-example.sh ...........................................[FAIL]
  * Test code comments
         comment.sh ...................................................[OK]
+ * Testing the implementation of line number pragmas
+        line-number-pragma.sh qx .....................................[OK]
+                              source .................................[OK]
 
  * Challenges with Buffer Size 5:
 
@@ -1352,10 +1357,12 @@ quex/TESTS/misc/TEST                                                 <no date>
                                                      PRE_X ...........[OK]
                                                      PRE_X_DTC .......[OK]
                                                      PRE_X_PC ........[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] cmake-example.sh
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -1466,17 +1473,15 @@ quex/TESTS/token-class/TEST                                          <no date>
 -------------------------------------------------------------------------------
  * Miscellaneous Sample Runs
         misc.sh double-colon .........................................[OK]
-                empty ..............................................[FAIL]
+                empty ................................................[OK]
                 no-namespace .........................................[OK]
                 token ................................................[OK]
  * With token policy 'queue'.
         simple-queue.exe .............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] misc.sh _ empty
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                    Token Passing Policies (Queue vs. Single)                   
@@ -1970,17 +1975,17 @@ quex/engine/state_machine/TEST                                       <no date>
                                                                                
 quex/input/files/TEST                                                <no date>
 -------------------------------------------------------------------------------
- * 
-        abridgement.py ........................................[NO OUTPUT]
- * 
-        keyword_list.py .......................................[NO OUTPUT]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] abridgement.py
-    [FAIL] keyword_list.py
+
+ * Pattern-Action Pairs:
+
+    abridgement
+        abridgement.py ...............................................[OK]
+    keyword_list
+        keyword_list.py ..............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                           Regular Expression Parsing                           
@@ -3392,6 +3397,8 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
+    [NO GOOD FILE] on_bad_lexatom.qx _ bad-utf16-1st
+                                   \__ bad-utf16-2nd
     [NO GOOD FILE] no-meaningless-macro-definitions.sh
 ===============================================================================
 
@@ -3399,26 +3406,26 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        5  238   [FAIL] TEST                                                          
+        3  238   [FAIL] TEST                                                          
         4  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
         7  13    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
-           4       [OK] ........../did-you-mean/TEST                                  
+           5       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
-        1  2     [FAIL] ........../entry-exit/TEST                                    
+           2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-        1  23    [FAIL] ........../event-handling/TEST                                
+        5  24    [FAIL] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-           32      [OK] ........../misc/TEST                                          
+        1  33    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            14      [OK] ........../source-package/TEST                                
-        1  5     [FAIL] ........../token-class/TEST                                   
+           5       [OK] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TESTS/general/TEST                             
            1       [OK] ............../analyzer/TEST                                  
@@ -3452,7 +3459,7 @@ SUMMARY:
            33      [OK] ........................./cut/TEST                            
            62      [OK] ........................./transformation/TEST                 
            58      [OK] ..../input/TEST                                               
-        2  2     [FAIL] ........../files/TEST                                         
+           2       [OK] ........../files/TEST                                         
            27      [OK] ........../regular_expression/TEST                            
            205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
@@ -3460,11 +3467,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____   _____           
-    |  ___|_ _(_) |___     |___ \ |___  |    __  __
-    | |_ / _` | | / __|      __) |   / /     \ \/ /
-    |  _| (_| | | \__ \     / __/   / /       >  < 
-    |_|  \__,_|_|_|___/    |_____| /_/       /_/\_\
-                                                                   (1704 tests)
+     _____     _ _          ____    __             
+    |  ___|_ _(_) |___     |___ \  / /_      __  __
+    | |_ / _` | | / __|      __) || '_ \     \ \/ /
+    |  _| (_| | | \__ \     / __/ | (_) |     >  < 
+    |_|  \__,_|_|_|___/    |_____| \___/     /_/\_\
+                                                                   (1707 tests)
 
 ===============================================================================

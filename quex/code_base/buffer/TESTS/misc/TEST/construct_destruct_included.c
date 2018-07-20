@@ -76,6 +76,7 @@ main(int argc, char** argv)
             /* Construct including ___________________________________________*/
             QUEX_NAME(Buffer_construct)(&including, (QUEX_NAME(LexatomLoader)*)0,
                                         memory, MemorySize, end_p,
+                                        QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT, 
                                         E_Ownership_LEXICAL_ANALYZER,
                                         (QUEX_NAME(Buffer)*)0);
             including._fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;

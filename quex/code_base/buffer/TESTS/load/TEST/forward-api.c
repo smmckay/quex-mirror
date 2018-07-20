@@ -154,7 +154,9 @@ self_setup(ptrdiff_t       LexemePOffset,  /* = LexemeP - Buffer's Front */
      *                                                                        */
     QUEX_NAME(Buffer_construct)(&self.buffer, self.lexatom_loader,
                                 &self.memory[0], BufferElementN,
-                                (QUEX_TYPE_LEXATOM_EXT*)0, E_Ownership_EXTERNAL,
+                                (QUEX_TYPE_LEXATOM_EXT*)0, 
+                                QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT, 
+                                E_Ownership_EXTERNAL,
                                 (QUEX_NAME(Buffer)*)0); 
     self.buffer._fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
 

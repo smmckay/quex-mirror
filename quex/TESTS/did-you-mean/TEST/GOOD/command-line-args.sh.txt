@@ -1,0 +1,4 @@
+command line: Unknown command line option '--config-by-gmake'
+command line: Did you mean '--config-by-cmake'?
+command line: Unknown command line option '--helpy'
+command line: Did you mean '--help'?

@@ -10,6 +10,7 @@ from   quex.input.code.base                    import SourceRef
 from   quex.input.setup                        import SETUP_INFO,               \
                                                       SetupParTypes,            \
                                                       NotificationDB
+from   quex.engine.misc.tools                  import flatten_list_of_lists
 import quex.engine.misc.error                  as     error
 from   quex.engine.misc.file_operations        import open_file_or_die
 from   quex.engine.misc.file_in                import get_integer_parameter_value
@@ -194,7 +195,6 @@ def configure_output_directory(setup):
     else:
         return
 
-
 def argv_is_query_option(Cl, Option, Name, PrevQueryF):
     """Determines whether the setup parameter is a parameter related to 
     queries (or to code generation). If a mixed usage is detected an 
@@ -287,7 +287,12 @@ def argv_ufo_detections(Cl):
     ufo_list = Cl.unidentified_options(known_option_list)
     if not ufo_list: return
 
-    option_str = "".join("%s\n" % ufo_list)
-    error.log("Following command line options are unknown to current version of quex:\n" \
-              + option_str, 
-             SuppressCode=NotificationDB.error_ufo_on_command_line_f)
+    pre_filter_flag_info = [ 
+        info for info in SETUP_INFO.itervalues() if info 
+    ]
+    all_flag_list = flatten_list_of_lists(
+        flag_list for flag_list, dummy in pre_filter_flag_info
+    )
+    ufo = ufo_list[0]
+
+    error.log_similar(ufo, all_flag_list, "Unknown command line option '%s'" % ufo)

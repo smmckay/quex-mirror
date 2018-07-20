@@ -5,7 +5,7 @@ _______________________________________________________________________________
 import quex.engine.state_machine.character_counter as character_counter
 from   quex.engine.misc.tools import typed
 from   quex.constants         import E_Count
-from   quex.blackboard        import Lng
+from   quex.blackboard        import Lng, setup as Setup
 
 @typed(lcci=(None, character_counter.SmLineColumnCountInfo))
 def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True, ModeName=None):
@@ -20,6 +20,9 @@ def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True, ModeName=None):
                          based on the pattern's structure. 
                              
     """
+    if not (Setup.count_line_number_f or Setup.count_column_number_f):
+        return False, ""
+
     if lcci is None:
         return  True, Lng.DEFAULT_COUNTER_CALL(ModeName)
 

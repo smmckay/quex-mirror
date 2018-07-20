@@ -114,10 +114,10 @@ class DFA_State:
         return not self.target_map.is_empty()
 
     def is_acceptance(self):
+        ### return self.single_entry.find(SeAccept) is not None
         cmd = self.single_entry.find(SeAccept) 
         if cmd is None: return False 
-        return not any(cmd.acceptance_id() == E_IncidenceIDs.BAD_LEXATOM
-                       for cmd in self.single_entry)
+        return not any(cmd.acceptance_id() == E_IncidenceIDs.BAD_LEXATOM for cmd in self.single_entry)
 
     def get_highest_precedence_acceptance_id(self):
         """RETURNS: incidence_id of the highest non-E_IncidenceIDs pattern
@@ -166,6 +166,8 @@ class DFA_State:
     def mark_acceptance_id(self, AcceptanceID):
         for cmd in self.single_entry:
             if not hasattr(cmd, "set_acceptance_id"): continue
+            # 'BAD_LEXATOM' must not be outruled, ever!
+            if cmd.acceptance_id() == E_IncidenceIDs.BAD_LEXATOM: continue
             cmd.set_acceptance_id(AcceptanceID)
 
     def has_acceptance_id(self, AcceptanceID):

@@ -90,6 +90,7 @@ test_file(bool BinaryF, const char* FileStem)
     filler = QUEX_NAME(LexatomLoader_Plain_new)(byte_loader);
 
     QUEX_NAME(Buffer_construct)(&buffer, filler, &memory[0], MemorySize, 0, 
+                                QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT, 
                                 E_Ownership_EXTERNAL, 
                                 (QUEX_NAME(Buffer)*)0);
 

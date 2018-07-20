@@ -1,5 +1,5 @@
-// Errors: on_bad_lexatom;
-// CHOICES: bad-utf16, good-utf16;
+// Errors: on_bad_lexatom (Encoding UTF16);
+// CHOICES: bad-utf16-1st, bad-utf16-2nd, good-utf16;
 token { X; NEWLINE; }
 
 mode X :
@@ -8,7 +8,7 @@ mode X :
     \n => TK_NEWLINE;
 
     on_bad_lexatom { 
-        printf("bad_lexatom!\n");
+        printf("bad_lexatom: '0x%04X'\n", (int)BadLexatom); 
         self.send(&self, TK_TERMINATION);
     }
 }

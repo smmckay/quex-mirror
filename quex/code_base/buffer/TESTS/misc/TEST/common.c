@@ -66,6 +66,7 @@ common_clone(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
 
     QUEX_NAME(Buffer_construct)(subject, (QUEX_NAME(LexatomLoader)*)0,
                                 memory, reference_size, &memory[reference_size-1],
+                                QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT, 
                                 E_Ownership_LEXICAL_ANALYZER,
                                 (QUEX_NAME(Buffer)*)0);
     subject->_fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
@@ -239,6 +240,7 @@ common_construct_reference_base(QUEX_NAME(Buffer)* reference,
 
     QUEX_NAME(Buffer_construct)(reference, (QUEX_NAME(LexatomLoader)*)0,
                                 memory, reference_size, &memory[reference_size-1],
+                                QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT, 
                                 E_Ownership_LEXICAL_ANALYZER,
                                 (QUEX_NAME(Buffer)*)0);
     QUEX_BUFFER_ASSERT_CONSISTENCY(reference);

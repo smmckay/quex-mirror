@@ -142,6 +142,7 @@ test_file(E_ConverterTestType CTT, const char* Codec, bool LinearF, bool ClueLes
     __quex_assert(filler); 
 
     QUEX_NAME(Buffer_construct)(&buffer, filler, &memory[0], MemorySize, 0, 
+                                QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT, 
                                 E_Ownership_EXTERNAL, (QUEX_NAME(Buffer)*)0);
     buffer._fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;
     __quex_assert(filler->byte_n_per_lexatom == -1);

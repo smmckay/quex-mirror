@@ -1,0 +1,9 @@
+token {
+  DADA;
+  FAIL;
+}
+
+mode X { 
+    on_failure    => QUEX_TKN_FAIL(Lexeme);
+    pre/dada/post => QUEX_TKN_DADA(Lexeme);
+}

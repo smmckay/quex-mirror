@@ -1,6 +1,7 @@
 import quex.token_db          as     token_db
 import quex.engine.misc.error as     error
 from   quex.constants         import E_IncidenceIDs
+import quex.blackboard        as     blackboard
 from   quex.blackboard        import setup as Setup, \
                                      required_support_indentation_count, \
                                      required_support_begin_of_line
@@ -33,13 +34,13 @@ def do(Condition):
         return True                                  # NEEDS REWORK
         return any(
             mode.incidence_db.has_key(E_IncidenceIDs.MODE_ENTRY)
-            for mode in mode_prep_prep_db.values()
+            for mode in blackboard.mode_db.values()
         )
     elif Condition == "mode-on-exit-handler":
         return True                                  # NEEDS REWORK
         return any(
             mode.incidence_db.has_key(E_IncidenceIDs.MODE_EXIT)
-            for mode in mode_prep_prep_db.values()
+            for mode in blackboard.mode_db.values()
         )
     elif "&&" in Condition:
         return all(do(x.strip()) for x in Condition.split("&&"))

@@ -18,5 +18,5 @@ destructor {
     QUEX_NAME(Accumulator_destruct)(&me->accumulator);
 }
 print {
-    QUEX_NAME(Accumulator_print_this)(&me->accumulator);
+    me->accumulator.print_this();
 }

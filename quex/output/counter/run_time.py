@@ -11,7 +11,7 @@ from   quex.engine.analyzer.door_id_address_label   import DoorID, DialDB
 from   quex.engine.misc.tools                       import typed
 from   quex.engine.counter                          import CountActionMap
 
-from   quex.blackboard import Lng, \
+from   quex.blackboard import setup as Setup, Lng, \
                               DefaultCounterFunctionDB, \
                               E_IncidenceIDs
 
@@ -42,6 +42,9 @@ def get(CaMap, ModeName):
                                        by the 'function name'.
     ---------------------------------------------------------------------------
     """
+    if not (Setup.count_line_number_f or Setup.count_column_number_f):
+        return ""
+
     dial_db = DialDB()
 
     mode_with_same_counter = DefaultCounterFunctionDB.get_mode_name(CaMap)

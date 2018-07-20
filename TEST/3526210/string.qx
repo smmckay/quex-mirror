@@ -14,9 +14,9 @@ mode MAIN : <skip: [ \t\n] >
 
 mode STRING
 {
-    on_entry    { self_accumulator_clear (); }
-    on_exit     { self_accumulator_flush (QUEX_TKN_STRING); }
+    on_entry    { self.accumulator.clear (&self.accumulator); }
+    on_exit     { self.accumulator.flush (&self.accumulator, QUEX_TKN_STRING); }
 
     \"          => GOUP ();
-    .           { self_accumulator_add (Lexeme, LexemeEnd); }
+    .           { self.accumulator.add (&self.accumulator, Lexeme, LexemeEnd); }
 }

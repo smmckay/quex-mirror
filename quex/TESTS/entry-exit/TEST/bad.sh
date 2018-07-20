@@ -5,13 +5,21 @@ fi
 
 
 function test {
-    echo "    File: 'good-$1.qx': {"
+    echo "    File: 'bad-$1.qx': {"
     rm -rf TmpLex*
     quex -i bad-$1.qx -o TmpLex --odir . |& awk '{ print "        " $0; }'
     if [ -e TmpLex ]; then echo Files generated with incorrect configuration; exit; fi
     echo "    }"
     echo 
 }
+
+echo "(0) A <-> A"
+echo "    restricted entry/exit to mode itself"
+test 0
+
+echo "(0b) A <-> A"
+echo "    restricted entry/exit to mode itself"
+test 0b
 
 echo "(1) A <-> B"
 echo "    not all implicit transitions allowed explicitly"

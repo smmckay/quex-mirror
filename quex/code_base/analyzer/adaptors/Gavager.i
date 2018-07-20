@@ -84,6 +84,13 @@ $$<C>--------------------------------------------------------------------------
     me->gavage  = QUEX_NAME(Gavager_gavage);
     me->deliver = QUEX_NAME(Gavager_deliver);
 $$-----------------------------------------------------------------------------
+
+    if( ! QUEX_SETTING_FALLBACK_MANDATORY ) {
+        /* For manual buffer filling, the fallback must be finite and computed 
+         * during engine generation. (call Quex with '--fallback-mandatory')  */
+        QUEX_GNAME(MF_error_code_set_if_first)(me->base.lexer, 
+                                               E_Error_EngineNotGeneratedWithFallbackMandatory);
+    }
 }
 
 QUEX_INLINE bool

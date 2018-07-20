@@ -66,9 +66,11 @@ class EncodingTrafo:
         # NOTE: Not 'iteritems()', for some encodings intermediate states are 
         #       generated. Those shall not be subject to transformation.
         for from_si, state in sm.states.items():
+            if from_si == bad_lexatom_si: continue
             target_map = state.target_map.get_map()
 
             for to_si, trigger_set in target_map.items():
+                if to_si == bad_lexatom_si: continue
 
                 complete_f,  \
                 new_state_db = self.do_transition(target_map, from_si, to_si, 

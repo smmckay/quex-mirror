@@ -156,9 +156,9 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
         interval_sequence_list = self.get_interval_sequences(interval_list[0])
         # A single code element can only produce a single interval sequence!
         assert len(interval_sequence_list) == 1
-        assert all(x.size() == 1 for x in interval_sequence_list)
+        assert all(x.size() == 1 for x in interval_sequence_list[0])
         
-        return [x.begin for x in interval_sequence_list]
+        return [x.begin for x in interval_sequence_list[0]]
 
     def variable_character_sizes_f(self):
         return True

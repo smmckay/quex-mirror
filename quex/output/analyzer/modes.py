@@ -1,4 +1,3 @@
-import quex.input.files.mode                    as     mode
 import quex.output.analyzer.indentation_handler as     indentation_handler
 from   quex.engine.misc.string_handling         import blue_print
 from   quex.blackboard                          import setup as Setup, \

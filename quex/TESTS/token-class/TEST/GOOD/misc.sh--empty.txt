@@ -1,10 +1,4 @@
 token_type-empty.qx:1:warning: Section token_type does not contain a 'take_text' section. It would be
 token_type-empty.qx:1:warning: necessary if the analyzer uses the string accumulator.
 token_type-empty.qx:1:warning: ('--suppress 15' to avoid this message)
-command line: No token id beyond the standard token ids are defined. Found:
-command line:     QUEX_TKN_DEDENT
-command line:     QUEX_TKN_INDENT
-command line:     QUEX_TKN_NODENT
-command line:     QUEX_TKN_TERMINATION
-command line:     QUEX_TKN_UNINITIALIZED
-command line: Refused to proceed.
+command line: Missing mode definition in input files.

@@ -15,7 +15,7 @@ def specify_setup_object(TheSetup):
     __reference_to_setup = TheSetup
 
 @typed(Fh_or_Sr=(types.IntType, SourceRef, types.FileType, StringIO), Prefix=str)
-def warning(ErrMsg, Fh_or_Sr, Prefix="", SuppressCode=None):
+def warning(ErrMsg, Fh_or_Sr=-1, Prefix="", SuppressCode=None):
     log(ErrMsg, Fh_or_Sr, DontExitF=True, WarningF=True, NoteF=False, SuppressCode=SuppressCode)
 
 @typed(Fh_or_Sr=(types.IntType, SourceRef, types.FileType, StringIO), DontExitF=bool)
@@ -131,8 +131,12 @@ def verify_word_in_list(Word, WordList, Comment, Fh_or_Sr=-1, ExitF=True, Suppre
     # Word is there. All korrect.
     if Word in word_list: return True
 
-    # Word was not in list
-    similar_index = similarity.get(Word, word_list)
+    log_similar(Word, word_list, Comment, Fh_or_Sr=Fh_or_Sr, ExitF=ExitF, 
+                SuppressCode=SuppressCode, PositionKnownF=position_known_f)
+    return False
+
+def log_similar(Word, WordList, Comment, Fh_or_Sr=-1, ExitF=True, SuppressCode=None, PositionKnownF=True):
+    similar_index = similarity.get(Word, WordList)
 
     if similar_index == -1:
         txt = "Acceptable: "
@@ -149,19 +153,17 @@ def verify_word_in_list(Word, WordList, Comment, Fh_or_Sr=-1, ExitF=True, Suppre
             SuppressCode=SuppressCode)
 
     else:
-        similar_word = word_list[similar_index]
-        if position_known_f:
+        similar_word = WordList[similar_index]
+        if PositionKnownF:
             log(Comment, Fh_or_Sr, DontExitF=True)
-            log("Did you mean '%s'?" % similar_word,
-                WordList[similar_index].sr, 
-                DontExitF=not ExitF, 
+            if hasattr(WordList[similar_index], "sr"): source_ref = WordList[similar_index].sr
+            else:                                      source_ref = -1
+            log("Did you mean '%s'?" % similar_word, source_ref, DontExitF=not ExitF, 
                 SuppressCode=SuppressCode)
         else:
             log(Comment + "\n" + "Did you mean '%s'?" % similar_word,
                 Fh_or_Sr, DontExitF=not ExitF, 
                 SuppressCode=SuppressCode)
-
-    return False
 
 __insight_ref_str    = ""
 __insight_time_begin = None

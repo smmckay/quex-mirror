@@ -190,6 +190,7 @@ class QuexSetup:
         self.output_code_file          = self.prepare_file_name("",               E_Files.SOURCE) 
         self.output_header_file        = self.prepare_file_name("",               E_Files.HEADER)
         self.output_configuration_file = self.prepare_file_name("-configuration", E_Files.HEADER)
+        self.output_configuration_file_cmake = "%s.in" % self.output_configuration_file
         self.output_token_id_file      = self.prepare_file_name("-token_ids",     E_Files.HEADER)
         if self.extern_token_id_file:
             self.output_token_id_file_ref = self.extern_token_id_file
@@ -217,7 +218,8 @@ SETUP_INFO = {
     "_debug_limit_recursion":         [["--debug-limit-recursion"],            0], 
     "_debug_reference_original_paths_f": [["--debug-original-paths"],          SetupParTypes.FLAG], 
     "_debug_QUEX_TYPE_LEXATOM_EXT":   [["--debug-QUEX_TYPE_LEXATOM_EXT"],      SetupParTypes.FLAG], 
-    "error_on_arbitrary_length_of_pre_context_f": [["--error-on-arbitrary-length-of-pre-context", "--eoalopc"],  SetupParTypes.FLAG],
+    "fallback_mandatory_f":           [["--fallback-mandatory", "--fbm"],  SetupParTypes.FLAG],
+    "fallback_optional_f":            [["--fallback-optional", "--fbo"],  SetupParTypes.FLAG],
     "quex_lib":                       [["--ql", "--quex-lib"],                 ""],    
     "configuration_by_macros_f":      [["--cbm",  "--config-by-macros"],        SetupParTypes.FLAG],    
     "configuration_by_cmake_f":       [["--cbcm", "--config-by-cmake"],        SetupParTypes.FLAG],    
@@ -240,12 +242,13 @@ SETUP_INFO = {
     "compression_template_min_gain":  [["--template-compression-min-gain"],    0],
     "compression_path_f":             [["--path-compression"],                 SetupParTypes.FLAG],
     "compression_path_uniform_f":     [["--path-compression-uniform"],         SetupParTypes.FLAG],
+    "__no_count_line_and_column_f":   [["--no-count"],                         SetupParTypes.FLAG],
     "count_line_number_f":            [["--no-count-lines"],                   SetupParTypes.NEGATED_FLAG],
     "count_column_number_f":          [["--no-count-columns"],                 SetupParTypes.NEGATED_FLAG],
     "character_display":              [["--character-display"],                "utf8"],
     "path_limit_code":                [["--path-termination"],                 0x1],
     "dos_carriage_return_newline_f":  [["--no-DOS"],                           SetupParTypes.NEGATED_FLAG],
-    "insight_f":                      [["--insight"],                              SetupParTypes.FLAG],
+    "insight_f":                      [["--insight"],                          SetupParTypes.FLAG],
     "converter_only_f":               [["--converter-only", "--co"],           SetupParTypes.FLAG],
     "converter_source_name":          [["--converter-source-name", "--csn"],  ""],
     "input_mode_files":               [["-i"],                                 SetupParTypes.LIST],

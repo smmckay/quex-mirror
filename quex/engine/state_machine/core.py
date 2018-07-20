@@ -292,11 +292,7 @@ class DFA(object):
         HOPELESS STATE: A state that cannot reach an acceptance state.
                        (There is no connection forward to an acceptance state).
         """
-        from_db = defaultdict(set)
-        for state_index, state in self.states.iteritems():
-            target_index_list = state.target_map.get_target_state_index_list()
-            for target_index in target_index_list:
-                from_db[target_index].add(state_index)
+        from_db = self.get_from_db()
 
         work_set     = set(self.get_acceptance_state_index_list())
         reaching_set = set()  # set of states that reach acceptance states
@@ -392,7 +388,7 @@ class DFA(object):
         """
         from_db = defaultdict(set)
         for from_index, state in self.states.iteritems():
-            for to_index in state.target_map.get_map().iterkeys():
+            for to_index in state.target_map.get_target_state_index_list():
                 from_db[to_index].add(from_index)
         return from_db
 
@@ -663,7 +659,6 @@ class DFA(object):
         """
         worklist   = [(self.init_state_index, 0, set([self.init_state_index]))]
         max_length = -1
-        done_set   = set()
         while worklist:
             si, length, predecessor_set = worklist.pop()
             if self.states[si].is_acceptance():

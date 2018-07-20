@@ -1,11 +1,10 @@
 
 from   quex.engine.misc.string_handling import blue_print
-import quex.output.analyzer.adapt       as     adapt
+# import quex.output.analyzer.adapt       as     adapt
 
 import quex.blackboard  as     blackboard
 from   quex.blackboard  import setup as Setup, Lng
 import quex.token_db    as     token_db
-import quex.blackboard  as     blackboard
 from   quex.DEFINITIONS import QUEX_VERSION
 
 import time
@@ -13,7 +12,6 @@ from   itertools import chain
 
 def do(ModeDb):
     assert ModeDb
-
 
     txt = Lng.open_template(Lng.analyzer_configuration_file())
 
@@ -27,14 +25,16 @@ def do(ModeDb):
     elif buffer_size_min >= 16:   fallback_n = buffer_size >> 4
     else:                         fallback_n = 0
 
-    pre_context_lengths = [m.longest_pre_context() for m in ModeDb.itervalues()]
-    pre_context_lengths = [l for l in pre_context_lengths if l is not None]
-    if pre_context_lengths:
-        fallback_n = "%s" % max(pre_context_lengths)
-    else:
-        # Assert: any specification has taken care of constraint:
-        assert not Setup.error_on_arbitrary_length_of_pre_context_f
+    if Setup.fallback_optional_f:
         fallback_n = 0
+    else:
+        pre_context_lengths = [m.longest_pre_context() for m in ModeDb.itervalues()]
+        if None in pre_context_lengths or not pre_context_lengths:
+            # Assert: any specification has taken care of constraint:
+            assert not Setup.fallback_mandatory_f
+            fallback_n = 0
+        else:
+            fallback_n = "%s" % max(pre_context_lengths)
 
     adaptable_list = [
         ("BUFFER_SIZE",                            "%s" % buffer_size),
@@ -55,6 +55,7 @@ def do(ModeDb):
         ("BUFFER_LEXATOM_NEWLINE",          _lexatom_newline_in_engine_encoding()),
         ("BUFFER_LEXATOM_PATH_TERMINATION", "0x%X" % Setup.path_limit_code),
         ("BUFFER_FALLBACK_N",               "%s"   % fallback_n),
+        ("FALLBACK_MANDATORY",              {True: Lng.TRUE, False: Lng.FALSE}[Setup.fallback_mandatory_f])
     ]
 
     adaptable_txt = [ Lng.QUEX_SETTING_DEF(name, value) for name, value in adaptable_list ]

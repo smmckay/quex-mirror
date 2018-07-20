@@ -20,10 +20,10 @@ mode STRING {
     <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
     on_entry { 
         self.send_string(QUEX_TKN_MODE_STRING_ENTER, LexemeNull);
-        self_accumulator_clear(); 
+        self.accumulator.clear(); 
     }
     on_exit {
-       self_accumulator_flush(QUEX_TKN_STRING_LITERAL);
+       self.accumulator.flush(QUEX_TKN_STRING_LITERAL);
        self.send_string(QUEX_TKN_MODE_STRING_EXIT, LexemeNull);
     }
     "\"" { 
@@ -31,5 +31,5 @@ mode STRING {
         self.enter_mode(MODULE);
         /* Not RETURN; and not CONTINUE; */
     }
-    [^\"] { self_accumulator_add(Lexeme, LexemeEnd); CONTINUE; }
+    [^\"] { self.accumulator.add(Lexeme, LexemeEnd); CONTINUE; }
 }

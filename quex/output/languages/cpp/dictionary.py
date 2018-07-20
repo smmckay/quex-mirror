@@ -22,7 +22,6 @@ import quex.output.languages.cpp.templates               as     templates
 from   quex.DEFINITIONS  import QUEX_PATH
 import quex.token_db     as     token_db
 import quex.condition    as     condition
-import quex.blackboard   as     blackboard
 from   quex.blackboard   import setup as Setup, \
                                 standard_incidence_db_get_incidence_id
 from   quex.constants    import E_Files, \
@@ -471,6 +470,9 @@ class Language(dict):
 
     def DEFINE_NESTED_RANGE_COUNTER(self):
         return "#define Counter %s" % self.REGISTER_NAME(E_R.Counter)
+
+    def DEFINE_BAD_LEXATOM(self):
+        return "#define BadLexatom ((me->buffer._read_p > me->buffer._memory._front && me->buffer._read_p <= me->buffer.input.end_p) ? (me->buffer._read_p[-1]) : (QUEX_TYPE_LEXATOM)-1)"
 
     def COMMAND_LIST(self, OpList, dial_db=None):
         return [ 
@@ -1305,10 +1307,8 @@ class Language(dict):
     def RELOAD_PROCEDURE(self, ForwardF, dial_db, variable_db):
         assert self.__code_generation_reload_label is None
 
-        if ForwardF:
-            txt = cpp_reload_forward_str
-        else:
-            txt = cpp_reload_backward_str
+        if ForwardF: txt = cpp_reload_forward_str
+        else:        txt = cpp_reload_backward_str
 
         variable_db.require_registers([E_R.LoadResult])
 
@@ -1396,8 +1396,8 @@ class Language(dict):
         txt.extend([
             "",
             "configure_file(",
-            '    "%s.in"' % configuration_file_name_cmake,
-            '    "%s"'    % configuration_file_name,
+            '    "%s"' % Setup.output_configuration_file_cmake,
+            '    "%s"' % Setup.output_configuration_file,
             ')',
             "______________________________________________________________________________*/"
         ])
@@ -1413,7 +1413,6 @@ class Language(dict):
         if Setup.configuration_by_macros_f:
             return ""
         else:
-            L = len(ShortNameList)
             return "\n".join([
                 " \\\n".join(ifdefined(name, i==0) for i, name in enumerate(ShortNameList)),
                 "#   error \"*_EXT macro detected but code not generated with '--config-by-macro'\"",
@@ -1487,18 +1486,12 @@ class Language(dict):
         def tid(Name):
             return "%s%s" % (Setup.token_id_prefix, Name)
 
-        ans = Setup.analyzer_name_safe
         replacements.extend([
             ("QUEX_SETTING_TOKEN_ID_UNINITIALIZED",  tid("UNINITIALIZED")),
             ("QUEX_SETTING_TOKEN_ID_TERMINATION",    tid("TERMINATION")),
             ("QUEX_SETTING_TOKEN_ID_INDENT",         tid("INDENT")),
             ("QUEX_SETTING_TOKEN_ID_DEDENT",         tid("DEDENT")),
             ("QUEX_SETTING_TOKEN_ID_NODENT",         tid("NODENT")),
-            #
-            ("QUEX_SETTING_BUILD_DATE",       "QUEX_SETTING_%s_BUILD_DATE"       % ans),
-            ("QUEX_SETTING_VERSION",          "QUEX_SETTING_%s_VERSION"          % ans),
-            ("QUEX_SETTING_ANALYZER_VERSION", "QUEX_SETTING_%s_ANALYZER_VERSION" % ans),
-
         ])
 
         txt = blue_print(Txt, replacements, CommonStart="QUEX_")

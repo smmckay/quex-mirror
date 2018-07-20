@@ -264,7 +264,10 @@ class FSM:
 
     @typed(OnBeforeEntry=OpList)
     def prepare_state(self, OldState, StateIndex, OnBeforeEntry):
-        """REQUIRES: 'self.init_state_forward_f', 'self.engine_type', 'self.__from_db'.
+        """Prepares states to increment the input/read pointer and dereferences it
+        to access the lexatom for the state transition triggering.
+        
+        REQUIRES: 'self.init_state_forward_f', 'self.engine_type', 'self.__from_db'.
         """
         state = FSM_State.from_State(OldState, StateIndex, self.engine_type, 
                                      self.dial_db)

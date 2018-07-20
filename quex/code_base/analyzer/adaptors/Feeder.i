@@ -73,6 +73,13 @@ $$<C>--------------------------------------------------------------------------
     me->feed    = QUEX_NAME(Feeder_feed);
     me->deliver = QUEX_NAME(Feeder_deliver);
 $$-----------------------------------------------------------------------------
+
+    if( ! QUEX_SETTING_FALLBACK_MANDATORY ) {
+        /* For manual buffer filling, the fallback must be finite and computed 
+         * during engine generation. (call Quex with '--fallback-mandatory')  */
+        QUEX_GNAME(MF_error_code_set_if_first)(me->base.lexer, 
+                                               E_Error_EngineNotGeneratedWithFallbackMandatory);
+    }
 }
 
 QUEX_INLINE void

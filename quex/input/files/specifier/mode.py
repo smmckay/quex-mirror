@@ -211,6 +211,7 @@ class Mode_PrepPrep:
             PatternActionPair(pap.pattern().finalize(ca_map), pap.action())
             for pap in self.pattern_action_pair_list
         ]
+
         loopers.finalize(ca_map)
 
         # At this stage, no information is aggregated from base types.

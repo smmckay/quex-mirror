@@ -58,7 +58,7 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamP
 
     # (*) Once an acceptance state is reached no further analysis is necessary.
     stem_and_branches.prune_branches(reverse_pre_context)
-    if     Setup.error_on_arbitrary_length_of_pre_context_f \
+    if     Setup.fallback_mandatory_f \
        and reverse_pre_context.longest_path_to_first_acceptance() is None:
         error.log("Pre-context contains patterns of arbitrary length to first acceptance backwards.")
 

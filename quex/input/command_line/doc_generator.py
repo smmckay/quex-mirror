@@ -265,7 +265,7 @@ class VisitorSphinx(Visitor):
                % (self.nesting_indent(), options_str, call_str, content, default)
 
     def do_CMacro(self, Option, CallStr, Default, ParagraphList):
-        options_str = reduce(lambda a, b: "%s, %s" % (a, b), OptionList)
+        options_str = CallStr
         content     = self.do(ParagraphList)
         default     = self.format_default(Default)
         if default is not None: default = "Default: %s\n\n" % default

@@ -3,6 +3,7 @@ import quex.input.files.core                     as     quex_file_parser
 import quex.input.files.mode                     as     mode
 #                                                
 from   quex.engine.misc.tools                    import flatten_list_of_lists
+import quex.engine.misc.error                    as     error
 from   quex.engine.misc.file_operations          import write_safely_and_close
 #
 import quex.output.core.engine                   as     engine_generator
@@ -38,14 +39,19 @@ def do():
                       "generation mode.")
         mode_db = None
     else:
-        mode_prep_prep_db = quex_file_parser.do(Setup.input_mode_files)
-        # Finalization of Mode_PrepPrep --> Mode
-        # requires consideration of inheritance and transition rules.
-        mode_db = mode.finalize_modes(mode_prep_prep_db)
+        mode_db = _parse_modes_and_more(Setup.input_mode_files)
 
     blackboard.mode_db = mode_db # Announce!
-
     _generate(mode_db)
+
+def _parse_modes_and_more(InputFileList):
+    mode_prep_prep_db = quex_file_parser.do(InputFileList)
+    if not mode_prep_prep_db:
+        error.log("Missing mode definition in input files.")
+        
+    # Finalization of Mode_PrepPrep --> Mode
+    # requires consideration of inheritance and transition rules.
+    return mode.finalize_modes(mode_prep_prep_db)
 
 def _generate(mode_db):
     if Setup.converter_only_f:
@@ -75,8 +81,7 @@ def _generate(mode_db):
         return
 
 def do_plot():
-    mode_prep_prep_db = quex_file_parser.do(Setup.input_mode_files)
-    mode_db           = mode.finalize_modes(mode_prep_prep_db)
+    mode_db = _parse_modes_and_more(Setup.input_mode_files)
 
     for m in mode_db.itervalues():        
         plotter = grapviz_generator.Generator(m)
@@ -140,8 +145,13 @@ def _get_analyzers(mode_db):
                             analyzer_implementation,
                             "\n"])
 
+    if Setup.configuration_by_cmake_f:
+        configuration_file_name = Setup.output_configuration_file_cmake
+    else:
+        configuration_file_name = Setup.output_configuration_file
+
     return [
-        (configuration_header, Setup.output_configuration_file),
+        (configuration_header, configuration_file_name),
         (analyzer_header,      Setup.output_header_file),
         (engine_txt,           Setup.output_code_file),
     ]

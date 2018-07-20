@@ -1,5 +1,26 @@
--- Use flag '"--error-on-arbitrary-length-of-pre-context"' whenever feeder, gavager, or pointer is used.
--- FallbackN ensures that 'N' lexatoms backwards are always available!
+-- '--fallback-mandatory' => *MUST* be finite (mandatory with feeder/gavager)
+   '--fallback-optional'  => NO REQUIREMENT
+
+   SUBJECT: Fallback
+
+   Fallback can be determined as the longest path to the first acceptance
+   state.
+
+   * Reload backward impossible for some ByteLoaders (Socket), or with 
+     manually filled buffers.
+
+   * Reload backward after reload forward is inefficient.
+
+   BUT: FallbackN tries to maintain distance before lexeme start
+        => Reload forward right before lexeme end means:
+           Covered buffer size = lexeme length + fallback n (might be huge)
+
+   => Two options 
+   
+      '--falback-mandatory' for cases where load backward is impossible.
+      '--fallback-optional' for cases where reload is not to be imposed
+         (makes sense for very long pre-contexts)
+
 -- BUFFER_SIZE_MIN must fit the lexeme. => important for include optimization
 
 /* Assert Strategy:

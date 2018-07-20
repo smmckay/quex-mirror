@@ -25,7 +25,11 @@ def prepare(command_line, argv):
     __setup_analyzer_class(Setup)
     __setup_token_class(Setup)
     __setup_token_id_prefix(Setup)
-    # __setup_lexeme_null(Setup)       # Requires 'token_class_name_space'
+
+    # (*) Line and Column number counting
+    if Setup.__no_count_line_and_column_f:
+        Setup.count_line_number_f   = False
+        Setup.count_column_number_f = False
 
     # (*) Output programming language        
     Setup.language = Setup.language.upper()

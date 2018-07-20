@@ -75,8 +75,6 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
 
     if SM is None: return [], None
 
-    fallback_txt  = _get_pre_context_fallback_definition(SM)
-
     analyzer_txt, \
     analyzer      = __do_state_machine(SM, engine.BACKWARD_PRE_CONTEXT, dial_db) 
 
@@ -263,18 +261,6 @@ _increment_actions_for_utf16 = [
      1, "else                                            { iterator += 1; }\n", 
 ]
     
-def _get_pre_context_fallback_definition(SM):
-    fallback_n = SM.longest_path_to_first_acceptance()
-    if fallback_n is not None: fallback_n_str = "%s" % fallback_n
-    else:                      fallback_n_str = "0"
-
-    return [
-        "%s\n" % Lng.ASSIGN("me->buffer._fallback_n", "QUEX_SETTING_BUFFER_FALLBACK_N"),
-        "%s\n" % Lng.ASSERT("QUEX_SETTING_BUFFER_SIZE > me->buffer._fallback_n + 3"),
-        "%s\n" % Lng.ASSERT("QUEX_SETTING_BUFFER_SIZE_MIN > me->buffer._fallback_n + 3"),
-        "%s\n" % Lng.ASSERT("me->buffer.size(&me->buffer) > me->buffer._fallback_n + 3")
-    ]
-
 def _get_pre_context_epilog_definition(dial_db):
     backup_position = Lng.REGISTER_NAME(E_R.BackupStreamPositionOfLexemeStartP)
 

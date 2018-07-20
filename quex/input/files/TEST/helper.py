@@ -11,7 +11,7 @@ from   StringIO import StringIO
 Setup.token_id_prefix_plain = "TOKEN_"
 Setup.token_class_name      = "Token"
 Setup.language_db = languages.db["C++"]()
-parse_default_token_definition()
+parse_default_token_definition({})
 
 def test(Command, Txt):
     token_id_db.clear()

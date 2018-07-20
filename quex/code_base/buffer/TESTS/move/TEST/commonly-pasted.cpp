@@ -84,6 +84,7 @@ instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
     QUEX_NAME(Buffer_construct)(buffer, 
                                 (QUEX_NAME(LexatomLoader)*)0x0, 
                                 &memory[0], memory_size, end_p, 
+                                QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT, 
                                 E_Ownership_EXTERNAL,
                                 (QUEX_NAME(Buffer)*)0);
     buffer->_fallback_n = QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT;

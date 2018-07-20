@@ -25,7 +25,7 @@ lexer.o: lexer.cpp easy/Easy.cpp
 	$(CC) $< -o $@ 
 
 easy/Easy.cpp: easy.qx 
-	quex -i easy.qx -o Easy --odir easy --token-id-offset 0x1000
+	quex -i easy.qx -o Easy --odir easy --token-id-offset 0x1000 
 
 clean:	
 	rm -rf lexer easy/ *.o

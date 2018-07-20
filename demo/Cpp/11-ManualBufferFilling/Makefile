@@ -43,11 +43,11 @@ point-converter.exe:    lexer-point.cpp                converter/Lexer.cpp
 	$(LD_CONVERTER) -o $@ $^ 
           
 plain/Lexer.cpp: lexPlain.qx 
-	quex --cbm --error-on-arbitrary-length-of-pre-context \
+	quex --cbm --fallback-mandatory \
 		 -i lexPlain.qx -o Lexer --odir plain 
 
 converter/Lexer.cpp: lexConverter.qx 
-	quex --cbm --error-on-arbitrary-length-of-pre-context \
+	quex --cbm --fallback-mandatory \
 		 -i lexConverter.qx -o Lexer --odir converter \
 		 --buffer-element-type wchar_t 
 

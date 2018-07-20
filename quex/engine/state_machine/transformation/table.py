@@ -1,6 +1,7 @@
 import quex.engine.codec_db.core as codec_db
 from   quex.engine.state_machine.transformation.base import EncodingTrafo
-from   quex.engine.misc.interval_handling            import NumberSet_All
+from   quex.engine.misc.interval_handling            import NumberSet_All, \
+                                                            NumberSet
 
 import os
 import math

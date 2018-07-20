@@ -156,6 +156,7 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t Depth)
     QUEX_NAME(Buffer_construct)(&array[0], (QUEX_NAME(LexatomLoader)*)0,
                                 memory, TotalSize, 
                                 &memory[single_size-1],
+                                QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT, 
                                 E_Ownership_LEXICAL_ANALYZER,
                                 (QUEX_NAME(Buffer)*)0);
 

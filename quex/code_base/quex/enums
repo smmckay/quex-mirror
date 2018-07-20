@@ -37,6 +37,7 @@ typedef enum {
     E_Error_IncludePopOnEmptyStack,
     E_Error_IncludePush_OnError,
     E_Error_InputName_Set_Failed,
+    E_Error_EngineNotGeneratedWithFallbackMandatory,
     /* --------------------------------------------------*/
     E_Error_Buffer_Feeder_CannotAbsorbMoreContent,
     E_Error_Buffer_Overflow_LexemeTooLong,
@@ -88,7 +89,8 @@ typedef enum {
      : (E) == E_Error_Allocation_BufferMemory_Failed     ? "Allocation_BufferMemory_Failed"     \
      : (E) == E_Error_Allocation_ByteLoader_Failed       ? "Allocation_ByteLoader_Failed"       \
      : (E) == E_Error_Allocation_LexatomLoader_Failed    ? "Allocation_LexatomLoader_Failed"    \
-     : (E) == E_Error_Buffer_Feeder_CannotAbsorbMoreContent     ? "Buffer_Feeder_CannotAbsorbMoreContent"    \
+     : (E) == E_Error_EngineNotGeneratedWithFallbackMandatory ? "Engine_Not_Generated_with_Fallback_Mandatory" \
+     : (E) == E_Error_Buffer_Feeder_CannotAbsorbMoreContent   ? "Buffer_Feeder_CannotAbsorbMoreContent"    \
      : (E) == E_Error_Buffer_Overflow_LexemeTooLong      ? "Buffer_Overflow_LexemeTooLong"      \
      : (E) == E_Error_Constructor_Accumulator_Failed     ? "Constructor_Accumulator_Failed"     \
      : (E) == E_Error_Constructor_Counter_Failed         ? "Constructor_Counter_Failed"         \
