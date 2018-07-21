@@ -25,7 +25,8 @@ def _aux_adorn_on_skip_range_open(Code):
 def _aux_adorn_on_bad_lexatom(Code):
     return CodeTerminal([
         "%s\n" % Lng.DEFINE_BAD_LEXATOM(), 
-        Lng.SOURCE_REFERENCED(Code)
+        Lng.SOURCE_REFERENCED(Code),
+        "%s\n" % Lng.UNDEFINE_BAD_LEXATOM(),
     ])
 
 aux_db = {

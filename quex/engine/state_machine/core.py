@@ -294,7 +294,8 @@ class DFA(object):
         """
         from_db = self.get_from_db()
 
-        work_set     = set(self.get_acceptance_state_index_list())
+        work_set     = set(  self.get_acceptance_state_index_list() 
+                           + self.get_bad_lexatom_detector_state_index_list())
         reaching_set = set()  # set of states that reach acceptance states
         while len(work_set) != 0:
             state_index = work_set.pop()
@@ -358,6 +359,17 @@ class DFA(object):
         return [ 
             state 
             for state in self.states.itervalues() if state.is_acceptance() 
+        ]
+
+    def get_bad_lexatom_detector_state_index_list(self):
+        """At the time of this writing, BAD_LEXATOMs are implemented as states 
+        accepting 'BAD_LEXATOM' and performing a transition upon drop-out.
+        Bad-lexatom detector states are not 'hopeless' states, so this function
+        is there to collect them.
+        """
+        return [ 
+            index for index, state in self.states.iteritems() 
+                  if state.is_bad_lexatom_detector() 
         ]
 
     def get_acceptance_state_index_list(self, AcceptanceID=None):

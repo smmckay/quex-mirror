@@ -21,10 +21,10 @@ def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True, ModeName=None):
                              
     """
     if not (Setup.count_line_number_f or Setup.count_column_number_f):
-        return False, ""
+        return False, [""]
 
     if lcci is None:
-        return  True, Lng.DEFAULT_COUNTER_CALL(ModeName)
+        return  True, [ Lng.DEFAULT_COUNTER_CALL(ModeName) ]
 
     # (*) Default Character Counter ___________________________________________
     #

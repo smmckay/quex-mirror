@@ -271,14 +271,14 @@ class Language(dict):
     def LEXEME_NULL(self):                         return "LexemeNull"
     def LEXEME_LENGTH(self):                       return "((size_t)(me->buffer._read_p - me->buffer._lexeme_start_p))"
 
-    def LEXEME_MACRO_SETUP(self):
-        return blue_print(templates.lexeme_macro_setup, [
+    def DEFINE_LEXEME_VARIABLES(self):
+        return blue_print(cpp_lexeme_macro_setup, [
             ["$$LEXEME_LENGTH$$",  self.LEXEME_LENGTH()],
             ["$$INPUT_P$$",        self.INPUT_P()],
         ])
 
-    def LEXEME_MACRO_CLEAN_UP(self):
-        return templates.lexeme_macro_clean_up
+    def UNDEFINE_LEXEME_VARIABLES(self):
+        return cpp_lexeme_macro_clean_up
 
     def DEFAULT_TOKEN_COPY(self, X, Y):
         return "__QUEX_STD_memcpy((void*)%s, (void*)%s, sizeof(QUEX_TYPE_TOKEN));\n" % (X, Y)
@@ -473,6 +473,9 @@ class Language(dict):
 
     def DEFINE_BAD_LEXATOM(self):
         return "#define BadLexatom ((me->buffer._read_p > me->buffer._memory._front && me->buffer._read_p <= me->buffer.input.end_p) ? (me->buffer._read_p[-1]) : (QUEX_TYPE_LEXATOM)-1)"
+
+    def UNDEFINE_BAD_LEXATOM(self):
+        return "#undef BadLexatom"
 
     def COMMAND_LIST(self, OpList, dial_db=None):
         return [ 
@@ -891,8 +894,8 @@ class Language(dict):
         if Setup.analyzer_derived_class_file: header = self.INCLUDE(Setup.analyzer_derived_class_file)
         else:                                 header = self.INCLUDE(Setup.output_header_file)
         footer = self.FOOTER_IN_IMPLEMENTATION()
-        return implementation_headers_txt.replace("$$HEADER$$", header) \
-                                         .replace("$$FOOTER$$", footer)
+        return cpp_implementation_headers_txt.replace("$$HEADER$$", header) \
+                                             .replace("$$FOOTER$$", footer)
 
     def FOOTER_IN_IMPLEMENTATION(self):
         return ""
@@ -1580,7 +1583,7 @@ class Language(dict):
              ("QUEX_TYPE_GOTO_LABEL",      type_goto_label),
         ]
 
-implementation_headers_txt = """
+cpp_implementation_headers_txt = """
 $$HEADER$$
 $$INC: analyzer/C-adaptions.h$$
 $$INC: implementations.i$$
@@ -1651,3 +1654,33 @@ $$INC: token/TokenQueue$$
 #endif
 #define   RETURN   do { goto $$RETURN_WITH_ON_AFTER_MATCH$$; } while(0)
 """
+
+cpp_lexeme_macro_setup = """
+    /* Lexeme setup: 
+     *
+     * There is a temporary zero stored at the end of each lexeme, if the action 
+     * references to the 'Lexeme'. 'LexemeNull' provides a reference to an empty
+     * zero terminated string.                                                    */
+#if defined(QUEX_OPTION_ASSERTS)
+#   define Lexeme       QUEX_NAME(access_Lexeme)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#   define LexemeBegin  QUEX_NAME(access_LexemeBegin)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#   define LexemeL      QUEX_NAME(access_LexemeL)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#   define LexemeEnd    QUEX_NAME(access_LexemeEnd)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#else
+#   define Lexeme       (me->buffer._lexeme_start_p)
+#   define LexemeBegin  Lexeme
+#   define LexemeL      $$LEXEME_LENGTH$$
+#   define LexemeEnd    $$INPUT_P$$
+#endif
+
+#define LexemeNull      (&QUEX_NAME(LexemeNull))
+"""
+
+cpp_lexeme_macro_clean_up = """
+#   undef Lexeme
+#   undef LexemeBegin
+#   undef LexemeEnd
+#   undef LexemeNull
+#   undef LexemeL
+"""
+

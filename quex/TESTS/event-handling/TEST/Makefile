@@ -59,7 +59,7 @@ on_bad_lexatom.exe: on_bad_lexatom.qx
 
 on_bad_lexatom-utf8.exe: on_bad_lexatom-utf8.qx 
 	$(QUEX) -i $< -o EHLexer --encoding utf8 --no-count
-	$(LD65536) ./lexer.c EHLexer/EHLexer.c -o $@ 
+	$(LD65536) ./lexer.c EHLexer/EHLexer.c -o $@ # -DQUEX_OPTION_DEBUG_SHOW_EXT
 
 on_buffer_overflow.exe: on_buffer_overflow.qx 
 	$(QUEX) -i $< -o EHLexer --emm

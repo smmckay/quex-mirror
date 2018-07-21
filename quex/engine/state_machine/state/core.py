@@ -113,8 +113,11 @@ class DFA_State:
     def has_transitions(self):
         return not self.target_map.is_empty()
 
+    def is_bad_lexatom_detector(self):
+        return any(cmd.acceptance_id() == E_IncidenceIDs.BAD_LEXATOM for cmd in self.single_entry)
+
     def is_acceptance(self):
-        ### return self.single_entry.find(SeAccept) is not None
+        """Acceptance of 'BAD_LEXATOM' is not really an acceptance!"""
         cmd = self.single_entry.find(SeAccept) 
         if cmd is None: return False 
         return not any(cmd.acceptance_id() == E_IncidenceIDs.BAD_LEXATOM for cmd in self.single_entry)

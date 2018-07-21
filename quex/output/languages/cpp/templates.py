@@ -62,7 +62,7 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
         Lng.MODE_DEFINITION(ModeNameList),
         "/*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */\n",
         "#   define QUEX_LABEL_STATE_ROUTER %s\n" % Lng.LABEL_STR_BY_ADR(state_router_adr),
-        Lng.LEXEME_MACRO_SETUP(),
+        Lng.DEFINE_LEXEME_VARIABLES(),
         #
         variable_definitions,
         #
@@ -104,42 +104,13 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
         #
         # Macro undefinitions
         # 
-        lexeme_macro_clean_up,
+        Lng.UNDEFINE_LEXEME_VARIABLES(),
         Lng.MODE_UNDEFINITION(ModeNameList),
         "#   undef self\n",
         "#   undef QUEX_LABEL_STATE_ROUTER\n",
         "}\n",
     ])
     return txt
-
-lexeme_macro_setup = """
-    /* Lexeme setup: 
-     *
-     * There is a temporary zero stored at the end of each lexeme, if the action 
-     * references to the 'Lexeme'. 'LexemeNull' provides a reference to an empty
-     * zero terminated string.                                                    */
-#if defined(QUEX_OPTION_ASSERTS)
-#   define Lexeme       QUEX_NAME(access_Lexeme)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
-#   define LexemeBegin  QUEX_NAME(access_LexemeBegin)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
-#   define LexemeL      QUEX_NAME(access_LexemeL)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
-#   define LexemeEnd    QUEX_NAME(access_LexemeEnd)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
-#else
-#   define Lexeme       (me->buffer._lexeme_start_p)
-#   define LexemeBegin  Lexeme
-#   define LexemeL      $$LEXEME_LENGTH$$
-#   define LexemeEnd    $$INPUT_P$$
-#endif
-
-#define LexemeNull      (&QUEX_NAME(LexemeNull))
-"""
-
-lexeme_macro_clean_up = """
-#   undef Lexeme
-#   undef LexemeBegin
-#   undef LexemeEnd
-#   undef LexemeNull
-#   undef LexemeL
-"""
 
 __return_if_queue_full_or_simple_analyzer = """
     if( QUEX_NAME(TokenQueue_is_full)(&self._token_queue) ) {

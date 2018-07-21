@@ -83,14 +83,9 @@ $$INC: buffer/Buffer_print$$
            __quex_debug_core(StateIdx, "__________");  \
            __quex_debug_input(StateIdx)
 
-#   if __STDC_VERSION__ >= 199901L
 #   define __quex_debug_init_state(StateIdx)           \
-           __quex_debug_core(StateIdx, "__________");  \
-           __quex_debug2("Init State: %s", __func__)
-#   else
-#   define __quex_debug_init_state(StateIdx)           \
-           __quex_debug_core(StateIdx, "__________ Init State:")
-#   endif
+           __quex_debug_core(StateIdx, "___________________________( Init State )"); \
+           __quex_debug_input(StateIdx)
 
 #   define __quex_debug_path_walker_state(PathWalkerIdx, PathBase, PathIterator)               \
            __quex_debug_path_walker_core(PathWalkerIdx, PathBase, PathIterator, "__________"); \

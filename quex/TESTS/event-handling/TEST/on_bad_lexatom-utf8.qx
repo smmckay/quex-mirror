@@ -9,7 +9,7 @@ header {
 
 mode X :
 {
-    .+ => TK_X;
+    [^\n]+ => TK_X;
     \n => TK_NEWLINE;
 
     on_bad_lexatom { 

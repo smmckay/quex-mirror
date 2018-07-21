@@ -1,3 +1,6 @@
+-- Option '--no-count' to disable line and column counting at once.
+-- Setting and Option parameters have been cleaned up.
+   => optional '--config-by-cmake' and '--config-by-macros'
 -- fallback number is determined by Quex.
    Macro replaced by 'buffer._fallback_n' set upon mode entry.
 -- removed default namespace 'quex'
