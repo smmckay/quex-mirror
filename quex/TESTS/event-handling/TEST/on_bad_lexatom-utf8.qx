@@ -1,5 +1,5 @@
-// Errors: on_bad_lexatom (Encoding UTF16);
-// CHOICES: bad-utf16-1st, bad-utf16-2nd, good-utf16;
+// Errors: on_bad_lexatom (Encoding UTF8);
+// CHOICES: bad-utf8-1st, bad-utf8-2nd, bad-utf8-3rd, bad-utf8-4th, good-utf8;
 token { X; NEWLINE; }
 
 header { 
@@ -15,10 +15,10 @@ mode X :
     on_bad_lexatom { 
         {
             const QUEX_TYPE_LEXATOM* p;
-            printf("bad_lexatom: '0x%04X'\n", (int)BadLexatom); 
+            printf("bad_lexatom: '0x%02X'\n", (int)BadLexatom); 
             printf("lexeme:      ");
             for(p=LexemeBegin; p != LexemeEnd; ++p) {
-                printf("%04X ", (int)*p);
+                printf("%02X ", (int)*p);
             }
             printf("\n");
             assert(Lexeme == LexemeBegin);
