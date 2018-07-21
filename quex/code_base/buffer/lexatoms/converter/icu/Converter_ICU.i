@@ -80,14 +80,16 @@ QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* alter_ego,
  * RETURNS: true, if success. false, else.                                    */
 {
     QUEX_NAME(Converter_ICU)* me = (QUEX_NAME(Converter_ICU)*)alter_ego;
-    const bool                little_endian_f = QUEX_SETTING_ENDIAN_IS_LITTLE();
+    const bool                little_endian_f = QUEX_GNAME_LIB(system_is_little_endian)();
+    const void*               oldContext;
+    UConverterFromUCallback   oldFromAction;
+    UConverterToUCallback     oldToAction;
 
     me->from_handle = 0x0;
     me->to_handle   = 0x0; 
     if( ! FromCoding ) {
         /* me->from_handle = 0; mark as 'not-initialized'.                    */
         return true;                            /* still, nothing went wrong. */
-        return true;
     }
 
     __quex_assert(me);
@@ -103,14 +105,11 @@ QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* alter_ego,
     /* Open conversion handles                                                */
     me->status      = U_ZERO_ERROR;
     me->from_handle = ucnv_open(FromCoding, &me->status);
-    if( me->from_handle == NULL || ! U_SUCCESS(me->status) ) return false;
-
-    if( ! U_SUCCESS(me->status) ) {
-        return false;
+    if( me->from_handle == NULL || ! U_SUCCESS(me->status) ) {
+        goto ERROR;
     }
-
     /* ByteN / Character:                                               */
-    if( ucnv_isFixedWidth(me->from_handle, &me->status) && U_SUCCESS(me->status) ) {
+    else if( ucnv_isFixedWidth(me->from_handle, &me->status) && U_SUCCESS(me->status) ) {
         me->base.byte_n_per_lexatom = ucnv_getMaxCharSize(me->from_handle);
     }
     else {
@@ -129,25 +128,40 @@ QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* alter_ego,
           * does support surrogates. This means that UCS-2 only supports
           * UTF-16's Base Multilingual Plane (BMP). The notion of UCS-2 is
           * deprecated and dead. Unicode 2.0 in 1996 changed its default
-          * encoding to UTF-16." (userguide.icu-project.org/icufaq)      */
+          * encoding to UTF-16." (userguide.icu-project.org/icufaq)           */
         switch( sizeof(QUEX_TYPE_LEXATOM) ) {
         case 4:  ToCoding = little_endian_f ? "UTF32-LE" : "UTF32-LE"; break;
         case 2:  ToCoding = little_endian_f ? "UTF16-LE" : "UTF16-LE"; break;
         case 1:  ToCoding = "ISO-8859-1"; break;
-        default:  __quex_assert(false); return false;
+        default:  __quex_assert(false); goto ERROR_1;
         }
     } 
 
     me->status = U_ZERO_ERROR;
     me->to_handle = ucnv_open(ToCoding, &me->status);
-    if( me->to_handle == NULL || ! U_SUCCESS(me->status) ) return false;
+    if( me->to_handle == NULL || ! U_SUCCESS(me->status) ) goto ERROR_1;
 
-    /* Setup the pivot buffer                                            */
+    /* Setup the pivot buffer                                                 */
     //me->pivot.source = &me->pivot.buffer[0];
     //me->pivot.target = &me->pivot.buffer[0];         
     me->reset_upon_next_conversion_f = TRUE;
 
+    /* Ensure that converter stops upon encoding error.                       
+     * (from_handle: to unicode; to_handle: from unicode; => strange calls)   */
+    ucnv_setFromUCallBack(me->to_handle, UCNV_FROM_U_CALLBACK_STOP,
+                          NULL, &oldFromAction, &oldContext, &me->status);
+    if( ! U_SUCCESS(me->status) ) goto ERROR_2;
+    ucnv_setToUCallBack(me->from_handle, UCNV_TO_U_CALLBACK_STOP,
+                        NULL, &oldToAction, &oldContext, &me->status);
+    if( ! U_SUCCESS(me->status) ) goto ERROR_2;
     return true;
+
+ERROR_2:
+    ucnv_close(me->to_handle);
+ERROR_1:
+    ucnv_close(me->from_handle);
+ERROR:
+    return false;
 }
 
 QUEX_INLINE bool    
@@ -203,10 +217,6 @@ QUEX_NAME(Converter_ICU_convert)(QUEX_NAME(Converter)*       alter_ego,
     QUEX_NAME(Converter_ICU)* me          = (QUEX_NAME(Converter_ICU)*)alter_ego;
     uint8_t*                  SourceBegin = *source;
     (void)SourceBegin;
-#   if 0
-    QUEX_TYPE_LEXATOM*      DEBUG_DrainBegin  = *drain;
-    int                       i = 0;
-#   endif
 
     __quex_assert(me);
     __quex_assert(me->to_handle);
@@ -218,6 +228,7 @@ QUEX_NAME(Converter_ICU_convert)(QUEX_NAME(Converter)*       alter_ego,
     __quex_assert(me->pivot.target     <= &me->pivot.buffer[QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE]);
 
     me->status = U_ZERO_ERROR;
+
     ucnv_convertEx(me->to_handle, me->from_handle,
                    (char**)drain,        (const char*)DrainEnd,
                    (const char**)source, (const char*)SourceEnd,
@@ -227,7 +238,7 @@ QUEX_NAME(Converter_ICU_convert)(QUEX_NAME(Converter)*       alter_ego,
                    &me->status);
     me->reset_upon_next_conversion_f = FALSE;
     
-    if( me->status == U_INVALID_CHAR_FOUND ) {
+    if( me->status == U_INVALID_CHAR_FOUND || me->status == U_ILLEGAL_CHAR_FOUND ) {
         me->status = U_ZERO_ERROR;
         return E_LoadResult_ENCODING_ERROR;
     }

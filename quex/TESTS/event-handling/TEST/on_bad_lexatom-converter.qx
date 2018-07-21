@@ -1,5 +1,5 @@
 // Errors: on_bad_lexatom (With Converter ICU/IConv);
-// CHOICES: icu-bad-utf8-2nd, iconv-bad-cp1006;
+// CHOICES: icu-bad-utf8-2nd, iconv-bad-utf8-2nd;
 token { X; NEWLINE; }
 
 header { 

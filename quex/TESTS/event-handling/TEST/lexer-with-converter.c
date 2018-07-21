@@ -19,13 +19,13 @@ main(int argc, char** argv)
         /* CHOICE 'icu-*' => remove first 4 characters.                       */
         snprintf(file_name, (size_t)256, "./examples/%s.txt", (const char*)&argv[1][4]);
         EHLexer_from_file_name(&qlex, file_name, 
-                               EHLexer_Converter_ICU_new("UTF8", NULL)); 
+                               EHLexer_Converter_ICU_new("UTF-8", NULL)); 
     }
     else if( strncmp(argv[1], "iconv", 3) == 0 ) {
         /* CHOICE 'iconv-*' => remove first 6 characters.                     */
         snprintf(file_name, (size_t)256, "./examples/%s.txt", (const char*)&argv[1][6]);
         EHLexer_from_file_name(&qlex, file_name, 
-                               EHLexer_Converter_IConv_new("CP1006", NULL)); 
+                               EHLexer_Converter_IConv_new("UTF-8", NULL)); 
     }
     else {
         printf("<error>\n");
