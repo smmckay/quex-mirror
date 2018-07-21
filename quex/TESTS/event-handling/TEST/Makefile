@@ -65,7 +65,11 @@ on_bad_lexatom-table-cp1006.exe: on_bad_lexatom-table-cp1006.qx
 	$(QUEX) -i $< -o EHLexer --encoding cp1006 --no-count --bet uint8_t
 	$(LD65536) ./lexer.c EHLexer/EHLexer.c -o $@ # -DQUEX_OPTION_DEBUG_SHOW_EXT
 
-on_buffer_overflow.exe: on_buffer_overflow.qx 
+on_bad_lexatom-converter.exe: on_bad_lexatom-converter.qx 
+	$(QUEX) -i $< -o EHLexer --no-count --bet uint32_t
+	$(LD65536) ./lexer-with-converter.c EHLexer/EHLexer.c -o $@ `icu-config --ldflags` # -DQUEX_OPTION_DEBUG_SHOW_EXT
+
+on_buffer_overflow.exe: on_buffer_overflow.qx lexer-with-converter.c
 	$(QUEX) -i $< -o EHLexer --emm
 	$(LD4) ./lexer.c EHLexer/EHLexer.c -o $@ \
 	       -DUNIT_TEST_MEMORY_MANAGER -DUNIT_TEST_IN_UT

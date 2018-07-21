@@ -1,0 +1,29 @@
+// Errors: on_bad_lexatom (With Converter ICU/IConv);
+// CHOICES: icu-bad-utf8-2nd, iconv-bad-cp1006;
+token { X; NEWLINE; }
+
+header { 
+#include <stdio.h>
+#include <assert.h>
+}
+
+mode X :
+{
+    [^\n]+ => TK_X(Lexeme);
+    \n => TK_NEWLINE(LexemeNull);
+
+    on_bad_lexatom { 
+        {
+            const QUEX_TYPE_LEXATOM* p;
+            printf("bad_lexatom: '0x%04X'\n", (int)BadLexatom); 
+            printf("lexeme:      ");
+            for(p=LexemeBegin; p != LexemeEnd; ++p) {
+                printf("%04X ", (int)*p);
+            }
+            printf("\n");
+            assert(Lexeme == LexemeBegin);
+            /* Error flag for bad lexatom is raised internally. */
+        }
+    }
+}
+

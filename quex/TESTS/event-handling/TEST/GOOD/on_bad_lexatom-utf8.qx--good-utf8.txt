@@ -1,0 +1,6 @@
+| Mode change to X
+| [START]
+TOKEN: X '首页'
+TOKEN: NEWLINE ''
+TOKEN: <TERMINATION> ''
+| [END]
