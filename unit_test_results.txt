@@ -280,7 +280,7 @@ TEST                                                                 <no date>
     298 Quex exception in loop generation.
         bug-298.sh ...................................................[OK]
     299 LoopRestartP -- generated code does not compile
-        bug-299.sh ...................................................[OK]
+        bug-299.sh .................................................[FAIL]
     300 Missing error message on non-existing mode.
         bug-300.sh ...................................................[OK]
 
@@ -497,6 +497,7 @@ TEST                                                                 <no date>
     [FAIL] bug-293.sh _ bad
                     \__ good
     [FAIL] bug-3486388.sh
+    [FAIL] bug-299.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -991,7 +992,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * -----------------------------------------
         no-meaningless-macro-definitions.sh ................[NO GOOD FILE]
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ....................................[OK]
+        no-use-of-lexeme-macro.sh ..................................[FAIL]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
@@ -1021,6 +1022,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] no-meaningless-macro-definitions.sh
+    [FAIL] no-use-of-lexeme-macro.sh
     [FAIL] svn-status.sh
     [FAIL] function-check.sh _ real
     [FAIL] pyflakes-check.sh
@@ -1124,13 +1126,21 @@ quex/TESTS/event-handling/TEST                                       <no date>
         on_buffer_overflow.qx empty ..................................[OK]
                               trigger ................................[OK]
     Customized 'on_skip_range_open' event
-        on_skip_range_open-customized.qx customized ................[FAIL]
+        on_skip_range_open-customized.qx customized ..................[OK]
     Default 'on_skip_range_open' event
-        on_skip_range_open.qx default ..............................[FAIL]
+        on_skip_range_open.qx default ................................[OK]
+    on_bad_lexatom (Encoding CP1006 (table based))
+        on_bad_lexatom-table-cp1006.qx bad-cp1006 ....................[OK]
     on_bad_lexatom (Encoding UTF16)
-        on_bad_lexatom.qx bad-utf16-1st ....................[NO GOOD FILE]
-                          bad-utf16-2nd ....................[NO GOOD FILE]
-                          good-utf16 ...............................[FAIL]
+        on_bad_lexatom.qx bad-utf16-1st ..............................[OK]
+                          bad-utf16-2nd ..............................[OK]
+                          good-utf16 .................................[OK]
+    on_bad_lexatom (Encoding UTF8)
+        on_bad_lexatom-utf8.qx bad-utf8-1st ..........................[OK]
+                               bad-utf8-2nd ..........................[OK]
+                               bad-utf8-3rd ..........................[OK]
+                               bad-utf8-4th ................[NO GOOD FILE]
+                               good-utf8 .............................[OK]
 
  * Indentation:
 
@@ -1164,11 +1174,7 @@ quex/TESTS/event-handling/TEST                                       <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] on_skip_range_open-customized.qx _ customized
-    [FAIL] on_skip_range_open.qx _ default
-    [FAIL] on_bad_lexatom.qx _ bad-utf16-1st
-                           \__ bad-utf16-2nd
-                           \__ good-utf16
+    [FAIL] on_bad_lexatom-utf8.qx _ bad-utf8-4th
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -1334,7 +1340,7 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Respect max. recursion depth upon base mode inclusion.
         huge-inheritance.sh ..........................................[OK]
  * Run with --config-by-cmake
-        cmake-example.sh ...........................................[FAIL]
+        cmake-example.sh .............................................[OK]
  * Test code comments
         comment.sh ...................................................[OK]
  * Testing the implementation of line number pragmas
@@ -1357,12 +1363,10 @@ quex/TESTS/misc/TEST                                                 <no date>
                                                      PRE_X ...........[OK]
                                                      PRE_X_DTC .......[OK]
                                                      PRE_X_PC ........[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] cmake-example.sh
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -3397,8 +3401,7 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
-    [NO GOOD FILE] on_bad_lexatom.qx _ bad-utf16-1st
-                                   \__ bad-utf16-2nd
+    [NO GOOD FILE] on_bad_lexatom-utf8.qx _ bad-utf8-4th
     [NO GOOD FILE] no-meaningless-macro-definitions.sh
 ===============================================================================
 
@@ -3406,23 +3409,23 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        3  238   [FAIL] TEST                                                          
+        4  238   [FAIL] TEST                                                          
         4  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        7  13    [FAIL] ........../code/TEST                                          
+        8  13    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            5       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-        5  24    [FAIL] ........../event-handling/TEST                                
+        1  30    [FAIL] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-        1  33    [FAIL] ........../misc/TEST                                          
+           33      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            14      [OK] ........../source-package/TEST                                
            5       [OK] ........../token-class/TEST                                   
@@ -3467,11 +3470,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____    __             
-    |  ___|_ _(_) |___     |___ \  / /_      __  __
-    | |_ / _` | | / __|      __) || '_ \     \ \/ /
-    |  _| (_| | | \__ \     / __/ | (_) |     >  < 
-    |_|  \__,_|_|_|___/    |_____| \___/     /_/\_\
-                                                                   (1707 tests)
+     _____     _ _          ____   _____           
+    |  ___|_ _(_) |___     |___ \ |___ /     __  __
+    | |_ / _` | | / __|      __) |  |_ \     \ \/ /
+    |  _| (_| | | \__ \     / __/  ___) |     >  < 
+    |_|  \__,_|_|_|___/    |_____||____/     /_/\_\
+                                                                   (1713 tests)
 
 ===============================================================================

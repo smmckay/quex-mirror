@@ -9,8 +9,8 @@ header {
 
 mode X :
 {
-    [^\n]+ => TK_X;
-    \n => TK_NEWLINE;
+    [^\n]+ => TK_X(Lexeme);
+    \n => TK_NEWLINE(LexemeNull);
 
     on_bad_lexatom { 
         {
