@@ -129,25 +129,28 @@ from   itertools   import chain
        ReloadF=bool, LexemeEndCheckF=bool, OnLoopExit=list,
        LoopCharacterSet=(None, NumberSet))
 def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None, 
-       OnLoopExitDoorId=None, BeforeEntryOpList=None, LexemeEndCheckF=False, EngineType=None, 
-       ReloadStateExtern=None, dial_db=None,
-       OnReloadFailureDoorId=None, ModeName=None):
+       OnLoopExitDoorId=None, OnReloadFailureDoorId=None, 
+       EngineType=None, ReloadStateExtern=None, dial_db=None,
+       BeforeEntryOpList=None, LexemeEndCheckF=False, 
+       ModeName=None):
     """Generates a structure that 'loops' quickly over incoming characters.
 
-                                                             Loop continues           
-        .---------( ++i )-----+--------<-------------------. at AFTER position of 
-        |    .------.         |                            | the first lexatom 'ir'.
-        '--->|      |         |                            |  
-             | pure |-->[ Terminals A ]                    |  
-             |  L   |-->[ Terminals B ]                    |
-             |      |-->[ Terminals C ]                    |
-             +------+                                      | 
-             |      |                                  ( i = ir )  
-             | LaF  |-->[ Terminals A ]-->-.               | drop-out     
-             |      |-->[ Terminals B ]-->. \              | 
-             |      |-->[ Terminals C ]-->( ir = i )--[ DFA ]-->[ Terminals X ]
-             |      |                                               \
-             +------+                                                '-->[ Terminals Y ]
+                                                                Loop continues           
+        .---------( ++i )-----+--------<----------------------. at AFTER position of 
+        |                     |                               | the first lexatom 'ir'.
+        |   First Char.       |                               | 
+        |    .------.         |                               | 
+        '--->|      |         |                               |  
+             | pure |-->[ Terminals A ]                       |  
+             |  L   |-->[ Terminals B ]                       |
+             |      |-->[ Terminals C ]                       |
+             +------+                                         | 
+             |      |                                     ( i = ir )  
+             | LaF  |-->[ Terminals A ]-->-.                  | drop-out     
+             |      |-->[ Terminals B ]-->. \         .--------------.
+             |      |-->[ Terminals C ]-->( ir = i )--[ Appendix DFA ]-->[ Terminals X ]
+             |      |                                 '--------------'
+             +------+                                             '----->[ Terminals Y ]
              | Else |----> Exit
              '------'
     
@@ -167,31 +170,37 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
             
     During the 'loop' possible line/column count commands may be applied. 
 
-    RETURNS: [0] Generated code for related analyzers
-             [1] List of terminals to be implemented by caller
-             [2] LoopMap (to be plugged into state machine's init state)
-             [3] Required register set
+    RETURNS: [0] List of analyzers to be plugged into lexer
+             [1] List of terminals to be added to code
+             [2] Loop map without exist transitions
+             [3] DoorId of the loop entry
+             [4] Required set of registers
+             [5] True, if run time counter required; False else.
     """
-    if EngineType is None:
-        EngineType = engine.FORWARD
-
-    parallel_terminal_list, \
-    parallel_sm_list        = _sm_terminal_pair_list_extract(ParallelSmTerminalPairList)
-
+    if EngineType is None: EngineType = engine.FORWARD
     iid_loop_exit                    = dial.new_incidence_id()
     iid_loop_after_appendix_drop_out = dial.new_incidence_id() 
 
+    combined_big_bad_sm,  \
+    terminal_list         = _get_big_bad_sm_and_terminal_list(ParallelSmTerminalPairList,    
+                                                              LoopCharacterSet)
+
+    first_vs_appendix_sm, \
+    appendix_sm_list      = _cut_first_transition(combined_big_bad_sm)
+
     # LoopMap: Associate characters with the reactions on their occurrence ____
     #
-    loop_map,         \
-    appendix_sm_list, \
-    appendix_lcci_db  = _get_loop_map(CaMap, parallel_sm_list, iid_loop_exit, 
-                                      dial_db, LoopCharacterSet)
-    # Loop DFA
-    loop_sm = DFA.from_IncidenceIdMap(
-         (lei.character_set, lei.incidence_id) for lei in loop_map
-    )
+    distinct_loop_core_map = _get_distinct_count_action_map(CaMap, first_vs_appendix_sm)
+    loop_core_sm,          \
+    loop_terminal_list     = _get_loop_core_sm(distinct_loop_core_map)
 
+    # Transform towards engine encoding __________________________________
+    #
+    loop_sm          = _encoding_transform(loop_sm)
+    appendix_sm_list = [ _encoding_transform(sm) for sm in appendix_sm_list ]
+
+    # Put eveything together _____________________________________________
+    #
     event_handler = LoopEventHandlers(CaMap.get_column_number_per_code_unit(), 
                                       LexemeEndCheckF, 
                                       EngineType, ReloadStateExtern, 
@@ -202,55 +211,51 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
                                       OnReloadFailureDoorId = OnReloadFailureDoorId, 
                                       ModeName              = ModeName) 
 
-    # Loop represented by FSM-s and Terminal-s ___________________________
-    #
-    loop_sm          = _encoding_transform(loop_sm)
-    appendix_sm_list = [ _encoding_transform(sm) for sm in appendix_sm_list ]
-
     analyzer_list,   \
     door_id_loop     = _get_analyzer_list(loop_sm, appendix_sm_list, event_handler, 
                                           iid_loop_after_appendix_drop_out)
+
     event_handler.loop_state_machine_id_set(analyzer_list[0].state_machine_id)
 
-    if not any(lei.appendix_sm_has_transitions_f for lei in loop_map):
-        iid_loop_after_appendix_drop_out = None
+    if not appendix_sm_list: iid_loop_after_appendix_drop_out = None
 
     terminal_list, \
     run_time_counter_required_f = _get_terminal_list(loop_map, 
                                                      event_handler, 
                                                      appendix_lcci_db, 
-                                                     parallel_terminal_list,
+                                                     terminal_list,
                                                      door_id_loop,
                                                      iid_loop_exit, 
                                                      iid_loop_after_appendix_drop_out)
 
     # Clean the loop map from the 'exit transition'.
     clean_loop_map = [lei for lei in loop_map if lei.incidence_id != iid_loop_exit]
+
     return analyzer_list, \
            terminal_list, \
            clean_loop_map, \
            door_id_loop, \
-           event_handler.required_register_set , \
+           event_handler.required_register_set, \
            run_time_counter_required_f
 
-def _sm_terminal_pair_list_extract(ParallelSmTerminalPairList):
-    if ParallelSmTerminalPairList is None:
-        ParallelSmTerminalPairList = []
-    _sm_terminal_pair_list_assert(ParallelSmTerminalPairList)
+def _get_big_bad_sm_and_terminal_list(ParallelSmTerminalPairList, LoopCharacterSet):
+    if ParallelSmTerminalPairList is None: return [], []
+    assert all(sm.get_id() == terminal.incidence_id for sm, terminal in ParallelSmTerminalPairList)
+    assert all(isinstance(terminal, MiniTerminal)   for sm, terminal in ParallelSmTerminalPairList)
 
-    parallel_terminal_list = []
-    parallel_sm_list       = []
-    for sm, terminal in ParallelSmTerminalPairList:
-        parallel_terminal_list.append(terminal)
-        parallel_sm_list.append(sm)
+    # Extract terminals and state machines from 'ParallelSmTerminalPairList'
+    terminal_list = [ terminal for dummy, terminal in ParallelSmTerminalPairList ]
+    sm_list       = [ sm       for sm, dummy       in ParallelSmTerminalPairList ]
 
-    assert all(isinstance(t, MiniTerminal) for t in parallel_terminal_list)
-    return parallel_terminal_list, parallel_sm_list
+    assert set(sm.get_id() for sm in sm_list) == set(t.incidence_id for t in terminal_list)
 
-def _sm_terminal_pair_list_assert(SmTerminalList):
-    for sm, terminal in SmTerminalList:
-        assert isinstance(terminal, MiniTerminal)
-        assert sm.get_id() == terminal.incidence_id
+    L = CaMap.union_of_all()
+    if LoopCharacterSet is not None: L.intersect_with(LoopCharacterSet)
+    loop_character_sm = DFA.from_NumberSet(L)
+
+    big_bad_sm = parallelize.do(sm_list + loop_character_sm)
+
+    return big_bad_sm, terminal_list
 
 @typed(loop_sm=DFA, AppendixSmList=[DFA])
 def _get_analyzer_list(loop_sm, AppendixSmList, EventHandler,
@@ -297,6 +302,53 @@ def _get_terminal_list(loop_map, EventHandler,
     return loop_terminal_list + parallel_terminal_list, \
            run_time_counter_required_f
 
+def _get_distinct_count_action_map(CaMap, first_vs_appendix_sm):
+    """Associates first transitions with related appendix state machines.
+
+    INPUT:  [character_set_0 | appendix_sm_0]
+            [character_set_1 | appendix_sm_1]
+            ...
+            [character_set_2 | appendix_sm_N]
+
+    Character sets of first transition are split according to the required
+    count actions.
+
+    OUTPUT: [character_set_0 | count_action_A | appendix_sm_0]
+            [character_set_0 | count_action_B | appendix_sm_0]
+            [character_set_1 | count_action_B | appendix_sm_1]
+            [character_set_1 | count_action_A | appendix_sm_1]
+            [character_set_1 | count_action_C | appendix_sm_1]
+            ...
+
+    RETURNS: list of(character_set, count action, appendix_sm_list)
+             associates 'character_set' with: * count action
+                                              * appendix_sm_list
+    """
+    def prepare_count_action(CA):
+        if CA.cc_type == E_CharacterCountType.COLUMN:
+            if Setup.buffer_encoding.variable_character_sizes_f(): pointer = E_R.LoopRestartP
+            else:                                                  pointer = E_R.InputP
+            return CountAction(E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM,
+                             pointer, CA.sr, ExtraValue=CA.value)
+        else:
+            return CA
+
+    return [
+        (character_set, prepare_count_action(ca), appendix_sm)
+        for trigger_set, appendix_sm in first_vs_appendix_sm
+        for character_set, ca in CaMap.iterable_in_sub_set(trigger_set)
+    ]
+
+def _get_loop_core_sm(Distinct):
+    def get_DFA(CharacterSet, CA, AppendixSmId):
+        
+    character_set_sm_and_terminal_list = [
+        get_DFA(character_set, ca, appendix_sm.get_id())
+        for character_set, ca, appendix_sm in Distinct:
+    ]
+
+    return parallelize.do(character_set_sm_list)
+
 @typed(CaMap=CountActionMap, L_subset=(None, NumberSet))
 def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
     """A loop map tells about the behavior of the core loop. It tells what
@@ -323,22 +375,15 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
                        -- None, indicating that there is none.
     """
     CaMap.prune(Setup.buffer_encoding.source_set)
-    L = CaMap.union_of_all()
 
     # 'couple_list': Transitions to 'couple terminals' 
     #                => connect to appendix state machines
     couple_list,      \
     appendix_sm_list, \
-    appendix_lcci_db  = parallel_state_machines.do(CaMap, SmList, dial_db)
+    appendix_lcci_db  = parallel_state_machines.do(CaMap, SmList)
 
-    L_couple = NumberSet.from_union_of_iterable(
-        lei.character_set for lei in couple_list
-    )
+def _get_single_character_transition_DFAs(L_subset):
 
-    # 'plain_list': Transitions to 'normal terminals' 
-    #               => perform count action and loop.
-    L_plain    = L.difference(L_couple)
-    if L_subset is not None: L_plain.intersect_with(L_subset)
     plain_list = _get_LoopMapEntry_list_plain(CaMap, L_plain)
 
     # 'L_exit': Transition to exit
@@ -352,11 +397,13 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
     else:
         exit_list = []
 
-    result = LoopMap(couple_list, # --> jump to appendix sm-s
-                     plain_list,  # --> iterate to loop start
-                     exit_list)   # --> exit loop
+    result = LoopMap(couple_list, plain_list, exit_list)
 
-    return result, appendix_sm_list, appendix_lcci_db
+    # Loop DFA
+    loop_sm = DFA.from_IncidenceIdMap(
+         (lei.character_set, lei.incidence_id) for lei in loop_map
+    )
+    return result, loop_sm, appendix_sm_list, appendix_lcci_db
 
 @typed(CaMap=CountActionMap)
 def _get_LoopMapEntry_list_plain(CaMap, L_pure):
@@ -520,9 +567,48 @@ def _get_analyzer_list_for_appendices(AppendixSmList, EventHandler,
         for sm in AppendixSmList
     ]
 
+def _cut_first_transition(sm):
+    """Cuts the first transition and leaves the remaining states in place. 
+    This solution is general(!) and it covers the case that there are 
+    transitions to the init state!
+    
+    EXAMPLE:
+        
+        .-- z -->(( 1 ))          z with: (( 1c ))
+      .'                   ---\
+    ( 0 )--- a -->( 2 )    ---/   a with: ( 2c )-- b ->( 0c )-- z -->(( 1c ))
+      \             /                       \           / 
+       '-<-- b ----'                         '-<- a ---'
 
-def _encoding_transform(sm):
-    """Transform the given state machines into the buffer's encoding.
+    where '0c', '1c', and '2c' are the cloned states of '0', '1', and '2'.
+
+    RETURNS: list of pairs: (trigger set, pruned state machine)
+             
+    trigger set = NumberSet that triggers on the initial state to
+                  the remaining state machine.
+
+    pruned state machine = pruned cloned version of this state machine
+                           consisting of states that come behind the 
+                           state which is reached by 'trigger set'.
+
+    ADAPTS:  Makes the init state's success state the new init state.
+    """
+    successor_db = sm.get_successor_db()
+
+    first_vs_appendix_sm = [
+        (trigger_set, 
+         sm.clone_subset(target_si, list(successor_db[target_si]) + [target_si]))
+        for target_si, trigger_set in sm.iterable_init_state_transitions()
+    ]
+    appendix_sm_list = [
+        (trigger_set, sm) for trigger_set, sm in first_vs_appendix_sm
+        if sm.get_init_state().has_transitions()
+    ]
+
+    return first_vs_appendix_sm, appendix_sm_list
+        
+def _encoding_transform(loop_sm, AppendixSmList):
+    """Transform state transitions from Unicode to the buffer's encoding.
     """
     verdict_f, \
     sm_transformed = Setup.buffer_encoding.do_state_machine(sm, 
@@ -531,6 +617,4 @@ def _encoding_transform(sm):
         error.log("Deep error: loop (skip range, skip nested range, indentation, ...)\n"
                   "contained character not suited for given character encoding.")
     return sm_transformed
-
-
 

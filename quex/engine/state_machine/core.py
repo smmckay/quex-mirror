@@ -40,9 +40,9 @@ class DFA(object):
     may count colum and line numbers, set jump positions for post-context
     pattern, or compute CRCs on the fly.
     """
-    def __init__(self, InitStateIndex=None, AcceptanceF=False, InitState=None, DoNothingF=False):
-        # Get a unique state machine id 
-        self.set_id(state_machine_index.get_state_machine_id())
+    def __init__(self, InitStateIndex=None, AcceptanceF=False, InitState=None, DoNothingF=False, DfaId=None):
+        if DfaId is None: self.set_id(state_machine_index.get_state_machine_id())
+        else:             self.set_id(DfaId)
 
         if DoNothingF: return
 
@@ -238,7 +238,7 @@ class DFA(object):
         correspondance_db = {
             si: state_machine_index.get() for si in StateSiSet
         }
-        result = DFA(InitStateIndex=correspondance_db[StartSi])
+        result = DFA(InitStateIndex=correspondance_db[StartSi], DfaId=DfaId)
 
         result.states = {
             # '.clone(correspondance_db)' only clones transitions to target states 
@@ -247,7 +247,6 @@ class DFA(object):
             for si in StateSiSet
         }
 
-        if DfaId is not None: result.__id = DfaId
 
         return result
 
@@ -256,7 +255,7 @@ class DFA(object):
         return self.__id  # core.id()
 
     def set_id(self, Value):
-        assert isinstance(Value, long) or Value == E_IncidenceIDs.INDENTATION_HANDLER
+        assert isinstance(Value, long) or Value == E_IncidenceIDs.INDENTATION_HANDLER or Value == E_IncidenceIDs.INDENTATION_BAD
         self.__id = Value # core.set_id(Value)
 
     def get_init_state(self):
@@ -888,7 +887,7 @@ class DFA(object):
               than the current state machine can be defined (useful for pre- and post-
               conditions).         
         """
-        assert type(OtherStateMachineID) == long
+        assert type(OtherStateMachineID) == long or OtherStateMachineID in E_IncidenceIDs
 
         if OtherStateMachineID == -1L: state_machine_id = self.__id
         else:                          state_machine_id = OtherStateMachineID

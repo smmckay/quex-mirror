@@ -86,8 +86,8 @@ def test(LoopMap, ColumnNPerCodeUnit):
          (lei.character_set, lei.incidence_id) for lei in LoopMap
     )
 
-    loop_sm,         \
-    appendix_sm_list = loop._transform(loop_sm, appendix_sm_list)
+    loop_sm          = loop._encoding_transform(loop_sm)
+    appendix_sm_list = [ loop._encoding_transform(sm) for sm in appendix_sm_list ]
 
     analyzer_list,   \
     door_id_loop     = loop._get_analyzer_list(loop_sm, appendix_sm_list, 

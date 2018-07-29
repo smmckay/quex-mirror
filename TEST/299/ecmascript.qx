@@ -3,25 +3,23 @@ header
 	#include "ecmascript_yacc.hpp"
 }
 
-// Definiera vilka typer av teckenkombinationer vi ska identifiera
 define 
 {
 	PATTERN_DIGIT		[0-9]
 }
 
-// Läge som kan hålla reda på variabelnamn och heltalskonstanter
 mode Variables : <inheritable: only>
 {
 	{PATTERN_DIGIT} => QUEX_TKN_DECLIT(Lexeme);
 }
 
-// Programläget är "master"-läget som svetsar ihop de tidigare lägena
 mode Program : Variables
 			   <skip: [ \t]>	// Ignorera whitespace 
 			   <skip_range: "/*" "*/">
 {
 
-       "\n" => QUEX_TKN_NEWLINE(Lexeme);
+       "\n"       => QUEX_TKN_NEWLINE(Lexeme);
+       on_failure => QUEX_TKN_FAILURE_THIS_TOKEN_ID_SHOULD_NEVER_OCCUR(Lexeme);
 }
 
 start = Program;
