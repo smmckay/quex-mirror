@@ -10,8 +10,8 @@ exit character set exits: [True]
 #_[ Print ]___________________________________________________
 
 [-oo, 000F] [0040, oo]  6 None
-[0010, 001F]  8 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 0>
-[0020, 003F]  9 CountAction(cc_type=COLUMN, value=0, extra_value=None, sr=None)
+[0010, 001F]  7 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 0>
+[0020, 003F]  8 CountAction(cc_type=COLUMN, value=0, extra_value=None, sr=None)
 
 #_[ Appendix DFAs ]________________________________
 
@@ -35,9 +35,9 @@ exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0040, oo]  10 None
-[0010, 001F] [0030, 003F]  13 CountAction(cc_type=COLUMN, value=0, extra_value=None, sr=None)
-[0020, 002F]  12 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 2>
+[-oo, 000F] [0040, oo]  9 None
+[0010, 001F] [0030, 003F]  11 CountAction(cc_type=COLUMN, value=0, extra_value=None, sr=None)
+[0020, 002F]  10 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 2>
 
 #_[ Appendix DFAs ]________________________________
 
@@ -62,9 +62,9 @@ exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0040, oo]  14 None
-[0010, 002F]  17 CountAction(cc_type=COLUMN, value=0, extra_value=None, sr=None)
-[0030, 003F]  16 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 4>
+[-oo, 000F] [0040, oo]  12 None
+[0010, 002F]  14 CountAction(cc_type=COLUMN, value=0, extra_value=None, sr=None)
+[0030, 003F]  13 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 4>
 
 
 
@@ -76,10 +76,10 @@ exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0040, oo]  18 None
-[0010, 001F]  22 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 0>
-[0020, 002F]  23 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 2>
-[0030, 003F]  24 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 4>
+[-oo, 000F] [0040, oo]  15 None
+[0010, 001F]  16 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 0>
+[0020, 002F]  17 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 2>
+[0030, 003F]  18 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 4>
 
 #_[ Appendix DFAs ]________________________________
 
