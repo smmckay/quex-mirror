@@ -189,7 +189,7 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
                                       dial_db, LoopCharacterSet)
     # Loop DFA
     loop_sm = DFA.from_IncidenceIdMap(
-         (lei.character_set, lei.incidence_id) for lei in loop_map
+         (lei.character_set, lei.iid_couple_terminal) for lei in loop_map
     )
 
     event_handler = LoopEventHandlers(CaMap.get_column_number_per_code_unit(), 
@@ -225,7 +225,7 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
                                                      iid_loop_after_appendix_drop_out)
 
     # Clean the loop map from the 'exit transition'.
-    clean_loop_map = [lei for lei in loop_map if lei.incidence_id != iid_loop_exit]
+    clean_loop_map = [lei for lei in loop_map if lei.iid_couple_terminal != iid_loop_exit]
     return analyzer_list, \
            terminal_list, \
            clean_loop_map, \
@@ -315,7 +315,7 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
        .character_set: Character set that triggers.
        .count_action:  Count action related to the character set.
                        == None, if the character set causes 'loop exit'.
-       .incidence_id:  Incidence Id of terminal that is triggered by character set.
+       .iid_couple_terminal:  Incidence Id of terminal that is triggered by character set.
                        -- incidence id of count action terminal, or
                        -- incidence id of couple terminal.
        .appendix_sm:   Appendix state machine
@@ -443,9 +443,9 @@ def _get_terminal_list_for_loop(loop_map, EventHandler, IidLoopAfterAppendixDrop
     result = []
     done   = set()
     for lei in loop_map:
-        if   lei.incidence_id in done:        continue
-        elif lei.incidence_id == IidLoopExit: continue
-        done.add(lei.incidence_id)
+        if   lei.iid_couple_terminal in done:        continue
+        elif lei.iid_couple_terminal == IidLoopExit: continue
+        done.add(lei.iid_couple_terminal)
         result.append(
             EventHandler.get_loop_terminal_code(lei, DoorIdLoop, 
                                                 door_id_loop_exit) 

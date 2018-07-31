@@ -29,35 +29,41 @@ class MiniTerminal(object):
         return self.__code
 
 class LoopMapEntry:
+    """
+         character set <---> (incidence id of couple terminal, 
+                              count action for character set,
+                              id of appendix DFA (None if none existent),
+                              incidence id of terminal of appendix)
+    """
     def __init__(self, CharacterSet, TheCountAction, CoupleIncidenceId, AppendixSmId, 
                  HasTransitionsF=False):
-        self.character_set  = CharacterSet
-        self.count_action   = TheCountAction
-        self.incidence_id   = CoupleIncidenceId
-        self.appendix_sm_id = AppendixSmId
+        self.character_set       = CharacterSet
+        self.count_action        = TheCountAction
+        self.iid_couple_terminal = CoupleIncidenceId
+        self.appendix_sm_id      = AppendixSmId
         self.appendix_sm_has_transitions_f = HasTransitionsF
 
     def __repr__(self):
         return "(%s, %s, %s, %s, %s)" % \
-               (self.character_set, self.count_action, self.incidence_id, 
+               (self.character_set, self.count_action, self.iid_couple_terminal, 
                 self.appendix_sm_id, self.appendix_sm_has_transitions_f)
 
 class LoopMap(list):
     def __init__(self, *LoopMapEntryLists):
-        for lei_list in LoopMapEntryLists:
-            self.extend(x for x in lei_list if not x.character_set.is_empty())
+        for lme_list in LoopMapEntryLists:
+            self.extend(x for x in lme_list if not x.character_set.is_empty())
         self._assert_consistency()
 
     def _assert_consistency(self):
-        assert not any(lei is None for lei in self)
-        assert not any(lei.character_set is None for lei in self)
-        assert not any(lei.incidence_id is None for lei in self)
+        assert not any(lme is None                     for lme in self)
+        assert not any(lme.character_set       is None for lme in self)
+        assert not any(lme.iid_couple_terminal is None for lme in self)
 
         # Assert: Transition triggers do not intersect! 
         total = NumberSet()
-        for lei in self:
-            assert not lei.character_set.has_intersection(total)
-            total.unite_with(lei.character_set)
+        for lme in self:
+            assert not lme.character_set.has_intersection(total)
+            total.unite_with(lme.character_set)
 
 class LoopEventHandlers:
     """Event handlers in terms of 'List of Operations' (objects of class 'Op'):
@@ -108,7 +114,7 @@ class LoopEventHandlers:
 
         # _____________________________________________________________________
         #
-        self.Op_goto_on_loop_exit_user_door_id = Op.GotoDoorId(UserOnLoopExitDoorId)
+        self.door_id_on_loop_exit_user_code = UserOnLoopExitDoorId
 
         if UserBeforeEntryOpList is None: UserBeforeEntryOpList = [] 
         self.on_loop_entry      = OpList.concatinate(on_loop_entry, 
@@ -118,14 +124,14 @@ class LoopEventHandlers:
         self.on_loop_reentry    = OpList.from_iterable(on_loop_reentry_pos)
         self.on_loop_exit       = OpList.concatinate(on_loop_exit_pos, 
                                                      on_loop_exit_count, 
-                                                     [self.Op_goto_on_loop_exit_user_door_id])
+                                                     [Op.GotoDoorId(self.door_id_on_loop_exit_user_code)])
                                                      
         self.on_before_reload             = OpList.concatinate(on_before_reload_pos, 
                                                                on_before_reload_count)
         self.on_before_reload_in_appendix = OpList.from_iterable(on_before_reload_pos_apx)
 
         self.on_after_reload              = OpList.concatinate(on_after_reload_pos, 
-                                                              on_after_reload_count)
+                                                               on_after_reload_count)
         self.on_after_reload_in_appendix  = OpList.from_iterable(on_after_reload_pos_apx)
 
         self.__loop_state_machine_id = None
@@ -260,7 +266,7 @@ class LoopEventHandlers:
                     (iii)a either re-enters the loop, or
                     (iii)b transits to an appendix state machine (couple terminal).
         """
-        IncidenceId    = LEI.incidence_id
+        IncidenceId    = LEI.iid_couple_terminal
         AppendixSmId   = LEI.appendix_sm_id
         TheCountAction = LEI.count_action
 
@@ -279,9 +285,7 @@ class LoopEventHandlers:
                 # No appendix 
                 # => no couple terminal 
                 # => goto terminal of parallel state machine.
-                code.append(
-                    Op.GotoDoorId(DoorID.incidence(AppendixSmId, self.dial_db)) 
-                )
+                target_door_id = DoorID.incidence(AppendixSmId, self.dial_db)
             else:
                 # Implement: --> couple terminal
                 #                (prepare entry into appendix state machine)
@@ -292,15 +296,14 @@ class LoopEventHandlers:
                 #  => 'parallel state machines' only when 'no lexeme end check'.
                 assert not self.lexeme_end_check_f 
                 # Couple Terminal: transit to appendix state machine.
-                code.extend(
-                    self.on_couple_terminal_to_appendix_sm(AppendixSmId)
-                )
+                # When the appendix drops out, the loop must continue where the
+                # appendix has began => Set 'LoopRestartP' to current position.
+                code.append(Op.Assign(E_R.LoopRestartP, E_R.InputP))
+                target_door_id = DoorID.state_machine_entry(LEI.appendix_sm_id, self.dial_db)
 
         elif not self.lexeme_end_check_f: 
             # Loop Terminal: directly re-enter loop.
-            code.append(
-                Op.GotoDoorId(DoorIdLoop) 
-            )
+            target_door_id = DoorIdLoop
         else:
             # Check Terminal: check against lexeme end before re-entering loop.
             code.append(
@@ -316,9 +319,9 @@ class LoopEventHandlers:
                                                      self.column_number_per_code_unit, 
                                                      False)
                 )
-            code.append(
-                self.Op_goto_on_loop_exit_user_door_id 
-            )
+            target_door_id = self.door_id_on_loop_exit_user_code
+
+        code.append(Op.GotoDoorId(target_door_id))
 
         return Terminal(CodeTerminal(Lng.COMMAND_LIST(code, self.dial_db)), 
                         name, IncidenceId=IncidenceId,
