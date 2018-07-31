@@ -83,7 +83,7 @@ def test(LoopMap, ColumnNPerCodeUnit):
                                               ModeName              = "M") 
 
     loop_sm = DFA.from_IncidenceIdMap(
-         (lei.character_set, lei.incidence_id) for lei in LoopMap
+         (lei.character_set, lei.iid_couple_terminal) for lei in LoopMap
     )
 
     loop_sm          = loop._encoding_transform(loop_sm)

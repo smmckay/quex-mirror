@@ -83,11 +83,11 @@ def general_checks(loop_map, appendix_sm_list):
             assert lei.appendix_sm_id is None
             exit_exists_f = True
         elif lei.appendix_sm_id is None:
-            assert lei.incidence_id not in count_action_plain_set
-            count_action_plain_set.add(lei.incidence_id)
+            assert lei.iid_couple_terminal not in count_action_plain_set
+            count_action_plain_set.add(lei.iid_couple_terminal)
         else:
-            assert lei.incidence_id not in count_action_couple_set
-            count_action_couple_set.add(lei.incidence_id)
+            assert lei.iid_couple_terminal not in count_action_couple_set
+            count_action_couple_set.add(lei.iid_couple_terminal)
             appendix_sm_id_set.add(lei.appendix_sm_id)
     print "[ok]"
 
@@ -103,7 +103,7 @@ def print_this(loop_map, appendix_sm_list):
     print "#_[ Print ]___________________________________________________"
     print
     for lei in sorted(loop_map, key=lambda x: x.character_set.minimum()):
-        print lei.character_set.get_string(Option="hex"), lei.incidence_id, lei.count_action,
+        print lei.character_set.get_string(Option="hex"), lei.iid_couple_terminal, lei.count_action,
         if lei.appendix_sm_id is None: print; continue
         print "<appendix: %s>" % lei.appendix_sm_id
 
