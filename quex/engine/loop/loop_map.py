@@ -356,14 +356,6 @@ class LoopEventHandlers:
                         mini_terminal.incidence_id, 
                         dial_db=self.dial_db)
 
-    def on_couple_terminal_to_appendix_sm(self, AppendixSmId):
-        return [
-            # When the appendix drops out, the loop must continue where the
-            # appendix has began => Set 'LoopRestartP' to current position.
-            Op.Assign(E_R.LoopRestartP, E_R.InputP),
-            Op.GotoDoorId(DoorID.state_machine_entry(AppendixSmId, self.dial_db)) 
-        ]
-
     def on_loop_after_appendix_drop_out(self, DoorIdLoop):
         # Upon drop-out, the input position is set to where the apendix 
         # started. Then, the loop is re-entered.
