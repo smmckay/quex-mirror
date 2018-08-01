@@ -23,7 +23,7 @@ from   quex.constants  import E_CharacterCountType, \
 from   copy import copy
 
 @typed(CaMap=CountActionMap)
-def do(CaMap, SmList, dial_db):
+def do(CaMap, SmList):
     """Perform separation:
     
          Parallel state machine  ---->    first transition  
@@ -34,6 +34,8 @@ def do(CaMap, SmList, dial_db):
 
     RETURNS: list of LoopMapEntry-s 
     """
+    # ESSENTIAL: Delimiter state machines shall never match on a common lexeme!
+
     def append_sm_db_get_combined(appendix_sm_db, SmList):
         def unique(SmList):
             result = []
@@ -68,20 +70,6 @@ def do(CaMap, SmList, dial_db):
                                                   Setup.buffer_encoding)
             result[appendix_sm.get_id()] = lcci
         return result
-
-    def split_distinct_count_actions(CaMap, FirstVsAppendixSmList):
-        """YIELDS: [0] Character Set
-                   [1] CountAction related to that character set.
-                   [2] Appendix state machine related to that character set.
-
-        The iterable reports character sets for which their is a distinct count
-        action and appendix state machine.
-        """
-        return [
-            (character_set, ca, appendix_sm)
-            for trigger_set, appendix_sm in FirstVsAppendixSmList
-            for character_set, ca in CaMap.iterable_in_sub_set(trigger_set)
-        ]
 
     def combine_intersecting_character_sets(first_vs_appendix_sm):
         result = []   # list of [0] Character Set
@@ -120,16 +108,8 @@ def do(CaMap, SmList, dial_db):
         else:
             appendix_sm_id = appendix_sm.get_id()
 
-        if CA.cc_type == E_CharacterCountType.COLUMN:
-            if Setup.buffer_encoding.variable_character_sizes_f(): pointer = E_R.LoopRestartP
-            else:                                                  pointer = E_R.InputP
-            ca = CountAction(E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM,
-                             pointer, CA.sr, ExtraValue=CA.value)
-        else:
-            ca = CA
-
-        return LoopMapEntry(CharacterSet, ca, dial.new_incidence_id(),
-                            appendix_sm_id, has_transitions_f)
+        return LoopMapEntry(CharacterSet, CA, dial.new_incidence_id(),
+                            appendix_sm_id, appendix_sm_id, has_transitions_f)
 
     def get_LoopMap_and_appendix_sm_list(Distinct):
         # Combine the appendix state machine lists which are related to character
@@ -216,6 +196,31 @@ def split_first_transition(SmList):
             result.append((first_set, appendix_sm))
     return result
 
+def append_sm_db_get_combined(appendix_sm_db, SmList):
+    def unique(SmList):
+        """RETURNS: list of state machines, where no state machine appears
+                    more than once.
+        """
+        result = []
+        for new_sm in SmList:
+            if not any(identity.do(new_sm, sm) for sm in result): 
+                result.append(new_sm)
+        return result
+
+    sm_ulist    = unique(SmList)
+    id_key      = tuple(sorted([sm.get_id() for sm in sm_ulist]))
+    combined_sm = appendix_sm_db.get(id_key)
+    if combined_sm is None:
+        if len(sm_ulist) == 1:
+            combined_sm = sm_ulist[0]
+            combined_sm.mark_state_origins()
+        else:
+            # TODO: May be, this is never required!
+            combined_sm = combination.do(sm_ulist, 
+                                         AlllowInitStateAcceptF=True)
+        appendix_sm_db[id_key] = combined_sm
+    return combined_sm
+
 def NEW_combine_intersecting_character_sets(FirstVsAppendixSmList):
     """First character sets of appendix state machines may intersect.
     Combine the DFAs of the intersection characters sets.
@@ -255,32 +260,7 @@ def NEW_combine_intersecting_character_sets(FirstVsAppendixSmList):
 
     return result
 
-def append_sm_db_get_combined(appendix_sm_db, SmList):
-    def unique(SmList):
-        """RETURNS: list of state machines, where no state machine appears
-                    more than once.
-        """
-        result = []
-        for new_sm in SmList:
-            if not any(identity.do(new_sm, sm) for sm in result): 
-                result.append(new_sm)
-        return result
-
-    sm_ulist    = unique(SmList)
-    id_key      = tuple(sorted([sm.get_id() for sm in sm_ulist]))
-    combined_sm = appendix_sm_db.get(id_key)
-    if combined_sm is None:
-        if len(sm_ulist) == 1:
-            combined_sm = sm_ulist[0]
-            combined_sm.mark_state_origins()
-        else:
-            # TODO: May be, this is never required!
-            combined_sm = combination.do(sm_ulist, 
-                                         AlllowInitStateAcceptF=True)
-        appendix_sm_db[id_key] = combined_sm
-    return combined_sm
-
-def NEW_split_distinct_count_actions(CaMap, FirstVsAppendixSmList):
+def split_distinct_count_actions(CaMap, FirstVsAppendixSmList):
     """Each entry in 'FirstVsAppendixSmList' is split up into subsets 
     where the character set has the same count action.
 
@@ -322,7 +302,7 @@ def NEW_split_distinct_count_actions(CaMap, FirstVsAppendixSmList):
             for character_set, ca in CaMap.iterable_in_sub_set(trigger_set)
     ]
 
-def get_LoopMap_and_appendix_sm_list(Distinct):
+def NEW_get_LoopMap_and_appendix_sm_list(Distinct):
     def _get_LoopMapEntry(dfa_list, CharacterSet, CA, AppendixSm):
         if not AppendixSm.get_init_state().has_transitions():
             # NO appendix after the first transition.

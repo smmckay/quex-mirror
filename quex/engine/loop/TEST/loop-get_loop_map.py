@@ -52,7 +52,6 @@ def test(NsCaList, SM_list=[]):
     lcci_db           = loop._get_loop_map(ca_map, 
                                            SM_list, 
                                            iid_loop_exit, 
-                                           dial_db, 
                                            NumberSet_All())
 
     print

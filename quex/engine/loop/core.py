@@ -186,7 +186,7 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
     loop_map,         \
     appendix_sm_list, \
     appendix_lcci_db  = _get_loop_map(CaMap, parallel_sm_list, iid_loop_exit, 
-                                      dial_db, LoopCharacterSet)
+                                      LoopCharacterSet)
     # Loop DFA
     loop_sm = DFA.from_IncidenceIdMap(
          (lei.character_set, lei.iid_couple_terminal) for lei in loop_map
@@ -298,7 +298,7 @@ def _get_terminal_list(loop_map, EventHandler,
            run_time_counter_required_f
 
 @typed(CaMap=CountActionMap, L_subset=(None, NumberSet))
-def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
+def _get_loop_map(CaMap, SmList, IidLoopExit, L_subset):
     """A loop map tells about the behavior of the core loop. It tells what
     needs to happen as a consequence to an incoming character. Two options:
 
@@ -329,7 +329,7 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
     #                => connect to appendix state machines
     couple_list,      \
     appendix_sm_list, \
-    appendix_lcci_db  = parallel_state_machines.do(CaMap, SmList, dial_db)
+    appendix_lcci_db  = parallel_state_machines.do(CaMap, SmList)
 
     L_couple = NumberSet.from_union_of_iterable(
         lei.character_set for lei in couple_list
@@ -348,7 +348,7 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
     )
     L_exit = L_loop.get_complement(Setup.buffer_encoding.source_set)
     if not L_exit.is_empty():
-        exit_list = [ LoopMapEntry(L_exit, None, IidLoopExit, None) ]
+        exit_list = [ LoopMapEntry(L_exit, None, IidLoopExit, None, None) ]
     else:
         exit_list = []
 
@@ -373,7 +373,7 @@ def _get_LoopMapEntry_list_plain(CaMap, L_pure):
     assert L_pure is not None
     CountAction.incidence_id_db.clear()
     return [
-        LoopMapEntry(character_set, ca, CountAction.incidence_id_db_get(ca), None)
+        LoopMapEntry(character_set, ca, CountAction.incidence_id_db_get(ca), None, None)
         for character_set, ca in CaMap.iterable_in_sub_set(L_pure)
     ]
 

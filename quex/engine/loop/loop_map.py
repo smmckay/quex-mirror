@@ -35,18 +35,23 @@ class LoopMapEntry:
                               id of appendix DFA (None if none existent),
                               incidence id of terminal of appendix)
     """
-    def __init__(self, CharacterSet, TheCountAction, CoupleIncidenceId, AppendixSmId, 
+    def __init__(self, CharacterSet, TheCountAction, 
+                 IidCoupleTerminal, IidAppendixTerminal,
+                 AppendixDfaId, 
                  HasTransitionsF=False):
-        self.character_set       = CharacterSet
-        self.count_action        = TheCountAction
-        self.iid_couple_terminal = CoupleIncidenceId
-        self.appendix_sm_id      = AppendixSmId
+        self.character_set         = CharacterSet
+        self.count_action          = TheCountAction
+        self.iid_couple_terminal   = IidCoupleTerminal
+        self.iid_appendix_terminal = AppendixDfaId # NEW
+        self.appendix_sm_id        = AppendixDfaId
         self.appendix_sm_has_transitions_f = HasTransitionsF
 
     def __repr__(self):
         return "(%s, %s, %s, %s, %s)" % \
-               (self.character_set, self.count_action, self.iid_couple_terminal, 
-                self.appendix_sm_id, self.appendix_sm_has_transitions_f)
+               (self.character_set, self.count_action, 
+                self.iid_couple_terminal, 
+                self.appendix_sm_id,
+                self.appendix_sm_has_transitions_f)
 
 class LoopMap(list):
     def __init__(self, *LoopMapEntryLists):
@@ -285,7 +290,7 @@ class LoopEventHandlers:
                 # No appendix 
                 # => no couple terminal 
                 # => goto terminal of parallel state machine.
-                target_door_id = DoorID.incidence(AppendixSmId, self.dial_db)
+                target_door_id = DoorID.incidence(LEI.iid_appendix_terminal, self.dial_db) 
             else:
                 # Implement: --> couple terminal
                 #                (prepare entry into appendix state machine)
