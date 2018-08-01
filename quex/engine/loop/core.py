@@ -212,7 +212,8 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
                                           iid_loop_after_appendix_drop_out)
     event_handler.loop_state_machine_id_set(analyzer_list[0].state_machine_id)
 
-    if not any(lei.appendix_sm_has_transitions_f for lei in loop_map):
+    if all(lei.appendix_sm_id is None for lei in loop_map):
+    # if not any(lei.appendix_sm_has_transitions_f for lei in loop_map):
         iid_loop_after_appendix_drop_out = None
 
     terminal_list, \

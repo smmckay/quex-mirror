@@ -42,9 +42,12 @@ class LoopMapEntry:
         self.character_set         = CharacterSet
         self.count_action          = TheCountAction
         self.iid_couple_terminal   = IidCoupleTerminal
-        self.iid_appendix_terminal = AppendixDfaId # NEW
+        self.iid_appendix_terminal = IidAppendixTerminal # NEW
         self.appendix_sm_id        = AppendixDfaId
         self.appendix_sm_has_transitions_f = HasTransitionsF
+
+        # if not self.appendix_sm_has_transitions_f: assert self.appendix_sm_id == None
+        if not self.appendix_sm_has_transitions_f: self.appendix_sm_id = None
 
     def __repr__(self):
         return "(%s, %s, %s, %s, %s)" % \
@@ -271,7 +274,6 @@ class LoopEventHandlers:
                     (iii)a either re-enters the loop, or
                     (iii)b transits to an appendix state machine (couple terminal).
         """
-        IncidenceId    = LEI.iid_couple_terminal
         AppendixSmId   = LEI.appendix_sm_id
         TheCountAction = LEI.count_action
 
@@ -279,14 +281,9 @@ class LoopEventHandlers:
         if TheCountAction is not None:
             code.extend(TheCountAction.get_OpList(self.column_number_per_code_unit))
 
-        if AppendixSmId is not None: name = "<COUPLE %s>" % IncidenceId
-        else:                        name = "<LOOP %s>"   % IncidenceId
-
-        if AppendixSmId is not None:
-            #
-            # loop map:  lei.character_set --> one of the parallel state machines
-            #
-            if not LEI.appendix_sm_has_transitions_f:
+        if LEI.iid_appendix_terminal is not None:
+            name = "<COUPLE %s>" % LEI.iid_couple_terminal
+            if LEI.appendix_sm_id is None:
                 # No appendix 
                 # => no couple terminal 
                 # => goto terminal of parallel state machine.
@@ -307,9 +304,11 @@ class LoopEventHandlers:
                 target_door_id = DoorID.state_machine_entry(LEI.appendix_sm_id, self.dial_db)
 
         elif not self.lexeme_end_check_f: 
+            name = "<LOOP %s>"   % LEI.iid_couple_terminal
             # Loop Terminal: directly re-enter loop.
             target_door_id = DoorIdLoop
         else:
+            name = "<LOOP %s>"   % LEI.iid_couple_terminal
             # Check Terminal: check against lexeme end before re-entering loop.
             code.append(
                 Op.GotoDoorIdIfInputPNotEqualPointer(DoorIdLoop, E_R.LexemeEnd)
@@ -329,7 +328,8 @@ class LoopEventHandlers:
         code.append(Op.GotoDoorId(target_door_id))
 
         return Terminal(CodeTerminal(Lng.COMMAND_LIST(code, self.dial_db)), 
-                        name, IncidenceId=IncidenceId,
+                        name, 
+                        IncidenceId=LEI.iid_couple_terminal,
                         dial_db=self.dial_db)
 
     def get_Terminal_from_mini_terminal(self, LCCI, mini_terminal):

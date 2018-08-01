@@ -35,6 +35,7 @@ def do(CaMap, SmList):
     RETURNS: list of LoopMapEntry-s 
     """
     # ESSENTIAL: Delimiter state machines shall never match on a common lexeme!
+    _assert_no_intersections(SmList)
 
     def append_sm_db_get_combined(appendix_sm_db, SmList):
         def unique(SmList):
@@ -97,19 +98,6 @@ def do(CaMap, SmList):
                     (remainder, ca, [appendix_sm])
                 )
         return result
-
-    def _determine_LoopMapEntry(sm_db, CharacterSet, CA, AppendixSmList):
-        appendix_sm       = append_sm_db_get_combined(sm_db, AppendixSmList)
-        has_transitions_f = appendix_sm.get_init_state().has_transitions()
-        if not has_transitions_f:
-            # There is NO appendix after the first transition.
-            # => directly goto to terminal of the matched state machine.
-            appendix_sm_id = min(sm.get_id() for sm in AppendixSmList)
-        else:
-            appendix_sm_id = appendix_sm.get_id()
-
-        return LoopMapEntry(CharacterSet, CA, dial.new_incidence_id(),
-                            appendix_sm_id, appendix_sm_id, has_transitions_f)
 
     def get_LoopMap_and_appendix_sm_list(Distinct):
         # Combine the appendix state machine lists which are related to character
@@ -221,6 +209,15 @@ def append_sm_db_get_combined(appendix_sm_db, SmList):
         appendix_sm_db[id_key] = combined_sm
     return combined_sm
 
+def _assert_no_intersections(SmList):
+    # ESSENTIAL: Delimiter state machines shall never match on a common lexeme!
+    if   len(SmList) == 1: return
+    intersection_sm = intersection.do(SmList)
+    if   intersection_sm.is_Nothing(): return
+    elif intersection_sm.is_Empty(): return
+    error.log("Skip range or indentation: Delimiter patterns intersect!\n"
+              "(This should have been detected earlier during parsing)")
+
 def NEW_combine_intersecting_character_sets(FirstVsAppendixSmList):
     """First character sets of appendix state machines may intersect.
     Combine the DFAs of the intersection characters sets.
@@ -302,6 +299,24 @@ def split_distinct_count_actions(CaMap, FirstVsAppendixSmList):
             for character_set, ca in CaMap.iterable_in_sub_set(trigger_set)
     ]
 
+def _determine_LoopMapEntry(sm_db, CharacterSet, CA, AppendixSmList):
+    appendix_sm       = append_sm_db_get_combined(sm_db, AppendixSmList)
+    has_transitions_f = appendix_sm.get_init_state().has_transitions()
+    if not has_transitions_f:
+        # There is NO appendix after the first transition.
+        # => directly goto to terminal of the matched state machine.
+        iid_appendix_terminal = appendix_sm.get_id()
+        appendix_sm_id        = None
+    else:
+        iid_appendix_terminal = appendix_sm.get_id()
+        appendix_sm_id        = appendix_sm.get_id()
+
+    return LoopMapEntry(CharacterSet, CA, 
+                        IidCoupleTerminal   = dial.new_incidence_id(), 
+                        IidAppendixTerminal = iid_appendix_terminal, 
+                        AppendixDfaId       = appendix_sm_id, 
+                        HasTransitionsF     = has_transitions_f)
+
 def NEW_get_LoopMap_and_appendix_sm_list(Distinct):
     def _get_LoopMapEntry(dfa_list, CharacterSet, CA, AppendixSm):
         if not AppendixSm.get_init_state().has_transitions():
@@ -323,7 +338,8 @@ def NEW_get_LoopMap_and_appendix_sm_list(Distinct):
         return LoopMapEntry(CharacterSet, CA, 
                             IidCoupleTerminal   = dial.new_incidence_id(),
                             IidAppendixTerminal = iid_appendix_terminal, 
-                            AppendixDfaId       = appendix_dfa_id)
+                            AppendixDfaId       = appendix_dfa_id,
+                            HasTransitionsF     = AppendixSm.get_init_state().has_transitions())
 
     appendix_dfa_list = []
     loop_map = [
