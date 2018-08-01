@@ -1,0 +1,27 @@
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function -Wno-missing-braces   ./tmp.c -I./. -I../../../code_base/TESTS -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+
+--( OPEN-CLOSE )------------
+
+'sameAndMore)X' => real: { column_n: 13; next_letter: <X>; }
+                => real: { column_n: 13; next_letter: <X>; }
+
+--( OPEN-OPEN-CLOSE-CLOSE )------------
+
+'asame(sameAndMore)sameAndMore)X' => real: { column_n: 31; next_letter: <X>; }
+                                  => real: { column_n: 31; next_letter: <X>; }
+
+--( OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE )------------
+
+'asame(sameAndMore)same(sameAndMore)sameAndMore)X' => real: { column_n: 48; next_letter: <X>; }
+                                                   => real: { column_n: 48; next_letter: <X>; }
+
+--( OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE )------------
+
+'asame(same(sameAndMore)same(sameAndMore)sameAndMore)sameAndMore)X' => real: { column_n: 65; next_letter: <X>; }
+                                                                    => real: { column_n: 65; next_letter: <X>; }
+
+--( WILD )------------
+
+'same(same(sameAndMore)same(sameAndMore)same(sameAndMore)same(sameAndMore)same(same(same(sameAndMore)sameAndMore)sameAndMore)same(same(sameAndMore)same(sameAndMore)sameAndMore)same(sameAndMore)same(same(sameAndMore)sameAndMore)same(sameAndMore)same(sameAndM...' => real: { column_n: 850030; next_letter: <X>; }
+                                                                                                                                                                                                                                                                      => real: { column_n: 850030; next_letter: <X>; }

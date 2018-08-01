@@ -163,7 +163,7 @@ class LoopEventHandlers:
                db[E_CharacterCountType.AFTER_RELOAD](pointer, ColumnNPerCodeUnit)
 
     def __prepare_positioning_at_loop_begin_and_exit(self):
-        """With codecs of dynamic character sizes (UTF8), the pointer to the 
+        """With encodings of dynamic character sizes (UTF8), the pointer to the 
         first letter is stored in 'character_begin_p'. To reset the input 
         pointer 'input_p = character_begin_p' is applied.  
         """
@@ -171,9 +171,9 @@ class LoopEventHandlers:
             # 1 character == variable number of code units
             # => Begin of character must be stored upon entry 
             #    and restored upon exit.
-            entry   = [ Op.Assign(E_R.LoopRestartP, E_R.InputP) ]
-            reentry = [ Op.Assign(E_R.LoopRestartP, E_R.InputP) ]
-            exit    = [ Op.Assign(E_R.InputP, E_R.LoopRestartP) ]
+            entry   = [ Op.Assign(E_R.LoopRestartP, E_R.InputP)       ]
+            reentry = [ Op.Assign(E_R.LoopRestartP, E_R.InputP)       ]
+            exit    = [ Op.Assign(E_R.InputP,       E_R.LoopRestartP) ]
         else:
             # 1 character == 1 code unit
             # => reset to last character: 'input_p = input_p - 1'
@@ -213,12 +213,9 @@ class LoopEventHandlers:
         RETURNS: [0] on_before_reload
                  [1] on_after_reload
         """
-        if Setup.buffer_encoding.variable_character_sizes_f():
-            maintain_loop_restart_p = True
-        elif AppendixSmF:
-            maintain_loop_restart_p = True
-        else:
-            maintain_loop_restart_p = False
+        if Setup.buffer_encoding.variable_character_sizes_f(): maintain_loop_restart_p = True
+        elif AppendixSmF:                                      maintain_loop_restart_p = True
+        else:                                                  maintain_loop_restart_p = False
 
         # NOTE: The 'CountReferenceP' is not subject to reload, since a 
         #       'delta addition' is done right before reload. After reload,
@@ -235,22 +232,17 @@ class LoopEventHandlers:
         )
 
         if maintain_loop_restart_p:
-            before.append(
-                Op.Assign(E_R.InputPBeforeReload, E_R.InputP)
-            )
-            before.append(
+            before.extend([
+                Op.Assign(E_R.InputPBeforeReload, E_R.InputP),
                 Op.PointerAssignMin(E_R.LexemeStartP, E_R.LexemeStartP, E_R.LoopRestartP)
-            )
+            ])
 
         # After Reload:
         if maintain_loop_restart_p:
-            after.append(
-                Op.AssignPointerDifference(E_R.PositionDelta, 
-                                           E_R.InputP, E_R.InputPBeforeReload),
-            )
-            after.append(
+            after.extend([
+                Op.AssignPointerDifference(E_R.PositionDelta, E_R.InputP, E_R.InputPBeforeReload),
                 Op.PointerAdd(E_R.LoopRestartP, E_R.PositionDelta)
-            )
+            ])
 
         # Make sure, that the lexeme start pointer makes sense:
         # => begin of input
@@ -314,16 +306,14 @@ class LoopEventHandlers:
                 # With reference counting, no column counting while looping.
                 # => Do it now, before leaving.
                 code.append(
-                    Op.ColumnCountReferencePDeltaAdd(E_R.InputP, 
-                                                     self.column_number_per_code_unit, 
+                    Op.ColumnCountReferencePDeltaAdd(E_R.InputP, self.column_number_per_code_unit, 
                                                      False)
                 )
             target_door_id = self.door_id_on_loop_exit_user_code
 
         code.append(Op.GotoDoorId(target_door_id))
 
-        return Terminal(CodeTerminal(Lng.COMMAND_LIST(code, self.dial_db)), 
-                        name, 
+        return Terminal(CodeTerminal(Lng.COMMAND_LIST(code, self.dial_db)), name, 
                         IncidenceId=LEI.iid_couple_terminal,
                         dial_db=self.dial_db)
 

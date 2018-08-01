@@ -37,28 +37,6 @@ def do(CaMap, SmList):
     # ESSENTIAL: Delimiter state machines shall never match on a common lexeme!
     _assert_no_intersections(SmList)
 
-    def append_sm_db_get_combined(appendix_sm_db, SmList):
-        def unique(SmList):
-            result = []
-            for new_sm in SmList:
-                if any(identity.do(new_sm, sm) for sm in result): continue
-                result.append(new_sm)
-            return result
-
-        sm_ulist    = unique(SmList)
-        id_key      = tuple(sorted([sm.get_id() for sm in sm_ulist]))
-        combined_sm = appendix_sm_db.get(id_key)
-        if combined_sm is None:
-            if len(sm_ulist) == 1:
-                combined_sm = sm_ulist[0]
-                combined_sm.mark_state_origins()
-            else:
-                # TODO: May be, this is never required!
-                combined_sm = combination.do(sm_ulist, 
-                                             AlllowInitStateAcceptF=True)
-            appendix_sm_db[id_key] = combined_sm
-        return combined_sm
-
     def get_appendix_lcci_db(AppendixDfaList):
         """The tuples reported by 'iterable()' may contain overlapping character
         sets. That is, their may be multiple parallel state machines that trigger
@@ -70,33 +48,6 @@ def do(CaMap, SmList):
             lcci = SmLineColumnCountInfo.from_DFA(CaMap, appendix_sm, False,
                                                   Setup.buffer_encoding)
             result[appendix_sm.get_id()] = lcci
-        return result
-
-    def combine_intersecting_character_sets(first_vs_appendix_sm):
-        result = []   # list of [0] Character Set
-        #                       [1] Count Action related to [0]
-        #                       [2] List of appendix state machines related [0]
-        # All character sets [0] in the distinct list are NON-OVERLAPPING.
-        for character_set, ca, appendix_sm in first_vs_appendix_sm:
-            remainder = character_set
-            for prev_character_set, prev_ca, prev_appendix_sm_list in result:
-                intersection = character_set.intersection(prev_character_set)
-                if intersection.is_empty(): 
-                    continue
-                elif intersection.is_equal(prev_character_set):
-                    prev_appendix_sm_list.append(appendix_sm)
-                else:
-                    prev_character_set.subtract(intersection)
-                    result.append(
-                        (intersection, ca, prev_appendix_sm_list + [appendix_sm])
-                    )
-                remainder.subtract(intersection)
-                if remainder.is_empty(): break
-
-            if not remainder.is_empty():
-                result.append(
-                    (remainder, ca, [appendix_sm])
-                )
         return result
 
     def get_LoopMap_and_appendix_sm_list(Distinct):
@@ -184,31 +135,6 @@ def split_first_transition(SmList):
             result.append((first_set, appendix_sm))
     return result
 
-def append_sm_db_get_combined(appendix_sm_db, SmList):
-    def unique(SmList):
-        """RETURNS: list of state machines, where no state machine appears
-                    more than once.
-        """
-        result = []
-        for new_sm in SmList:
-            if not any(identity.do(new_sm, sm) for sm in result): 
-                result.append(new_sm)
-        return result
-
-    sm_ulist    = unique(SmList)
-    id_key      = tuple(sorted([sm.get_id() for sm in sm_ulist]))
-    combined_sm = appendix_sm_db.get(id_key)
-    if combined_sm is None:
-        if len(sm_ulist) == 1:
-            combined_sm = sm_ulist[0]
-            combined_sm.mark_state_origins()
-        else:
-            # TODO: May be, this is never required!
-            combined_sm = combination.do(sm_ulist, 
-                                         AlllowInitStateAcceptF=True)
-        appendix_sm_db[id_key] = combined_sm
-    return combined_sm
-
 def _assert_no_intersections(SmList):
     # ESSENTIAL: Delimiter state machines shall never match on a common lexeme!
     if   len(SmList) == 1: return
@@ -217,6 +143,33 @@ def _assert_no_intersections(SmList):
     elif intersection_sm.is_Empty(): return
     error.log("Skip range or indentation: Delimiter patterns intersect!\n"
               "(This should have been detected earlier during parsing)")
+
+def combine_intersecting_character_sets(first_vs_appendix_sm):
+    result = []   # list of [0] Character Set
+    #                       [1] Count Action related to [0]
+    #                       [2] List of appendix state machines related [0]
+    # All character sets [0] in the distinct list are NON-OVERLAPPING.
+    for character_set, ca, appendix_sm in first_vs_appendix_sm:
+        remainder = character_set
+        for prev_character_set, prev_ca, prev_appendix_sm_list in result:
+            intersection = character_set.intersection(prev_character_set)
+            if intersection.is_empty(): 
+                continue
+            elif intersection.is_equal(prev_character_set):
+                prev_appendix_sm_list.append(appendix_sm)
+            else:
+                prev_character_set.subtract(intersection)
+                result.append(
+                    (intersection, ca, prev_appendix_sm_list + [appendix_sm])
+                )
+            remainder.subtract(intersection)
+            if remainder.is_empty(): break
+
+        if not remainder.is_empty():
+            result.append(
+                (remainder, ca, [appendix_sm])
+            )
+    return result
 
 def NEW_combine_intersecting_character_sets(FirstVsAppendixSmList):
     """First character sets of appendix state machines may intersect.
@@ -298,6 +251,18 @@ def split_distinct_count_actions(CaMap, FirstVsAppendixSmList):
         for trigger_set, appendix_sm in FirstVsAppendixSmList
             for character_set, ca in CaMap.iterable_in_sub_set(trigger_set)
     ]
+
+def append_sm_db_get_combined(appendix_sm_db, SmList):
+    id_key      = tuple(sorted([sm.get_id() for sm in SmList]))
+    combined_sm = appendix_sm_db.get(id_key)
+    if combined_sm is None:
+        if len(SmList) == 1:
+            combined_sm = SmList[0]
+            combined_sm.mark_state_origins()
+        else:
+            combined_sm = combination.do(SmList, AlllowInitStateAcceptF=True)
+        appendix_sm_db[id_key] = combined_sm
+    return combined_sm
 
 def _determine_LoopMapEntry(sm_db, CharacterSet, CA, AppendixSmList):
     appendix_sm       = append_sm_db_get_combined(sm_db, AppendixSmList)

@@ -6,7 +6,7 @@ from helper import *
 
 if "--hwut-info" in sys.argv:
     print "Skip-NestedRange: Delimiters of different sizes;"
-    print "CHOICES: one, two, three, same-head;"
+    print "CHOICES: one, two, three, same-head, same-head-diff-length;"
     sys.exit(0)
 
 choice = sys.argv[1]
@@ -16,7 +16,6 @@ StrangeStream_str = ""
 if sys.argv[1].find("StrangeStream") != -1:
     StrangeStream_str = " -DQUEX_OPTION_STRANGE_ISTREAM_IMPLEMENTATION_EXT "
     Language = "Cpp"
-
 
 def build(Opener, Closer):
     open_sequence  = map(ord, Opener)
@@ -114,5 +113,14 @@ elif choice == "same-head":
     my_run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "asame(same)same(same)same)X")
     my_run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "asame(same(same)same(same)same)same)X")
     my_run(exe, "WILD", wild_str(50000, "same(", "same)"))
+    clean(exe, source)
+
+elif choice == "same-head-diff-length":
+    exe, source = build("same(", "sameAndMore)")
+    my_run(exe, "OPEN-CLOSE", "sameAndMore)X")
+    my_run(exe, "OPEN-OPEN-CLOSE-CLOSE", "asame(sameAndMore)sameAndMore)X")
+    my_run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "asame(sameAndMore)same(sameAndMore)sameAndMore)X")
+    my_run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "asame(same(sameAndMore)same(sameAndMore)sameAndMore)sameAndMore)X")
+    my_run(exe, "WILD", wild_str(50000, "same(", "sameAndMore)"))
     clean(exe, source)
 
