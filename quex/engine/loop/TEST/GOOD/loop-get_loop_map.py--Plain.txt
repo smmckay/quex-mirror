@@ -11,7 +11,7 @@ exit character set exits: [True]
 #_[ Print ]___________________________________________________
 
 [-oo, -001] [0010, 001F] [0030, 003F] [0050, 005F] [0070, oo]  0 None
-[0000, 000F]  1 CountAction(cc_type=COLUMN, value=0, extra_value=None, sr=None)
-[0020, 002F]  2 CountAction(cc_type=LINE, value=1, extra_value=None, sr=None)
-[0040, 004F]  3 CountAction(cc_type=GRID, value=2, extra_value=None, sr=None)
-[0060, 006F]  4 CountAction(cc_type=WHITESPACE, value=3, extra_value=None, sr=None)
+[0000, 000F]  2 CountAction(cc_type=COLUMN, value=0, extra_value=None, sr=None)
+[0020, 002F]  3 CountAction(cc_type=LINE, value=1, extra_value=None, sr=None)
+[0040, 004F]  4 CountAction(cc_type=GRID, value=2, extra_value=None, sr=None)
+[0060, 006F]  5 CountAction(cc_type=WHITESPACE, value=3, extra_value=None, sr=None)
