@@ -10,10 +10,10 @@ exit character set exits: [True]
 #_[ Print ]___________________________________________________
 
 [-oo, 000F] [0060, oo]  6 None
-[0010, 001F]  8 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 0>
-[0020, 002F]  13 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 12>
-[0030, 003F]  22 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 21>
-[0040, 004F]  16 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 14>
+[0010, 001F]  19 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 0>
+[0020, 002F]  20 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 11>
+[0030, 003F]  22 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 18>
+[0040, 004F]  21 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 12>
 [0050, 005F]  23 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None)
 
 #_[ Appendix DFAs ]________________________________
@@ -27,7 +27,7 @@ init-state = 0L
     
 
 
-IncidenceId: 12
+IncidenceId: 11
 init-state = 0L
 00000 
      == 'A' ==> 00001
@@ -43,7 +43,7 @@ init-state = 0L
     
 
 
-IncidenceId: 14
+IncidenceId: 12
 init-state = 0L
 00000 A(4)
      == 'A' ==> 00001
@@ -53,7 +53,7 @@ init-state = 0L
     
 
 
-IncidenceId: 21
+IncidenceId: 18
 init-state = 0L
 00000 A(4)
      == 'A' ==> 00001

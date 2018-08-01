@@ -50,28 +50,31 @@ def do(CaMap, SmList):
             result[appendix_sm.get_id()] = lcci
         return result
 
-    def get_LoopMap_and_appendix_sm_list(Distinct):
-        # Combine the appendix state machine lists which are related to character
-        # sets into a single combined appendix state machine.
-        appendix_sm_db   = {}
-        loop_map         = [
-            _determine_LoopMapEntry(appendix_sm_db, character_set, ca, appendix_sm_list)
-            for character_set, ca, appendix_sm_list in distinct
-        ]
-        appendix_sm_list = [
-            appendix_sm for appendix_sm in appendix_sm_db.itervalues()
-                        if appendix_sm.get_init_state().has_transitions()
-        ]
-        return loop_map, appendix_sm_list
-
     first_vs_appendix_sm = split_first_transition(SmList)
-    distinct             = split_distinct_count_actions(CaMap, first_vs_appendix_sm)
-    distinct             = combine_intersecting_character_sets(distinct)
-
-    loop_map,        \
-    appendix_sm_list = get_LoopMap_and_appendix_sm_list(distinct)
-
+    # appendix_sm-s match with original incidence_ids 
+    # => the count information is 'original'
     appendix_lcci_db = get_appendix_lcci_db(first_vs_appendix_sm)
+    distinct         = split_first_character_set_for_distinct_count_actions(CaMap, first_vs_appendix_sm)
+
+    # appendix_sm-s may be combined, but there sub-graphs still match and notify
+    # the original incidence ids.
+    distinct,        \
+    appendix_sm_list = combine_intersecting_character_sets(distinct)
+
+    def get_jump_dfa_id(AppendixSm):
+        if not AppendixSm.get_init_state().has_transitions():
+            # NO appendix after first transition. => jump to appendix terminal.
+            return None
+        else:
+            return AppendixSm.get_id()
+
+    loop_map = [
+        LoopMapEntry(character_set, ca, 
+                     IidCoupleTerminal   = dial.new_incidence_id(), 
+                     IidAppendixTerminal = appendix_sm.get_id(), 
+                     AppendixDfaId       = get_jump_dfa_id(appendix_sm)) 
+        for character_set, ca, appendix_sm in distinct
+    ]
 
     return loop_map, appendix_sm_list, appendix_lcci_db
 
@@ -169,7 +172,29 @@ def combine_intersecting_character_sets(first_vs_appendix_sm):
             result.append(
                 (remainder, ca, [appendix_sm])
             )
-    return result
+
+    def append_sm_db_get_combined(appendix_sm_db, SmList):
+        id_key      = tuple(sorted([sm.get_id() for sm in SmList]))
+        combined_sm = appendix_sm_db.get(id_key)
+        if combined_sm is None:
+            if len(SmList) == 1:
+                combined_sm = SmList[0]
+                combined_sm.mark_state_origins()
+            else:
+                combined_sm = combination.do(SmList, AlllowInitStateAcceptF=True)
+            appendix_sm_db[id_key] = combined_sm
+        return combined_sm
+
+    appendix_sm_db = {}
+    result = [
+        (character_set, ca, append_sm_db_get_combined(appendix_sm_db, appendix_sm_list))
+        for character_set, ca, appendix_sm_list in result
+    ]
+    appendix_sm_list = [
+        appendix_sm for appendix_sm in appendix_sm_db.itervalues()
+                    if appendix_sm.get_init_state().has_transitions()
+    ]
+    return result, appendix_sm_list
 
 def NEW_combine_intersecting_character_sets(FirstVsAppendixSmList):
     """First character sets of appendix state machines may intersect.
@@ -210,7 +235,7 @@ def NEW_combine_intersecting_character_sets(FirstVsAppendixSmList):
 
     return result
 
-def split_distinct_count_actions(CaMap, FirstVsAppendixSmList):
+def split_first_character_set_for_distinct_count_actions(CaMap, FirstVsAppendixSmList):
     """Each entry in 'FirstVsAppendixSmList' is split up into subsets 
     where the character set has the same count action.
 
@@ -251,35 +276,6 @@ def split_distinct_count_actions(CaMap, FirstVsAppendixSmList):
         for trigger_set, appendix_sm in FirstVsAppendixSmList
             for character_set, ca in CaMap.iterable_in_sub_set(trigger_set)
     ]
-
-def append_sm_db_get_combined(appendix_sm_db, SmList):
-    id_key      = tuple(sorted([sm.get_id() for sm in SmList]))
-    combined_sm = appendix_sm_db.get(id_key)
-    if combined_sm is None:
-        if len(SmList) == 1:
-            combined_sm = SmList[0]
-            combined_sm.mark_state_origins()
-        else:
-            combined_sm = combination.do(SmList, AlllowInitStateAcceptF=True)
-        appendix_sm_db[id_key] = combined_sm
-    return combined_sm
-
-def _determine_LoopMapEntry(sm_db, CharacterSet, CA, AppendixSmList):
-    appendix_sm       = append_sm_db_get_combined(sm_db, AppendixSmList)
-    has_transitions_f = appendix_sm.get_init_state().has_transitions()
-    if not has_transitions_f:
-        # There is NO appendix after the first transition.
-        # => directly goto to terminal of the matched state machine.
-        iid_appendix_terminal = appendix_sm.get_id()
-        appendix_sm_id        = None
-    else:
-        iid_appendix_terminal = appendix_sm.get_id()
-        appendix_sm_id        = appendix_sm.get_id()
-
-    return LoopMapEntry(CharacterSet, CA, 
-                        IidCoupleTerminal   = dial.new_incidence_id(), 
-                        IidAppendixTerminal = iid_appendix_terminal, 
-                        AppendixDfaId       = appendix_sm_id) 
 
 def NEW_get_LoopMap_and_appendix_sm_list(Distinct):
     def _get_LoopMapEntry(dfa_list, CharacterSet, CA, AppendixSm):
