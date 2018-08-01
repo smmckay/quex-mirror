@@ -104,7 +104,7 @@ def _get_appendix_sm_list(LoopMap):
         return sm
 
     sm_ids = set(lei.appendix_sm_id for lei in LoopMap
-                 if lei.appendix_sm_has_transitions_f)
+                 if lei.appendix_sm_id is not None)
     return [
         get_sm(SmId=appendix_sm_id, Trigger = 0xB612 + i) 
         for i, appendix_sm_id in enumerate(sm_ids)
@@ -145,19 +145,19 @@ if "loop" in sys.argv:
     column_n_per_code_unit = 5
 elif "appendix" in sys.argv:
     loop_map = loop.LoopMap([
-        loop.LoopMapEntry(NS_A, CA_0, dial.new_incidence_id(), appendix_sm_id, appendix_sm_id, HasTransitionsF=True),
+        loop.LoopMapEntry(NS_A, CA_0, dial.new_incidence_id(), appendix_sm_id, appendix_sm_id),
     ])
     column_n_per_code_unit = 5
 elif "appendix-wot" in sys.argv:
     loop_map = loop.LoopMap([
-        loop.LoopMapEntry(NS_A, CA_0, dial.new_incidence_id(), appendix_sm_id, appendix_sm_id, HasTransitionsF=False),
+        loop.LoopMapEntry(NS_A, CA_0, dial.new_incidence_id(), appendix_sm_id, None),
     ])
     column_n_per_code_unit = 5
 elif "non-const" in sys.argv:
     loop_map = loop.LoopMap([
         loop.LoopMapEntry(NS_A, CA_0, CountAction.incidence_id_db_get(CA_0), None, None),
-        loop.LoopMapEntry(NS_B, CA_1, dial.new_incidence_id(), appendix_sm_id, appendix_sm_id, HasTransitionsF=True),
-        loop.LoopMapEntry(NS_C, CA_2, dial.new_incidence_id(), appendix_sm_id, appendix_sm_id, HasTransitionsF=False),
+        loop.LoopMapEntry(NS_B, CA_1, dial.new_incidence_id(), appendix_sm_id, appendix_sm_id),
+        loop.LoopMapEntry(NS_C, CA_2, dial.new_incidence_id(), appendix_sm_id, None),
     ])
     column_n_per_code_unit = None
 else:

@@ -103,7 +103,7 @@ def print_this(loop_map, appendix_sm_list):
     print
     for lei in sorted(loop_map, key=lambda x: x.character_set.minimum()):
         print lei.character_set.get_string(Option="hex"), lei.iid_couple_terminal, lei.count_action,
-        if not lei.appendix_sm_has_transitions_f: print; continue
+        if lei.appendix_sm_id is None: print; continue
         print "<appendix: %s>" % lei.appendix_sm_id
 
     if not appendix_sm_list: return

@@ -37,24 +37,19 @@ class LoopMapEntry:
     """
     def __init__(self, CharacterSet, TheCountAction, 
                  IidCoupleTerminal, IidAppendixTerminal,
-                 AppendixDfaId, 
-                 HasTransitionsF=False):
+                 AppendixDfaId):
         self.character_set         = CharacterSet
         self.count_action          = TheCountAction
         self.iid_couple_terminal   = IidCoupleTerminal
         self.iid_appendix_terminal = IidAppendixTerminal # NEW
         self.appendix_sm_id        = AppendixDfaId
-        self.appendix_sm_has_transitions_f = HasTransitionsF
-
-        # if not self.appendix_sm_has_transitions_f: assert self.appendix_sm_id == None
-        if not self.appendix_sm_has_transitions_f: self.appendix_sm_id = None
 
     def __repr__(self):
         return "(%s, %s, %s, %s, %s)" % \
                (self.character_set, self.count_action, 
                 self.iid_couple_terminal, 
                 self.appendix_sm_id,
-                self.appendix_sm_has_transitions_f)
+                self.appendix_sm_id is not None)
 
 class LoopMap(list):
     def __init__(self, *LoopMapEntryLists):

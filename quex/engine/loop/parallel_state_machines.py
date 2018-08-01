@@ -314,8 +314,7 @@ def _determine_LoopMapEntry(sm_db, CharacterSet, CA, AppendixSmList):
     return LoopMapEntry(CharacterSet, CA, 
                         IidCoupleTerminal   = dial.new_incidence_id(), 
                         IidAppendixTerminal = iid_appendix_terminal, 
-                        AppendixDfaId       = appendix_sm_id, 
-                        HasTransitionsF     = has_transitions_f)
+                        AppendixDfaId       = appendix_sm_id) 
 
 def NEW_get_LoopMap_and_appendix_sm_list(Distinct):
     def _get_LoopMapEntry(dfa_list, CharacterSet, CA, AppendixSm):
