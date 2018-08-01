@@ -14,7 +14,7 @@ exit character set exits: [True]
 [0020, 002F]  13 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 12>
 [0030, 003F]  22 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 21>
 [0040, 004F]  16 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 14>
-[0050, 005F]  23 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 4>
+[0050, 005F]  23 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None)
 
 #_[ Appendix DFAs ]________________________________
 
