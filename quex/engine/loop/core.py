@@ -121,7 +121,8 @@ from   quex.output.counter.pattern                        import map_SmLineColum
 
 from   quex.blackboard import setup as Setup, Lng
 from   quex.constants  import E_CharacterCountType, \
-                              E_R
+                              E_R, \
+                              E_IncidenceIDs
 
 from   itertools   import chain
 
@@ -235,6 +236,8 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
            run_time_counter_required_f
 
 def _sm_terminal_pair_list_extract(ParallelSmTerminalPairList):
+    """Terminals and state machines are linked by the 'incidence id'.
+    """
     if ParallelSmTerminalPairList is None:
         ParallelSmTerminalPairList = []
     _sm_terminal_pair_list_assert(ParallelSmTerminalPairList)
@@ -244,6 +247,7 @@ def _sm_terminal_pair_list_extract(ParallelSmTerminalPairList):
     for sm, terminal in ParallelSmTerminalPairList:
         parallel_terminal_list.append(terminal)
         parallel_sm_list.append(sm)
+        sm.mark_state_origins()
 
     assert all(isinstance(t, MiniTerminal) for t in parallel_terminal_list)
     return parallel_terminal_list, parallel_sm_list
@@ -323,6 +327,8 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, L_subset):
                        -- combined appendix state machines, or
                        -- None, indicating that there is none.
     """
+    _assert_all_state_machines_tagged_with_matching_incidence_ids(SmList)
+
     CaMap.prune(Setup.buffer_encoding.source_set)
     L = CaMap.union_of_all()
 
@@ -521,7 +527,6 @@ def _get_analyzer_list_for_appendices(AppendixSmList, EventHandler,
         for sm in AppendixSmList
     ]
 
-
 def _encoding_transform(sm):
     """Transform the given state machines into the buffer's encoding.
     """
@@ -533,5 +538,10 @@ def _encoding_transform(sm):
                   "contained character not suited for given character encoding.")
     return sm_transformed
 
-
-
+def _assert_all_state_machines_tagged_with_matching_incidence_ids(SmList):
+    # All state machines must match the with the incidence id of the state machine id.
+    # The acceptance id is used as terminal id later.
+    for sm in SmList:
+        pure_acceptance_id_set = sm.acceptance_id_set()
+        pure_acceptance_id_set.discard(E_IncidenceIDs.MATCH_FAILURE)
+        assert pure_acceptance_id_set == set([sm.get_id()]) 

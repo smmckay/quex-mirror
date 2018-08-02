@@ -47,6 +47,9 @@ def test(NsCaList, SM_list=[]):
     ca_map        = CountActionMap.from_list(NsCaList)
     iid_loop_exit = dial.new_incidence_id()
 
+    for sm in SM_list:
+        sm.mark_state_origins()
+
     loop_map,         \
     appendix_sm_list, \
     lcci_db           = loop._get_loop_map(ca_map, 

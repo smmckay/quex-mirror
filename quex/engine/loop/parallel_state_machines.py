@@ -36,6 +36,7 @@ def do(CaMap, SmList):
     """
     # ESSENTIAL: Delimiter state machines shall never match on a common lexeme!
     _assert_no_intersections(SmList)
+    assert all(sm.get_id() is not None for sm in SmList)
 
     first_vs_appendix_sm = split_first_transition(SmList)
 
@@ -144,7 +145,6 @@ def split_first_transition(SmList):
             #          => Such DFAs transit to same terminal upon acceptance.
             ## appendix_sm.set_id(index.get_state_machine_id())
             ## appendix_sm.mark_state_origins(sm.get_id())
-
             result.append((first_set, appendix_sm))
     return result
 
@@ -182,8 +182,6 @@ def combine_appendix_sm_lists(FirstVsAppendixSmList):
         if combined_sm is None:
             if len(SmList) == 1:
                 combined_sm = SmList[0]
-                ## print "#acceptance_id_list:", combined_sm.acceptance_id_set()
-                combined_sm.mark_state_origins()
             else:
                 combined_sm = combination.do(SmList, AlllowInitStateAcceptF=True)
             appendix_sm_db[id_key] = combined_sm
