@@ -6,7 +6,7 @@ import quex.engine.state_machine.index              as     state_machine_index
 from   quex.engine.state_machine.state.core         import DFA_State
 from   quex.engine.state_machine.state.single_entry import SeAccept
 
-from   quex.engine.misc.tools  import typed
+from   quex.engine.misc.tools  import typed, flatten_it_list_of_lists
 from   quex.constants          import E_IncidenceIDs, \
                                       E_AcceptanceCondition, \
                                       E_StateIndices, \
@@ -359,6 +359,12 @@ class DFA(object):
             state 
             for state in self.states.itervalues() if state.is_acceptance() 
         ]
+
+    def acceptance_id_set(self):
+        return set(flatten_it_list_of_lists( 
+            state.acceptance_id_set() for state in self.states.itervalues() 
+            if state.is_acceptance() 
+        ))
 
     def get_bad_lexatom_detector_state_index_list(self):
         """At the time of this writing, BAD_LEXATOMs are implemented as states 

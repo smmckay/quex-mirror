@@ -122,6 +122,13 @@ class DFA_State:
         if cmd is None: return False 
         return not any(cmd.acceptance_id() == E_IncidenceIDs.BAD_LEXATOM for cmd in self.single_entry)
 
+    def acceptance_id_set(self):
+        return [
+            cmd.acceptance_id() 
+            for cmd in self.single_entry.get_iterable(SeAccept)
+            if cmd.acceptance_id() != E_IncidenceIDs.BAD_LEXATOM
+        ]
+
     def get_highest_precedence_acceptance_id(self):
         """RETURNS: incidence_id of the highest non-E_IncidenceIDs pattern
                                  that matches in this state.

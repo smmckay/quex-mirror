@@ -18,7 +18,7 @@ def do(SM_List):
         sm.assert_consistency() 
 
     if any(sm.is_Empty() for sm in SM_List): # If one state machine is '\Empty',
-        return DFA.Empty()          # the intersection is '\Empty'
+        return DFA.Empty()                   # then the intersection is '\Empty'.
 
     init_state_setup = tuple(sm.init_state_index for sm in SM_List)
     result           = DFA(AcceptanceF=intersect_acceptance(init_state_setup, SM_List))
