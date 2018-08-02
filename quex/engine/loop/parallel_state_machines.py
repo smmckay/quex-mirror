@@ -37,29 +37,28 @@ def do(CaMap, SmList):
     # ESSENTIAL: Delimiter state machines shall never match on a common lexeme!
     _assert_no_intersections(SmList)
 
-    def get_appendix_lcci_db(AppendixDfaList):
-        """The tuples reported by 'iterable()' may contain overlapping character
-        sets. That is, their may be multiple parallel state machines that trigger
-        on the same characters in a first transition. 
-        """
-        result = {} # map: appendix state machine id --> LCCI
-        for character_set, appendix_sm in first_vs_appendix_sm:
-            if not appendix_sm.get_init_state().has_transitions(): continue
-            lcci = SmLineColumnCountInfo.from_DFA(CaMap, appendix_sm, False,
-                                                  Setup.buffer_encoding)
-            result[appendix_sm.get_id()] = lcci
-        return result
-
     first_vs_appendix_sm = split_first_transition(SmList)
+
     # appendix_sm-s match with original incidence_ids 
     # => the count information is 'original'
-    appendix_lcci_db = get_appendix_lcci_db(first_vs_appendix_sm)
-    distinct         = split_first_character_set_for_distinct_count_actions(CaMap, first_vs_appendix_sm)
+    appendix_lcci_db = dict(
+        (appendix_sm.get_id(),
+         SmLineColumnCountInfo.from_DFA(CaMap, appendix_sm, False, Setup.buffer_encoding))
+        for character_set, appendix_sm in first_vs_appendix_sm
+        if appendix_sm.get_init_state().has_transitions()
+    )
 
-    # appendix_sm-s may be combined, but there sub-graphs still match and notify
-    # the original incidence ids.
-    distinct,        \
-    appendix_sm_list = combine_intersecting_character_sets(distinct)
+    disjoint_first_vs_appendix_sm = \
+        split_first_character_set_for_distinct_count_actions(CaMap, 
+                                                             first_vs_appendix_sm)
+    ## print "#disjoint:", sorted(disjoint_first_vs_appendix_sm, key=lambda x: x[0].minimum())
+
+    # appendix_sm-s may be combined, but their sub-graphs still match and 
+    # notify the original incidence ids.
+    first_vs_appendix_sm_list    = combine_intersecting_character_sets(disjoint_first_vs_appendix_sm)
+    ## print "#combined1:", sorted(first_vs_appendix_sm_list, key=lambda x: x[0].minimum())
+    first_vs_ca_and_appendix_sm, \
+    appendix_sm_list             = combine_appendix_sm_lists(first_vs_appendix_sm_list)
 
     def get_jump_dfa_id(AppendixSm):
         if not AppendixSm.get_init_state().has_transitions():
@@ -73,10 +72,19 @@ def do(CaMap, SmList):
                      IidCoupleTerminal   = dial.new_incidence_id(), 
                      IidAppendixTerminal = appendix_sm.get_id(), 
                      AppendixDfaId       = get_jump_dfa_id(appendix_sm)) 
-        for character_set, ca, appendix_sm in distinct
+        for character_set, ca, appendix_sm in first_vs_ca_and_appendix_sm
     ]
 
     return loop_map, appendix_sm_list, appendix_lcci_db
+
+def _assert_no_intersections(SmList):
+    # ESSENTIAL: Delimiter state machines shall never match on a common lexeme!
+    if   len(SmList) == 1: return
+    intersection_sm = intersection.do(SmList)
+    if   intersection_sm.is_Nothing(): return
+    elif intersection_sm.is_Empty(): return
+    error.log("Skip range or indentation: Delimiter patterns intersect!\n"
+              "(This should have been detected earlier during parsing)")
 
 def _cut_first_transition(sm, CloneStateMachineId=False):
     """Cuts the first transition and leaves the remaining states in place. 
@@ -135,17 +143,10 @@ def split_first_transition(SmList):
             # HOWEVER: Multiple appendix DFAs might match to same 'acceptance id',
             #          => Such DFAs transit to same terminal upon acceptance.
             ## appendix_sm.set_id(index.get_state_machine_id())
+            ## appendix_sm.mark_state_origins(sm.get_id())
+
             result.append((first_set, appendix_sm))
     return result
-
-def _assert_no_intersections(SmList):
-    # ESSENTIAL: Delimiter state machines shall never match on a common lexeme!
-    if   len(SmList) == 1: return
-    intersection_sm = intersection.do(SmList)
-    if   intersection_sm.is_Nothing(): return
-    elif intersection_sm.is_Empty(): return
-    error.log("Skip range or indentation: Delimiter patterns intersect!\n"
-              "(This should have been detected earlier during parsing)")
 
 def combine_intersecting_character_sets(first_vs_appendix_sm):
     result = []   # list of [0] Character Set
@@ -172,13 +173,16 @@ def combine_intersecting_character_sets(first_vs_appendix_sm):
             result.append(
                 (remainder, ca, [appendix_sm])
             )
+    return result
 
-    def append_sm_db_get_combined(appendix_sm_db, SmList):
+def combine_appendix_sm_lists(FirstVsAppendixSmList):
+    def combine(appendix_sm_db, SmList):
         id_key      = tuple(sorted([sm.get_id() for sm in SmList]))
         combined_sm = appendix_sm_db.get(id_key)
         if combined_sm is None:
             if len(SmList) == 1:
                 combined_sm = SmList[0]
+                ## print "#acceptance_id_list:", combined_sm.acceptance_id_set()
                 combined_sm.mark_state_origins()
             else:
                 combined_sm = combination.do(SmList, AlllowInitStateAcceptF=True)
@@ -186,15 +190,15 @@ def combine_intersecting_character_sets(first_vs_appendix_sm):
         return combined_sm
 
     appendix_sm_db = {}
-    result = [
-        (character_set, ca, append_sm_db_get_combined(appendix_sm_db, appendix_sm_list))
-        for character_set, ca, appendix_sm_list in result
+    first_vs_count_action_and_appendix_sm = [
+        (character_set, ca, combine(appendix_sm_db, appendix_sm_list))
+        for character_set, ca, appendix_sm_list in FirstVsAppendixSmList
     ]
     appendix_sm_list = [
         appendix_sm for appendix_sm in appendix_sm_db.itervalues()
                     if appendix_sm.get_init_state().has_transitions()
     ]
-    return result, appendix_sm_list
+    return first_vs_count_action_and_appendix_sm, appendix_sm_list
 
 def NEW_combine_intersecting_character_sets(FirstVsAppendixSmList):
     """First character sets of appendix state machines may intersect.
