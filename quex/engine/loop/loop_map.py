@@ -28,6 +28,14 @@ class MiniTerminal(object):
         """
         return self.__code
 
+class MiniTerminalCmd(MiniTerminal):
+    def __init__(self, IncidenceId, CmdList):
+        self.incidence_id = IncidenceId
+        self.__cmd_list = CmdList
+
+    def get_code(self, LoopStateMachineId):
+        return Lng.COMMAND_LIST(self.__cmd_list)
+
 class LoopMapEntry:
     """
          character set <---> (incidence id of couple terminal, 
@@ -252,6 +260,46 @@ class LoopEventHandlers:
 
         return before, after
 
+    def _cmd_list_Frame(self, TheCountAction, CmdList, JumpToDoorId):
+        if TheCountAction is not None:
+            code = TheCountAction.get_OpList(self.column_number_per_code_unit) 
+        else:
+            code = []
+        code.extend(CmdList)
+        code.append(Op.GotoDoorId(JumpToDoorId))
+        return code
+
+    def cmd_list_CA_GotoAppendixTerminal(self, CA, IidAppendixTerminal): 
+        jump_to_door_id = DoorID.incidence(IidAppendixTerminal, self.dial_db)
+        return self._cmd_list_Frame(CA, [], jump_to_door_id)
+        
+    def cmd_list_CA_GotoAppendixDfa(self, CA, AppendixDfaId): 
+        # Couple Terminal: transit to appendix state machine.
+        # When the appendix drops out, the loop must continue where the
+        # appendix has began => Set 'LoopRestartP' to current position.
+        cmd_list        = [Op.Assign(E_R.LoopRestartP, E_R.InputP)]
+        jump_to_door_id = DoorID.state_machine_entry(AppendixDfaId, self.dial_db)
+        return self._cmd_list_Frame(CA, cmd_list, jump_to_door_id)
+
+    def cmd_list_CA_GotoLoopEntry(self, CA, DoorIdLoop): 
+        return self._cmd_list_Frame(CA, [], DoorIdLoop)
+
+    def cmd_list_CA_LexemeEndCheck_GotoLoopEntry(self, CA, DoorIdLoop): 
+        # Check Terminal: check against lexeme end before re-entering loop.
+        cmd_list = [
+            Op.GotoDoorIdIfInputPNotEqualPointer(DoorIdLoop, E_R.LexemeEnd)
+        ]
+        if     self.column_number_per_code_unit is not None \
+           and CA is not None and CA.cc_type == E_CharacterCountType.COLUMN: 
+            # With reference counting, no column counting while looping.
+            # => Do it now, before leaving.
+            cmd_list.append(
+                Op.ColumnCountReferencePDeltaAdd(E_R.InputP, self.column_number_per_code_unit, 
+                                                 False)
+            )
+        jump_to_door_id = self.door_id_on_loop_exit_user_code
+        return self._cmd_list_Frame(CA, cmd_list, jump_to_door_id)
+
     @typed(LEI=LoopMapEntry)
     def get_loop_terminal_code(self, LEI, DoorIdLoop, DoorIdLoopExit): 
         """RETURNS: A loop terminal. 
@@ -261,57 +309,19 @@ class LoopEventHandlers:
                     (iii)a either re-enters the loop, or
                     (iii)b transits to an appendix state machine (couple terminal).
         """
-        AppendixSmId   = LEI.appendix_sm_id
-        TheCountAction = LEI.count_action
-
-        code = []
-        if TheCountAction is not None:
-            code.extend(TheCountAction.get_OpList(self.column_number_per_code_unit))
-
         if LEI.iid_appendix_terminal is not None:
             name = "<COUPLE %s>" % LEI.iid_couple_terminal
             if LEI.appendix_sm_id is None:
-                # No appendix 
-                # => no couple terminal 
-                # => goto terminal of parallel state machine.
-                target_door_id = DoorID.incidence(LEI.iid_appendix_terminal, self.dial_db) 
+                code = self.cmd_list_CA_GotoAppendixTerminal(LEI.count_action, LEI.iid_appendix_terminal)
             else:
-                # Implement: --> couple terminal
-                #                (prepare entry into appendix state machine)
-                #            --> appendix state machine
-                # ASSERT: 
-                #  + lexeme end check only required for 'counting' after match. 
-                #  + counting does not involve parallel state machines.
-                #  => 'parallel state machines' only when 'no lexeme end check'.
-                assert not self.lexeme_end_check_f 
-                # Couple Terminal: transit to appendix state machine.
-                # When the appendix drops out, the loop must continue where the
-                # appendix has began => Set 'LoopRestartP' to current position.
-                code.append(Op.Assign(E_R.LoopRestartP, E_R.InputP))
-                target_door_id = DoorID.state_machine_entry(LEI.appendix_sm_id, self.dial_db)
+                code = self.cmd_list_CA_GotoAppendixDfa(LEI.count_action, LEI.appendix_sm_id) 
 
         elif not self.lexeme_end_check_f: 
-            name = "<LOOP %s>"   % LEI.iid_couple_terminal
-            # Loop Terminal: directly re-enter loop.
-            target_door_id = DoorIdLoop
+            name = "<LOOP %s>" % LEI.iid_couple_terminal
+            code = self.cmd_list_CA_GotoLoopEntry(LEI.count_action, DoorIdLoop) 
         else:
-            name = "<LOOP %s>"   % LEI.iid_couple_terminal
-            # Check Terminal: check against lexeme end before re-entering loop.
-            code.append(
-                Op.GotoDoorIdIfInputPNotEqualPointer(DoorIdLoop, E_R.LexemeEnd)
-            )
-            if     self.column_number_per_code_unit is not None \
-               and TheCountAction is not None \
-               and TheCountAction.cc_type == E_CharacterCountType.COLUMN: 
-                # With reference counting, no column counting while looping.
-                # => Do it now, before leaving.
-                code.append(
-                    Op.ColumnCountReferencePDeltaAdd(E_R.InputP, self.column_number_per_code_unit, 
-                                                     False)
-                )
-            target_door_id = self.door_id_on_loop_exit_user_code
-
-        code.append(Op.GotoDoorId(target_door_id))
+            name = "<LOOP %s>" % LEI.iid_couple_terminal
+            code = self.cmd_list_CA_LexemeEndCheck_GotoLoopEntry(LEI.count_action, DoorIdLoop) 
 
         return Terminal(CodeTerminal(Lng.COMMAND_LIST(code, self.dial_db)), name, 
                         IncidenceId=LEI.iid_couple_terminal,
