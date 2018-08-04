@@ -77,7 +77,6 @@ def test(LoopMap, ColumnNPerCodeUnit):
                                               ReloadStateExtern     = None, 
                                               UserBeforeEntryOpList = None, 
                                               UserOnLoopExitDoorId  = dial_db.new_door_id(), 
-                                              AppendixSmExistF      = len(appendix_sm_list) != 0,
                                               dial_db               = dial_db, 
                                               OnReloadFailureDoorId = None, 
                                               ModeName              = "M") 

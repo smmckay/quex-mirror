@@ -176,9 +176,19 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
     if EngineType is None:
         EngineType = engine.FORWARD
 
+    event_handler = LoopEventHandlers(CaMap.get_column_number_per_code_unit(), 
+                                      LexemeEndCheckF, 
+                                      EngineType, ReloadStateExtern, 
+                                      UserOnLoopExitDoorId  = OnLoopExitDoorId,
+                                      UserBeforeEntryOpList = BeforeEntryOpList,
+                                      dial_db               = dial_db,
+                                      OnReloadFailureDoorId = OnReloadFailureDoorId, 
+                                      ModeName              = ModeName) 
+
     parallel_terminal_list, \
     parallel_sm_list        = _sm_terminal_pair_list_extract(ParallelSmTerminalPairList)
 
+    dfa_id_loop                      = index.get_state_machine_id()
     iid_loop_exit                    = dial.new_incidence_id()
     iid_loop_after_appendix_drop_out = dial.new_incidence_id() 
 
@@ -190,18 +200,9 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
                                       LoopCharacterSet)
     # Loop DFA
     loop_sm = DFA.from_IncidenceIdMap(
-         (lei.character_set, lei.iid_couple_terminal) for lei in loop_map
+        ((lei.character_set, lei.iid_couple_terminal) for lei in loop_map),
+        DfaId=dfa_id_loop
     )
-
-    event_handler = LoopEventHandlers(CaMap.get_column_number_per_code_unit(), 
-                                      LexemeEndCheckF, 
-                                      EngineType, ReloadStateExtern, 
-                                      UserOnLoopExitDoorId  = OnLoopExitDoorId,
-                                      UserBeforeEntryOpList = BeforeEntryOpList,
-                                      AppendixSmExistF      = len(appendix_sm_list) != 0,
-                                      dial_db               = dial_db,
-                                      OnReloadFailureDoorId = OnReloadFailureDoorId, 
-                                      ModeName              = ModeName) 
 
     # Loop represented by FSM-s and Terminal-s ___________________________
     #
@@ -211,7 +212,7 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
     analyzer_list,   \
     door_id_loop     = _get_analyzer_list(loop_sm, appendix_sm_list, event_handler, 
                                           iid_loop_after_appendix_drop_out)
-    event_handler.loop_state_machine_id_set(analyzer_list[0].state_machine_id)
+    event_handler.loop_state_machine_id_set(dfa_id_loop)
 
     if all(lei.appendix_sm_id is None for lei in loop_map):
     # if not any(lei.appendix_sm_has_transitions_f for lei in loop_map):
@@ -232,7 +233,7 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
            terminal_list, \
            clean_loop_map, \
            door_id_loop, \
-           event_handler.required_register_set , \
+           event_handler.get_required_register_set(len(appendix_sm_list) != 0), \
            run_time_counter_required_f
 
 def _sm_terminal_pair_list_extract(ParallelSmTerminalPairList):
@@ -529,13 +530,19 @@ def _get_analyzer_list_for_appendices(AppendixSmList, EventHandler,
 
 def _encoding_transform(sm):
     """Transform the given state machines into the buffer's encoding.
+    The original 'DFA-Id' remains intact! That is, both state machines
+    have the same id (supposed the old one vanishes).
     """
+    original_dfa_id = sm.get_id()
     verdict_f, \
     sm_transformed = Setup.buffer_encoding.do_state_machine(sm, 
                                                             BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
+
     if not verdict_f:
         error.log("Deep error: loop (skip range, skip nested range, indentation, ...)\n"
                   "contained character not suited for given character encoding.")
+
+    sm_transformed.set_id(original_dfa_id)
     return sm_transformed
 
 def _assert_all_state_machines_tagged_with_matching_incidence_ids(SmList):

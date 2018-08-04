@@ -91,7 +91,7 @@ class LoopEventHandlers:
            OnReloadFailureDoorId=(None, DoorID))
     def __init__(self, ColumnNPerCodeUnit, LexemeEndCheckF, 
                  EngineType, ReloadStateExtern, UserBeforeEntryOpList, 
-                 UserOnLoopExitDoorId, AppendixSmExistF, dial_db, OnReloadFailureDoorId, ModeName): 
+                 UserOnLoopExitDoorId, dial_db, OnReloadFailureDoorId, ModeName): 
         """ColumnNPerCodeUnit is None => no constant relationship between 
                                          column number and code unit.
         """
@@ -102,9 +102,6 @@ class LoopEventHandlers:
         self.engine_type                 = EngineType
         self.dial_db                     = dial_db
         self.door_id_on_reload_failure   = OnReloadFailureDoorId
-
-        # Determine required register set before (required for reload actions)
-        self.required_register_set = self.__get_required_register_set(AppendixSmExistF) 
 
         # Counting Actions upon: loop entry/exit; before/after reload
         #
@@ -376,7 +373,7 @@ class LoopEventHandlers:
     def on_loop_exit_text(self):
         return Lng.COMMAND_LIST(self.on_loop_exit, self.dial_db)
 
-    def __get_required_register_set(self, AppendixSmExistF):
+    def get_required_register_set(self, AppendixSmExistF):
         result = set()
         if self.column_number_per_code_unit is not None:
             result.add((E_R.CountReferenceP, "count-column"))
