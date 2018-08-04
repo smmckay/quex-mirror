@@ -196,8 +196,8 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
     #
     loop_map,         \
     appendix_sm_list, \
-    appendix_lcci_db  = _get_loop_map(CaMap, parallel_sm_list, iid_loop_exit, 
-                                      LoopCharacterSet)
+    appendix_lcci_db  = _get_loop_map(event_handler, CaMap, parallel_sm_list, 
+                                      iid_loop_exit, LoopCharacterSet)
     # Loop DFA
     loop_sm = DFA.from_IncidenceIdMap(
         ((lei.character_set, lei.iid_couple_terminal) for lei in loop_map),
@@ -214,8 +214,7 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
                                           iid_loop_after_appendix_drop_out)
     event_handler.loop_state_machine_id_set(dfa_id_loop)
 
-    if all(lei.appendix_sm_id is None for lei in loop_map):
-    # if not any(lei.appendix_sm_has_transitions_f for lei in loop_map):
+    if not event_handler.appendix_dfa_present_f():
         iid_loop_after_appendix_drop_out = None
 
     terminal_list, \
@@ -304,7 +303,7 @@ def _get_terminal_list(loop_map, EventHandler,
            run_time_counter_required_f
 
 @typed(CaMap=CountActionMap, L_subset=(None, NumberSet))
-def _get_loop_map(CaMap, SmList, IidLoopExit, L_subset):
+def _get_loop_map(event_handler, CaMap, SmList, IidLoopExit, L_subset):
     """A loop map tells about the behavior of the core loop. It tells what
     needs to happen as a consequence to an incoming character. Two options:
 
@@ -337,7 +336,7 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, L_subset):
     #                => connect to appendix state machines
     couple_list,      \
     appendix_sm_list, \
-    appendix_lcci_db  = parallel_state_machines.do(CaMap, SmList)
+    appendix_lcci_db  = parallel_state_machines.do(event_handler, CaMap, SmList)
 
     L_couple = NumberSet.from_union_of_iterable(
         lei.character_set for lei in couple_list

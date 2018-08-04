@@ -43,6 +43,7 @@ if "--hwut-info" in sys.argv:
     print "CHOICES: Plain, AppendixNoI, AppendixI, Split;"
 
 def test(NsCaList, SM_list=[]):
+    global dial_db
     Setup.buffer_encoding.source_set = NumberSet_All()
     ca_map        = CountActionMap.from_list(NsCaList)
     iid_loop_exit = dial.new_incidence_id()
@@ -50,9 +51,15 @@ def test(NsCaList, SM_list=[]):
     for sm in SM_list:
         sm.mark_state_origins()
 
+    class Pseudo(loop.LoopEventHandlers):
+        def __init__(self, TheDialDb):
+            self.dial_db = TheDialDb
+            self.column_number_per_code_unit = None
+
     loop_map,         \
     appendix_sm_list, \
-    lcci_db           = loop._get_loop_map(ca_map, 
+    lcci_db           = loop._get_loop_map(Pseudo(dial_db), 
+                                           ca_map, 
                                            SM_list, 
                                            iid_loop_exit, 
                                            NumberSet_All())

@@ -23,7 +23,7 @@ from   quex.constants  import E_CharacterCountType, \
 from   copy import copy
 
 @typed(CaMap=CountActionMap)
-def do(CaMap, SmList):
+def do(event_handler, CaMap, SmList):
     """Perform separation:
     
          Parallel state machine  ---->    first transition  
@@ -68,11 +68,19 @@ def do(CaMap, SmList):
         else:
             return AppendixSm.get_id()
 
+    def get_code(CA, AppendixSm):
+        if not AppendixSm.get_init_state().has_transitions():
+            # NO appendix after first transition. => jump to appendix terminal.
+            return event_handler.cmd_list_CA_GotoAppendixTerminal(CA, AppendixSm.get_id()) 
+        else:
+            return event_handler.cmd_list_CA_GotoAppendixDfa(CA, AppendixSm.get_id())
+
     loop_map = [
         LoopMapEntry(character_set, ca, 
                      IidCoupleTerminal   = dial.new_incidence_id(), 
-                     IidAppendixTerminal = appendix_sm.get_id(), 
-                     AppendixDfaId       = get_jump_dfa_id(appendix_sm)) 
+                     IidAppendixTerminal = None, 
+                     AppendixDfaId       = get_jump_dfa_id(appendix_sm),
+                     Code                = get_code(ca, appendix_sm)) 
         for character_set, ca, appendix_sm in first_vs_ca_and_appendix_sm
     ]
 

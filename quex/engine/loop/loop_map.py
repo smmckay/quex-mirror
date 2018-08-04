@@ -45,12 +45,14 @@ class LoopMapEntry:
     """
     def __init__(self, CharacterSet, TheCountAction, 
                  IidCoupleTerminal, IidAppendixTerminal,
-                 AppendixDfaId):
+                 AppendixDfaId, Code=None):
         self.character_set         = CharacterSet
         self.count_action          = TheCountAction
         self.iid_couple_terminal   = IidCoupleTerminal
         self.iid_appendix_terminal = IidAppendixTerminal # NEW
         self.appendix_sm_id        = AppendixDfaId
+
+        self.code = Code # NEW
 
     def __repr__(self):
         return "(%s, %s, %s, %s, %s)" % \
@@ -66,9 +68,10 @@ class LoopMap(list):
         self._assert_consistency()
 
     def _assert_consistency(self):
-        assert not any(lme is None                     for lme in self)
-        assert not any(lme.character_set       is None for lme in self)
-        assert not any(lme.iid_couple_terminal is None for lme in self)
+        assert not any(lme is None               for lme in self)
+        assert not any(lme.character_set is None for lme in self)
+        assert not any((lme.iid_couple_terminal is None) and (lme.code is None) 
+                       for lme in self)
 
         # Assert: Transition triggers do not intersect! 
         total = NumberSet()
@@ -115,6 +118,7 @@ class LoopEventHandlers:
         on_loop_entry,            \
         on_loop_reentry_pos,      \
         on_loop_exit_pos          = self.__prepare_positioning_at_loop_begin_and_exit()
+        
         on_before_reload_pos,     \
         on_after_reload_pos       = self.__prepare_positioning_before_and_after_reload() 
         on_before_reload_pos_apx, \
@@ -143,6 +147,11 @@ class LoopEventHandlers:
         self.on_after_reload_in_appendix  = OpList.from_iterable(on_after_reload_pos_apx)
 
         self.__loop_state_machine_id = None
+
+        self.__appendix_dfa_present_f = False
+
+    def appendix_dfa_present_f(self):
+        return self.__appendix_dfa_present_f
 
     def loop_state_machine_id_set(self, SmId):
         assert SmId is not None
@@ -274,6 +283,7 @@ class LoopEventHandlers:
         # Couple Terminal: transit to appendix state machine.
         # When the appendix drops out, the loop must continue where the
         # appendix has began => Set 'LoopRestartP' to current position.
+        self.__appendix_dfa_present_f = True
         cmd_list        = [Op.Assign(E_R.LoopRestartP, E_R.InputP)]
         jump_to_door_id = DoorID.state_machine_entry(AppendixDfaId, self.dial_db)
         return self._cmd_list_Frame(CA, cmd_list, jump_to_door_id)
@@ -306,7 +316,11 @@ class LoopEventHandlers:
                     (iii)a either re-enters the loop, or
                     (iii)b transits to an appendix state machine (couple terminal).
         """
-        if LEI.iid_appendix_terminal is not None:
+        if LEI.code is not None:
+            name = "<LOOP TERMINAL %s>" % LEI.iid_couple_terminal
+            code = LEI.code
+
+        elif LEI.iid_appendix_terminal is not None:
             name = "<COUPLE %s>" % LEI.iid_couple_terminal
             if LEI.appendix_sm_id is None:
                 code = self.cmd_list_CA_GotoAppendixTerminal(LEI.count_action, LEI.iid_appendix_terminal)
