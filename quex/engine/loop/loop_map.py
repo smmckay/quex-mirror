@@ -290,12 +290,15 @@ class LoopEventHandlers:
         return self._cmd_list_Frame(CA, cmd_list, jump_to_door_id)
 
     def cmd_list_CA_GotoLoopEntry(self, CA): 
-        return self._cmd_list_Frame(CA, [], self.Lazy_DoorIdLoop)
+        if not self.lexeme_end_check_f: 
+            return self._cmd_list_Frame(CA, [], self.Lazy_DoorIdLoop)
+        else:
+            return self._cmd_list_CA_LexemeEndCheck_GotoLoopEntry(CA) 
 
-    def cmd_list_CA_LexemeEndCheck_GotoLoopEntry(self, CA, DoorIdLoop): 
+    def _cmd_list_CA_LexemeEndCheck_GotoLoopEntry(self, CA): 
         # Check Terminal: check against lexeme end before re-entering loop.
         cmd_list = [
-            Op.GotoDoorIdIfInputPNotEqualPointer(DoorIdLoop, E_R.LexemeEnd)
+            Op.GotoDoorIdIfInputPNotEqualPointer(self.Lazy_DoorIdLoop, E_R.LexemeEnd)
         ]
         if     self.column_number_per_code_unit is not None \
            and CA is not None and CA.cc_type == E_CharacterCountType.COLUMN: 
@@ -328,12 +331,9 @@ class LoopEventHandlers:
             else:
                 code = self.cmd_list_CA_GotoAppendixDfa(LEI.count_action, LEI.appendix_sm_id) 
 
-        elif not self.lexeme_end_check_f: 
+        else: 
             name = "<LOOP %s>" % LEI.iid_couple_terminal
             code = self.cmd_list_CA_GotoLoopEntry(LEI.count_action) 
-        else:
-            name = "<LOOP %s>" % LEI.iid_couple_terminal
-            code = self.cmd_list_CA_LexemeEndCheck_GotoLoopEntry(LEI.count_action, DoorIdLoop) 
 
         code = [ self.replace_Lazy_DoorIdLoop(cmd, DoorIdLoop) for cmd in code ]
         return Terminal(CodeTerminal(Lng.COMMAND_LIST(code, self.dial_db)), name, 
@@ -342,10 +342,14 @@ class LoopEventHandlers:
 
     def replace_Lazy_DoorIdLoop(self, cmd, DoorIdLoop):
         GotoDoorIdCmdIdSet = (E_Op.GotoDoorId, E_Op.GotoDoorIdIfInputPNotEqualPointer)
-        if   cmd.id not in GotoDoorIdCmdIdSet:            return cmd
-        elif cmd.content.door_id != self.Lazy_DoorIdLoop: return cmd
-        else:                                             return Op.GotoDoorId(DoorIdLoop)
-
+        if   cmd.id == E_Op.GotoDoorId:
+            if cmd.content.door_id != self.Lazy_DoorIdLoop: return cmd
+            return Op.GotoDoorId(DoorIdLoop)
+        elif cmd.id == E_Op.GotoDoorIdIfInputPNotEqualPointer:
+            if cmd.content.door_id != self.Lazy_DoorIdLoop: return cmd
+            return Op.GotoDoorIdIfInputPNotEqualPointer(DoorIdLoop, cmd.content.pointer)
+        else:
+            return cmd
 
     def get_Terminal_from_mini_terminal(self, LCCI, mini_terminal):
         if LCCI is not None:

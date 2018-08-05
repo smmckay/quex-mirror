@@ -143,7 +143,7 @@ class DFA(object):
         return result
 
     @staticmethod
-    def from_IncidenceIdMap(IncidenceIdMap):
+    def from_IncidenceIdMap(IncidenceIdMap, DfaId=None):
         """Generates a state machine that transits to states accepting specific
         incidence ids. That is from a list of (NumberSet, IncidenceId) pairs
         a state machine as the following is generated:
@@ -165,7 +165,7 @@ class DFA(object):
             target_state.set_acceptance()
             target_state.mark_acceptance_id(IncidenceId)
 
-        sm = DFA()
+        sm = DFA(DfaId=DfaId)
         if IncidenceIdMap:
             for character_set, incidence_id in IncidenceIdMap:
                 add(sm, sm.init_state_index, character_set, incidence_id)

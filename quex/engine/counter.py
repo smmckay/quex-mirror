@@ -128,22 +128,6 @@ class CountAction(namedtuple("CountAction", ("cc_type", "value", "extra_value", 
     def __new__(self, CCType, Value, sr=None, ExtraValue=None):
         return super(CountAction, self).__new__(self, CCType, Value, ExtraValue, sr)
 
-    incidence_id_db = {}
-    @classmethod
-    def incidence_id_db_get(cls, CA):
-        """RETURNS: Unique incidence id for a given count action.
-
-        Same count actions will have the same incidence id. Initialize the 
-        'incidence_id_db' with 'CountAction.incidence_id_db.clear()' before 
-        generating a new set of count action incidence ids.
-        """
-        key = (CA.cc_type, CA.value)
-        incidence_id = CA.incidence_id_db.get(key)
-        if incidence_id is None:
-            incidence_id = dial.new_incidence_id()
-            CA.incidence_id_db[key] = incidence_id
-        return incidence_id
-
     def get_OpList(self, ColumnCountPerChunk):
         if ColumnCountPerChunk is None:
             db = count_operation_db_without_reference

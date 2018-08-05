@@ -50,7 +50,7 @@ class TransitionAction(object):
         assert InitOpList is None or isinstance(InitOpList, OpList), "%s: %s" % (InitOpList.__class__, InitOpList)
         self.door_id = None 
         if InitOpList is None: self._command_list = OpList() 
-        else:                       self._command_list = InitOpList
+        else:                  self._command_list = InitOpList
  
     @property
     def command_list(self): 
