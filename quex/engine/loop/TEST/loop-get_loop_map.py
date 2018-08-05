@@ -53,8 +53,9 @@ def test(NsCaList, SM_list=[]):
 
     class Pseudo(loop.LoopEventHandlers):
         def __init__(self, TheDialDb):
-            self.dial_db = TheDialDb
+            self.dial_db                     = TheDialDb
             self.column_number_per_code_unit = None
+            self.lexeme_end_check_f          = False
 
     loop_map,         \
     appendix_sm_list, \
@@ -163,10 +164,10 @@ def get_ca_list(L0, L1):
 if "Plain" in sys.argv:
     # No parallel state machines
     test([
-        (NumberSet.from_range(0,    0x10), CountAction(E_CharacterCountType.COLUMN,     0)),
-        (NumberSet.from_range(0x20, 0x30), CountAction(E_CharacterCountType.LINE,       1)),
-        (NumberSet.from_range(0x40, 0x50), CountAction(E_CharacterCountType.GRID,       2)),
-        (NumberSet.from_range(0x60, 0x70), CountAction(E_CharacterCountType.WHITESPACE, 3)),
+        (NumberSet.from_range(0,    0x10), CountAction(E_CharacterCountType.COLUMN, 0)),
+        (NumberSet.from_range(0x20, 0x30), CountAction(E_CharacterCountType.LINE,   1)),
+        (NumberSet.from_range(0x40, 0x50), CountAction(E_CharacterCountType.GRID,   2)),
+        (NumberSet.from_range(0x60, 0x70), CountAction(E_CharacterCountType.COLUMN, 3)),
     ])
 
 elif "AppendixNoI" in sys.argv:

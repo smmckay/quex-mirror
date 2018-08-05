@@ -355,7 +355,8 @@ def _get_loop_map(event_handler, CaMap, SmList, IidLoopExit, L_subset):
     )
     L_exit = L_loop.get_complement(Setup.buffer_encoding.source_set)
     if not L_exit.is_empty():
-        exit_list = [ LoopMapEntry(L_exit, None, IidLoopExit, None, None) ]
+        code = event_handler.cmd_list_CA_GotoAppendixTerminal(None, IidLoopExit)
+        exit_list = [ LoopMapEntry(L_exit, None, IidLoopExit, None, None, Code=code) ]
     else:
         exit_list = []
 
@@ -378,9 +379,11 @@ def _get_LoopMapEntry_list_plain(event_handler, CaMap, L_pure):
          [3] 'None' indicating: no appendix sm, no 'goto couple state'.
     """
     assert L_pure is not None
+
     return [
         LoopMapEntry(character_set, ca, 
-                     dial.new_incidence_id(), None, None)
+                     dial.new_incidence_id(), None, None,
+                     Code = event_handler.cmd_list_CA_GotoLoopEntry(ca))
         for character_set, ca in CaMap.iterable_in_sub_set(L_pure)
     ]
 

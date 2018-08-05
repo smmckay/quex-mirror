@@ -324,17 +324,6 @@ class LoopEventHandlers:
             name = "<LOOP TERMINAL %s>" % LEI.iid_couple_terminal
             code = LEI.code
 
-        elif LEI.iid_appendix_terminal is not None:
-            name = "<COUPLE %s>" % LEI.iid_couple_terminal
-            if LEI.appendix_sm_id is None:
-                code = self.cmd_list_CA_GotoAppendixTerminal(LEI.count_action, LEI.iid_appendix_terminal)
-            else:
-                code = self.cmd_list_CA_GotoAppendixDfa(LEI.count_action, LEI.appendix_sm_id) 
-
-        else: 
-            name = "<LOOP %s>" % LEI.iid_couple_terminal
-            code = self.cmd_list_CA_GotoLoopEntry(LEI.count_action) 
-
         code = [ self.replace_Lazy_DoorIdLoop(cmd, DoorIdLoop) for cmd in code ]
         return Terminal(CodeTerminal(Lng.COMMAND_LIST(code, self.dial_db)), name, 
                         IncidenceId=LEI.iid_couple_terminal,

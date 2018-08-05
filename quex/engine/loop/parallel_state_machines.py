@@ -206,45 +206,6 @@ def combine_appendix_sm_lists(FirstVsAppendixSmList):
     ]
     return first_vs_count_action_and_appendix_sm, appendix_sm_list
 
-def NEW_combine_intersecting_character_sets(FirstVsAppendixSmList):
-    """First character sets of appendix state machines may intersect.
-    Combine the DFAs of the intersection characters sets.
-
-    IMPORTANT: The acceptance ids of the matching state machines remain
-               intact!
-
-    RETURNS: list (character set, appendix_sm)
-
-    where the character sets in the list are disjoint.
-    """
-    # It is conceivable, that character sets of the first transition overlap.
-    # => combine those appendices.
-    result    = copy(FirstVsAppendixSmList)
-    work_list = copy(FirstVsAppendixSmList)
-    while work_list:
-        new_intersections = []
-        for i, entry_i in enumerate(work_list):
-            character_set_i, dfa_i = entry_i
-            for k, entry_k in enumerate(work_list[i+1:], start=i+1):
-                character_set_k, dfa_k = entry_k
-                if not character_set_k.has_intersection(character_set_i): continue
-                common = character_set_k.intersection(character_set_i)
-                new_intersections.append((common, union.do([dfa_i, dfa_k])))
-                # Union: check that acceptance ids remain intact!
-                character_set_k.subtract(common)
-                character_set_i.subtract(common)
-        result.extend(new_intersections)
-        # If a character set intersects with 'N+1' others, it must at
-        # least appear in the set of 'N' intersections.
-        # => Consider only 'new_intersections'.
-        work_list = new_intersections
-
-    result = [ 
-        entry for entry in result if not entry[0].is_empty() 
-    ]
-
-    return result
-
 def split_first_character_set_for_distinct_count_actions(CaMap, FirstVsAppendixSmList):
     """Each entry in 'FirstVsAppendixSmList' is split up into subsets 
     where the character set has the same count action.
@@ -287,69 +248,42 @@ def split_first_character_set_for_distinct_count_actions(CaMap, FirstVsAppendixS
             for character_set, ca in CaMap.iterable_in_sub_set(trigger_set)
     ]
 
-def NEW_get_LoopMap_and_appendix_sm_list(Distinct):
-    def _get_LoopMapEntry(dfa_list, CharacterSet, CA, AppendixSm):
-        if not AppendixSm.get_init_state().has_transitions():
-            # NO appendix after the first transition.
-            # Not 'None' => directly goto to appendix related terminal
-            acceptance_id_list    = AppendixSm.get_acceptance_id_list()
-            # Upon entry to the 'loop_map' generator it is ensured that no two
-            # DFAs match a common lexeme. => A DFA that matches a single 
-            # character set cannot consist of two combined DFAs.
-            assert len(acceptance_id_list) == 1
-            iid_appendix_terminal = acceptance_id_list[0]
-            appendix_dfa_id       = None
-        else:
-            # 'None' => Do not go directly to appendix terminal
-            iid_appendix_terminal = None 
-            appendix_dfa_id       = AppendixSm.get_id()
-            dfa_list.append(AppendixSm)
+def NEW_combine_intersecting_character_sets(FirstVsAppendixSmList):
+    """First character sets of appendix state machines may intersect.
+    Combine the DFAs of the intersection characters sets.
 
-        return LoopMapEntry(CharacterSet, CA, 
-                            IidCoupleTerminal   = dial.new_incidence_id(),
-                            IidAppendixTerminal = iid_appendix_terminal, 
-                            AppendixDfaId       = appendix_dfa_id,
-                            HasTransitionsF     = AppendixSm.get_init_state().has_transitions())
+    IMPORTANT: The acceptance ids of the matching state machines remain
+               intact!
 
-    appendix_dfa_list = []
-    loop_map = [
-        _get_LoopMapEntry(appendix_dfa_list, character_set, ca, appendix_sm)
-        for character_set, ca, appendix_sm in Distinct
-    ]
+    RETURNS: list (character set, appendix_sm)
 
-    return loop_map, appendix_dfa_list
-
-def NEW_cut_first_transition(sm):
-    """Cuts the first transition and leaves the remaining states in place. 
-    This solution is general(!) and it covers the case that there are 
-    transitions to the init state!
-    
-    EXAMPLE:
-        
-        .-- z -->(( 1 ))          z with: (( 1c ))
-      .'                   ---\
-    ( 0 )--- a -->( 2 )    ---/   a with: ( 2c )-- b ->( 0c )-- z -->(( 1c ))
-      \             /                       \           / 
-       '-<-- b ----'                         '-<- a ---'
-
-    where '0c', '1c', and '2c' are the cloned states of '0', '1', and '2'.
-
-    RETURNS: list of pairs: (trigger set, pruned state machine)
-             
-    trigger set = NumberSet that triggers on the initial state to
-                  the remaining state machine.
-
-    pruned state machine = pruned cloned version of this state machine
-                           consisting of states that come behind the 
-                           state which is reached by 'trigger set'.
-
-    ADAPTS:  Makes the init state's success state the new init state.
+    where the character sets in the list are disjoint.
     """
-    successor_db = sm.get_successor_db()
+    # It is conceivable, that character sets of the first transition overlap.
+    # => combine those appendices.
+    result    = copy(FirstVsAppendixSmList)
+    work_list = copy(FirstVsAppendixSmList)
+    while work_list:
+        new_intersections = []
+        for i, entry_i in enumerate(work_list):
+            character_set_i, dfa_i = entry_i
+            for k, entry_k in enumerate(work_list[i+1:], start=i+1):
+                character_set_k, dfa_k = entry_k
+                if not character_set_k.has_intersection(character_set_i): continue
+                common = character_set_k.intersection(character_set_i)
+                new_intersections.append((common, union.do([dfa_i, dfa_k])))
+                # Union: check that acceptance ids remain intact!
+                character_set_k.subtract(common)
+                character_set_i.subtract(common)
+        result.extend(new_intersections)
+        # If a character set intersects with 'N+1' others, it must at
+        # least appear in the set of 'N' intersections.
+        # => Consider only 'new_intersections'.
+        work_list = new_intersections
 
-    return [
-        (trigger_set, sm.clone_subset(target_si, 
-                                      list(successor_db[target_si]) + [target_si]))
-        for target_si, trigger_set in sm.iterable_init_state_transitions()
+    result = [ 
+        entry for entry in result if not entry[0].is_empty() 
     ]
-        
+
+    return result
+
