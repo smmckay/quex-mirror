@@ -312,7 +312,7 @@ class LoopEventHandlers:
         return self._cmd_list_Frame(CA, cmd_list, jump_to_door_id)
 
     @typed(LEI=LoopMapEntry)
-    def get_loop_terminal_code(self, LEI, DoorIdLoop, DoorIdLoopExit): 
+    def get_loop_terminal_code(self, LEI, DoorIdLoop): 
         """RETURNS: A loop terminal. 
 
         A terminal: (i)    Counts,
@@ -320,11 +320,8 @@ class LoopEventHandlers:
                     (iii)a either re-enters the loop, or
                     (iii)b transits to an appendix state machine (couple terminal).
         """
-        if LEI.code is not None:
-            name = "<LOOP TERMINAL %s>" % LEI.iid_couple_terminal
-            code = LEI.code
-
-        code = [ self.replace_Lazy_DoorIdLoop(cmd, DoorIdLoop) for cmd in code ]
+        name = "<LOOP TERMINAL %s>" % LEI.iid_couple_terminal
+        code = [ self.replace_Lazy_DoorIdLoop(cmd, DoorIdLoop) for cmd in LEI.code ]
         return Terminal(CodeTerminal(Lng.COMMAND_LIST(code, self.dial_db)), name, 
                         IncidenceId=LEI.iid_couple_terminal,
                         dial_db=self.dial_db)
