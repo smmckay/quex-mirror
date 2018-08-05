@@ -341,7 +341,8 @@ class LoopEventHandlers:
                         dial_db=self.dial_db)
 
     def replace_Lazy_DoorIdLoop(self, cmd, DoorIdLoop):
-        if   cmd.id              != E_Op.GotoDoorId:      return cmd
+        GotoDoorIdCmdIdSet = (E_Op.GotoDoorId, E_Op.GotoDoorIdIfInputPNotEqualPointer)
+        if   cmd.id not in GotoDoorIdCmdIdSet:            return cmd
         elif cmd.content.door_id != self.Lazy_DoorIdLoop: return cmd
         else:                                             return Op.GotoDoorId(DoorIdLoop)
 
