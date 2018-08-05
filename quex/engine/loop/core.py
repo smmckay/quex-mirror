@@ -346,7 +346,7 @@ def _get_loop_map(event_handler, CaMap, SmList, IidLoopExit, L_subset):
     #               => perform count action and loop.
     L_plain    = L.difference(L_couple)
     if L_subset is not None: L_plain.intersect_with(L_subset)
-    plain_list = _get_LoopMapEntry_list_plain(CaMap, L_plain)
+    plain_list = _get_LoopMapEntry_list_plain(event_handler, CaMap, L_plain)
 
     # 'L_exit': Transition to exit
     #           => remaining characters cause exit.
@@ -366,7 +366,7 @@ def _get_loop_map(event_handler, CaMap, SmList, IidLoopExit, L_subset):
     return result, appendix_sm_list, appendix_lcci_db
 
 @typed(CaMap=CountActionMap)
-def _get_LoopMapEntry_list_plain(CaMap, L_pure):
+def _get_LoopMapEntry_list_plain(event_handler, CaMap, L_pure):
     """RETURNS: list of LoopMapEntry-s.
 
     The list defines the loop behavior for characters which are not transits
@@ -378,9 +378,9 @@ def _get_LoopMapEntry_list_plain(CaMap, L_pure):
          [3] 'None' indicating: no appendix sm, no 'goto couple state'.
     """
     assert L_pure is not None
-    CountAction.incidence_id_db.clear()
     return [
-        LoopMapEntry(character_set, ca, CountAction.incidence_id_db_get(ca), None, None)
+        LoopMapEntry(character_set, ca, 
+                     dial.new_incidence_id(), None, None)
         for character_set, ca in CaMap.iterable_in_sub_set(L_pure)
     ]
 

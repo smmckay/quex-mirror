@@ -139,7 +139,7 @@ appendix_sm_id = 4711L
 
 if "loop" in sys.argv:
     loop_map = loop.LoopMap([
-        loop.LoopMapEntry(NS_A, CA_0, CountAction.incidence_id_db_get(CA_0), None, None),
+        loop.LoopMapEntry(NS_A, CA_0, dial.new_incidence_id(), None, None),
     ])
     column_n_per_code_unit = 5
 elif "appendix" in sys.argv:
@@ -154,7 +154,7 @@ elif "appendix-wot" in sys.argv:
     column_n_per_code_unit = 5
 elif "non-const" in sys.argv:
     loop_map = loop.LoopMap([
-        loop.LoopMapEntry(NS_A, CA_0, CountAction.incidence_id_db_get(CA_0), None, None),
+        loop.LoopMapEntry(NS_A, CA_0, dial.new_incidence_id(), None, None),
         loop.LoopMapEntry(NS_B, CA_1, dial.new_incidence_id(), appendix_sm_id, appendix_sm_id),
         loop.LoopMapEntry(NS_C, CA_2, dial.new_incidence_id(), appendix_sm_id, None),
     ])
