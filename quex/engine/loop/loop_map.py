@@ -290,7 +290,7 @@ class LoopEventHandlers:
         return self._cmd_list_Frame(CA, cmd_list, jump_to_door_id)
 
     def cmd_list_CA_GotoLoopEntry(self, CA, DoorIdLoop): 
-        return self._cmd_list_Frame(CA, [], DoorIdLoop)
+        return self._cmd_list_Frame(CA, [], self.Lazy_DoorIdLoop)
 
     def cmd_list_CA_LexemeEndCheck_GotoLoopEntry(self, CA, DoorIdLoop): 
         # Check Terminal: check against lexeme end before re-entering loop.
