@@ -11,7 +11,7 @@ from   quex.output.counter.pattern                        import map_SmLineColum
 
 from   quex.blackboard import setup as Setup, Lng
 from   quex.constants  import E_CharacterCountType, \
-                              E_R
+                              E_R, E_Op
 
 from   itertools   import chain
 
@@ -90,6 +90,7 @@ class LoopEventHandlers:
         .on_after_reload:              after buffer reload is performed.
         .on_after_reload_in_appendix:  as above ... in appendix state machine.
     """
+    Lazy_DoorIdLoop = ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)
     @typed(LexemeEndCheckF=bool, UserOnLoopExitDoorId=DoorID, dial_db=DialDB, 
            OnReloadFailureDoorId=(None, DoorID))
     def __init__(self, ColumnNPerCodeUnit, LexemeEndCheckF, 
@@ -334,9 +335,16 @@ class LoopEventHandlers:
             name = "<LOOP %s>" % LEI.iid_couple_terminal
             code = self.cmd_list_CA_LexemeEndCheck_GotoLoopEntry(LEI.count_action, DoorIdLoop) 
 
+        code = [ self.replace_Lazy_DoorIdLoop(cmd, DoorIdLoop) for cmd in code ]
         return Terminal(CodeTerminal(Lng.COMMAND_LIST(code, self.dial_db)), name, 
                         IncidenceId=LEI.iid_couple_terminal,
                         dial_db=self.dial_db)
+
+    def replace_Lazy_DoorIdLoop(self, cmd, DoorIdLoop):
+        if   cmd.id              != E_Op.GotoDoorId:      return cmd
+        elif cmd.content.door_id != self.Lazy_DoorIdLoop: return cmd
+        else:                                             return Op.GotoDoorId(DoorIdLoop)
+
 
     def get_Terminal_from_mini_terminal(self, LCCI, mini_terminal):
         if LCCI is not None:
