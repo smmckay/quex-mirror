@@ -289,7 +289,7 @@ class LoopEventHandlers:
         jump_to_door_id = DoorID.state_machine_entry(AppendixDfaId, self.dial_db)
         return self._cmd_list_Frame(CA, cmd_list, jump_to_door_id)
 
-    def cmd_list_CA_GotoLoopEntry(self, CA, DoorIdLoop): 
+    def cmd_list_CA_GotoLoopEntry(self, CA): 
         return self._cmd_list_Frame(CA, [], self.Lazy_DoorIdLoop)
 
     def cmd_list_CA_LexemeEndCheck_GotoLoopEntry(self, CA, DoorIdLoop): 
@@ -330,7 +330,7 @@ class LoopEventHandlers:
 
         elif not self.lexeme_end_check_f: 
             name = "<LOOP %s>" % LEI.iid_couple_terminal
-            code = self.cmd_list_CA_GotoLoopEntry(LEI.count_action, DoorIdLoop) 
+            code = self.cmd_list_CA_GotoLoopEntry(LEI.count_action) 
         else:
             name = "<LOOP %s>" % LEI.iid_couple_terminal
             code = self.cmd_list_CA_LexemeEndCheck_GotoLoopEntry(LEI.count_action, DoorIdLoop) 
