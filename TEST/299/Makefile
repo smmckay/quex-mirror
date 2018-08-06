@@ -22,7 +22,7 @@ Simple/Simple.cpp:
 		--language c++ \
 		--no-count 
 
-without: Simple/Simple.cpp ../lexer-simply.cpp 
+without: ../lexer-simply.cpp 
 	quex --cbm -i without-derivation.qx \
 		-o  Simple                                  \
 		--encoding utf8			                    \
@@ -30,9 +30,9 @@ without: Simple/Simple.cpp ../lexer-simply.cpp
 		--buffer-element-type 'unsigned char'       \
 		--language c++ \
 		--no-count 
-	$(LDCPP) -DQUEX_SETTING_BUFFER_SIZE_EXT=4 $^ -o $@ -ggdb # -DPRINT_LINE_COLUMN 
+	$(LDCPP) -DQUEX_SETTING_BUFFER_SIZE_EXT=4 $^ Simple/Simple.cpp -o $@ -ggdb # -DPRINT_LINE_COLUMN 
 
-with: Simple/Simple.cpp ../lexer-simply.cpp
+with: ../lexer-simply.cpp
 	quex --cbm -i with-derivation.qx \
 		-o  Simple                                  \
 		--encoding utf8			                    \
@@ -40,7 +40,7 @@ with: Simple/Simple.cpp ../lexer-simply.cpp
 		--buffer-element-type 'unsigned char'       \
 		--language c++ \
 		--no-count 
-	$(LDCPP) -DQUEX_SETTING_BUFFER_SIZE_EXT=4 $^ -o $@ -ggdb # -DPRINT_LINE_COLUMN 
+	$(LDCPP) -DQUEX_SETTING_BUFFER_SIZE_EXT=4 $^ Simple/Simple.cpp -o $@ -ggdb # -DPRINT_LINE_COLUMN 
 
 clean: 
 	rm -rf Simple* f lexer without with

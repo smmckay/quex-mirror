@@ -9,12 +9,12 @@ exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0060, oo]  6 None
-[0010, 001F]  19 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 0>
-[0020, 002F]  20 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 11>
-[0030, 003F]  22 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 18>
-[0040, 004F]  21 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None) <appendix: 12>
-[0050, 005F]  23 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=0, sr=None)
+[-oo, 000F] [0060, oo]  6 GotoDoorId: { door_id=DoorID(s=39, d=ACCEPTANCE),  } <appendix: DoorID(s=39, d=ACCEPTANCE)>
+[0010, 001F]  19 ColumnCountAdd: { value=0,  } <appendix: DoorID(s=0, d=STATE_MACHINE_ENTRY)>
+[0020, 002F]  20 ColumnCountAdd: { value=0,  } <appendix: DoorID(s=11, d=STATE_MACHINE_ENTRY)>
+[0030, 003F]  22 ColumnCountAdd: { value=0,  } <appendix: DoorID(s=18, d=STATE_MACHINE_ENTRY)>
+[0040, 004F]  21 ColumnCountAdd: { value=0,  } <appendix: DoorID(s=12, d=STATE_MACHINE_ENTRY)>
+[0050, 005F]  23 ColumnCountAdd: { value=0,  } <appendix: DoorID(s=38, d=ACCEPTANCE)>
 
 #_[ Appendix DFAs ]________________________________
 

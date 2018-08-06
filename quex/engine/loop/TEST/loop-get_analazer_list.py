@@ -52,6 +52,10 @@ import quex.output.languages.core                 as     languages
                                                          
 
 from   operator import attrgetter
+from   collections import namedtuple
+
+# Test Loop Map Entry
+TestLME = namedtuple("TestLME", ("character_set", "iid_couple_terminal", "appendix_sm_id"))
 
 if "--hwut-info" in sys.argv:
     print "Loop: Get All Analyzers."
@@ -63,13 +67,12 @@ Setup.language_db = languages.db["C++"]()
 Setup.buffer_setup("none", 1, "utf8") 
 
 def test(LoopMap, ColumnNPerCodeUnit):
-    global loop_map
     global dial_db
 
     Setup.buffer_encoding.source_set = NumberSet_All()
 
     # Generate sample state machines from what the loop map tells.
-    appendix_sm_list = _get_appendix_sm_list(loop_map)
+    appendix_sm_list = _get_appendix_sm_list(LoopMap)
 
     event_handler    = loop.LoopEventHandlers(ColumnNPerCodeUnit    = ColumnNPerCodeUnit,
                                               LexemeEndCheckF       = False, 
@@ -131,32 +134,28 @@ NS_A = NumberSet.from_range(0x600, 0x601) # UTF8: D8 80 => 216, 128
 NS_B = NumberSet.from_range(0x601, 0x602) # UTF8: D8 81 => 216, 129
 NS_C = NumberSet.from_range(0x640, 0x641) # UTF8: D9 80 => 217, 128
 
-CA_0 = CountAction(E_CharacterCountType.COLUMN, 10)
-CA_1 = CountAction(E_CharacterCountType.COLUMN, 20)
-CA_2 = CountAction(E_CharacterCountType.COLUMN, 40)
-
 appendix_sm_id = 4711L
 
 if "loop" in sys.argv:
     loop_map = loop.LoopMap([
-        loop.LoopMapEntry(NS_A, CA_0, dial.new_incidence_id(), None, None),
+        TestLME(NS_A, dial.new_incidence_id(), None),
     ])
     column_n_per_code_unit = 5
 elif "appendix" in sys.argv:
     loop_map = loop.LoopMap([
-        loop.LoopMapEntry(NS_A, CA_0, dial.new_incidence_id(), appendix_sm_id, appendix_sm_id),
+        TestLME(NS_A, dial.new_incidence_id(), appendix_sm_id), # appendix_sm_id
     ])
     column_n_per_code_unit = 5
 elif "appendix-wot" in sys.argv:
     loop_map = loop.LoopMap([
-        loop.LoopMapEntry(NS_A, CA_0, dial.new_incidence_id(), appendix_sm_id, None),
+        TestLME(NS_A, dial.new_incidence_id(), None),
     ])
     column_n_per_code_unit = 5
 elif "non-const" in sys.argv:
     loop_map = loop.LoopMap([
-        loop.LoopMapEntry(NS_A, CA_0, dial.new_incidence_id(), None, None),
-        loop.LoopMapEntry(NS_B, CA_1, dial.new_incidence_id(), appendix_sm_id, appendix_sm_id),
-        loop.LoopMapEntry(NS_C, CA_2, dial.new_incidence_id(), appendix_sm_id, None),
+        TestLME(NS_A, dial.new_incidence_id(), None),
+        TestLME(NS_B, dial.new_incidence_id(), appendix_sm_id), # appendix_sm_id
+        TestLME(NS_C, dial.new_incidence_id(), None),
     ])
     column_n_per_code_unit = None
 else:

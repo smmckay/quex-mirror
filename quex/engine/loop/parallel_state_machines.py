@@ -18,7 +18,8 @@ import quex.engine.misc.error                             as     error
 
 from   quex.blackboard import setup as Setup, Lng
 from   quex.constants  import E_CharacterCountType, \
-                              E_R
+                              E_R, \
+                              E_IncidenceIDs
 
 from   copy import copy
 
@@ -40,10 +41,23 @@ def do(event_handler, CaMap, SmList):
 
     first_vs_appendix_sm = split_first_transition(SmList)
 
+    def single_incidence_id(Dfa):
+        indicence_id_set = Dfa.acceptance_id_set()
+        if len(indicence_id_set) > 1:
+            error.log("internal error: state machine more than one acceptance in init state not allowed\n"
+                      "internal error: during loop generation (skip, indentation, or counter.")
+        elif len(indicence_id_set) == 1:
+            return indicence_id_set.pop()
+        elif Dfa.get_init_state().is_bad_lexatom_detector():
+            return E_IncidenceIDs.BAD_LEXATOM
+        else:
+            error.log("internal error: state machine without acceptance state not allowed\n"
+                      "internal error: during loop generation (skip, indentation, or counter.")
+
     # appendix_sm-s match with original incidence_ids 
     # => the count information is 'original'
     appendix_lcci_db = dict(
-        (appendix_sm.get_id(),
+        (single_incidence_id(appendix_sm),
          SmLineColumnCountInfo.from_DFA(CaMap, appendix_sm, False, Setup.buffer_encoding))
         for character_set, appendix_sm in first_vs_appendix_sm
         if appendix_sm.get_init_state().has_transitions()
@@ -52,34 +66,24 @@ def do(event_handler, CaMap, SmList):
     disjoint_first_vs_appendix_sm = \
         split_first_character_set_for_distinct_count_actions(CaMap, 
                                                              first_vs_appendix_sm)
-    ## print "#disjoint:", sorted(disjoint_first_vs_appendix_sm, key=lambda x: x[0].minimum())
 
     # appendix_sm-s may be combined, but their sub-graphs still match and 
     # notify the original incidence ids.
     first_vs_appendix_sm_list    = combine_intersecting_character_sets(disjoint_first_vs_appendix_sm)
-    ## print "#combined1:", sorted(first_vs_appendix_sm_list, key=lambda x: x[0].minimum())
+
     first_vs_ca_and_appendix_sm, \
     appendix_sm_list             = combine_appendix_sm_lists(first_vs_appendix_sm_list)
-
-    def get_jump_dfa_id(AppendixSm):
-        if not AppendixSm.get_init_state().has_transitions():
-            # NO appendix after first transition. => jump to appendix terminal.
-            return None
-        else:
-            return AppendixSm.get_id()
 
     def get_code(CA, AppendixSm):
         if not AppendixSm.get_init_state().has_transitions():
             # NO appendix after first transition. => jump to appendix terminal.
-            return event_handler.cmd_list_CA_GotoAppendixTerminal(CA, AppendixSm.get_id()) 
+            return event_handler.cmd_list_CA_GotoAppendixTerminal(CA, single_incidence_id(AppendixSm)) 
         else:
             return event_handler.cmd_list_CA_GotoAppendixDfa(CA, AppendixSm.get_id())
 
     loop_map = [
-        LoopMapEntry(character_set, ca, 
+        LoopMapEntry(character_set, 
                      IidCoupleTerminal   = dial.new_incidence_id(), 
-                     IidAppendixTerminal = None, 
-                     AppendixDfaId       = get_jump_dfa_id(appendix_sm),
                      Code                = get_code(ca, appendix_sm)) 
         for character_set, ca, appendix_sm in first_vs_ca_and_appendix_sm
     ]
@@ -151,8 +155,8 @@ def split_first_transition(SmList):
             # Every appendix DFA gets its own 'id'.
             # HOWEVER: Multiple appendix DFAs might match to same 'acceptance id',
             #          => Such DFAs transit to same terminal upon acceptance.
-            ## appendix_sm.set_id(index.get_state_machine_id())
-            ## appendix_sm.mark_state_origins(sm.get_id())
+            ##appendix_sm.mark_state_origins(sm.get_id())
+            ##appendix_sm.set_id(index.get_state_machine_id())
             result.append((first_set, appendix_sm))
     return result
 

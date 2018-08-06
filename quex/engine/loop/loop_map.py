@@ -38,28 +38,20 @@ class MiniTerminalCmd(MiniTerminal):
 
 class LoopMapEntry:
     """
-         character set <---> (incidence id of couple terminal, 
-                              count action for character set,
-                              id of appendix DFA (None if none existent),
-                              incidence id of terminal of appendix)
+       character set --> * Terminal Iid, that implements the reaction on character set.
+                         * Code that is to be implemented in that terminal
+                         * (auxiliary: countin action for 'character set')
     """
-    def __init__(self, CharacterSet, TheCountAction, 
-                 IidCoupleTerminal, IidAppendixTerminal,
-                 AppendixDfaId, Code=None):
-        self.character_set         = CharacterSet
-        self.count_action          = TheCountAction
-        self.iid_couple_terminal   = IidCoupleTerminal
-        self.iid_appendix_terminal = IidAppendixTerminal # NEW
-        self.appendix_sm_id        = AppendixDfaId
-
-        self.code = Code # NEW
+    def __init__(self, CharacterSet, IidCoupleTerminal, Code=None, CA=None):
+        self.character_set       = CharacterSet
+        self.iid_couple_terminal = IidCoupleTerminal
+        self.code                = Code # NEW
+        #
+        self.aux_count_action    = CA  # Useful when loop map is used 'outside', so that
+        #                              # count action does not have to be determined twice.
 
     def __repr__(self):
-        return "(%s, %s, %s, %s, %s)" % \
-               (self.character_set, self.count_action, 
-                self.iid_couple_terminal, 
-                self.appendix_sm_id,
-                self.appendix_sm_id is not None)
+        return "<todo>"
 
 class LoopMap(list):
     def __init__(self, *LoopMapEntryLists):

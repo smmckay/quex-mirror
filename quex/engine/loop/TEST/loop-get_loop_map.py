@@ -28,7 +28,7 @@ from   quex.engine.misc.interval_handling         import NumberSet, \
 import quex.engine.analyzer.door_id_address_label as     dial
 from   quex.engine.analyzer.door_id_address_label import DialDB
 import quex.engine.loop.core                      as     loop
-from   quex.constants                             import E_CharacterCountType
+from   quex.constants                             import E_CharacterCountType, E_Op
 from   quex.blackboard                            import setup as Setup
 
 NS_A = NumberSet.from_range(ord('A'), ord('A') + 1)
@@ -86,26 +86,14 @@ def general_checks(loop_map, appendix_sm_list):
     print "count actions do not appear more than once",
     count_action_couple_set = set()
     count_action_plain_set  = set()
-    exit_exists_f           = False
     appendix_sm_id_set      = set()
-    for lei in loop_map:
-        if lei.count_action is None: 
-            assert lei.appendix_sm_id is None
-            exit_exists_f = True
-        elif lei.appendix_sm_id is None:
-            assert lei.iid_couple_terminal not in count_action_plain_set
-            count_action_plain_set.add(lei.iid_couple_terminal)
-        else:
-            assert lei.iid_couple_terminal not in count_action_couple_set
-            count_action_couple_set.add(lei.iid_couple_terminal)
-            appendix_sm_id_set.add(lei.appendix_sm_id)
     print "[ok]"
 
-    if "Split" in sys.argv or "Plain" in sys.argv:
-        list_id_set = set(sm.get_id() for sm in appendix_sm_list)
-        assert appendix_sm_id_set == list_id_set
-        print "appendix sm-ids are the same in loop map and sm list: [ok]"
-    print "exit character set exits: [%s]" % exit_exists_f
+    ## if "Split" in sys.argv or "Plain" in sys.argv:
+    ##     list_id_set = set(sm.get_id() for sm in appendix_sm_list)
+    ##     assert appendix_sm_id_set == list_id_set
+    ##     print "appendix sm-ids are the same in loop map and sm list: [ok]"
+    print "exit character set exits: [%s]" % any(lei.aux_count_action is None for lei in loop_map)
 
     print
 
@@ -113,9 +101,9 @@ def print_this(loop_map, appendix_sm_list):
     print "#_[ Print ]___________________________________________________"
     print
     for lei in sorted(loop_map, key=lambda x: x.character_set.minimum()):
-        print lei.character_set.get_string(Option="hex"), lei.iid_couple_terminal, lei.count_action,
-        if lei.appendix_sm_id is None: print; continue
-        print "<appendix: %s>" % lei.appendix_sm_id
+        print lei.character_set.get_string(Option="hex"), lei.iid_couple_terminal, lei.code[0],
+        if lei.code[0].id == E_Op.GotoDoorId is None: print; continue
+        print "<appendix: %s>" % repr(lei.code[-1].content.door_id)
 
     if not appendix_sm_list: return
 

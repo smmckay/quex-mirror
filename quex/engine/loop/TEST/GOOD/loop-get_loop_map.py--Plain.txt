@@ -5,13 +5,11 @@
 
 character sets do not intersect [ok]
 count actions do not appear more than once [ok]
-appendix sm-ids are the same in loop map and sm list: [ok]
 exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
-
-[-oo, -001] [0010, 001F] [0030, 003F] [0050, 005F] [0070, oo]  0 None
-[0000, 000F]  2 CountAction(cc_type=COLUMN, value=0, extra_value=None, sr=None)
-[0020, 002F]  3 CountAction(cc_type=LINE, value=1, extra_value=None, sr=None)
-[0040, 004F]  4 CountAction(cc_type=GRID, value=2, extra_value=None, sr=None)
-[0060, 006F]  5 CountAction(cc_type=COLUMN, value=3, extra_value=None, sr=None)
+[-oo, -001] [0010, 001F] [0030, 003F] [0050, 005F] [0070, oo]  0 GotoDoorId: { door_id=DoorID(s=1, d=ACCEPTANCE),  } <appendix: DoorID(s=1, d=ACCEPTANCE)>
+[0000, 000F]  2 ColumnCountAdd: { value=0,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
+[0020, 002F]  3 LineCountAdd: { value=1,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
+[0040, 004F]  4 ColumnCountGridAdd: { grid_size=2,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
+[0060, 006F]  5 ColumnCountAdd: { value=3,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>

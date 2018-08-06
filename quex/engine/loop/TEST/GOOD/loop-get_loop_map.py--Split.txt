@@ -5,26 +5,26 @@
 
 character sets do not intersect [ok]
 count actions do not appear more than once [ok]
-appendix sm-ids are the same in loop map and sm list: [ok]
 exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
-
-[-oo, 000F] [0050, oo]  2 None
-[0010, 0019]  7 CountAction(cc_type=COLUMN, value=1, extra_value=None, sr=None)
-[001A, 001F]  3 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=1, sr=None) <appendix: 0>
-[0020, 002F]  4 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=2, sr=None) <appendix: 0>
-[0030, 003F]  5 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=3, sr=None) <appendix: 0>
-[0040, 004A]  6 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, extra_value=4, sr=None) <appendix: 0>
-[004B, 004F]  8 CountAction(cc_type=COLUMN, value=4, extra_value=None, sr=None)
+[-oo, 000F] [0050, oo]  2 GotoDoorId: { door_id=DoorID(s=5, d=ACCEPTANCE),  } <appendix: DoorID(s=5, d=ACCEPTANCE)>
+[0010, 0019]  7 ColumnCountAdd: { value=1,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
+[001A, 001F]  3 ColumnCountAdd: { value=1,  } <appendix: DoorID(s=0, d=STATE_MACHINE_ENTRY)>
+[0020, 002F]  4 ColumnCountAdd: { value=2,  } <appendix: DoorID(s=0, d=STATE_MACHINE_ENTRY)>
+[0030, 003F]  5 ColumnCountAdd: { value=3,  } <appendix: DoorID(s=0, d=STATE_MACHINE_ENTRY)>
+[0040, 004A]  6 ColumnCountAdd: { value=4,  } <appendix: DoorID(s=0, d=STATE_MACHINE_ENTRY)>
+[004B, 004F]  8 ColumnCountAdd: { value=4,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
 
 #_[ Appendix DFAs ]________________________________
-
 IncidenceId: 0
 init-state = 0L
 00000 
+    
      == 'A' ==> 00001
     
+
+
 00001 A(0)
     
 

@@ -412,7 +412,7 @@ class PPT_List(list):
                                                     PatternString="<skip>",
                                                     Sr=aux_source_reference)
             # There is no reference pointer => Add directly
-            count_code = lei.count_action.get_OpList(None)
+            count_code = lei.aux_count_action.get_OpList(None)
             code       = Lng.COMMAND_LIST(count_code + goto_code, 
                                           self.terminal_factory.dial_db)
             terminal   = Terminal(CodeTerminal(code), "ENTER SKIP:", 
