@@ -14,6 +14,7 @@ from   quex.engine.counter                                import CountAction, \
                                                                  count_operation_db_with_reference, \
                                                                  count_operation_db_without_reference
 from   quex.engine.misc.tools                             import typed
+from   quex.engine.misc.interval_handling                 import NumberSet
 import quex.engine.misc.error                             as     error
 
 from   quex.blackboard import setup as Setup, Lng
@@ -63,7 +64,8 @@ def do(event_handler, CaMap, SmList):
         if appendix_sm.get_init_state().has_transitions()
     )
 
-    disjoint_first_vs_appendix_sm = \
+    disjoint_first_vs_appendix_sm,       \
+    bad_lexatom_detector_character_set = \
         split_first_character_set_for_distinct_count_actions(CaMap, 
                                                              first_vs_appendix_sm)
 
@@ -87,6 +89,10 @@ def do(event_handler, CaMap, SmList):
                      Code                = get_code(ca, appendix_sm)) 
         for character_set, ca, appendix_sm in first_vs_ca_and_appendix_sm
     ]
+    loop_map.append(
+        LoopMapEntry(bad_lexatom_detector_character_set,
+                     IidCoupleTerminal = E_IncidenceIDs.BAD_LEXATOM)
+    )
 
     return loop_map, appendix_sm_list, appendix_lcci_db
 
@@ -246,11 +252,23 @@ def split_first_character_set_for_distinct_count_actions(CaMap, FirstVsAppendixS
         else:
             return CA
 
-    return [
+    result = [
         (character_set, prepare_count_action(ca), appendix_sm)
         for trigger_set, appendix_sm in FirstVsAppendixSmList
             for character_set, ca in CaMap.iterable_in_sub_set(trigger_set)
     ]
+
+    # SPECIAL CASE: The pruned appendix state machine solely exists of
+    #               a single state that notifies about 'BAD LEXATOM'.
+    # Such state machines must be filtered out. The character set that 
+    # triggers a transition is treated later with 'GotoTerminal(IidBadLexatom)'.
+    bad_lexatom_detector_character_set = NumberSet.from_union_of_iterable(
+        x[0] for x in result if     x[2].is_plain_bad_lexatom_detector()
+    )
+    result = [ 
+        x    for x in result if not x[2].is_plain_bad_lexatom_detector() 
+    ]
+    return result, bad_lexatom_detector_character_set
 
 def NEW_combine_intersecting_character_sets(FirstVsAppendixSmList):
     """First character sets of appendix state machines may intersect.

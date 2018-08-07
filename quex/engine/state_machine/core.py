@@ -366,6 +366,13 @@ class DFA(object):
             if state.is_acceptance() 
         ))
 
+    def is_plain_bad_lexatom_detector(self):
+        init_state = self.get_init_state()
+        if       init_state is None:                   return False
+        if       init_state.has_transitions():         return False
+        elif not init_state.is_bad_lexatom_detector(): return False
+        else:                                          return True
+
     def get_bad_lexatom_detector_state_index_list(self):
         """At the time of this writing, BAD_LEXATOMs are implemented as states 
         accepting 'BAD_LEXATOM' and performing a transition upon drop-out.

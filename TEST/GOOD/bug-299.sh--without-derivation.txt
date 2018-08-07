@@ -1,0 +1,10 @@
+without-derivation.qx:5:warning: Detected implicit token identifier definitions. Proposal:
+without-derivation.qx:5:warning:    token {
+without-derivation.qx:5:warning:      DECLIT;
+without-derivation.qx:6:warning:      NEWLINE;
+without-derivation.qx:7:warning:      FAILURE_THIS_TOKEN_ID_SHOULD_NEVER_OCCUR;
+without-derivation.qx:7:warning:    }
+## An Assert-Abortion might be an intended element of the experiment.
+NEWLINE '\n'
+<TERMINATION>
+VALGRIND:   All heap blocks were freed -- no leaks are possible

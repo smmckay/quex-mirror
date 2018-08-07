@@ -312,6 +312,7 @@ class LoopEventHandlers:
                     (iii)a either re-enters the loop, or
                     (iii)b transits to an appendix state machine (couple terminal).
         """
+        if LEI.code is None: return None
         name = "<LOOP TERMINAL %s>" % LEI.iid_couple_terminal
         code = [ self.replace_Lazy_DoorIdLoop(cmd, DoorIdLoop) for cmd in LEI.code ]
         return Terminal(CodeTerminal(Lng.COMMAND_LIST(code, self.dial_db)), name, 

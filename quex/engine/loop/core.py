@@ -459,9 +459,9 @@ def _get_terminal_list_for_loop(loop_map, EventHandler, IidLoopAfterAppendixDrop
         if   lei.iid_couple_terminal in done:        continue
         elif lei.iid_couple_terminal == IidLoopExit: continue
         done.add(lei.iid_couple_terminal)
-        result.append(
-            EventHandler.get_loop_terminal_code(lei, DoorIdLoop)
-        )
+        terminal = EventHandler.get_loop_terminal_code(lei, DoorIdLoop)
+        if terminal is None:                         continue 
+        result.append(terminal) 
 
     # Terminal: Re-enter Loop
     if IidLoopAfterAppendixDropOut is not None:
