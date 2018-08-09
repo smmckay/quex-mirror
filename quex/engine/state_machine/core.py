@@ -246,8 +246,7 @@ class DFA(object):
             correspondance_db[si]: self.states[si].clone(correspondance_db)
             for si in StateSiSet
         }
-
-
+        
         return result
 
     def get_id(self):

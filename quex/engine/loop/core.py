@@ -366,6 +366,9 @@ def _get_loop_map(event_handler, CaMap, SmList, IidLoopExit, L_subset):
                      plain_list,  # --> iterate to loop start
                      exit_list)   # --> exit loop
 
+    for lme in result:
+        print "#cs,iid:", lme.character_set, lme.iid_couple_terminal
+
     return result, appendix_sm_list, appendix_lcci_db
 
 @typed(CaMap=CountActionMap)

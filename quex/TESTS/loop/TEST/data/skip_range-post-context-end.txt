@@ -1,0 +1,4 @@
+A[hello world]]*B[hello world]]**SC[hello world]]*D[hello world]]**SE
+F [hello world]]*G  [hello world]]**SH[hello world]]*    I
+[hello world]]**
+SJ

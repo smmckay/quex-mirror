@@ -1243,14 +1243,35 @@ quex/TESTS/indentation_count/TEST                                    <no date>
                                                                                
 quex/TESTS/loop/TEST                                                 <no date>
 -------------------------------------------------------------------------------
- * skip_nested_range
-        skip_nested_range.exe ........................................[OK]
- * skip_range
-        skip_range.exe ...............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+ * 
+        dummy.qx .......................................................[]
+ * 
+        wild_mixture.qx ....................................[NO GOOD FILE]
+
+ * skip-nested-range:
+
+    Concurrent regular expressions
+        skip_nested_range.qx multi-length-end ........................[OK]
+                             multiple ................................[OK]
+                             post-context-end ........................[OK]
+                             post-context-end-2 ......................[OK]
+                             whitespace ..............................[OK]
+
+ * skip-range:
+
+    Concurrent regular expressions
+        skip_range.qx multi-length-end ...............................[OK]
+                      multiple .......................................[OK]
+                      post-context-end ...............................[OK]
+                      post-context-end-2 .............................[OK]
+                      whitespace .....................................[OK]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] dummy.qx
+    [FAIL] wild_mixture.qx
 ===============================================================================
                                                                                
                                Match Precedence                                
@@ -3408,6 +3429,7 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
     [NO GOOD FILE] on_bad_lexatom-utf8.qx _ bad-utf8-4th
+    [NO GOOD FILE] wild_mixture.qx
     [NO GOOD FILE] no-meaningless-macro-definitions.sh
 ===============================================================================
 
@@ -3429,7 +3451,7 @@ SUMMARY:
         1  32    [FAIL] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
-           2       [OK] ........../loop/TEST                                          
+        2  12    [FAIL] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
            33      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
@@ -3476,11 +3498,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____   _____           
-    |  ___|_ _(_) |___     |___ \ |___ /     __  __
-    | |_ / _` | | / __|      __) |  |_ \     \ \/ /
-    |  _| (_| | | \__ \     / __/  ___) |     >  < 
-    |_|  \__,_|_|_|___/    |_____||____/     /_/\_\
-                                                                   (1718 tests)
+     _____     _ _          ____   ____             
+    |  ___|_ _(_) |___     |___ \ | ___|      __  __
+    | |_ / _` | | / __|      __) ||___ \      \ \/ /
+    |  _| (_| | | \__ \     / __/  ___) |      >  < 
+    |_|  \__,_|_|_|___/    |_____||____/      /_/\_\
+                                                                   (1728 tests)
 
 ===============================================================================

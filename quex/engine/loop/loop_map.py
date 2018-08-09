@@ -14,6 +14,7 @@ from   quex.constants  import E_CharacterCountType, \
                               E_R, E_Op
 
 from   itertools   import chain
+from   copy        import copy
 
 class MiniTerminal(object):
     __slots__ = ("__code", "name", "incidence_id")
@@ -260,13 +261,12 @@ class LoopEventHandlers:
         return before, after
 
     def _cmd_list_Frame(self, TheCountAction, CmdList, JumpToDoorId):
+        cmd_list = []
         if TheCountAction is not None:
-            code = TheCountAction.get_OpList(self.column_number_per_code_unit) 
-        else:
-            code = []
-        code.extend(CmdList)
-        code.append(Op.GotoDoorId(JumpToDoorId))
-        return code
+            cmd_list.extend(TheCountAction.get_OpList(self.column_number_per_code_unit))
+        cmd_list.extend(CmdList)
+        cmd_list.append(Op.GotoDoorId(JumpToDoorId))
+        return cmd_list
 
     def cmd_list_CA_GotoAppendixTerminal(self, CA, IidAppendixTerminal): 
         jump_to_door_id = DoorID.incidence(IidAppendixTerminal, self.dial_db)
@@ -277,7 +277,7 @@ class LoopEventHandlers:
         # When the appendix drops out, the loop must continue where the
         # appendix has began => Set 'LoopRestartP' to current position.
         self.__appendix_dfa_present_f = True
-        cmd_list        = [Op.Assign(E_R.LoopRestartP, E_R.InputP)]
+        cmd_list        = [ Op.Assign(E_R.LoopRestartP, E_R.InputP) ]
         jump_to_door_id = DoorID.state_machine_entry(AppendixDfaId, self.dial_db)
         return self._cmd_list_Frame(CA, cmd_list, jump_to_door_id)
 

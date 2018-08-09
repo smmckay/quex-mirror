@@ -1,0 +1,15 @@
+,------------------------------------------------------------------------------------
+| [START]
+LETTER 'A'
+LETTER 'B'
+LETTER 'C'
+LETTER 'D'
+LETTER 'E'
+LETTER 'F'
+LETTER 'G'
+LETTER 'H'
+LETTER 'I'
+LETTER 'J'
+<TERMINATION> ''
+| [END] number of token = 11
+`------------------------------------------------------------------------------------

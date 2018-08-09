@@ -1,3 +1,6 @@
 Testing general patterns for 'loopers'
 ---------------------------------------
-*.exe
+bash ./executer.sh *.qx 
+
+--not *.txt *.exe
+--not executer.sh

@@ -2,6 +2,7 @@ from   quex.engine.loop.loop_map                          import MiniTerminal, \
                                                                  LoopMapEntry, \
                                                                  LoopMap, \
                                                                  LoopEventHandlers
+from   quex.engine.operations.operation_list              import Op
 import quex.engine.analyzer.door_id_address_label         as     dial
 import quex.engine.state_machine.construction.combination as     combination
 import quex.engine.state_machine.index                    as     index
@@ -9,6 +10,7 @@ import quex.engine.state_machine.check.identity           as     identity
 import quex.engine.state_machine.algebra.intersection     as     intersection
 import quex.engine.state_machine.algebra.union            as     union
 from   quex.engine.state_machine.character_counter        import SmLineColumnCountInfo
+from   quex.engine.state_machine.state.single_entry       import SeStoreInputPosition
 from   quex.engine.counter                                import CountAction, \
                                                                  CountActionMap, \
                                                                  count_operation_db_with_reference, \
@@ -77,9 +79,16 @@ def do(event_handler, CaMap, SmList):
     appendix_sm_list             = combine_appendix_sm_lists(first_vs_appendix_sm_list)
 
     def get_code(CA, AppendixSm):
-        if not AppendixSm.get_init_state().has_transitions():
+        init_state = AppendixSm.get_init_state()
+
+        if init_state.input_position_store_f():
+            error.log("skip/skip_range/indentation/counter implementation.\n"
+                      "Inadmissible post context after first character.\n"
+                      "(This should have been detected during the parsing process)")
+
+        if not init_state.has_transitions():
             # NO appendix after first transition. => jump to appendix terminal.
-            return event_handler.cmd_list_CA_GotoAppendixTerminal(CA, single_incidence_id(AppendixSm)) 
+            return event_handler.cmd_list_CA_GotoAppendixTerminal(CA, single_incidence_id(AppendixSm))
         else:
             return event_handler.cmd_list_CA_GotoAppendixDfa(CA, AppendixSm.get_id())
 

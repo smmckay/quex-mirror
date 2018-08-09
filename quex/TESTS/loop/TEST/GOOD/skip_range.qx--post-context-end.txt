@@ -1,0 +1,27 @@
+,------------------------------------------------------------------------------------
+| [START]
+LETTER 'A'
+STAR ''
+LETTER 'B'
+STAR ''
+STAR ''
+LETTER 'SC'
+STAR ''
+LETTER 'D'
+STAR ''
+STAR ''
+LETTER 'SE'
+LETTER 'F'
+STAR ''
+LETTER 'G'
+STAR ''
+STAR ''
+LETTER 'SH'
+STAR ''
+LETTER 'I'
+STAR ''
+STAR ''
+LETTER 'SJ'
+<TERMINATION> ''
+| [END] number of token = 23
+`------------------------------------------------------------------------------------

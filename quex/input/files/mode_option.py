@@ -377,6 +377,15 @@ def __parse_skip_option(fh, new_mode, identifier):
     pattern.set_pattern_string("<skip>")
     return pattern, trigger_set
 
+def _assert_addmissible_post_context_for_loop(name, pattern, fh):
+    if not pattern.has_post_context(): 
+        return
+    elif all(not pattern.sm.states[target].is_acceptance()
+             for target in pattern.sm.get_init_state().target_map.get_target_state_index_list()):
+        return
+    error.log("In '%s' a post context that starts " % name
+              + "after a single character is inadmissible.\n", fh)
+
 def __parse_range_skipper_option(fh, identifier, new_mode):
     """A non-nesting skipper can contain a full fledged regular expression as opener,
     since it only effects the trigger. Not so the nested range skipper-see below.
@@ -390,6 +399,10 @@ def __parse_range_skipper_option(fh, identifier, new_mode):
     skip_whitespace(fh)
     closer_pattern = regular_expression.parse_non_precontexted_pattern(fh, identifier, ">",
                                                                        AllowNothingIsFineF=True)
+    _assert_addmissible_post_context_for_loop(identifier, closer_pattern, fh)
+    if identifier == "skip_nested_range":
+        _assert_addmissible_post_context_for_loop(identifier, opener_pattern, fh)
+
     opener_pattern.set_pattern_string("<%s open>" % identifier)
     closer_pattern.set_pattern_string("<%s close>" % identifier)
 
