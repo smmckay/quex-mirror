@@ -1243,35 +1243,51 @@ quex/TESTS/indentation_count/TEST                                    <no date>
                                                                                
 quex/TESTS/loop/TEST                                                 <no date>
 -------------------------------------------------------------------------------
- * 
-        dummy.qx .......................................................[]
- * 
-        wild_mixture.qx ....................................[NO GOOD FILE]
+
+ * Wild:
+
+    Deliberately complicated case of loop development
+        wild.qx 0 ....................................................[OK]
 
  * skip-nested-range:
 
     Concurrent regular expressions
-        skip_nested_range.qx multi-length-end ........................[OK]
+        skip_nested_range.qx multi-length-end ......................[FAIL]
                              multiple ................................[OK]
-                             post-context-end ........................[OK]
-                             post-context-end-2 ......................[OK]
+                             post-context-end ......................[FAIL]
+                             post-context-end-2 ....................[FAIL]
                              whitespace ..............................[OK]
 
  * skip-range:
 
     Concurrent regular expressions
-        skip_range.qx multi-length-end ...............................[OK]
+        dummy.qx multi-length-end ..........................[NO GOOD FILE]
+                 multiple ..................................[NO GOOD FILE]
+                 post-context-end ..........................[NO GOOD FILE]
+                 post-context-end-2 ........................[NO GOOD FILE]
+                 whitespace ................................[NO GOOD FILE]
+    Concurrent regular expressions
+        skip_range.qx multi-length-end .............................[FAIL]
                       multiple .......................................[OK]
-                      post-context-end ...............................[OK]
-                      post-context-end-2 .............................[OK]
+                      post-context-end .............................[FAIL]
+                      post-context-end-2 ...........................[FAIL]
                       whitespace .....................................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] dummy.qx
-    [FAIL] wild_mixture.qx
+    [FAIL] skip_nested_range.qx _ multi-length-end
+                              \__ post-context-end
+                              \__ post-context-end-2
+    [FAIL] dummy.qx _ multi-length-end
+                  \__ multiple
+                  \__ post-context-end
+                  \__ post-context-end-2
+                  \__ whitespace
+    [FAIL] skip_range.qx _ multi-length-end
+                       \__ post-context-end
+                       \__ post-context-end-2
 ===============================================================================
                                                                                
                                Match Precedence                                
@@ -3429,7 +3445,11 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
     [NO GOOD FILE] on_bad_lexatom-utf8.qx _ bad-utf8-4th
-    [NO GOOD FILE] wild_mixture.qx
+    [NO GOOD FILE] dummy.qx _ multi-length-end
+                          \__ multiple
+                          \__ post-context-end
+                          \__ post-context-end-2
+                          \__ whitespace
     [NO GOOD FILE] no-meaningless-macro-definitions.sh
 ===============================================================================
 
@@ -3451,7 +3471,7 @@ SUMMARY:
         1  32    [FAIL] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
-        2  12    [FAIL] ........../loop/TEST                                          
+       11  16    [FAIL] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
            33      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
@@ -3498,11 +3518,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____   ____             
-    |  ___|_ _(_) |___     |___ \ | ___|      __  __
-    | |_ / _` | | / __|      __) ||___ \      \ \/ /
-    |  _| (_| | | \__ \     / __/  ___) |      >  < 
-    |_|  \__,_|_|_|___/    |_____||____/      /_/\_\
-                                                                   (1728 tests)
+     _____     _ _          _____  _  _            
+    |  ___|_ _(_) |___     |___ / | || |     __  __
+    | |_ / _` | | / __|      |_ \ | || |_    \ \/ /
+    |  _| (_| | | \__ \     ___) ||__   _     >  < 
+    |_|  \__,_|_|_|___/    |____/    |_|     /_/\_\
+                                                                   (1732 tests)
 
 ===============================================================================

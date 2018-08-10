@@ -29,6 +29,13 @@ class MiniTerminal(object):
         """
         return self.__code
 
+    def get_Terminal(self, PreCode, dial_db, LoopStateMachineId):
+        assert LoopStateMachineId is not None
+
+        return Terminal(CodeTerminal(PreCode + self.get_code(LoopStateMachineId)), 
+                        self.name, self.incidence_id, dial_db=dial_db)
+
+
 class MiniTerminalCmd(MiniTerminal):
     def __init__(self, IncidenceId, CmdList):
         self.incidence_id = IncidenceId
@@ -140,7 +147,7 @@ class LoopEventHandlers:
                                                                on_after_reload_count)
         self.on_after_reload_in_appendix  = OpList.from_iterable(on_after_reload_pos_apx)
 
-        self.__loop_state_machine_id = None
+        self.loop_state_machine_id = None
 
         self.__appendix_dfa_present_f = False
 
@@ -149,7 +156,28 @@ class LoopEventHandlers:
 
     def loop_state_machine_id_set(self, SmId):
         assert SmId is not None
-        self.__loop_state_machine_id = SmId
+        self.loop_state_machine_id = SmId
+
+    def get_count_code(self, LCCI):
+        if LCCI is None: return False, []
+
+        run_time_counter_required_f, \
+        count_code                   = map_SmLineColumnCountInfo_to_code(LCCI, ModeName=self.mode_name) 
+        if run_time_counter_required_f:
+            # The content to be counted starts where the appendix started.
+            # * Begin of counting at 'loop restart pointer'.
+            # * Run-time counting can ONLY work, if the lexeme start pointer 
+            #   is at position of appendix begin.
+            count_code[:0] = Lng.COMMAND(Op.Assign(E_R.LexemeStartP, E_R.LoopRestartP), 
+                                         self.dial_db)
+
+        if self.column_number_per_code_unit is not None:
+            # If the reference counting is applied, the reference pointer
+            # must be set right behind the last counted character.
+            count_code.append(
+                Lng.COMMAND(Op.Assign(E_R.CountReferenceP, E_R.InputP, Condition="COLUMN"), self.dial_db)
+            )
+        return run_time_counter_required_f, count_code
 
     @staticmethod
     def __prepare_count_actions(ColumnNPerCodeUnit):
@@ -260,17 +288,17 @@ class LoopEventHandlers:
 
         return before, after
 
-    def _cmd_list_Frame(self, TheCountAction, CmdList, JumpToDoorId):
+    def _cmd_list_Frame(self, TheCountAction, CmdList, DoorIdTarget):
         cmd_list = []
         if TheCountAction is not None:
             cmd_list.extend(TheCountAction.get_OpList(self.column_number_per_code_unit))
         cmd_list.extend(CmdList)
-        cmd_list.append(Op.GotoDoorId(JumpToDoorId))
+        cmd_list.append(Op.GotoDoorId(DoorIdTarget))
         return cmd_list
 
-    def cmd_list_CA_GotoAppendixTerminal(self, CA, IidAppendixTerminal): 
-        jump_to_door_id = DoorID.incidence(IidAppendixTerminal, self.dial_db)
-        return self._cmd_list_Frame(CA, [], jump_to_door_id)
+    def cmd_list_CA_GotoTerminal(self, CA, IidTerminal): 
+        target_door_id = DoorID.incidence(IidTerminal, self.dial_db)
+        return self._cmd_list_Frame(CA, [], target_door_id)
         
     def cmd_list_CA_GotoAppendixDfa(self, CA, AppendixDfaId): 
         # Couple Terminal: transit to appendix state machine.
@@ -278,8 +306,8 @@ class LoopEventHandlers:
         # appendix has began => Set 'LoopRestartP' to current position.
         self.__appendix_dfa_present_f = True
         cmd_list        = [ Op.Assign(E_R.LoopRestartP, E_R.InputP) ]
-        jump_to_door_id = DoorID.state_machine_entry(AppendixDfaId, self.dial_db)
-        return self._cmd_list_Frame(CA, cmd_list, jump_to_door_id)
+        target_door_id = DoorID.state_machine_entry(AppendixDfaId, self.dial_db)
+        return self._cmd_list_Frame(CA, cmd_list, target_door_id)
 
     def cmd_list_CA_GotoLoopEntry(self, CA): 
         if not self.lexeme_end_check_f: 
@@ -300,24 +328,8 @@ class LoopEventHandlers:
                 Op.ColumnCountReferencePDeltaAdd(E_R.InputP, self.column_number_per_code_unit, 
                                                  False)
             )
-        jump_to_door_id = self.door_id_on_loop_exit_user_code
-        return self._cmd_list_Frame(CA, cmd_list, jump_to_door_id)
-
-    @typed(LEI=LoopMapEntry)
-    def get_loop_terminal_code(self, LEI, DoorIdLoop): 
-        """RETURNS: A loop terminal. 
-
-        A terminal: (i)    Counts,
-                    (ii)   checks possibly for the lexeme end, and
-                    (iii)a either re-enters the loop, or
-                    (iii)b transits to an appendix state machine (couple terminal).
-        """
-        if LEI.code is None: return None
-        name = "<LOOP TERMINAL %s>" % LEI.iid_couple_terminal
-        code = [ self.replace_Lazy_DoorIdLoop(cmd, DoorIdLoop) for cmd in LEI.code ]
-        return Terminal(CodeTerminal(Lng.COMMAND_LIST(code, self.dial_db)), name, 
-                        IncidenceId=LEI.iid_couple_terminal,
-                        dial_db=self.dial_db)
+        target_door_id = self.door_id_on_loop_exit_user_code
+        return self._cmd_list_Frame(CA, cmd_list, target_door_id)
 
     def replace_Lazy_DoorIdLoop(self, cmd, DoorIdLoop):
         GotoDoorIdCmdIdSet = (E_Op.GotoDoorId, E_Op.GotoDoorIdIfInputPNotEqualPointer)
@@ -329,35 +341,6 @@ class LoopEventHandlers:
             return Op.GotoDoorIdIfInputPNotEqualPointer(DoorIdLoop, cmd.content.pointer)
         else:
             return cmd
-
-    def get_Terminal_from_mini_terminal(self, LCCI, mini_terminal):
-        if LCCI is not None:
-            run_time_counter_required_f, \
-            count_code                   = map_SmLineColumnCountInfo_to_code(LCCI, ModeName=self.mode_name) 
-            if run_time_counter_required_f:
-                # The content to be counted starts where the appendix started.
-                # * Begin of counting at 'loop restart pointer'.
-                # * Run-time counting can ONLY work, if the lexeme start pointer 
-                #   is at position of appendix begin.
-                count_code[:0] = Lng.COMMAND(Op.Assign(E_R.LexemeStartP, E_R.LoopRestartP), 
-                                             self.dial_db)
-
-            if self.column_number_per_code_unit is not None:
-                # If the reference counting is applied, the reference pointer
-                # must be set right behind the last counted character.
-                count_code.append(
-                    Lng.COMMAND(Op.Assign(E_R.CountReferenceP, E_R.InputP, Condition="COLUMN"), self.dial_db)
-                )
-        else:
-            run_time_counter_required_f = False
-            count_code = []
-        
-        assert self.__loop_state_machine_id is not None
-        return run_time_counter_required_f, \
-               Terminal(CodeTerminal(count_code + mini_terminal.get_code(self.__loop_state_machine_id)), 
-                        mini_terminal.name, 
-                        mini_terminal.incidence_id, 
-                        dial_db=self.dial_db)
 
     def on_loop_after_appendix_drop_out(self, DoorIdLoop):
         # Upon drop-out, the input position is set to where the apendix 

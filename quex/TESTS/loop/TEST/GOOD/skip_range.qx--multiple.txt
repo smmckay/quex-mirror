@@ -1,15 +1,15 @@
 ,------------------------------------------------------------------------------------
 | [START]
-LETTER 'A'
-LETTER 'B'
-LETTER 'C'
-LETTER 'D'
-LETTER 'E'
-LETTER 'F'
-LETTER 'G'
-LETTER 'H'
-LETTER 'I'
-LETTER 'J'
-<TERMINATION> ''
+(1, 1)  	LETTER 'A'
+(1, 17)  	LETTER 'B'
+(1, 33)  	LETTER 'C'
+(1, 49)  	LETTER 'D'
+(1, 65)  	LETTER 'E'
+(2, 1)  	LETTER 'F'
+(2, 18)  	LETTER 'G'
+(2, 36)  	LETTER 'H'
+(2, 57)  	LETTER 'I'
+(4, 1)  	LETTER 'J'
+(5, 1)  	<TERMINATION> ''
 | [END] number of token = 11
 `------------------------------------------------------------------------------------

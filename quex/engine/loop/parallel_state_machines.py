@@ -88,7 +88,7 @@ def do(event_handler, CaMap, SmList):
 
         if not init_state.has_transitions():
             # NO appendix after first transition. => jump to appendix terminal.
-            return event_handler.cmd_list_CA_GotoAppendixTerminal(CA, single_incidence_id(AppendixSm))
+            return event_handler.cmd_list_CA_GotoTerminal(CA, single_incidence_id(AppendixSm))
         else:
             return event_handler.cmd_list_CA_GotoAppendixDfa(CA, AppendixSm.get_id())
 

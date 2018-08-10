@@ -192,7 +192,7 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
     iid_loop_exit                    = dial.new_incidence_id()
     iid_loop_after_appendix_drop_out = dial.new_incidence_id() 
 
-    # LoopMap: Associate characters with the reactions on their occurrence ____
+    # LoopMap: Associate characters with the reactions on their occurrence _____
     #
     loop_map,         \
     appendix_sm_list, \
@@ -204,8 +204,8 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
         DfaId=dfa_id_loop
     )
 
-    # Loop represented by FSM-s and Terminal-s ___________________________
-    #
+    # Loop represented by FSM-s and Terminal-s ________________________________
+    # (transformed state machines have same id)
     loop_sm          = _encoding_transform(loop_sm)
     appendix_sm_list = [ _encoding_transform(sm) for sm in appendix_sm_list ]
 
@@ -290,9 +290,9 @@ def _get_terminal_list(loop_map, EventHandler,
                        IidLoopExit, IidLoopAfterAppendixDropOut):
     """RETURNS: list of all Terminal-s.
     """
-    loop_terminal_list = _get_terminal_list_for_loop(loop_map, EventHandler,
-                                                     IidLoopAfterAppendixDropOut, 
-                                                     DoorIdLoop, IidLoopExit) 
+    loop_terminal_list           = _get_terminal_list_for_loop(loop_map, EventHandler,
+                                                               IidLoopAfterAppendixDropOut, 
+                                                               DoorIdLoop, IidLoopExit) 
 
     run_time_counter_required_f, \
     parallel_terminal_list       = _get_terminal_list_for_appendices(EventHandler, 
@@ -357,7 +357,7 @@ def _get_loop_map(event_handler, CaMap, SmList, IidLoopExit, L_subset):
     if not L_exit.is_empty():
         exit_list = [ 
             LoopMapEntry(L_exit, IidLoopExit, 
-                         Code = event_handler.cmd_list_CA_GotoAppendixTerminal(None, IidLoopExit)) 
+                         Code = event_handler.cmd_list_CA_GotoTerminal(None, IidLoopExit)) 
         ]
     else:
         exit_list = []
@@ -455,13 +455,22 @@ def _get_terminal_list_for_loop(loop_map, EventHandler, IidLoopAfterAppendixDrop
     # (LOOP EXIT terminal is generated later, see below).
     result = []
     done   = set()
-    for lei in loop_map:
-        if   lei.iid_couple_terminal in done:        continue
-        elif lei.iid_couple_terminal == IidLoopExit: continue
-        done.add(lei.iid_couple_terminal)
-        terminal = EventHandler.get_loop_terminal_code(lei, DoorIdLoop)
-        if terminal is None:                         continue 
-        result.append(terminal) 
+    for lme in loop_map:
+        if   lme.iid_couple_terminal in done:        continue
+        elif lme.iid_couple_terminal == IidLoopExit: continue
+        elif lme.code is None:                       continue
+        done.add(lme.iid_couple_terminal)
+
+        code = [ 
+            EventHandler.replace_Lazy_DoorIdLoop(cmd, DoorIdLoop) 
+            for cmd in lme.code 
+        ]
+        result.append(
+            Terminal(CodeTerminal(Lng.COMMAND_LIST(code, EventHandler.dial_db)), 
+                     "<LOOP TERMINAL %s>" % lme.iid_couple_terminal, 
+                     IncidenceId = lme.iid_couple_terminal,
+                     dial_db     = EventHandler.dial_db)
+        )
 
     # Terminal: Re-enter Loop
     if IidLoopAfterAppendixDropOut is not None:
@@ -485,20 +494,23 @@ def _get_terminal_list_for_loop(loop_map, EventHandler, IidLoopAfterAppendixDrop
 @typed(ParallelMiniTerminalList=[MiniTerminal])
 def _get_terminal_list_for_appendices(EventHandler, appendix_lcci_db, 
                                       ParallelMiniTerminalList):
-    """RETURNS: [0] true, default counter is required.
-                    false, else.
+    """RETURNS: [0] True, default counter is required.
+                    False, else.
                 [1] list of terminals of the appendix state machines.
     """
     run_time_counter_required_f = False
-    terminal_list = []
+    terminal_list               = []
     for mini_terminal in ParallelMiniTerminalList:
-        # lcci may be 'None' due to the appendix_sm being empty.
-        lcci     = appendix_lcci_db.get(mini_terminal.incidence_id)
-        rtcr_f, \
-        terminal = EventHandler.get_Terminal_from_mini_terminal(lcci, 
-                                                                mini_terminal) 
-        terminal_list.append(terminal)
+        rtcr_f, count_code = EventHandler.get_count_code(
+            appendix_lcci_db.get(mini_terminal.incidence_id)
+        )
         run_time_counter_required_f |= rtcr_f
+
+        terminal_list.append(
+            mini_terminal.get_Terminal(count_code, 
+                                       EventHandler.dial_db, 
+                                       EventHandler.loop_state_machine_id)
+        )
 
     return run_time_counter_required_f, terminal_list
 
