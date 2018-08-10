@@ -1,3 +1,12 @@
+-- Algebra: pre and post context:
+
+         pattern match <=> pre && core && post
+
+     =>  NOT pattern <=> NOT pre || NOT core || not post
+     ==  A | B       <=> (A_pre && A_core && A_post) || (B_pre && B_core && B_post)
+     ==  A & B       <=> (A_pre && A_core && A_post) && (B_pre && B_core && B_post)
+                         (A_pre && B_pre) && (A_core && B_core) && (A_post && B_post)
+
 -- '--fallback-mandatory' => *MUST* be finite (mandatory with feeder/gavager)
    '--fallback-optional'  => NO REQUIREMENT
 

@@ -2,7 +2,7 @@
 
 A 'loop state machine' has a core state machine that loops on incoming
 lexatoms 'i' as long as they fall into the set 'L' which it treats. The
-first lexatom that does not fit 'L' causes an exit from the loop, as
+first lexatom that does NOT fit 'L' causes an exit from the loop, as
 shown below. 
                                     
                     .--<-( next i )--. i in L
@@ -29,7 +29,7 @@ loop-actions. Those actions are implemented by means of terminal states.  With
 _________________________________
 MOUNTING PARALLEL STATE MACHINES:
 
-In parallel, matching state machines may be mounted to the loop. The following
+Additionally, matching state machines may be mounted to the loop. The following
 assumption is made:
 
              .-----------------------------------------------.
@@ -365,9 +365,6 @@ def _get_loop_map(event_handler, CaMap, SmList, IidLoopExit, L_subset):
     result = LoopMap(couple_list, # --> jump to appendix sm-s
                      plain_list,  # --> iterate to loop start
                      exit_list)   # --> exit loop
-
-    for lme in result:
-        print "#cs,iid:", lme.character_set, lme.iid_couple_terminal
 
     return result, appendix_sm_list, appendix_lcci_db
 
