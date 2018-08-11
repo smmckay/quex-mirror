@@ -482,7 +482,7 @@ class Language(dict):
             "%s\n" % self.COMMAND(cmd, dial_db) for cmd in OpList
         ]
 
-    @typed(dial_db=DialDB)
+    @typed(dial_db=(None, DialDB))
     def COMMAND(self, Op, dial_db=None):
         if Op.id == E_Op.Accepter:
             txt = []
@@ -533,6 +533,9 @@ class Language(dict):
 
         elif Op.id == E_Op.QuexAssertNoPassage:
             return self.UNREACHABLE
+
+        elif Op.id == E_Op.PasspartoutCounterCall:
+            return self.DEFAULT_COUNTER_CALL(Op.content.mode_name)
 
         elif Op.id == E_Op.GotoDoorId:
             return self.GOTO(Op.content.door_id, dial_db)
@@ -592,9 +595,19 @@ class Language(dict):
                 txt = "$$<count-column> %s$$" % txt
             return "    %s;\n" % txt
 
+        elif Op.id == E_Op.ColumnCountSet:
+            return self.COUNTER_COLUM_SET(Op.content.value)
+
+        elif Op.id == E_Op.ColumnCountShift:
+            return self.COUNTER_SHIFT_COLUMN_COUNT()
+
         elif Op.id == E_Op.ColumnCountAdd:
             # if "%s" % Op.content.value == "LoopRestartP": print_callstack()
-            return "%s\n" % self.COUNTER_COLUM_ADD("(size_t)%s" % self.VALUE_STRING(Op.content.value))
+            if not Op.content.value or Op.content.factor == 0:
+                return ""
+            else:
+                return "%s\n" % self.COUNTER_COLUM_ADD("(size_t)%s" % self.VALUE_STRING(Op.content.value),
+                                                       Op.content.factor)
 
         elif Op.id == E_Op.ColumnCountGridAdd:
             return "".join(self.COUNTER_COLUMN_GRID_STEP(Op.content.grid_size))
@@ -608,9 +621,18 @@ class Language(dict):
             return self.REFERENCE_P_COLUMN_ADD(self.REGISTER_NAME(Op.content.pointer), 
                                                Op.content.column_n_per_chunk, 
                                                Op.content.subtract_one_f) 
+        elif Op.id == E_Op.LineCountSet:
+            return self.COUNTER_LINE_SET("(size_t)(%s)" % Op.content.value)
+
+        elif Op.id == E_Op.LineCountShift:
+            return self.COUNTER_SHIFT_LINE_COUNT()
+
         elif Op.id == E_Op.LineCountAdd:
-            if not Op.content.value: return ""
-            else:                    return "%s\n" % self.COUNTER_LINE_ADD("(size_t)%s" % self.VALUE_STRING(Op.content.value))
+            if not Op.content.value or Op.content.factor == 0:
+                return ""
+            else:
+                return "%s\n" % self.COUNTER_LINE_ADD("(size_t)%s" % self.VALUE_STRING(Op.content.value),
+                                                       Op.content.factor)
 
         elif Op.id == E_Op.StoreInputPosition:
             # Assume that checking for the pre-context is just overhead that 
@@ -775,22 +797,35 @@ class Language(dict):
         return "goto %s;" % self.LABEL_STR_BY_ADR(Address)
 
     def COUNTER_SHIFT_VALUES(self):
-        result = ""
-        if condition.do("count-column"): result += "    me->counter._column_number_at_begin = me->counter._column_number_at_end;\n"
-        if condition.do("count-line"):   result += "    me->counter._line_number_at_begin = me->counter._line_number_at_end;\n"
-        return result 
+        return self.COUNTER_SHIFT_COLUMN_COUNT() + self.COUNTER_SHIFT_LINE_COUNT()
 
-    def COUNTER_LINE_ADD(self, Arg):
-        if condition.do("count-line"): return "me->counter._line_number_at_end += (%s); __quex_debug_counter();" % Arg
+    def COUNTER_SHIFT_COLUMN_COUNT(self):
+        if condition.do("count-column"): return "    me->counter._column_number_at_begin = me->counter._column_number_at_end;\n"
+        else:                            return "" 
+
+    def COUNTER_SHIFT_LINE_COUNT(self):
+        if condition.do("count-line"): return "    me->counter._line_number_at_begin = me->counter._line_number_at_end;\n"
+        else:                          return "" 
+
+    def COUNTER_LINE_ADD(self, Arg, Factor=1):
+        arg = Arg
+        if Factor != 1: arg = self.MULTIPLY_WITH(arg, Factor)
+        if condition.do("count-line"): return "me->counter._line_number_at_end += (%s); __quex_debug_counter();" % arg
         else:                          return ""
 
-    def COUNTER_COLUM_ADD(self, Arg):
-        if condition.do("count-column"): return "me->counter._column_number_at_end += (%s); __quex_debug_counter();" % Arg
+    def COUNTER_COLUM_ADD(self, Arg, Factor=1):
+        arg = Arg
+        if Factor != 1: arg = self.MULTIPLY_WITH(arg, Factor)
+        if condition.do("count-column"): return "me->counter._column_number_at_end += (%s); __quex_debug_counter();" % arg
         else:                            return ""
 
     def COUNTER_COLUM_SET(self, Arg):
         if condition.do("count-column"): return "me->counter._column_number_at_end = (%s); __quex_debug_counter();" % Arg
         else:                            return ""
+
+    def COUNTER_LINE_SET(self, Arg):
+        if condition.do("count-line"): return "me->counter._line_number_at_end = (%s); __quex_debug_counter();" % Arg
+        else:                          return ""
 
     def COUNTER_COLUMN_GRID_STEP(self, GridWidth, StepN=1):
         """A grid step is an addition which depends on the current value 
@@ -855,7 +890,7 @@ class Language(dict):
 
     def VALUE_STRING(self, NameOrValue):
         if isinstance(NameOrValue, (str, unicode)):
-            return "self.%s" % NameOrValue
+            return "%s" % NameOrValue # "self.%s" % NameOrValue
         elif hasattr(NameOrValue, "is_integer") and NameOrValue.is_integer():
             return "%i" % NameOrValue
         else:

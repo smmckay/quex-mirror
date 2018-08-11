@@ -12,8 +12,8 @@
 
    is_switchable:  True
 
-   A: ColumnCountAdd: { value=2,  }
-   B: LineCountAdd: { value=3,  }
+   A: ColumnCountAdd: { factor=1, value=2,  }
+   B: LineCountAdd: { factor=1, value=3,  }
 
    is_switchable:  True
 
@@ -64,7 +64,7 @@
    is_switchable:  False
 
    A: ColumnCountReferencePDeltaAdd: { column_n_per_chunk=5, pointer=CountReferenceP, subtract_one_f=False,  }
-   B: ColumnCountAdd: { value=2,  }
+   B: ColumnCountAdd: { factor=1, value=2,  }
 
    is_switchable:  False
 

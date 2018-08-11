@@ -73,9 +73,9 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       ColumnCountAdd: { value=1,  }
+       ColumnCountAdd: { factor=1, value=1,  }
        Assign: { source=Input, target=LoopRestartP,  }
-       ColumnCountGridAdd: { grid_size=1,  }
+       ColumnCountGridAdd: { grid_size=1, step_n=1,  }
    - - - - - - 
        if PreContext_55:  last_acceptance = Pattern66
        Assign: { source=LexemeStartP, target=InputP,  }
@@ -86,9 +86,9 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       ColumnCountAdd: { value=1,  }
+       ColumnCountAdd: { factor=1, value=1,  }
    <0> Assign: { source=Input, target=LoopRestartP,  }
-       ColumnCountGridAdd: { grid_size=1,  }
+       ColumnCountGridAdd: { grid_size=1, step_n=1,  }
    - - - - - - 
        if PreContext_55:  last_acceptance = Pattern66
    <0> Assign: { source=Input, target=LoopRestartP,  }
@@ -100,9 +100,9 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       ColumnCountAdd: { value=1,  }
+       ColumnCountAdd: { factor=1, value=1,  }
        Assign: { source=Input, target=LoopRestartP,  }
-       ColumnCountGridAdd: { grid_size=1,  }
+       ColumnCountGridAdd: { grid_size=1, step_n=1,  }
    - - - - - - 
        if PreContext_55:  last_acceptance = Pattern66
        Assign: { source=LexemeEnd, target=LoopRestartP,  }

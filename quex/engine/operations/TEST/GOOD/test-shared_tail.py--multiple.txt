@@ -116,7 +116,7 @@ tail(A, B): {
        Assign: { source=Input, target=Line,  }
        Assign: { source=LexemeStartP, target=InputP,  }
    <0> Assign: { source=Input, target=Line,  }
-       ColumnCountAdd: { value=1,  }
+       ColumnCountAdd: { factor=1, value=1,  }
        Assign: { source=LexemeEnd, target=Column,  }
        Assign: { source=LexemeStartP, target=InputP,  }
    - - - - - - 
@@ -132,7 +132,7 @@ tail(A, B): {
        Assign: { source=Input, target=Line,  }
        Assign: { source=LexemeStartP, target=InputP,  }
    <0> Assign: { source=Input, target=Line,  }
-       ColumnCountAdd: { value=1,  }
+       ColumnCountAdd: { factor=1, value=1,  }
    <1> Assign: { source=LexemeEnd, target=Column,  }
        Assign: { source=LexemeStartP, target=InputP,  }
    - - - - - - 
@@ -149,7 +149,7 @@ tail(A, B): {
        Assign: { source=Input, target=Line,  }
        Assign: { source=LexemeStartP, target=InputP,  }
    <0> Assign: { source=Input, target=Line,  }
-       ColumnCountAdd: { value=1,  }
+       ColumnCountAdd: { factor=1, value=1,  }
        Assign: { source=LexemeEnd, target=Column,  }
        Assign: { source=LexemeStartP, target=InputP,  }
    <1> Assign: { source=LexemeEnd, target=Column,  }
@@ -167,7 +167,7 @@ tail(A, B): {
        Assign: { source=Input, target=Line,  }
        Assign: { source=LexemeStartP, target=InputP,  }
    <0> Assign: { source=Input, target=Line,  }
-       ColumnCountAdd: { value=1,  }
+       ColumnCountAdd: { factor=1, value=1,  }
    <1> Assign: { source=LexemeEnd, target=Column,  }
        Assign: { source=LexemeStartP, target=InputP,  }
    <2> Assign: { source=LexemeEnd, target=Column,  }

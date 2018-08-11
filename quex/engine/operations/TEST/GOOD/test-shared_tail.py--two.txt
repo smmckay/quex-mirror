@@ -71,7 +71,7 @@ tail(A, B): {
    <0> Assign: { source=Input, target=LoopRestartP,  }
        Assign: { source=LexemeStartP, target=InputP,  }
    <1> Assign: { source=LexemeEnd, target=LoopRestartP,  }
-       ColumnCountAdd: { value=1,  }
+       ColumnCountAdd: { factor=1, value=1,  }
 }
 tail(B, A): {
     2 x same

@@ -8,8 +8,9 @@ count actions do not appear more than once [ok]
 exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
+
 [-oo, -001] [0010, 001F] [0030, 003F] [0050, 005F] [0070, oo]  0 GotoDoorId: { door_id=DoorID(s=1, d=ACCEPTANCE),  } <appendix: DoorID(s=1, d=ACCEPTANCE)>
-[0000, 000F]  2 ColumnCountAdd: { value=0,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
-[0020, 002F]  3 LineCountAdd: { value=1,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
-[0040, 004F]  4 ColumnCountGridAdd: { grid_size=2,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
-[0060, 006F]  5 ColumnCountAdd: { value=3,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
+[0000, 000F]  2 ColumnCountAdd: { factor=1, value=0,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
+[0020, 002F]  3 LineCountAdd: { factor=1, value=1,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
+[0040, 004F]  4 ColumnCountGridAdd: { grid_size=2, step_n=1,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
+[0060, 006F]  5 ColumnCountAdd: { factor=1, value=3,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>

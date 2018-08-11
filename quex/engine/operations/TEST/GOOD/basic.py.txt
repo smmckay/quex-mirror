@@ -50,7 +50,7 @@ AssignPointerDifference
    }
 
 ColumnCountAdd
-   <ColumnCountAdd: { value=1,  }>
+   <ColumnCountAdd: { factor=1, value=1,  }>
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
@@ -58,7 +58,7 @@ ColumnCountAdd
    }
 
 ColumnCountGridAdd
-   <ColumnCountGridAdd: { grid_size=1,  }>
+   <ColumnCountGridAdd: { grid_size=1, step_n=1,  }>
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
@@ -69,7 +69,7 @@ ColumnCountGridAdd
    }
 
 ColumnCountGridAdd
-   <ColumnCountGridAdd: { grid_size=2,  }>
+   <ColumnCountGridAdd: { grid_size=2, step_n=1,  }>
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
@@ -81,7 +81,7 @@ ColumnCountGridAdd
    }
 
 ColumnCountGridAdd
-   <ColumnCountGridAdd: { grid_size=3,  }>
+   <ColumnCountGridAdd: { grid_size=3, step_n=1,  }>
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
@@ -93,7 +93,7 @@ ColumnCountGridAdd
    }
 
 ColumnCountGridAdd
-   <ColumnCountGridAdd: { grid_size=4,  }>
+   <ColumnCountGridAdd: { grid_size=4, step_n=1,  }>
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
@@ -105,7 +105,7 @@ ColumnCountGridAdd
    }
 
 ColumnCountGridAdd
-   <ColumnCountGridAdd: { grid_size=5,  }>
+   <ColumnCountGridAdd: { grid_size=5, step_n=1,  }>
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
@@ -224,7 +224,7 @@ LexemeResetTerminatingZero
    }
 
 LineCountAdd
-   <LineCountAdd: { value=1,  }>
+   <LineCountAdd: { factor=1, value=1,  }>
    Registers:    Line(wr), 
    Cost:         1
    C-code: {
@@ -339,4 +339,11 @@ TemplateStateKeySet
            state_key = 66;
            __quex_debug("state_key = 66\n");
    }
+
+
+
+
+
+
+
 

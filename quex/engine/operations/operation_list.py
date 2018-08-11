@@ -202,8 +202,8 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.ColumnCountReferencePDeltaAdd, Pointer, ColumnNPerChunk, SubtractOneF)
     
     @staticmethod
-    def ColumnCountAdd(Value):
-        return Op(E_Op.ColumnCountAdd, Value)
+    def ColumnCountAdd(Value, Factor=1):
+        return Op(E_Op.ColumnCountAdd, Value, Factor)
     
     @staticmethod
     def IndentationHandlerCall(ModeName):
@@ -218,12 +218,12 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.IfPreContextSetPositionAndGoto, AccConditionSet, RouterElement)
     
     @staticmethod
-    def ColumnCountGridAdd(GridSize):
-        return Op(E_Op.ColumnCountGridAdd, GridSize)
+    def ColumnCountGridAdd(GridSize, StepN=1):
+        return Op(E_Op.ColumnCountGridAdd, GridSize, StepN)
     
     @staticmethod
-    def LineCountAdd(Value):
-        return Op(E_Op.LineCountAdd, Value)
+    def LineCountAdd(Value, Factor=1):
+        return Op(E_Op.LineCountAdd, Value, Factor)
     
     @staticmethod
     def GotoDoorId(DoorId):
@@ -285,6 +285,26 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
     @staticmethod
     def QuexAssertNoPassage():
         return Op(E_Op.QuexAssertNoPassage)
+
+    @staticmethod
+    def PasspartoutCounterCall(ModeName):
+        return Op(E_Op.PasspartoutCounterCall, ModeName)
+
+    @staticmethod
+    def LineCountShift():
+        return Op(E_Op.LineCountShift)
+
+    @staticmethod
+    def LineCountSet(Value):
+        return Op(E_Op.LineCountSet, Value)
+
+    @staticmethod
+    def ColumnCountShift():
+        return Op(E_Op.ColumnCountShift)
+
+    @staticmethod
+    def ColumnCountSet(Value):
+        return Op(E_Op.ColumnCountSet, Value)
 
     def is_conditionless_goto(self):
         if self.id == E_Op.GotoDoorId: 
@@ -502,21 +522,32 @@ def __configure():
     c(E_Op.Decrement,                        ("register",), (0,r+w))
     c(E_Op.Increment,                        ("register",), (0,r+w))
     #
-    c(E_Op.LexemeResetTerminatingZero,       None, (E_R.LexemeStartP,r), (E_R.Buffer,w), (E_R.InputP,r), (E_R.Input,w))
+    c(E_Op.LexemeResetTerminatingZero,       None, 
+                                             (E_R.LexemeStartP,r), (E_R.Buffer,w), (E_R.InputP,r), (E_R.Input,w))
     #
     c(E_Op.IndentationHandlerCall,           ("mode_name",),
                                               (E_R.Column,r), (E_R.Indentation,r+w), (E_R.CountReferenceP,r))
     #
-    c(E_Op.ColumnCountAdd,                   ("value",),
+    c(E_Op.ColumnCountAdd,                   ("value", "factor"),
                                               (E_R.Column,r+w))
-    c(E_Op.ColumnCountGridAdd,               ("grid_size",),
+    c(E_Op.ColumnCountGridAdd,               ("grid_size", "step_n"),
                                               (E_R.Column,r+w))
     c(E_Op.ColumnCountReferencePSet,         ("pointer", "offset"),
                                               (0,r), (E_R.CountReferenceP,w))
     c(E_Op.ColumnCountReferencePDeltaAdd,    ("pointer", "column_n_per_chunk", "subtract_one_f"),
                                               (E_R.Column,r+w), (0,r), (E_R.CountReferenceP,r))
-    c(E_Op.LineCountAdd,                     ("value",),
+    c(E_Op.ColumnCountShift,                 None,
+                                              (E_R.Column,r+w))
+    c(E_Op.ColumnCountSet,                   ("value",),
+                                              (E_R.Column,w))
+    c(E_Op.LineCountAdd,                     ("value", "factor"),
                                               (E_R.Line,r+w))
+    c(E_Op.LineCountShift,                   None,
+                                              (E_R.Line,r+w))
+    c(E_Op.LineCountSet,                     ("value",),
+                                              (E_R.Line,w))
+    c(E_Op.PasspartoutCounterCall,           ("mode_name", ),
+                                              (E_R.Line,r+w), (E_R.Column,r+w), (E_R.LexemeStartP,r), (E_R.Buffer,r), (E_R.InputP,r))
     #
     c(E_Op.PathIteratorSet,                  ("path_walker_id", "path_id", "offset"),
                                               (E_R.PathIterator,w))
@@ -535,7 +566,7 @@ def __configure():
                                               (E_R.StandardOutput,w))
     c(E_Op.QuexAssertNoPassage,              None, 
                                               (E_R.StandardOutput,w), (E_R.ThreadOfControl, r+w))
-
+    #
     return access_db, content_db, brancher_set, cost_db
 
 _access_db,    \
