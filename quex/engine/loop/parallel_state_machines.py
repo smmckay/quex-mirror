@@ -27,7 +27,7 @@ from   quex.constants  import E_CharacterCountType, \
 from   copy import copy
 
 @typed(CaMap=CountActionMap)
-def do(event_handler, CaMap, SmList):
+def do(loop_config, CaMap, SmList):
     """Perform separation:
     
          Parallel state machine  ---->    first transition  
@@ -80,22 +80,20 @@ def do(event_handler, CaMap, SmList):
 
     def get_code(CA, AppendixSm):
         init_state = AppendixSm.get_init_state()
-
         if init_state.input_position_store_f():
             error.log("skip/skip_range/indentation/counter implementation.\n"
                       "Inadmissible post context after first character.\n"
                       "(This should have been detected during the parsing process)")
-
-        if not init_state.has_transitions():
+        elif not init_state.has_transitions():
             # NO appendix after first transition. => jump to appendix terminal.
-            return event_handler.cmd_list_CA_GotoTerminal(CA, single_incidence_id(AppendixSm))
+            return loop_config.cmd_list_CA_GotoTerminal(CA, single_incidence_id(AppendixSm))
         else:
-            return event_handler.cmd_list_CA_GotoAppendixDfa(CA, AppendixSm.get_id())
+            return loop_config.cmd_list_CA_GotoAppendixDfa(CA, AppendixSm.get_id())
 
     loop_map = [
         LoopMapEntry(character_set, 
-                     IidCoupleTerminal   = dial.new_incidence_id(), 
-                     Code                = get_code(ca, appendix_sm)) 
+                     IidCoupleTerminal = dial.new_incidence_id(), 
+                     Code              = get_code(ca, appendix_sm)) 
         for character_set, ca, appendix_sm in first_vs_ca_and_appendix_sm
     ]
     loop_map.append(

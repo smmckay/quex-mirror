@@ -98,8 +98,8 @@ State 0:
     [254, 255]: DoorID(s=7, d=0)
 
 
-DoorID(s=DROP_OUT, d=3) => case 3: goto Pattern3;
+DoorID(s=DROP_OUT, d=3) => case 5: goto Pattern5;
 DoorID(s=DROP_OUT, d=4) => case 4711: goto Pattern4711;
 DoorID(s=DROP_OUT, d=5) => case Bad Lexatom: goto Bad Lexatom;
-DoorID(s=DROP_OUT, d=6) => case 3: pos -= 1;  goto Pattern3;
-DoorID(s=DROP_OUT, d=7) => case 3: pos -= 2;  goto Pattern3;
+DoorID(s=DROP_OUT, d=6) => case 5: pos -= 1;  goto Pattern5;
+DoorID(s=DROP_OUT, d=7) => case 5: pos -= 2;  goto Pattern5;

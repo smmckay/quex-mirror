@@ -74,15 +74,19 @@ def test(LoopMap, ColumnNPerCodeUnit):
     # Generate sample state machines from what the loop map tells.
     appendix_sm_list = _get_appendix_sm_list(LoopMap)
 
-    event_handler    = loop.LoopConfig(ColumnNPerCodeUnit    = ColumnNPerCodeUnit,
-                                       LexemeEndCheckF       = False, 
-                                       EngineType            = engine.FORWARD, 
-                                       ReloadStateExtern     = None, 
-                                       UserBeforeEntryOpList = None, 
-                                       UserOnLoopExitDoorId  = dial_db.new_door_id(), 
-                                       dial_db               = dial_db, 
-                                       OnReloadFailureDoorId = None, 
-                                       ModeName              = "M") 
+    UserOnLoopExitDoorId  = dial_db.new_door_id()
+    events = loop.LoopEvents(ColumnNPerCodeUnit, None, UserOnLoopExitDoorId)
+    config = loop.LoopConfig(ColumnNPerCodeUnit    = ColumnNPerCodeUnit,
+                                    LexemeEndCheckF       = False, 
+                                    EngineType            = engine.FORWARD, 
+                                    ReloadStateExtern     = None, 
+                                    UserOnLoopExitDoorId  = UserOnLoopExitDoorId,
+                                    dial_db               = dial_db, 
+                                    OnReloadFailureDoorId = None, 
+                                    ModeName              = "M", 
+                                    Events                = events) 
+    config.iid_loop_after_appendix_drop_out = dial.new_incidence_id()
+
 
     loop_sm = DFA.from_IncidenceIdMap(
          (lei.character_set, lei.iid_couple_terminal) for lei in LoopMap
@@ -91,9 +95,9 @@ def test(LoopMap, ColumnNPerCodeUnit):
     loop_sm          = loop._encoding_transform(loop_sm)
     appendix_sm_list = [ loop._encoding_transform(sm) for sm in appendix_sm_list ]
 
-    analyzer_list,   \
-    door_id_loop     = loop._get_analyzer_list(loop_sm, appendix_sm_list, 
-                                               event_handler, dial.new_incidence_id()) 
+    analyzer_list, \
+    door_id_loop   = loop._get_analyzer_list(loop_sm, appendix_sm_list, 
+                                             config) 
 
     print_this(analyzer_list)
 

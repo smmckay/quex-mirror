@@ -1,7 +1,9 @@
 from   quex.input.code.core                        import CodeTerminal
 from   quex.engine.state_machine.character_counter import SmLineColumnCountInfo
+import quex.engine.state_machine.index             as     index
 from   quex.engine.analyzer.terminal.core          import Terminal
 from   quex.engine.analyzer.door_id_address_label  import DialDB, DoorID
+import quex.engine.analyzer.door_id_address_label  as     dial
 from   quex.engine.operations.operation_list       import Op, \
                                                           OpList
 from   quex.engine.counter                         import count_operation_db_with_reference, \
@@ -265,8 +267,8 @@ class LoopConfig:
     @typed(LexemeEndCheckF=bool, UserOnLoopExitDoorId=DoorID, dial_db=DialDB, 
            OnReloadFailureDoorId=(None, DoorID))
     def __init__(self, ColumnNPerCodeUnit, LexemeEndCheckF, 
-                 EngineType, ReloadStateExtern, UserBeforeEntryOpList, 
-                 UserOnLoopExitDoorId, dial_db, OnReloadFailureDoorId, ModeName): 
+                 EngineType, ReloadStateExtern, 
+                 UserOnLoopExitDoorId, dial_db, OnReloadFailureDoorId, ModeName, Events): 
         """ColumnNPerCodeUnit is None => no constant relationship between 
                                          column number and code unit.
         """
@@ -278,12 +280,15 @@ class LoopConfig:
         self.dial_db                     = dial_db
         self.door_id_on_reload_failure   = OnReloadFailureDoorId
         self.door_id_on_loop_exit_user_code = UserOnLoopExitDoorId
+        self.events                      = Events
 
-        self.loop_state_machine_id = None
-
+        self.loop_state_machine_id    = None
         self.__appendix_dfa_present_f = False
 
-        self.events = LoopEvents(ColumnNPerCodeUnit, UserBeforeEntryOpList, UserOnLoopExitDoorId)
+        self.loop_state_machine_id            = index.get_state_machine_id()
+        self.iid_loop_exit                    = dial.new_incidence_id()
+        self.iid_loop_after_appendix_drop_out = dial.new_incidence_id() 
+
 
     def appendix_dfa_present_f(self):
         return self.__appendix_dfa_present_f
@@ -314,13 +319,31 @@ class LoopConfig:
 
         return run_time_counter_required_f, cmd_list
 
-    def _cmd_list_Frame(self, TheCountAction, CmdList, DoorIdTarget):
-        cmd_list = []
-        if TheCountAction is not None:
-            cmd_list.extend(TheCountAction.get_OpList(self.column_number_per_code_unit))
-        cmd_list.extend(CmdList)
-        cmd_list.append(Op.GotoDoorId(DoorIdTarget))
-        return cmd_list
+    def replace_Lazy_DoorIdLoop(self, cmd, DoorIdLoop):
+        GotoDoorIdCmdIdSet = (E_Op.GotoDoorId, E_Op.GotoDoorIdIfInputPNotEqualPointer)
+        if   cmd.id == E_Op.GotoDoorId:
+            if cmd.content.door_id != self.Lazy_DoorIdLoop: return cmd
+            return Op.GotoDoorId(DoorIdLoop)
+        elif cmd.id == E_Op.GotoDoorIdIfInputPNotEqualPointer:
+            if cmd.content.door_id != self.Lazy_DoorIdLoop: return cmd
+            return Op.GotoDoorIdIfInputPNotEqualPointer(DoorIdLoop, cmd.content.pointer)
+        else:
+            return cmd
+
+    def get_required_register_set(self, AppendixSmExistF):
+        result = set()
+        if self.column_number_per_code_unit is not None:
+            result.add((E_R.CountReferenceP, "count-column"))
+        if AppendixSmExistF:
+            result.add(E_R.LoopRestartP)
+        if Setup.buffer_encoding.variable_character_sizes_f():
+            result.add(E_R.LoopRestartP)
+        if     E_R.LoopRestartP in result \
+           and self.engine_type.subject_to_reload():
+            result.add(E_R.InputPBeforeReload)
+            result.add(E_R.PositionDelta)
+
+        return result
 
     def cmd_list_CA_GotoTerminal(self, CA, IidTerminal): 
         target_door_id = DoorID.incidence(IidTerminal, self.dial_db)
@@ -357,29 +380,11 @@ class LoopConfig:
         target_door_id = self.door_id_on_loop_exit_user_code
         return self._cmd_list_Frame(CA, cmd_list, target_door_id)
 
-    def replace_Lazy_DoorIdLoop(self, cmd, DoorIdLoop):
-        GotoDoorIdCmdIdSet = (E_Op.GotoDoorId, E_Op.GotoDoorIdIfInputPNotEqualPointer)
-        if   cmd.id == E_Op.GotoDoorId:
-            if cmd.content.door_id != self.Lazy_DoorIdLoop: return cmd
-            return Op.GotoDoorId(DoorIdLoop)
-        elif cmd.id == E_Op.GotoDoorIdIfInputPNotEqualPointer:
-            if cmd.content.door_id != self.Lazy_DoorIdLoop: return cmd
-            return Op.GotoDoorIdIfInputPNotEqualPointer(DoorIdLoop, cmd.content.pointer)
-        else:
-            return cmd
-
-    def get_required_register_set(self, AppendixSmExistF):
-        result = set()
-        if self.column_number_per_code_unit is not None:
-            result.add((E_R.CountReferenceP, "count-column"))
-        if AppendixSmExistF:
-            result.add(E_R.LoopRestartP)
-        if Setup.buffer_encoding.variable_character_sizes_f():
-            result.add(E_R.LoopRestartP)
-        if     E_R.LoopRestartP in result \
-           and self.engine_type.subject_to_reload():
-            result.add(E_R.InputPBeforeReload)
-            result.add(E_R.PositionDelta)
-
-        return result
+    def _cmd_list_Frame(self, TheCountAction, CmdList, DoorIdTarget):
+        cmd_list = []
+        if TheCountAction is not None:
+            cmd_list.extend(TheCountAction.get_OpList(self.column_number_per_code_unit))
+        cmd_list.extend(CmdList)
+        cmd_list.append(Op.GotoDoorId(DoorIdTarget))
+        return cmd_list
 
