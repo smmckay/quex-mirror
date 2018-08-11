@@ -1,13 +1,13 @@
-from   quex.input.code.core                               import CodeTerminal
-from   quex.engine.analyzer.terminal.core                 import Terminal
-from   quex.engine.analyzer.door_id_address_label         import DialDB, DoorID
-from   quex.engine.operations.operation_list              import Op, \
-                                                                 OpList
-from   quex.engine.counter                                import count_operation_db_with_reference, \
-                                                                 count_operation_db_without_reference
-from   quex.engine.misc.interval_handling                 import NumberSet
-from   quex.engine.misc.tools                             import typed
-from   quex.output.counter.pattern                        import map_SmLineColumnCountInfo_to_code
+from   quex.input.code.core                        import CodeTerminal
+from   quex.engine.state_machine.character_counter import SmLineColumnCountInfo
+from   quex.engine.analyzer.terminal.core          import Terminal
+from   quex.engine.analyzer.door_id_address_label  import DialDB, DoorID
+from   quex.engine.operations.operation_list       import Op, \
+                                                          OpList
+from   quex.engine.counter                         import count_operation_db_with_reference, \
+                                                          count_operation_db_without_reference
+from   quex.engine.misc.interval_handling          import NumberSet
+from   quex.engine.misc.tools                      import typed
 
 from   quex.blackboard import setup as Setup, Lng
 from   quex.constants  import E_CharacterCountType, \
@@ -162,22 +162,23 @@ class LoopEventHandlers:
         if LCCI is None: return False, []
 
         run_time_counter_required_f, \
-        count_code                   = map_SmLineColumnCountInfo_to_code(LCCI, ModeName=self.mode_name) 
+        cmd_list                     = SmLineColumnCountInfo.get_OpList(LCCI, ModeName=self.mode_name)
+
         if run_time_counter_required_f:
             # The content to be counted starts where the appendix started.
             # * Begin of counting at 'loop restart pointer'.
             # * Run-time counting can ONLY work, if the lexeme start pointer 
             #   is at position of appendix begin.
-            count_code[:0] = Lng.COMMAND(Op.Assign(E_R.LexemeStartP, E_R.LoopRestartP), 
-                                         self.dial_db)
+            cmd_list[:0] = [ Op.Assign(E_R.LexemeStartP, E_R.LoopRestartP) ]
 
         if self.column_number_per_code_unit is not None:
             # If the reference counting is applied, the reference pointer
             # must be set right behind the last counted character.
-            count_code.append(
-                Lng.COMMAND(Op.Assign(E_R.CountReferenceP, E_R.InputP, Condition="COLUMN"), self.dial_db)
+            cmd_list.append(
+                Op.Assign(E_R.CountReferenceP, E_R.InputP, Condition="COLUMN")
             )
-        return run_time_counter_required_f, count_code
+
+        return run_time_counter_required_f, cmd_list
 
     @staticmethod
     def __prepare_count_actions(ColumnNPerCodeUnit):

@@ -1,12 +1,11 @@
 # (C) Frank-Rene Schaefer
 from   quex.input.code.core                        import CodeFragment, \
                                                           CodeTerminal
+from   quex.engine.state_machine.character_counter import SmLineColumnCountInfo
 from   quex.engine.pattern                         import Pattern
 from   quex.engine.analyzer.terminal.core          import Terminal
 from   quex.engine.analyzer.door_id_address_label  import DoorID
 from   quex.engine.misc.tools                      import typed
-
-from   quex.output.counter.pattern                 import map_SmLineColumnCountInfo_to_code
 
 import quex.blackboard as blackboard
 from   quex.blackboard import Lng, setup as Setup
@@ -217,10 +216,11 @@ class TerminalFactory:
         has been stored along with the pattern before any transformation happened.
         No database or anything is required as this point.
         """
-        run_time_counter_f, \
-        text                = map_SmLineColumnCountInfo_to_code(LCCI, ModeName=self.mode_name)
+        run_time_counter_required_f, \
+        cmd_list                     = SmLineColumnCountInfo.get_OpList(LCCI, ModeName=self.mode_name)
 
-        self.run_time_counter_required_f |= run_time_counter_f
+        self.run_time_counter_required_f |= run_time_counter_required_f
+        text                              = Lng.COMMAND_LIST(cmd_list, self.dial_db)
         return "".join(Lng.REPLACE_INDENT(text))
 
     def __adorn_user_code(self, Code, MatchF):

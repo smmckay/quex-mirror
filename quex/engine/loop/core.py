@@ -500,9 +500,10 @@ def _get_terminal_list_for_appendices(EventHandler, appendix_lcci_db,
     run_time_counter_required_f = False
     terminal_list               = []
     for mini_terminal in ParallelMiniTerminalList:
-        rtcr_f, count_code = EventHandler.get_count_code(
+        rtcr_f, cmd_list = EventHandler.get_count_code(
             appendix_lcci_db.get(mini_terminal.incidence_id)
         )
+        count_code = Lng.COMMAND_LIST(cmd_list, EventHandler.dial_db)
         run_time_counter_required_f |= rtcr_f
 
         terminal_list.append(
