@@ -1,7 +1,7 @@
 from   quex.engine.loop.loop_map                          import MiniTerminal, \
                                                                  LoopMapEntry, \
                                                                  LoopMap, \
-                                                                 LoopEventHandlers
+                                                                 LoopConfig
 from   quex.engine.operations.operation_list              import Op
 import quex.engine.analyzer.door_id_address_label         as     dial
 import quex.engine.state_machine.construction.combination as     combination

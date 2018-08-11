@@ -74,15 +74,15 @@ def test(LoopMap, ColumnNPerCodeUnit):
     # Generate sample state machines from what the loop map tells.
     appendix_sm_list = _get_appendix_sm_list(LoopMap)
 
-    event_handler    = loop.LoopEventHandlers(ColumnNPerCodeUnit    = ColumnNPerCodeUnit,
-                                              LexemeEndCheckF       = False, 
-                                              EngineType            = engine.FORWARD, 
-                                              ReloadStateExtern     = None, 
-                                              UserBeforeEntryOpList = None, 
-                                              UserOnLoopExitDoorId  = dial_db.new_door_id(), 
-                                              dial_db               = dial_db, 
-                                              OnReloadFailureDoorId = None, 
-                                              ModeName              = "M") 
+    event_handler    = loop.LoopConfig(ColumnNPerCodeUnit    = ColumnNPerCodeUnit,
+                                       LexemeEndCheckF       = False, 
+                                       EngineType            = engine.FORWARD, 
+                                       ReloadStateExtern     = None, 
+                                       UserBeforeEntryOpList = None, 
+                                       UserOnLoopExitDoorId  = dial_db.new_door_id(), 
+                                       dial_db               = dial_db, 
+                                       OnReloadFailureDoorId = None, 
+                                       ModeName              = "M") 
 
     loop_sm = DFA.from_IncidenceIdMap(
          (lei.character_set, lei.iid_couple_terminal) for lei in LoopMap

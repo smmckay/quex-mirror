@@ -79,7 +79,7 @@ class LoopMap(list):
             assert not lme.character_set.has_intersection(total)
             total.unite_with(lme.character_set)
 
-class LoopEventHandlers:
+class LoopEvents:
     """Event handlers in terms of 'List of Operations' (objects of class 'Op'):
 
         .on_loop_entry:     upon entry into loop
@@ -90,35 +90,19 @@ class LoopEventHandlers:
         .on_after_reload:              after buffer reload is performed.
         .on_after_reload_in_appendix:  as above ... in appendix state machine.
     """
-    Lazy_DoorIdLoop = ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)
-    @typed(LexemeEndCheckF=bool, UserOnLoopExitDoorId=DoorID, dial_db=DialDB, 
-           OnReloadFailureDoorId=(None, DoorID))
-    def __init__(self, ColumnNPerCodeUnit, LexemeEndCheckF, 
-                 EngineType, ReloadStateExtern, UserBeforeEntryOpList, 
-                 UserOnLoopExitDoorId, dial_db, OnReloadFailureDoorId, ModeName): 
-        """ColumnNPerCodeUnit is None => no constant relationship between 
-                                         column number and code unit.
-        """
-        self.mode_name                   = ModeName
-        self.column_number_per_code_unit = ColumnNPerCodeUnit
-        self.lexeme_end_check_f          = LexemeEndCheckF
-        self.reload_state_extern         = ReloadStateExtern
-        self.engine_type                 = EngineType
-        self.dial_db                     = dial_db
-        self.door_id_on_reload_failure   = OnReloadFailureDoorId
-
+    def __init__(self, ColumnNPerCodeUnit, UserBeforeEntryOpList, UserOnLoopExitDoorId):
         # Counting Actions upon: loop entry/exit; before/after reload
         #
         on_loop_entry_count,    \
         on_loop_exit_count,     \
         on_before_reload_count, \
-        on_after_reload_count   = self.__prepare_count_actions(self.column_number_per_code_unit)
+        on_after_reload_count   = self.__prepare_count_actions(ColumnNPerCodeUnit)
 
         # Input pointer positioning: loop entry/exit; before/after reload
         #
         on_loop_entry,            \
         on_loop_reentry_pos,      \
-        on_loop_exit_pos          = self.__prepare_positioning_at_loop_begin_and_exit()
+        on_loop_exit_pos          = self.__prepare_positioning_at_loop_begin_and_exit(ColumnNPerCodeUnit)
         
         on_before_reload_pos,     \
         on_after_reload_pos       = self.__prepare_positioning_before_and_after_reload() 
@@ -127,8 +111,6 @@ class LoopEventHandlers:
 
         # _____________________________________________________________________
         #
-        self.door_id_on_loop_exit_user_code = UserOnLoopExitDoorId
-
         if UserBeforeEntryOpList is None: UserBeforeEntryOpList = [] 
         self.on_loop_entry      = OpList.concatinate(on_loop_entry, 
                                                      on_loop_reentry_pos, 
@@ -137,7 +119,7 @@ class LoopEventHandlers:
         self.on_loop_reentry    = OpList.from_iterable(on_loop_reentry_pos)
         self.on_loop_exit       = OpList.concatinate(on_loop_exit_pos, 
                                                      on_loop_exit_count, 
-                                                     [Op.GotoDoorId(self.door_id_on_loop_exit_user_code)])
+                                                     [ Op.GotoDoorId(UserOnLoopExitDoorId) ])
                                                      
         self.on_before_reload             = OpList.concatinate(on_before_reload_pos, 
                                                                on_before_reload_count)
@@ -147,38 +129,25 @@ class LoopEventHandlers:
                                                                on_after_reload_count)
         self.on_after_reload_in_appendix  = OpList.from_iterable(on_after_reload_pos_apx)
 
-        self.loop_state_machine_id = None
+    def on_loop_after_appendix_drop_out(self, DoorIdLoop, ColumnNPerCodeUnit):
+        # Upon drop-out, the input position is set to where the apendix 
+        # started. Then, the loop is re-entered.
+        op_list = []
 
-        self.__appendix_dfa_present_f = False
-
-    def appendix_dfa_present_f(self):
-        return self.__appendix_dfa_present_f
-
-    def loop_state_machine_id_set(self, SmId):
-        assert SmId is not None
-        self.loop_state_machine_id = SmId
-
-    def get_count_code(self, LCCI):
-        if LCCI is None: return False, []
-
-        run_time_counter_required_f, \
-        cmd_list                     = SmLineColumnCountInfo.get_OpList(LCCI, ModeName=self.mode_name)
-
-        if run_time_counter_required_f:
-            # The content to be counted starts where the appendix started.
-            # * Begin of counting at 'loop restart pointer'.
-            # * Run-time counting can ONLY work, if the lexeme start pointer 
-            #   is at position of appendix begin.
-            cmd_list[:0] = [ Op.Assign(E_R.LexemeStartP, E_R.LoopRestartP) ]
-
-        if self.column_number_per_code_unit is not None:
-            # If the reference counting is applied, the reference pointer
-            # must be set right behind the last counted character.
-            cmd_list.append(
-                Op.Assign(E_R.CountReferenceP, E_R.InputP, Condition="COLUMN")
+        if ColumnNPerCodeUnit is not None:
+            op_list.append(
+                Op.Assign(E_R.CountReferenceP, E_R.LoopRestartP, Condition="COLUMN")
             )
 
-        return run_time_counter_required_f, cmd_list
+        op_list.extend([
+            Op.Assign(E_R.InputP, E_R.LoopRestartP),
+            Op.GotoDoorId(DoorIdLoop)
+        ])
+
+        return op_list
+        
+    def on_loop_exit_text(self, dial_db):
+        return Lng.COMMAND_LIST(self.on_loop_exit, dial_db)
 
     @staticmethod
     def __prepare_count_actions(ColumnNPerCodeUnit):
@@ -199,7 +168,8 @@ class LoopEventHandlers:
                db[E_CharacterCountType.BEFORE_RELOAD](pointer, ColumnNPerCodeUnit), \
                db[E_CharacterCountType.AFTER_RELOAD](pointer, ColumnNPerCodeUnit)
 
-    def __prepare_positioning_at_loop_begin_and_exit(self):
+    @staticmethod
+    def __prepare_positioning_at_loop_begin_and_exit(ColumnNPerCodeUnit):
         """With encodings of dynamic character sizes (UTF8), the pointer to the 
         first letter is stored in 'character_begin_p'. To reset the input 
         pointer 'input_p = character_begin_p' is applied.  
@@ -218,7 +188,7 @@ class LoopEventHandlers:
             reentry = []
             exit    = [ Op.Decrement(E_R.InputP) ]
 
-        if self.column_number_per_code_unit is not None:
+        if ColumnNPerCodeUnit is not None:
             entry.append( 
                 Op.Assign(E_R.CountReferenceP, E_R.InputP, Condition="COLUMN") 
             )
@@ -289,6 +259,61 @@ class LoopEventHandlers:
 
         return before, after
 
+
+class LoopConfig:
+    Lazy_DoorIdLoop = ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)
+    @typed(LexemeEndCheckF=bool, UserOnLoopExitDoorId=DoorID, dial_db=DialDB, 
+           OnReloadFailureDoorId=(None, DoorID))
+    def __init__(self, ColumnNPerCodeUnit, LexemeEndCheckF, 
+                 EngineType, ReloadStateExtern, UserBeforeEntryOpList, 
+                 UserOnLoopExitDoorId, dial_db, OnReloadFailureDoorId, ModeName): 
+        """ColumnNPerCodeUnit is None => no constant relationship between 
+                                         column number and code unit.
+        """
+        self.mode_name                   = ModeName
+        self.column_number_per_code_unit = ColumnNPerCodeUnit
+        self.lexeme_end_check_f          = LexemeEndCheckF
+        self.reload_state_extern         = ReloadStateExtern
+        self.engine_type                 = EngineType
+        self.dial_db                     = dial_db
+        self.door_id_on_reload_failure   = OnReloadFailureDoorId
+        self.door_id_on_loop_exit_user_code = UserOnLoopExitDoorId
+
+        self.loop_state_machine_id = None
+
+        self.__appendix_dfa_present_f = False
+
+        self.events = LoopEvents(ColumnNPerCodeUnit, UserBeforeEntryOpList, UserOnLoopExitDoorId)
+
+    def appendix_dfa_present_f(self):
+        return self.__appendix_dfa_present_f
+
+    def loop_state_machine_id_set(self, SmId):
+        assert SmId is not None
+        self.loop_state_machine_id = SmId
+
+    def get_count_code(self, LCCI):
+        if LCCI is None: return False, []
+
+        run_time_counter_required_f, \
+        cmd_list                     = SmLineColumnCountInfo.get_OpList(LCCI, ModeName=self.mode_name)
+
+        if run_time_counter_required_f:
+            # The content to be counted starts where the appendix started.
+            # * Begin of counting at 'loop restart pointer'.
+            # * Run-time counting can ONLY work, if the lexeme start pointer 
+            #   is at position of appendix begin.
+            cmd_list[:0] = [ Op.Assign(E_R.LexemeStartP, E_R.LoopRestartP) ]
+
+        if self.column_number_per_code_unit is not None:
+            # If the reference counting is applied, the reference pointer
+            # must be set right behind the last counted character.
+            cmd_list.append(
+                Op.Assign(E_R.CountReferenceP, E_R.InputP, Condition="COLUMN")
+            )
+
+        return run_time_counter_required_f, cmd_list
+
     def _cmd_list_Frame(self, TheCountAction, CmdList, DoorIdTarget):
         cmd_list = []
         if TheCountAction is not None:
@@ -342,26 +367,6 @@ class LoopEventHandlers:
             return Op.GotoDoorIdIfInputPNotEqualPointer(DoorIdLoop, cmd.content.pointer)
         else:
             return cmd
-
-    def on_loop_after_appendix_drop_out(self, DoorIdLoop):
-        # Upon drop-out, the input position is set to where the apendix 
-        # started. Then, the loop is re-entered.
-        op_list = []
-
-        if self.column_number_per_code_unit is not None:
-            op_list.append(
-                Op.Assign(E_R.CountReferenceP, E_R.LoopRestartP, Condition="COLUMN")
-            )
-
-        op_list.extend([
-            Op.Assign(E_R.InputP, E_R.LoopRestartP),
-            Op.GotoDoorId(DoorIdLoop)
-        ])
-
-        return op_list
-        
-    def on_loop_exit_text(self):
-        return Lng.COMMAND_LIST(self.on_loop_exit, self.dial_db)
 
     def get_required_register_set(self, AppendixSmExistF):
         result = set()

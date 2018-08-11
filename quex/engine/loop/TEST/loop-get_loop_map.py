@@ -51,7 +51,7 @@ def test(NsCaList, SM_list=[]):
     for sm in SM_list:
         sm.mark_state_origins()
 
-    class Pseudo(loop.LoopEventHandlers):
+    class Pseudo(loop.LoopConfig):
         def __init__(self, TheDialDb):
             self.dial_db                     = TheDialDb
             self.column_number_per_code_unit = None

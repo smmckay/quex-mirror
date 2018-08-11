@@ -98,7 +98,7 @@ import quex.engine.loop.parallel_state_machines           as     parallel_state_
 from   quex.engine.loop.loop_map                          import MiniTerminal, \
                                                                  LoopMapEntry, \
                                                                  LoopMap, \
-                                                                 LoopEventHandlers
+                                                                 LoopConfig
 import quex.engine.analyzer.core                          as     analyzer_generator
 from   quex.engine.analyzer.terminal.core                 import Terminal
 from   quex.engine.analyzer.door_id_address_label         import DialDB, DoorID
@@ -175,14 +175,14 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
     if EngineType is None:
         EngineType = engine.FORWARD
 
-    event_handler = LoopEventHandlers(CaMap.get_column_number_per_code_unit(), 
-                                      LexemeEndCheckF, 
-                                      EngineType, ReloadStateExtern, 
-                                      UserOnLoopExitDoorId  = OnLoopExitDoorId,
-                                      UserBeforeEntryOpList = BeforeEntryOpList,
-                                      dial_db               = dial_db,
-                                      OnReloadFailureDoorId = OnReloadFailureDoorId, 
-                                      ModeName              = ModeName) 
+    event_handler = LoopConfig(CaMap.get_column_number_per_code_unit(), 
+                               LexemeEndCheckF, 
+                               EngineType, ReloadStateExtern, 
+                               UserOnLoopExitDoorId  = OnLoopExitDoorId,
+                               UserBeforeEntryOpList = BeforeEntryOpList,
+                               dial_db               = dial_db,
+                               OnReloadFailureDoorId = OnReloadFailureDoorId, 
+                               ModeName              = ModeName) 
 
     parallel_terminal_list, \
     parallel_sm_list        = _sm_terminal_pair_list_extract(ParallelSmTerminalPairList)
@@ -416,9 +416,9 @@ def _get_analyzer_for_loop(loop_sm, EventHandler):
     analyzer = analyzer_generator.do(loop_sm, 
                                      EventHandler.engine_type, 
                                      EventHandler.reload_state_extern, 
-                                     OnBeforeReload = EventHandler.on_before_reload, 
-                                     OnAfterReload  = EventHandler.on_after_reload,
-                                     OnBeforeEntry  = EventHandler.on_loop_entry, 
+                                     OnBeforeReload = EventHandler.events.on_before_reload, 
+                                     OnAfterReload  = EventHandler.events.on_after_reload,
+                                     OnBeforeEntry  = EventHandler.events.on_loop_entry, 
                                      dial_db        = EventHandler.dial_db,
                                      OnReloadFailureDoorId = EventHandler.door_id_on_reload_failure)
 
@@ -430,7 +430,7 @@ def _get_analyzer_for_loop(loop_sm, EventHandler):
     # Set the 'Re-Entry' Operations.
     entry       = analyzer.init_state().entry
     tid_reentry = entry.enter_OpList(analyzer.init_state_index, index.get(), 
-                                     EventHandler.on_loop_reentry)
+                                     EventHandler.events.on_loop_reentry)
     entry.categorize(analyzer.init_state_index)
 
     return analyzer, entry.get(tid_reentry).door_id
@@ -473,8 +473,11 @@ def _get_terminal_list_for_loop(loop_map, EventHandler, IidLoopAfterAppendixDrop
 
     # Terminal: Re-enter Loop
     if IidLoopAfterAppendixDropOut is not None:
-        txt = Lng.COMMAND_LIST(EventHandler.on_loop_after_appendix_drop_out(DoorIdLoop),
-                               EventHandler.dial_db)
+        txt = Lng.COMMAND_LIST(
+            EventHandler.events.on_loop_after_appendix_drop_out(DoorIdLoop,
+                                                                EventHandler.column_number_per_code_unit),
+            EventHandler.dial_db
+        )
         result.append(
             Terminal(CodeTerminal(txt),
                      "<LOOP>", IidLoopAfterAppendixDropOut,
@@ -483,7 +486,7 @@ def _get_terminal_list_for_loop(loop_map, EventHandler, IidLoopAfterAppendixDrop
 
     # Terminal: Exit Loop
     result.append(
-        Terminal(CodeTerminal(EventHandler.on_loop_exit_text()), 
+        Terminal(CodeTerminal(EventHandler.events.on_loop_exit_text(EventHandler.dial_db)), 
                  "<LOOP EXIT>", IidLoopExit,
                  dial_db=EventHandler.dial_db)
     )
@@ -538,8 +541,8 @@ def _get_analyzer_list_for_appendices(AppendixSmList, EventHandler,
         analyzer_generator.do(sm, 
                               EventHandler.engine_type, 
                               EventHandler.reload_state_extern, 
-                              OnBeforeReload = EventHandler.on_before_reload_in_appendix, 
-                              OnAfterReload  = EventHandler.on_after_reload_in_appendix, 
+                              OnBeforeReload = EventHandler.events.on_before_reload_in_appendix, 
+                              OnAfterReload  = EventHandler.events.on_after_reload_in_appendix, 
                               dial_db        = EventHandler.dial_db)
         for sm in AppendixSmList
     ]
