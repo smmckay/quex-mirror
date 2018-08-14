@@ -334,7 +334,7 @@ _24:
 goto _0;
 
 _25:
-    __quex_debug("* TERMINAL <LOOP TERMINAL 12>\n");
+    __quex_debug("* TERMINAL <LOOP TERMINAL 11>\n");
 me->counter._line_number_at_end += ((size_t)1); __quex_debug_counter();
 
      (me->counter._column_number_at_end) = (size_t)1;
@@ -344,7 +344,7 @@ if( me->buffer._read_p != LexemeEnd ) goto _23;
 goto _0;
 
 _26:
-    __quex_debug("* TERMINAL <LOOP TERMINAL 13>\n");
+    __quex_debug("* TERMINAL <LOOP TERMINAL 12>\n");
 
 self.counter._column_number_at_end -= 1;
 self.counter._column_number_at_end &= ~ ((size_t)0x3);
@@ -356,7 +356,7 @@ if( me->buffer._read_p != LexemeEnd ) goto _23;
 goto _0;
 
 _27:
-    __quex_debug("* TERMINAL <LOOP TERMINAL 14>\n");
+    __quex_debug("* TERMINAL <LOOP TERMINAL 13>\n");
 me->counter._column_number_at_end += ((size_t)1); __quex_debug_counter();
 
 if( me->buffer._read_p != LexemeEnd ) goto _23;
@@ -364,7 +364,7 @@ if( me->buffer._read_p != LexemeEnd ) goto _23;
 goto _0;
 
 _28:
-    __quex_debug("* TERMINAL <LOOP TERMINAL 15>\n");
+    __quex_debug("* TERMINAL <LOOP TERMINAL 14>\n");
 me->counter._column_number_at_end += ((size_t)4711); __quex_debug_counter();
 
 if( me->buffer._read_p != LexemeEnd ) goto _23;
@@ -372,7 +372,7 @@ if( me->buffer._read_p != LexemeEnd ) goto _23;
 goto _0;
 
 _29:
-    __quex_debug("* TERMINAL <LOOP TERMINAL 16>\n");
+    __quex_debug("* TERMINAL <LOOP TERMINAL 15>\n");
 me->counter._column_number_at_end += ((size_t)1); __quex_debug_counter();
 
 if( me->buffer._read_p != LexemeEnd ) goto _23;

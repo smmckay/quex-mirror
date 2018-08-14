@@ -353,18 +353,22 @@ class PPT_List(list):
         self.required_register_set.update(required_register_set)
 
         # 'newline' triggers --> indentation counter
-        pattern  = ISetup.pattern_newline.clone_with_new_incidence_id(E_IncidenceIDs.INDENTATION_HANDLER)
-        terminal = self._terminal_goto_to_looper(new_analyzer_list, None, "<indentation handler>", 
-                                                 required_register_set, Pattern=pattern)
+        loop_entry_pattern  = ISetup.pattern_newline.finalize(CaMap) \
+                                    .clone_with_new_incidence_id(E_IncidenceIDs.INDENTATION_HANDLER)
+        terminal = self._terminal_goto_to_looper(new_analyzer_list, None, 
+                                                 "<indentation handler>", 
+                                                 required_register_set, 
+                                                 Pattern=loop_entry_pattern)
         new_ppt_list = [
-            PPT(PatternPriority(MHI, 0), pattern, terminal)
+            PPT(PatternPriority(MHI, 0), loop_entry_pattern, terminal)
         ]
 
         if ISetup.pattern_suppressed_newline is not None:
             # 'newline-suppressor' causes following 'newline' to be ignored.
             # => next line not subject to new indentation counting.
             new_incidence_id = dial.new_incidence_id()
-            pattern = ISetup.pattern_suppressed_newline.clone_with_new_incidence_id(new_incidence_id)
+            pattern = ISetup.pattern_suppressed_newline.finalize(CaMap) \
+                            .clone_with_new_incidence_id(new_incidence_id)
             door_id = DoorID.global_reentry(self.terminal_factory.dial_db)
             code    = CodeTerminal([Lng.GOTO(door_id, self.terminal_factory.dial_db)])
             new_ppt_list.append(
@@ -437,6 +441,9 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_range):
+            opener_pattern_raw = data["opener_pattern"] # 'finalized' in here
+            closer_pattern_raw = data["closer_pattern"] # 'finalized' in loop generator
+
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
                                                             data["closer_pattern"],
                                                             dial_db) 
@@ -445,7 +452,7 @@ class PPT_List(list):
             required_register_set, \
             run_time_counter_f     = skip_range.do(ModeName      = self.terminal_factory.mode_name, 
                                                    CaMap         = CaMap, 
-                                                   CloserPattern = data["closer_pattern"], 
+                                                   CloserPattern = closer_pattern_raw, 
                                                    DoorIdExit    = door_id_exit,
                                                    ReloadState   = ReloadState, 
                                                    dial_db       = dial_db)
@@ -457,13 +464,13 @@ class PPT_List(list):
             extra_analyzer_list.extend(new_analyzer_list)
             extra_terminal_list.extend(new_terminal_list)
 
-            pattern  = data["opener_pattern"].clone_with_new_incidence_id()
+            loop_entry_pattern = opener_pattern_raw.finalize(CaMap).clone_with_new_incidence_id()
             terminal = self._terminal_goto_to_looper(new_analyzer_list, None, 
                                                      "<skip range>", required_register_set, 
-                                                     Pattern=pattern)
+                                                     Pattern=loop_entry_pattern)
 
             new_ppt_list.append(
-                PPT(PatternPriority(MHI, i), pattern, terminal)
+                PPT(PatternPriority(MHI, i), loop_entry_pattern, terminal)
             )
 
         return new_ppt_list, extra_analyzer_list, extra_terminal_list
@@ -476,10 +483,11 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_nested_range):
-            pattern  = data["opener_pattern"].clone_with_new_incidence_id()
+            opener_pattern_raw = data["opener_pattern"] 
+            closer_pattern_raw = data["closer_pattern"]
 
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
-                                                            data["closer_pattern"],
+                                                            closer_pattern_raw,
                                                             dial_db)
 
             new_analyzer_list,     \
@@ -487,8 +495,8 @@ class PPT_List(list):
             required_register_set, \
             run_time_counter_f     = skip_nested_range.do(ModeName      = self.terminal_factory.mode_name, 
                                                           CaMap         = CaMap, 
-                                                          OpenerPattern = pattern,
-                                                          CloserPattern = data["closer_pattern"], 
+                                                          OpenerPattern = opener_pattern_raw,
+                                                          CloserPattern = closer_pattern_raw, 
                                                           DoorIdExit    = door_id_exit,
                                                           ReloadState   = ReloadState, 
                                                           dial_db       = dial_db)
@@ -499,12 +507,14 @@ class PPT_List(list):
 
             extra_analyzer_list.extend(new_analyzer_list)
             extra_terminal_list.extend(new_terminal_list)
-
+            
+            loop_entry_pattern = opener_pattern_raw.finalize(CaMap).clone_with_new_incidence_id()
             terminal = self._terminal_goto_to_looper(new_analyzer_list, None, "<skip nested range>", 
-                                                     required_register_set, Pattern=pattern)
+                                                     required_register_set, 
+                                                     Pattern=loop_entry_pattern)
 
             new_ppt_list.append(
-                PPT(PatternPriority(MHI, i), pattern, terminal)
+                PPT(PatternPriority(MHI, i), loop_entry_pattern, terminal)
             )
 
         return new_ppt_list, extra_analyzer_list, extra_terminal_list
@@ -553,12 +563,11 @@ def check_indentation_setup(isetup):
        not match some subsets of each other. Otherwise, the behavior would be 
        too confusing.
     """
-    candidates = [
-        isetup.get_sm_newline(),
-        isetup.get_sm_suppressed_newline(),
-    ]
+    candidates = []
+    if isetup.pattern_newline:            candidates.append(isetup.pattern_newline.sm)
+    if isetup.pattern_suppressed_newline: candidates.append(isetup.pattern_suppressed_newline.sm)
     candidates.extend(
-        isetup.get_sm_comment_list()
+        [ p.sm for p in isetup.pattern_comment_list if p.sm is not None ]
     )
     candidates = tuple(x for x in candidates if x is not None)
 

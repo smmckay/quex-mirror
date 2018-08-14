@@ -317,10 +317,32 @@ def _get_loop_map(loop_config, CaMap, SmList, IidLoopExit, L_subset):
                        -- combined appendix state machines, or
                        -- None, indicating that there is none.
     """
-    _assert_all_state_machines_tagged_with_matching_incidence_ids(SmList)
+    assert all(_state_machine_tagged_with_matching_incidence_ids(sm) for sm in SmList)
+    # State machines are not to be transformed at this point in time
+    assert all(not _exists_bad_lexatom_detector_state(sm) for sm in SmList)
 
     CaMap.prune(Setup.buffer_encoding.source_set)
     L = CaMap.union_of_all()
+
+    L_couple = NumberSet.from_union_of_iterable(
+        sm.get_beginning_character_set() for sm in SmList
+    )
+
+    # 'plain_list': Transitions to 'normal terminals' 
+    #               => perform count action and loop.
+    L_plain = L.difference(L_couple)
+    if L_subset is not None: L_plain.intersect_with(L_subset)
+    L_loop  = L_plain.union(L_couple)
+    L_exit  = L_loop.get_complement(Setup.buffer_encoding.source_set)
+
+    plain_list = _get_LoopMapEntry_list_plain(loop_config, CaMap, L_plain)
+
+    exit_list = []
+    if not L_exit.is_empty():
+        exit_list.append(
+            LoopMapEntry(L_exit, IidLoopExit, 
+                         Code = loop_config.cmd_list_CA_GotoTerminal(None, IidLoopExit)) 
+        )
 
     # 'couple_list': Transitions to 'couple terminals' 
     #                => connect to appendix state machines
@@ -328,29 +350,7 @@ def _get_loop_map(loop_config, CaMap, SmList, IidLoopExit, L_subset):
     appendix_sm_list, \
     appendix_lcci_db  = parallel_state_machines.do(loop_config, CaMap, SmList)
 
-    L_couple = NumberSet.from_union_of_iterable(
-        lei.character_set for lei in couple_list
-    )
-
-    # 'plain_list': Transitions to 'normal terminals' 
-    #               => perform count action and loop.
-    L_plain    = L.difference(L_couple)
-    if L_subset is not None: L_plain.intersect_with(L_subset)
-    plain_list = _get_LoopMapEntry_list_plain(loop_config, CaMap, L_plain)
-
-    # 'L_exit': Transition to exit
-    #           => remaining characters cause exit.
-    L_loop = NumberSet.from_union_of_iterable(
-        x.character_set for x in chain(couple_list, plain_list)
-    )
-    L_exit = L_loop.get_complement(Setup.buffer_encoding.source_set)
-    if not L_exit.is_empty():
-        exit_list = [ 
-            LoopMapEntry(L_exit, IidLoopExit, 
-                         Code = loop_config.cmd_list_CA_GotoTerminal(None, IidLoopExit)) 
-        ]
-    else:
-        exit_list = []
+    assert L_couple.is_equal(NumberSet.from_union_of_iterable( lei.character_set for lei in couple_list))
 
     result = LoopMap(couple_list, # --> jump to appendix sm-s
                      plain_list,  # --> iterate to loop start
@@ -541,7 +541,6 @@ def _encoding_transform(sm):
     The original 'DFA-Id' remains intact! That is, both state machines
     have the same id (supposed the old one vanishes).
     """
-    original_dfa_id = sm.get_id()
     verdict_f, \
     sm_transformed = Setup.buffer_encoding.do_state_machine(sm, 
                                                             BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
@@ -550,13 +549,15 @@ def _encoding_transform(sm):
         error.log("Deep error: loop (skip range, skip nested range, indentation, ...)\n"
                   "contained character not suited for given character encoding.")
 
-    sm_transformed.set_id(original_dfa_id)
     return sm_transformed
 
-def _assert_all_state_machines_tagged_with_matching_incidence_ids(SmList):
+def _state_machine_tagged_with_matching_incidence_ids(Sm):
     # All state machines must match the with the incidence id of the state machine id.
     # The acceptance id is used as terminal id later.
-    for sm in SmList:
-        pure_acceptance_id_set = sm.acceptance_id_set()
-        pure_acceptance_id_set.discard(E_IncidenceIDs.MATCH_FAILURE)
-        assert pure_acceptance_id_set == set([sm.get_id()]) 
+    pure_acceptance_id_set = Sm.acceptance_id_set()
+    pure_acceptance_id_set.discard(E_IncidenceIDs.MATCH_FAILURE)
+    return pure_acceptance_id_set == set([Sm.get_id()]) 
+
+def _exists_bad_lexatom_detector_state(Sm):
+    return any(s.is_bad_lexatom_detector() for s in Sm.states.itervalues())
+
