@@ -51,7 +51,7 @@ QUEX_NAME(MF_receive)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** result_pp)
     do {
         me->current_analyzer_function(me);
 
-        QUEX_ASSERT_TOKEN_QUEUE_AFTER_SENDING(&me->_token_queue);
+        QUEX_NAME(TokenQueue_assert_after_sending)(&me->_token_queue);
 
         if( me->error_code != E_Error_None ) {
             QUEX_NAME(TokenQueue_set_token_TERMINATION)(&me->_token_queue);
@@ -92,7 +92,7 @@ QUEX_NAME(receive_from_chunk)(QUEX_TYPE_ANALYZER*    me,
         start_p = me->buffer._read_p;
 
         me->current_analyzer_function(me);
-        QUEX_ASSERT_TOKEN_QUEUE_AFTER_SENDING(&me->_token_queue);
+        QUEX_NAME(TokenQueue_assert_after_sending)(&me->_token_queue);
 
         if( me->error_code != E_Error_None ) {
             QUEX_NAME(TokenQueue_reset)(&me->_token_queue);

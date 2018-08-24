@@ -212,6 +212,8 @@ class Mode_PrepPrep:
             for pap in self.pattern_action_pair_list
         ]
 
+        loopers.finalize(ca_map)
+
         # At this stage, no information is aggregated from base types.
         return Mode_Prep(self.name, self.sr, base_mode_name_sequence, 
                          pap_list, loopers, abstract_f,

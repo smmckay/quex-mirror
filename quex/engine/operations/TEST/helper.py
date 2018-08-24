@@ -91,13 +91,29 @@ example_db = {
     E_Op.GotoDoorIdIfCounterEqualZero: [ 
         Op.GotoDoorIdIfCounterEqualZero(DoorID(1, 1, dial_db))
     ],
+    E_Op.ColumnCountSet: [ 
+        Op.ColumnCountSet(4711)
+    ],
+    E_Op.ColumnCountShift: [ 
+        Op.ColumnCountShift()
+    ],
+    E_Op.LineCountShift: [ 
+        Op.LineCountShift()
+    ],
+    E_Op.PasspartoutCounterCall: [ 
+        Op.PasspartoutCounterCall("Moody")
+    ],
 }
 
 NEW_ENTRIES = set([
     E_Op.AssignPointerDifference, 
     E_Op.PointerAdd, 
     E_Op.PointerAssignMin, 
-    E_Op.GotoDoorIdIfCounterEqualZero 
+    E_Op.GotoDoorIdIfCounterEqualZero,
+    E_Op.ColumnCountSet,
+    E_Op.ColumnCountShift,
+    E_Op.LineCountShift,
+    E_Op.PasspartoutCounterCall,
 ])
 
 accepter = Op.Accepter()

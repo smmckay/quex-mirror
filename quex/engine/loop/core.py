@@ -101,29 +101,18 @@ from   quex.engine.loop.loop_map                          import MiniTerminal, \
                                                                  LoopConfig, LoopEvents
 import quex.engine.analyzer.core                          as     analyzer_generator
 from   quex.engine.analyzer.terminal.core                 import Terminal
-from   quex.engine.analyzer.door_id_address_label         import DialDB, DoorID
+from   quex.engine.analyzer.door_id_address_label         import DialDB
 import quex.engine.analyzer.door_id_address_label         as     dial
 import quex.engine.analyzer.engine_supply_factory         as     engine
 from   quex.engine.state_machine.core                     import DFA  
-import quex.engine.state_machine.construction.combination as     combination
-from   quex.engine.state_machine.character_counter        import SmLineColumnCountInfo
 import quex.engine.state_machine.index                    as     index
-from   quex.engine.operations.operation_list              import Op, \
-                                                                 OpList
-from   quex.engine.counter                                import CountAction, \
-                                                                 CountActionMap, \
-                                                                 count_operation_db_with_reference, \
-                                                                 count_operation_db_without_reference
+from   quex.engine.counter                                import CountActionMap
 from   quex.engine.misc.interval_handling                 import NumberSet
 from   quex.engine.misc.tools                             import typed
 import quex.engine.misc.error                             as     error
 
 from   quex.blackboard import setup as Setup, Lng
-from   quex.constants  import E_CharacterCountType, \
-                              E_R, \
-                              E_IncidenceIDs
-
-from   itertools   import chain
+from   quex.constants  import E_IncidenceIDs
 
 @typed(CaMap=CountActionMap, dial_db=DialDB, 
        ReloadF=bool, LexemeEndCheckF=bool, OnLoopExit=list,
@@ -438,8 +427,6 @@ def _get_terminal_list_for_loop(loop_map, loop_config, DoorIdLoop):
     If they fail, they can accept its incidence id and re-enter the loop from
     there.
     """
-    door_id_loop_exit = DoorID.incidence(loop_config.iid_loop_exit, loop_config.dial_db)
-
     # Terminal: Normal Loop Characters
     # (LOOP EXIT terminal is generated later, see below).
     result = []

@@ -156,7 +156,7 @@ QUEX_NAME(TokenQueue_push_core)(QUEX_NAME(TokenQueue)* me,
         me->the_lexer->error_code = E_Error_Token_QueueOverflow;
         return;
     }
-    QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);  
+    QUEX_NAME(TokenQueue_assert_before_sending)(me);  
 
     $$<token-stamp-line>   me->write_iterator->_line_n   = me->the_lexer->counter._line_number_at_begin;$$
     $$<token-stamp-column> me->write_iterator->_column_n = me->the_lexer->counter._column_number_at_begin;$$
@@ -174,7 +174,7 @@ QUEX_NAME(TokenQueue_push_text)(QUEX_NAME(TokenQueue)* me,
 /* Push a token and set its 'text' member.                                    */
 {
     bool ownership_transferred_to_token_f = false;
-    QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);
+    QUEX_NAME(TokenQueue_assert_before_sending)(me);
     ownership_transferred_to_token_f = QUEX_GNAME_TOKEN(take_text)(me->write_iterator, BeginP, EndP);
     QUEX_NAME(TokenQueue_push)(me, Id);
     return ownership_transferred_to_token_f;
@@ -191,7 +191,7 @@ QUEX_NAME(TokenQueue_push_text)(QUEX_NAME(TokenQueue)* me,
 {
     bool ownership_transferred_to_token_f = false;
     (void)me; (void)Id; (void)BeginP; (void)EndP;
-    QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);
+    QUEX_NAME(TokenQueue_assert_before_sending)(me);
     __quex_assert((const char*)0 == "Token type does not support 'take text'.");
 
     QUEX_NAME(TokenQueue_set_token_TERMINATION)(me);
@@ -207,7 +207,7 @@ QUEX_NAME(TokenQueue_push_repeated)(QUEX_NAME(TokenQueue)* me,
 /* Push a repeated token by 'RepetitionN' times. This is only addmissible for
  * TokenId-s specified in the 'repeated_token' section of the '.qx' file.     */
 {
-    QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);  
+    QUEX_NAME(TokenQueue_assert_before_sending)(me);  
     __quex_assert(RepetitionN != 0);        
 
     QUEX_GNAME_TOKEN(repetition_n_set)(me->write_iterator, RepetitionN);
@@ -247,7 +247,7 @@ QUEX_NAME(TokenQueue_push_repeated)(QUEX_NAME(TokenQueue)* me,
 /* Push a repeated token by 'RepetitionN' times. This is only addmissible for
  * TokenId-s specified in the 'repeated_token' section of the '.qx' file.     */
 {
-    QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);  
+    QUEX_NAME(TokenQueue_assert_before_sending)(me);  
     (void)me; (void)Id; (void)RepetitionN;
     __quex_assert(RepetitionN != 0);        
 
@@ -293,6 +293,34 @@ $$-----------------------------------------------------------------------------
 $$<not-token-take-text>--------------------------------------------------------
     QUEX_NAME(TokenQueue_push)(me, QUEX_SETTING_TOKEN_ID_TERMINATION); 
 $$-----------------------------------------------------------------------------
+}
+
+QUEX_INLINE bool             
+QUEX_NAME(TokenQueue_assert_before_sending)(QUEX_NAME(TokenQueue)* me)
+{                                                                              
+    if( ! QUEX_NAME(TokenQueue_assert_after_sending)(me) ) {
+        return false;
+    } 
+    /* End of token queue has not been reached.                       */          
+    __quex_assert((me)->write_iterator != (me)->end);                             
+    /* No token sending after 'TERMINATION'.                          */          
+    __quex_assert(   (me)->write_iterator         == (me)->begin                  
+                  || (me)->write_iterator[-1].id !=  QUEX_SETTING_TOKEN_ID_TERMINATION ); 
+    return true;
+} 
+
+QUEX_INLINE bool             
+QUEX_NAME(TokenQueue_assert_after_sending)(QUEX_NAME(TokenQueue)* me)
+{                                                                     
+    __quex_assert((me)->begin != 0x0);                                   
+    __quex_assert((me)->read_iterator  >= (me)->begin);                  
+    __quex_assert((me)->write_iterator >= (me)->read_iterator);          
+    /* If the following breaks, then the given queue size was to small*/ 
+    if( (me)->write_iterator > (me)->end ) {                            
+        QUEX_ERROR_EXIT("Error: Token queue overflow.");                 
+        return false;
+    }                                                                    
+    return true;
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

@@ -142,7 +142,7 @@ def check_include_guard_undefinition():
 
 if "--hwut-info" in sys.argv:
     print "Include Guards for C/C++"
-    print "CHOICES: convention, undefinition;"
+    print "CHOICES: convention;"
     sys.exit()
 
 if "convention" in sys.argv:

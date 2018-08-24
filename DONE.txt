@@ -1,3 +1,5 @@
+-- BadLexatom detection improved.
+-- CMakeLists.txt files for all examples
 -- Option '--no-count' to disable line and column counting at once.
 -- Setting and Option parameters have been cleaned up.
    => optional '--config-by-cmake' and '--config-by-macros'

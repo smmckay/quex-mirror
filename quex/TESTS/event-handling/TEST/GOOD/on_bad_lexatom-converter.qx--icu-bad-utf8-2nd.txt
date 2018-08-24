@@ -1,0 +1,76 @@
+| Mode change to X
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+   lexeme start, input, end of file------->[0001] 0x0000
+                                           [0002] 0xFFFFFFFF
+                                           [0003] 0xFFFFFFFF
+                                           [0004] 0xFFFFFFFF
+                                           ...
+                                           [FFFB] 0xFFFFFFFF
+                                           [FFFC] 0xFFFFFFFF
+                                           [FFFD] 0xFFFFFFFF
+                                           [FFFE] 0xFFFFFFFF
+   buffer back---------------------------->[FFFF] 0x0000
+_________________________________________________________________
+bad_lexatom: '0x0000'
+lexeme:      
+<TERMINATION> '' 
+  mode:       X;
+  error_code: OnBadLexatom;
+  _mode_stack: {
+    size:    64;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x7f1e28584010)) (== _front);
+      end:       begin + 65536 (== _back + 1);
+    }
+    _read_p:                      begin + 1, end - 65535;
+    _lexeme_start_p:              begin + 1, end - 65535;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     0;
+      byte_n_per_lexatom:             -1;
+      _byte_order_reversion_active_f: false;
+      type:                           converter;
+      raw_buffer: {
+        buffer:            { begin: ((0x55968033f5c0)) end: ((0x55968034f5c0)) size: 65536; }
+        fill_end_p:        begin + 3, end - 65533;
+        next_to_convert_p: begin + 1, end - 65535;
+      }
+      converter: {
+        virginity_f:          true;
+        byte_n_per_lexatom:   -1;
+        input_code_unit_size: -1;
+        type:                         ICU, IBM (tm);
+        from_handle:                  ((0x55968033ef70));
+        to_handle:                    ((0x55968033f120));
+        status:                       U_ZERO_ERROR;
+        reset_upon_next_conversion_f: false;
+        pivot: {
+           buffer: { begin: ((0x55968033eed0)) end: ((0x55968033ef50)) size: 64; }
+           source: begin + 0, end - 64;
+           target: begin + 0, end - 64;
+        }
+      }
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 3;
+        type:             FILE;
+        file_handle:      ((0x55968033f250));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 0;
+      end_p:               begin + 1, end - 65535;
+    }
+  }
+
+

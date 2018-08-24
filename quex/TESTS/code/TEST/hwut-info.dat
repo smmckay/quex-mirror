@@ -3,6 +3,7 @@ Test Collection on Source Code
 bash *.sh
 python *.py
 --not compilation-independence.sh
+--not macro-check.*
 --not function-check-example.py
 --not no-unused-enum-values-helper.sh
 ---------------------------------------

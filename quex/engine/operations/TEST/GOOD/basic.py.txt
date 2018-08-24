@@ -132,6 +132,22 @@ ColumnCountReferencePSet
        $$<count-column> count_reference_p = loop_restart_p + 1000;$$
    }
 
+ColumnCountSet
+   <ColumnCountSet: { value=4711,  }>
+   Registers:    Column(w), 
+   Cost:         1
+   C-code: {
+       me->counter._column_number_at_end = (4711); __quex_debug_counter();
+   }
+
+ColumnCountShift
+   <ColumnCountShift>
+   Registers:    Column(wr), 
+   Cost:         1
+   C-code: {
+           me->counter._column_number_at_begin = me->counter._column_number_at_end;
+   }
+
 Decrement
    <Decrement: { register=InputP,  }>
    Registers:    InputP(wr), 
@@ -147,46 +163,46 @@ GotoDoorId
    Cost:         1
    C-code: {
        goto _0;
-   }
 
+   }
 GotoDoorIdIfCounterEqualZero
    <GotoDoorIdIfCounterEqualZero: { door_id=DoorID(s=1, d=1),  }>
    Registers:    Counter(r),  ThreadOfControl(w), 
    IsBranching: True
    Cost:         1
    C-code: {
+
        if( counter == 0 ) goto _5;
    }
-
 GotoDoorIdIfInputPNotEqualPointer
    <GotoDoorIdIfInputPNotEqualPointer: { door_id=DoorID(s=33, d=44), pointer=LoopRestartP,  }>
    Registers:    InputP(r),  LoopRestartP(r),  ThreadOfControl(w), 
    IsBranching: True
    Cost:         1
    C-code: {
+
        if( me->buffer._read_p != loop_restart_p ) goto _0;
    }
-
 IfPreContextSetPositionAndGoto
    <IfPreContextSetPositionAndGoto: { acceptance_condition_set=(24L,), router_element=case 66: pos -= 1;  goto Pattern66;,  }>
    Registers:    InputP(wr),  PreContextFlags(r),  PositionRegister(r),  ThreadOfControl(w), 
    IsBranching: True
    Cost:         1
    C-code: {
+
        if( pre_context_24_fulfilled_f ) {
            me->buffer._read_p -= 1;
        goto _0;
        }
    }
-
 Increment
    <Increment: { register=InputP,  }>
    Registers:    InputP(wr), 
+
    Cost:         1
    C-code: {
            ++(me->buffer._read_p);
    }
-
 IndentationHandlerCall
    <IndentationHandlerCall: { mode_name=SLEEPY,  }>
    Registers:    Column(r),  Indentation(wr),  CountReferenceP(r), 
@@ -194,27 +210,27 @@ IndentationHandlerCall
    C-code: {
            if( QUEX_NAME(indentation_handler_is_active)(me) ) {
                QUEX_NAME(SLEEPY_on_indentation)(me, (QUEX_TYPE_INDENTATION)me->counter._column_number_at_end, LexemeNull);
+
            }
    }
-
 IndentationHandlerCall
    <IndentationHandlerCall: { mode_name=EXITED,  }>
    Registers:    Column(r),  Indentation(wr),  CountReferenceP(r), 
    Cost:         1
    C-code: {
+
            if( QUEX_NAME(indentation_handler_is_active)(me) ) {
                QUEX_NAME(EXITED_on_indentation)(me, (QUEX_TYPE_INDENTATION)me->counter._column_number_at_end, LexemeNull);
            }
    }
-
 InputPDereference
    <InputPDereference>
    Registers:    Input(w),  InputP(r), 
    Cost:         1
    C-code: {
+
            input = *(me->buffer._read_p);
    }
-
 LexemeResetTerminatingZero
    <LexemeResetTerminatingZero>
    Registers:    Buffer(w),  Input(w),  InputP(r),  LexemeStartP(r), 
@@ -231,6 +247,22 @@ LineCountAdd
        me->counter._line_number_at_end += ((size_t)1); __quex_debug_counter();
    }
 
+LineCountShift
+   <LineCountShift>
+   Registers:    Line(wr), 
+   Cost:         1
+   C-code: {
+           me->counter._line_number_at_begin = me->counter._line_number_at_end;
+   }
+
+PasspartoutCounterCall
+   <PasspartoutCounterCall: { mode_name=Moody,  }>
+   Registers:    Buffer(r),  Column(wr),  InputP(r),  LexemeStartP(r),  Line(wr), 
+   Cost:         1
+   C-code: {
+       QUEX_NAME(Moody_counter_on_arbitrary_lexeme)((QUEX_TYPE_ANALYZER*)me, LexemeBegin, LexemeEnd);
+   }
+
 PathIteratorSet
    <PathIteratorSet: { offset=1000, path_id=22, path_walker_id=11,  }>
    Registers:    PathIterator(w), 
@@ -238,72 +270,73 @@ PathIteratorSet
    C-code: {
            path_iterator  = path_walker_11_path_22 + 1000;
            __quex_debug("path_iterator = (Pathwalker: 11, Path: 22, Offset:  + 1000)\n");
-   }
 
+   }
 PointerAdd
    <PointerAdd: { condition=MY_CONDITION, offset=Counter, pointer=InputP,  }>
    Registers:    Counter(r),  InputP(wr), 
    Cost:         1
    C-code: {
            (me->buffer._read_p) = &(me->buffer._read_p)[counter];
-   }
 
+   }
 PointerAssignMin
    <PointerAssignMin: { a=LoopRestartP, b=LexemeStartP, result=InputP,  }>
    Registers:    InputP(w),  LexemeStartP(r),  LoopRestartP(r), 
    Cost:         1
    C-code: {
            (me->buffer._read_p) = loop_restart_p < (me->buffer._lexeme_start_p) ? loop_restart_p : (me->buffer._lexeme_start_p);
-   }
 
+   }
 PreContextOK
    <pre-context-fulfilled = 4711;>
    Registers:    PreContextFlags(w), 
    Cost:         1
    C-code: {
            pre_context_4711_fulfilled_f = 1;
+
            __quex_debug("pre_context_4711_fulfilled_f = true\n");
    }
-
 PrepareAfterReload
    <PrepareAfterReload: { on_failure_door_id=DoorID(s=55, d=66), on_success_door_id=DoorID(s=33, d=44),  }>
    Registers:    TargetStateElseIndex(w),  TargetStateIndex(w), 
    Cost:         1
    C-code: {
            target_state_index = 0; target_state_else_index = 1;
-   }
 
+   }
 QuexAssertNoPassage
    <QuexAssertNoPassage>
    Registers:    StandardOutput(w),  ThreadOfControl(wr), 
    IsBranching: True
    Cost:         1
    C-code: {
+
        __quex_assert_no_passage();
    }
-
 QuexDebug
    <QuexDebug: { string=Hello Bug!,  }>
    Registers:    StandardOutput(w), 
    Cost:         1
    C-code: {
+
        __quex_debug("Hello Bug!");
    }
-
 RouterByLastAcceptance
    <on last_acceptance:case 66: pos -= 1;  goto Pattern66;>
    Registers:    AcceptanceRegister(r),  InputP(w),  ThreadOfControl(w), 
    IsBranching: True
    Cost:         1
    C-code: {
+
        switch( last_acceptance ) {
        case 66:     me->buffer._read_p -= 1;
        goto _0;
        }
    }
-
 RouterOnStateKey
    <on last_acceptance:(1L, DoorID(s=100, d=1))(2L, DoorID(s=200, d=1))(3L, DoorID(s=300, d=1))>
+
    Registers:    PathIterator(r),  TemplateStateKey(r),  ThreadOfControl(w), 
    IsBranching: True
    Cost:         1
@@ -312,17 +345,17 @@ RouterOnStateKey
        case 0x1:  goto _2;
        case 0x2:  goto _3;
        case 0x3:  goto _4;
+
        }
    }
-
 StoreInputPosition
    <if 'PreContext_4711': position[PostContext_7777]  = input_p;>
    Registers:    InputP(r),  PreContextFlags(r),  PositionRegister:7777(w), 
    Cost:         1
    C-code: {
+
            position[7777] = me->buffer._read_p; __quex_debug("position[7777] = input_p;\n");
    }
-
 StoreInputPosition
    <if 'PreContext_4711': position[PostContext_7777]  = input_p - 1000;>
    Registers:    InputP(r),  PreContextFlags(r),  PositionRegister:7777(w), 
@@ -330,15 +363,42 @@ StoreInputPosition
    C-code: {
            position[7777] = me->buffer._read_p - 1000; __quex_debug("position[7777] = input_p - 1000;\n");
    }
-
 TemplateStateKeySet
    <TemplateStateKeySet: { state_key=66,  }>
+
    Registers:    TemplateStateKey(w), 
    Cost:         1
    C-code: {
            state_key = 66;
            __quex_debug("state_key = 66\n");
    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

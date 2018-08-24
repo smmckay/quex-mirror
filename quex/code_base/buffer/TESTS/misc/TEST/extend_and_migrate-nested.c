@@ -173,7 +173,7 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t Depth)
         hwut_verify(success_f);
 
         array[i+1].input.end_p    = &array[i+1]._memory._front[single_size-1];
-        array[i+1].input.end_p[0] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+        array[i+1].input.end_p[0] = QUEX_TestAnalyzer_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
 
         for(p =  &array[i+1]._memory._front[1]; p != array[i+1].input.end_p; ++p) {
             *p = (QUEX_TYPE_LEXATOM_EXT)('a' + i);

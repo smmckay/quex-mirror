@@ -84,31 +84,31 @@ goto _34;
     __quex_assert_no_passage();
 _17:
     /* (DROP_OUT from 19)  */
-goto _25;
+goto _24;
 
 
     __quex_assert_no_passage();
 _18:
     /* (DROP_OUT from 20)  */
-goto _26;
+goto _25;
 
 
     __quex_assert_no_passage();
 _19:
     /* (DROP_OUT from 21)  */
-goto _27;
+goto _26;
 
 
     __quex_assert_no_passage();
 _20:
     /* (DROP_OUT from 22)  */
-goto _28;
+goto _27;
 
 
     __quex_assert_no_passage();
 _21:
     /* (DROP_OUT from 23)  */
-goto _29;
+goto _28;
 
 
     __quex_assert_no_passage();
@@ -327,13 +327,13 @@ default: goto _7;
     /* (*) Terminal states _______________________________________________________
      *
      * States that implement actions of the 'winner patterns.                     */
-_24:
+_29:
     __quex_debug("* TERMINAL <LOOP EXIT>\n");
     (me->buffer._read_p) = loop_restart_p;
 
 goto _0;
 
-_25:
+_24:
     __quex_debug("* TERMINAL <LOOP TERMINAL 11>\n");
 me->counter._line_number_at_end += ((size_t)1); __quex_debug_counter();
 
@@ -343,7 +343,7 @@ if( me->buffer._read_p != LexemeEnd ) goto _23;
 
 goto _0;
 
-_26:
+_25:
     __quex_debug("* TERMINAL <LOOP TERMINAL 12>\n");
 
 self.counter._column_number_at_end -= 1;
@@ -355,7 +355,7 @@ if( me->buffer._read_p != LexemeEnd ) goto _23;
 
 goto _0;
 
-_27:
+_26:
     __quex_debug("* TERMINAL <LOOP TERMINAL 13>\n");
 me->counter._column_number_at_end += ((size_t)1); __quex_debug_counter();
 
@@ -363,7 +363,7 @@ if( me->buffer._read_p != LexemeEnd ) goto _23;
 
 goto _0;
 
-_28:
+_27:
     __quex_debug("* TERMINAL <LOOP TERMINAL 14>\n");
 me->counter._column_number_at_end += ((size_t)4711); __quex_debug_counter();
 
@@ -371,7 +371,7 @@ if( me->buffer._read_p != LexemeEnd ) goto _23;
 
 goto _0;
 
-_29:
+_28:
     __quex_debug("* TERMINAL <LOOP TERMINAL 15>\n");
 me->counter._column_number_at_end += ((size_t)1); __quex_debug_counter();
 
@@ -381,12 +381,12 @@ goto _0;
 
 if(0) {
     /* Avoid unreferenced labels. */
+    goto _29;
     goto _24;
     goto _25;
     goto _26;
     goto _27;
     goto _28;
-    goto _29;
 }
 _35: /* TERMINAL: BAD_LEXATOM */
 ;

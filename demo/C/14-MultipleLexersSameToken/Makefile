@@ -14,20 +14,21 @@ LD       := $(COMPILER) -I./ $(ADD_FLAGS)
 
 all: lexer
 
-lexer: max/Lexer.c moritz/Lexer.c boeck/Lexer.c lexer.c A_B_C/A_B_C-token.c
+lexer: max/max_Lexer.c moritz/moritz_Lexer.c boeck/boeck_Lexer.c lexer.c A_B_C/A_B_C-token.c
 	$(LD) $^ -o  $@ `icu-config --ldflags` 
 	 
 COMMON_TOKEN_OPTIONS = --token-class-file A_B_C/A_B_C-token.h \
-	                   --suppress         0 1 6
+					   --token-id-prefix  TKN_ \
+	                   --suppress         0 1 6 
 
 max/Lexer.c:    max.qx A_B_C/A_B_C-token.c A_B_C-token_ids.h
-	quex -i $< -o max::Lexer --odir max -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
+	quex -i $< -o max_Lexer --odir max -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
 
 moritz/Lexer.c: moritz.qx A_B_C/A_B_C-token.c A_B_C-token_ids.h
-	quex -i $< -o moritz::Lexer --odir moritz -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
+	quex -i $< -o moritz_Lexer --odir moritz -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
 
 boeck/Lexer.c:  boeck.qx A_B_C/A_B_C-token.c A_B_C-token_ids.h
-	quex -i $< -o boeck::Lexer --odir boeck -b 4 $(COMMON_TOKEN_OPTIONS) --language C
+	quex -i $< -o boeck_Lexer --odir boeck -b 4 $(COMMON_TOKEN_OPTIONS) --language C
 
 A_B_C-token_ids.h \
 A_B_C/A_B_C-token.c: 

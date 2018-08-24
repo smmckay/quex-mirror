@@ -16,8 +16,8 @@ main(int argc, char** argv)
     size_t  TestString0L  = strlen((const char*)TestString0);
 
     /* Ensure some settings that cause the accumulator to extend its memory */
-    __quex_assert(QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE == 0);
-    __quex_assert(QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR == 1);
+    __quex_assert(QUEX_TestAnalyzer_SETTING_ACCUMULATOR_INITIAL_SIZE == 0);
+    __quex_assert(QUEX_TestAnalyzer_SETTING_ACCUMULATOR_GRANULARITY_FACTOR == 1);
 
     if( argc < 2 ) return -1;
 

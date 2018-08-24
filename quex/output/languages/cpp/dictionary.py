@@ -54,6 +54,7 @@ class Language(dict):
     Match_QUEX_NAME_LIB       = re.compile(r"\bQUEX_NAME_LIB\(([A-Z_a-z0-9]+)\)")
     Match_QUEX_GNAME_LIB      = re.compile(r"\bQUEX_GNAME_LIB\(([A-Z_a-z0-9]+)\)")
     Match_QUEX_SETTING        = re.compile(r"\bQUEX_SETTING_([A-Z_0-9]+)\b")
+    Match_QUEX_PURE_SETTING   = re.compile(r"\bQUEX_<PURE>SETTING_([A-Z_0-9]+)\b")
     Match_QUEX_OPTION         = re.compile(r"\bQUEX_OPTION_([A-Z_0-9]+)\b")
     # Note: When the first two are replaced, the last cannot match anymore.
     Match_QUEX_INCLUDE_GUARD_TOKEN = re.compile(r"\bQUEX_INCLUDE_GUARD__TOKEN__([a-zA-Z_0-9]+)\b")
@@ -228,9 +229,6 @@ class Language(dict):
         # Unregistering an analyzer ensures that no one else works with the 
         # analyzer on something unrelated.
         self.__analyzer = None
-
-    def EQUAL(self, X, Y):
-        return "%s == %s" % (X, Y)
 
     def BINARY_OPERATION_LIST(self, Operator, ConditionList):
         condition_list = [ c for c in ConditionList if c ]
@@ -621,9 +619,6 @@ class Language(dict):
             return self.REFERENCE_P_COLUMN_ADD(self.REGISTER_NAME(Op.content.pointer), 
                                                Op.content.column_n_per_chunk, 
                                                Op.content.subtract_one_f) 
-        elif Op.id == E_Op.LineCountSet:
-            return self.COUNTER_LINE_SET("(size_t)(%s)" % Op.content.value)
-
         elif Op.id == E_Op.LineCountShift:
             return self.COUNTER_SHIFT_LINE_COUNT()
 
@@ -822,10 +817,6 @@ class Language(dict):
     def COUNTER_COLUM_SET(self, Arg):
         if condition.do("count-column"): return "me->counter._column_number_at_end = (%s); __quex_debug_counter();" % Arg
         else:                            return ""
-
-    def COUNTER_LINE_SET(self, Arg):
-        if condition.do("count-line"): return "me->counter._line_number_at_end = (%s); __quex_debug_counter();" % Arg
-        else:                          return ""
 
     def COUNTER_COLUMN_GRID_STEP(self, GridWidth, StepN=1):
         """A grid step is an addition which depends on the current value 
@@ -1428,7 +1419,7 @@ class Language(dict):
             ""
         ]
         txt.extend([
-            "set(QUEX_SETTING_%s_%s_EXT %s)" % (name, Setup.analyzer_name_safe, value) 
+            "set(QUEX_%s_SETTING_%s_EXT %s)" % (Setup.analyzer_name_safe, name, value) 
             for name, value in SettingList 
         ])
         txt.extend([
@@ -1441,12 +1432,14 @@ class Language(dict):
         ])
 
         return "\n".join(txt)
+
     def ERROR_IF_DEFINED_AND_NOT_CONFIGURATION_BY_MACRO(self, ShortNameList):
         def ifdefined(Name, FirstF):
+            condition_str = "defined(QUEX_SETTING_%s_EXT) || defined(QUEX_%s_SETTING_%s_EXT)" % (Name, Setup.analyzer_name_safe, Name)
             if FirstF:
-                return "#if    defined(QUEX_SETTING_%s_EXT)" % Name
+                return "#if    %s" %  condition_str
             else:
-                return "   ||  defined(QUEX_SETTING_%s_EXT)" % Name
+                return "   ||  %s" %  condition_str
             
         if Setup.configuration_by_macros_f:
             return ""
@@ -1482,18 +1475,21 @@ class Language(dict):
         be defined by according macros on the command line.
         """
         # variable_name = "QUEX_SETTING_%s_%s" % (Setup.analyzer_name_safe, Name)
-        variable_name = "QUEX_SETTING_%s" % Name
+
+        variable_name = "QUEX_%s_SETTING_%s" % (Setup.analyzer_name_safe, Name)
         if Setup.configuration_by_cmake_f:
-            value_str = "@QUEX_SETTING_%s_%s@" % (Setup.analyzer_name_safe, variable_name)
+            value_str = "@QUEX_%s_SETTING_%s_EXT@" % (Setup.analyzer_name_safe, Name)
         else:
             value_str = "%s" % Value
 
         if Setup.configuration_by_macros_f:
             return "\n".join([
-                "#ifdef QUEX_SETTING_%s_EXT" % Name,
-                "#   define %s QUEX_SETTING_%s_EXT" % (variable_name, Name),
+                "#if   defined(QUEX_<PURE>SETTING_%s_EXT)" % Name,
+                "#   define %s QUEX_<PURE>SETTING_%s_EXT"  % (variable_name, Name),
+                "#elif defined(QUEX_%s_SETTING_%s_EXT)"    % (Setup.analyzer_name_safe, Name),
+                "#   define %s QUEX_%s_SETTING_%s_EXT"     % (variable_name, Setup.analyzer_name_safe, Name),
                 "#else",
-                "#   define %s %s"                  % (variable_name, value_str),
+                "#   define %s %s"                         % (variable_name, value_str),
                 "#endif",
             ])
         else:
@@ -1534,7 +1530,8 @@ class Language(dict):
 
         txt = blue_print(Txt, replacements, CommonStart="QUEX_")
 
-        # txt = self.Match_QUEX_SETTING.sub(r"%s_SETTING_\1" % Setup.analyzer_class_name, txt)
+        txt = self.Match_QUEX_SETTING.sub(r"QUEX_%s_SETTING_\1" % Setup.analyzer_class_name, txt)
+        txt = self.Match_QUEX_PURE_SETTING.sub(r"QUEX_SETTING_\1", txt)
         # txt = self.Match_QUEX_OPTION.sub(r"%s_OPTION_\1" % Setup.analyzer_class_name, txt)
 
         # QUEX_NAME

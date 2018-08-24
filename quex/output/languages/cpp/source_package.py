@@ -55,7 +55,6 @@ dir_db = {
         "converter/iconv/Converter_IConv",
         "converter/iconv/Converter_IConv.i",
         "converter/iconv/special_headers.h",
-        "converter/iconv/argument-types.h",
         "converter/icu/Converter_ICU",
         "converter/icu/Converter_ICU.i",
         "converter/icu/special_headers.h",

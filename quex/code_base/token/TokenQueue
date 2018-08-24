@@ -61,41 +61,8 @@ QUEX_INLINE size_t           QUEX_NAME(TokenQueue_available_n)(QUEX_NAME(TokenQu
 QUEX_INLINE void             QUEX_NAME(TokenQueue_set_token_TERMINATION)(QUEX_NAME(TokenQueue)* me);
 
 
-#ifdef QUEX_OPTION_ASSERTS
-#   define QUEX_ASSERT_TOKEN_QUEUE(me) \
-        do {                                                     \
-            QUEX_ASSERT_TOKEN_QUEUE_AFTER_SENDING((me));         \
-            if( (me)->write_iterator == (me)->end ) {            \
-                QUEX_ERROR_EXIT("Error: Token queue overflow."); \
-            }                                                    \
-        } while(0)
-
-#   define QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me)                                     \
-        do {                                                                              \
-            QUEX_ASSERT_TOKEN_QUEUE(me);                                                  \
-            /* End of token queue has not been reached.                       */          \
-            __quex_assert((me)->write_iterator != (me)->end);                             \
-            /* No token sending after 'TERMINATION'.                          */          \
-            __quex_assert(   (me)->write_iterator         == (me)->begin                  \
-                          || (me)->write_iterator[-1].id !=  QUEX_SETTING_TOKEN_ID_TERMINATION ); \
-        } while( 0 )
-
-#   define QUEX_ASSERT_TOKEN_QUEUE_AFTER_SENDING(me) \
-        do {                                                                     \
-            __quex_assert((me)->begin != 0x0);                                   \
-            __quex_assert((me)->read_iterator  >= (me)->begin);                  \
-            __quex_assert((me)->write_iterator >= (me)->read_iterator);          \
-            /* If the following breaks, then the given queue size was to small*/ \
-            if( (me)->write_iterator > (me)->end ) {                             \
-                QUEX_ERROR_EXIT("Error: Token queue overflow.");                 \
-            }                                                                    \
-        } while(0)
-
-#else
-#   define QUEX_ASSERT_TOKEN_QUEUE(me)                /* empty */
-#   define QUEX_ASSERT_TOKEN_QUEUE_AFTER_SENDING(me)  /* empty */
-#   define QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me) /* empty */
-#endif
+QUEX_INLINE bool             QUEX_NAME(TokenQueue_assert_before_sending)(QUEX_NAME(TokenQueue)* me);
+QUEX_INLINE bool             QUEX_NAME(TokenQueue_assert_after_sending)(QUEX_NAME(TokenQueue)* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

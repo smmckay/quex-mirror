@@ -15,9 +15,6 @@ from   quex.blackboard import setup as Setup, Lng
 from   quex.constants  import E_CharacterCountType, \
                               E_R, E_Op
 
-from   itertools   import chain
-from   copy        import copy
-
 class MiniTerminal(object):
     __slots__ = ("__code", "name", "incidence_id")
     def __init__(self, Code, Name, IncidenceId):
@@ -36,7 +33,6 @@ class MiniTerminal(object):
 
         return Terminal(CodeTerminal(PreCode + self.get_code(LoopStateMachineId)), 
                         self.name, self.incidence_id, dial_db=dial_db)
-
 
 class MiniTerminalCmd(MiniTerminal):
     def __init__(self, IncidenceId, CmdList):
@@ -293,10 +289,6 @@ class LoopConfig:
     def appendix_dfa_present_f(self):
         return self.__appendix_dfa_present_f
 
-    def loop_state_machine_id_set(self, SmId):
-        assert SmId is not None
-        self.loop_state_machine_id = SmId
-
     def get_count_code(self, LCCI):
         if LCCI is None: return False, []
 
@@ -320,7 +312,6 @@ class LoopConfig:
         return run_time_counter_required_f, cmd_list
 
     def replace_Lazy_DoorIdLoop(self, cmd, DoorIdLoop):
-        GotoDoorIdCmdIdSet = (E_Op.GotoDoorId, E_Op.GotoDoorIdIfInputPNotEqualPointer)
         if   cmd.id == E_Op.GotoDoorId:
             if cmd.content.door_id != self.Lazy_DoorIdLoop: return cmd
             return Op.GotoDoorId(DoorIdLoop)

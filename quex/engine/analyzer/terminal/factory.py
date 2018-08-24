@@ -8,7 +8,7 @@ from   quex.engine.analyzer.door_id_address_label  import DoorID
 from   quex.engine.misc.tools                      import typed
 
 import quex.blackboard as blackboard
-from   quex.blackboard import Lng, setup as Setup
+from   quex.blackboard import Lng
 from   quex.constants  import E_IncidenceIDs, \
                               E_TerminalType
 

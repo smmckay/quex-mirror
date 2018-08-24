@@ -101,7 +101,7 @@ def print_this(loop_map, appendix_sm_list):
     print "#_[ Print ]___________________________________________________"
     print
     for lei in sorted(loop_map, key=lambda x: x.character_set.minimum()):
-        print lei.character_set.get_string(Option="hex"), lei.iid_couple_terminal, lei.code[0],
+        print lei.character_set.get_string(Option="hex"), "((%s))" % lei.iid_couple_terminal, lei.code[0],
         if lei.code[0].id == E_Op.GotoDoorId is None: print; continue
         print "<appendix: %s>" % repr(lei.code[-1].content.door_id)
 

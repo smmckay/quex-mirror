@@ -1,9 +1,7 @@
 import quex.input.files.specifier.counter    as     counter
 from   quex.input.files.specifier.counter    import LineColumnCount_Default
 import quex.input.regular_expression.core    as     regular_expression
-from   quex.input.regular_expression.pattern import Pattern_Prep
 from   quex.input.code.base                  import SourceRef
-from   quex.engine.counter                   import IndentationCount
 from   quex.engine.misc.tools                import all_isinstance
 from   quex.engine.misc.tools                import typed, \
                                                     flatten_list_of_lists
@@ -22,7 +20,6 @@ def __get_mode_name_list():
     return blackboard.mode_db.keys()
 
 class SkipRangeData(dict): 
-    @typed(OpenerPattern=Pattern_Prep, CloserPattern=Pattern_Prep)
     def __init__(self, OpenerPattern, CloserPattern, CoreDict=None):
         if CoreDict:
             dict.update(self, CoreDict)
@@ -37,7 +34,10 @@ class SkipRangeData(dict):
 class Loopers:
     """Loopers -- loops that are integrated into the pattern state machine.
     """
-    @typed(IndentationHandler = (None, IndentationCount))
+    #@typed(Skip               = (None, [Pattern_Prep]), 
+    #       SkipRange          = (None, [dict]),
+    #       SkipNestedRange    = (None, [dict]),
+    #       IndentationHandler = (None, IndentationCount))
     def __init__(self, Skip, SkipRange, SkipNestedRange, IndentationHandler):
         self.skip                = Skip
         self.skip_range          = SkipRange
@@ -59,6 +59,8 @@ class Loopers:
         this point in time. The given source reference is 'auxiliary' to 
         be able to point at least to some position.
         """
+        assert self.__finalized_f
+
         iterable           = iter(self.skip)
         pattern, total_set = iterable.next()
         pattern_str        = pattern.pattern_string()

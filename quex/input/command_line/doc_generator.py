@@ -264,16 +264,16 @@ class VisitorSphinx(Visitor):
         return "%s.. cmdoption:: %s %s\n\n%s\n\n%s" \
                % (self.nesting_indent(), options_str, call_str, content, default)
 
-    def do_CMacro(self, Option, CallStr, Default, ParagraphList):
-        options_str = CallStr
-        content     = self.do(ParagraphList)
-        default     = self.format_default(Default)
-        if default is not None: default = "Default: %s\n\n" % default
-        else:                   default = ""
-        if CallStr is not None: call_str = CallStr
-        else:                   call_str = ""
-        return "%s.. cmdoption:: %s %s\n\n%s\n\n%s" \
-               % (self.nesting_indent(), options_str, call_str, content, default)
+###    def do_CMacro(self, Option, CallStr, Default, ParagraphList):
+###        options_str = CallStr
+###        content     = self.do(ParagraphList)
+###        default     = self.format_default(Default)
+###        if default is not None: default = "Default: %s\n\n" % default
+###        else:                   default = ""
+###        if CallStr is not None: call_str = CallStr
+###        else:                   call_str = ""
+###        return "%s.. cmdoption:: %s %s\n\n%s\n\n%s" \
+###               % (self.nesting_indent(), options_str, call_str, content, default)
 
     def do_Item(self, Name, ParagraphList):
         content = self.do(ParagraphList)

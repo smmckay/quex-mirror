@@ -38,7 +38,7 @@ self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* include
 int
 main(int argc, char** argv)
 {
-    const size_t       MemorySize = QUEX_SETTING_BUFFER_SIZE;
+    const size_t       MemorySize = QUEX_TestAnalyzer_SETTING_BUFFER_SIZE;
     QUEX_TYPE_LEXATOM_EXT* dummy;
     QUEX_TYPE_LEXATOM_EXT* memory;
     QUEX_TYPE_LEXATOM_EXT* read_p;
@@ -150,7 +150,7 @@ self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* include
          * => Only upon 'split' the buffers contents are adjacent!            */
         __quex_assert(&including->_memory._back[1] == &included->_memory._front[0]);
         __quex_assert(&included->_memory._back[1] - &included->_memory._front[0]
-                      >= QUEX_SETTING_BUFFER_SIZE_MIN);
+                      >= QUEX_TestAnalyzer_SETTING_BUFFER_SIZE_MIN);
         __quex_assert(&included->_memory._back[1] == MemoryEnd);
     }
     else {

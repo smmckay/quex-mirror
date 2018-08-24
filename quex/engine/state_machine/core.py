@@ -297,7 +297,6 @@ class DFA(object):
         reaching_set = set()  # set of states that reach acceptance states
         while len(work_set) != 0:
             state_index = work_set.pop()
-            state       = self.states[state_index]
             reaching_set.add(state_index)
 
             work_set.update((i for i in from_db[state_index] if  i not in reaching_set))
@@ -660,10 +659,10 @@ class DFA(object):
 
         return result
 
-    def contains_cycles(self):
-        for si, predecessor_si_list in self.get_predecessor_db():
-            if si in predecessor_si_list: return True
-        return False
+###    def has_cycles(self):
+###        for si, predecessor_si_list in self.get_predecessor_db():
+###            if si in predecessor_si_list: return True
+###        return False
 
     def longest_path_to_first_acceptance(self):
         """Find the longest path to first acceptance state.

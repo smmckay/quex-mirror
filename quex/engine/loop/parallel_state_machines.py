@@ -1,25 +1,16 @@
-from   quex.engine.loop.loop_map                          import MiniTerminal, \
-                                                                 LoopMapEntry, \
-                                                                 LoopMap, \
-                                                                 LoopConfig
-from   quex.engine.operations.operation_list              import Op
+from   quex.engine.loop.loop_map                          import LoopMapEntry
 import quex.engine.analyzer.door_id_address_label         as     dial
 import quex.engine.state_machine.construction.combination as     combination
-import quex.engine.state_machine.index                    as     index
-import quex.engine.state_machine.check.identity           as     identity
 import quex.engine.state_machine.algebra.intersection     as     intersection
 import quex.engine.state_machine.algebra.union            as     union
 from   quex.engine.state_machine.character_counter        import SmLineColumnCountInfo
-from   quex.engine.state_machine.state.single_entry       import SeStoreInputPosition
 from   quex.engine.counter                                import CountAction, \
-                                                                 CountActionMap, \
-                                                                 count_operation_db_with_reference, \
-                                                                 count_operation_db_without_reference
+                                                                 CountActionMap
 from   quex.engine.misc.tools                             import typed
 from   quex.engine.misc.interval_handling                 import NumberSet
 import quex.engine.misc.error                             as     error
 
-from   quex.blackboard import setup as Setup, Lng
+from   quex.blackboard import setup as Setup
 from   quex.constants  import E_CharacterCountType, \
                               E_R, \
                               E_IncidenceIDs
@@ -277,42 +268,4 @@ def split_first_character_set_for_distinct_count_actions(CaMap, FirstVsAppendixS
     ]
     return result, bad_lexatom_detector_character_set
 
-def NEW_combine_intersecting_character_sets(FirstVsAppendixSmList):
-    """First character sets of appendix state machines may intersect.
-    Combine the DFAs of the intersection characters sets.
-
-    IMPORTANT: The acceptance ids of the matching state machines remain
-               intact!
-
-    RETURNS: list (character set, appendix_sm)
-
-    where the character sets in the list are disjoint.
-    """
-    # It is conceivable, that character sets of the first transition overlap.
-    # => combine those appendices.
-    result    = copy(FirstVsAppendixSmList)
-    work_list = copy(FirstVsAppendixSmList)
-    while work_list:
-        new_intersections = []
-        for i, entry_i in enumerate(work_list):
-            character_set_i, dfa_i = entry_i
-            for k, entry_k in enumerate(work_list[i+1:], start=i+1):
-                character_set_k, dfa_k = entry_k
-                if not character_set_k.has_intersection(character_set_i): continue
-                common = character_set_k.intersection(character_set_i)
-                new_intersections.append((common, union.do([dfa_i, dfa_k])))
-                # Union: check that acceptance ids remain intact!
-                character_set_k.subtract(common)
-                character_set_i.subtract(common)
-        result.extend(new_intersections)
-        # If a character set intersects with 'N+1' others, it must at
-        # least appear in the set of 'N' intersections.
-        # => Consider only 'new_intersections'.
-        work_list = new_intersections
-
-    result = [ 
-        entry for entry in result if not entry[0].is_empty() 
-    ]
-
-    return result
 

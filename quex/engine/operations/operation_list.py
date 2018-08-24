@@ -295,10 +295,6 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.LineCountShift)
 
     @staticmethod
-    def LineCountSet(Value):
-        return Op(E_Op.LineCountSet, Value)
-
-    @staticmethod
     def ColumnCountShift():
         return Op(E_Op.ColumnCountShift)
 
@@ -544,8 +540,6 @@ def __configure():
                                               (E_R.Line,r+w))
     c(E_Op.LineCountShift,                   None,
                                               (E_R.Line,r+w))
-    c(E_Op.LineCountSet,                     ("value",),
-                                              (E_R.Line,w))
     c(E_Op.PasspartoutCounterCall,           ("mode_name", ),
                                               (E_R.Line,r+w), (E_R.Column,r+w), (E_R.LexemeStartP,r), (E_R.Buffer,r), (E_R.InputP,r))
     #

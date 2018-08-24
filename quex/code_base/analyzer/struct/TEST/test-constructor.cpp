@@ -235,8 +235,8 @@ self_memory()
     uint8_t memory[65536];
 
     memset(&memory[0], 0x5A, sizeof(memory));
-    memory[0]       = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
-    memory[65536-1] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    memory[0]       = QUEX_TestAnalyzer_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    memory[65536-1] = QUEX_TestAnalyzer_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
 
     {
         new (lx) TestAnalyzer(&memory[0], 65536, &memory[65536-1]);

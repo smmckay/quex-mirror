@@ -19,7 +19,6 @@
 #______________________________________________________________________________                      
 
 from   quex.input.code.base                        import SourceRef
-import quex.engine.analyzer.door_id_address_label  as     dial
 from   quex.engine.operations.operation_list       import Op
 from   quex.engine.misc.tools                      import typed, do_and_delete_if
 from   quex.engine.misc.interval_handling          import NumberSet

@@ -119,8 +119,8 @@ self_include_push_on_memory(int argc, char** argv, bool PopF)
     uint8_t memory[65536];
 
     memset(&memory[0], 0x5A, sizeof(memory));
-    memory[0]       = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
-    memory[65536-1] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    memory[0]       = QUEX_TestAnalyzer_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    memory[65536-1] = QUEX_TestAnalyzer_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
 
     UserConstructor_UnitTest_return_value = true; /* Shall not be called! */
 
@@ -299,8 +299,8 @@ self_memory()
     uint8_t memory[65536];
 
     memset(&memory[0], 0x5A, sizeof(memory));
-    memory[0]       = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
-    memory[65536-1] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    memory[0]       = QUEX_TestAnalyzer_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    memory[65536-1] = QUEX_TestAnalyzer_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
 
     backup = *lx;
     {
@@ -366,14 +366,14 @@ static void
 self_assert(TestAnalyzer* lexer, E_Error ExpectedError)
 {
     hwut_verify(backup._mode_stack.end == backup._mode_stack.begin);
-    hwut_verify(backup._mode_stack.memory_end - backup._mode_stack.begin == QUEX_SETTING_MODE_STACK_SIZE);
+    hwut_verify(backup._mode_stack.memory_end - backup._mode_stack.begin == QUEX_TestAnalyzer_SETTING_MODE_STACK_SIZE);
 
     hwut_verify(lx->error_code == ExpectedError);
 
     /* Resources are *never* absent.                                          */
     hwut_verify(! TestAnalyzer_MF_resources_absent(lx));
 
-    hwut_verify(lx->_mode_stack.memory_end - lx->_mode_stack.begin == QUEX_SETTING_MODE_STACK_SIZE);
+    hwut_verify(lx->_mode_stack.memory_end - lx->_mode_stack.begin == QUEX_TestAnalyzer_SETTING_MODE_STACK_SIZE);
     hwut_verify(lx->_mode_stack.end        - lx->_mode_stack.begin == 0);
 
     backup.buffer._memory.including_buffer = lx->buffer._memory.including_buffer;
