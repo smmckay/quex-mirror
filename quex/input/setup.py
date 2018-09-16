@@ -273,6 +273,7 @@ SETUP_INFO = {
     "user_application_version_id":    [["--version-id"],                     "0.0.0-pre-release"],
     "standard_library_usage_f":       [["--no-std-lib", "--nostdlib", "--nsl"], SetupParTypes.NEGATED_FLAG],
     "implement_lib_quex_f":           [["--no-lib-quex", "--nlq"],           SetupParTypes.NEGATED_FLAG],
+    "implement_lib_lexeme_f":         [["--no-lib-lexeme", "--nll"],         SetupParTypes.NEGATED_FLAG],
     "unit_test_f":                    [["--unit-test"],                      SetupParTypes.NEGATED_FLAG],
     #
     "warning_on_outrun_f":            [["--warning-on-outrun", "--woo"],   SetupParTypes.FLAG],

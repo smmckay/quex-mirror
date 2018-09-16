@@ -1,16 +1,12 @@
-#ifndef QUEX_INCLUDE_GUARD__QUEX__DEBUG_PRINT
-#define QUEX_INCLUDE_GUARD__QUEX__DEBUG_PRINT
+#ifndef QUEX_INCLUDE_GUARD__DEBUG_PRINT
+#define QUEX_INCLUDE_GUARD__DEBUG_PRINT
 
 #define QUEX_STRING(X)            #X
 #define QUEX_NUMBER_TO_STRING(x)  QUEX_STRING(x)
 #define QUEX_SOURCE_POS()         __FILE__ ":" QUEX_NUMBER_TO_STRING(__LINE__) ": "
 
-#ifndef    QUEX_SETTING_DEBUG_OUTPUT_CHANNEL
-#   define QUEX_SETTING_DEBUG_OUTPUT_CHANNEL __QUEX_STD_STDERR
-#endif
-
 #define __QUEX_PRINT_SOURCE_POSITION()                             \
-        __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s:%i:\t", __FILE__, (int)__LINE__) 
+        QUEX_DEBUG_PRINT2("%s:%i:\t", __FILE__, (int)__LINE__) 
 
 $$<Cpp>--------------------------------------------------------------------------
 #define QUEX_ERROR_EXIT(Msg) \
@@ -23,7 +19,7 @@ $$<C>--------------------------------------------------------------------------
 #define QUEX_ERROR_EXIT(Msg) \
         do { \
             __QUEX_PRINT_SOURCE_POSITION(); \
-            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s", Msg); exit(-1); \
+            QUEX_DEBUG_PRINT(Msg); exit(-1); \
         } while(0)
 $$-----------------------------------------------------------------------------
 
@@ -33,27 +29,32 @@ $$INC: buffer/Buffer_print$$
 
 #   define __quex_debug(Str)                                        \
            __QUEX_PRINT_SOURCE_POSITION();                          \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s", (Str)) 
+           QUEX_DEBUG_PRINT(Str) 
 #   define __quex_debug1(Str)                                       \
            __QUEX_PRINT_SOURCE_POSITION();                          \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s\n", (Str)) 
+           QUEX_DEBUG_PRINT1("%s\n", (Str)) 
 #   define __quex_debug2(FormatStr, Arg)                            \
            __QUEX_PRINT_SOURCE_POSITION();                          \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, FormatStr "\n", Arg)
+           QUEX_DEBUG_PRINT1(FormatStr "\n", Arg)
 #   define __quex_debug3(FormatStr, Arg0, Arg1)                     \
            __QUEX_PRINT_SOURCE_POSITION();                          \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, FormatStr "\n", Arg0, Arg1)
+           QUEX_DEBUG_PRINT2(FormatStr "\n", Arg0, Arg1)
 #   define __quex_debug4(FormatStr, Arg0, Arg1, Arg2)               \
            __QUEX_PRINT_SOURCE_POSITION();                          \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, FormatStr "\n", Arg0, Arg1, Arg2)
+           QUEX_DEBUG_PRINT3(FormatStr "\n", Arg0, Arg1, Arg2)
 
 #   define __QUEX_PRINT_CHAR(C)                             \
-             (C) == '\n' ? __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '\\n'\n", (int)(C)) \
-           : (C) == '\t' ? __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '\\t'\n", (int)(C)) \
-           : (C) == '\r' ? __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '\\r'\n", (int)(C)) \
-           : (C) == '\a' ? __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '\\a'\n", (int)(C)) \
-           : (C) == '\v' ? __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '\\v'\n", (int)(C)) \
-           :               __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '%c'\n",  (int)(C), (C) < 0xFF ? (char)(C) : '?')
+             (C) == '\n' ? QUEX_DEBUG_PRINT1("%02X '\\n'\n", (int)(C)) \
+           : (C) == '\t' ? QUEX_DEBUG_PRINT1("%02X '\\t'\n", (int)(C)) \
+           : (C) == '\r' ? QUEX_DEBUG_PRINT1("%02X '\\r'\n", (int)(C)) \
+           : (C) == '\a' ? QUEX_DEBUG_PRINT1("%02X '\\a'\n", (int)(C)) \
+           : (C) == '\v' ? QUEX_DEBUG_PRINT1("%02X '\\v'\n", (int)(C)) \
+           :               QUEX_DEBUG_PRINT2("%02X '%c'\n",  (int)(C), (C) < 0xFF ? (char)(C) : '?')
+
+#   define __quex_debug_buffer_load(BUFFER, Msg)                        \
+           QUEX_DEBUG_PRINT(Msg);  \
+           QUEX_NAME(Buffer_print_content_detailed)(BUFFER);            \
+           QUEX_DEBUG_PRINT("\n");
 
 #   define __quex_debug_core(StateIdx, Message)                \
            __quex_debug3("state %i ____%s", (int)(StateIdx), (Message)) 
@@ -126,11 +127,6 @@ $$INC: buffer/Buffer_print$$
 #   define __quex_debug_counter()                        \
            QUEX_NAME(Counter_print_this)(&self.counter)
 
-#   define __quex_debug_buffer_load(BUFFER, Msg)                        \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);  \
-           QUEX_NAME(Buffer_print_content_detailed)(BUFFER);            \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "\n");
-
 #else /* not defined(QUEX_OPTION_DEBUG_SHOW_EXT) */
 
 #   define __quex_debug(FormatStr)                /* empty */
@@ -168,21 +164,21 @@ $$INC: buffer/Buffer_print$$
 #endif
 
 #ifdef     QUEX_OPTION_DEBUG_SHOW_MODES_EXT
-#    define __quex_debug_show_mode_transition(me, ModeP)                                       \
-        if( me->__current_mode_p != 0x0 ) {                                                    \
-            __QUEX_STD_fprintf(stderr, "| Mode change from %s\n", me->__current_mode_p->name); \
-            __QUEX_STD_fprintf(stderr, "|             to   %s\n", ModeP->name);                \
-        } else {                                                                               \
-            __QUEX_STD_fprintf(stderr, "| Mode change to %s\n", ModeP->name);                  \
+#    define __quex_debug_show_mode_transition(me, ModeP)                              \
+        if( me->__current_mode_p != 0x0 ) {                                           \
+            QUEX_DEBUG_PRINT1("| Mode change from %s\n", me->__current_mode_p->name); \
+            QUEX_DEBUG_PRINT1("|             to   %s\n", ModeP->name);                \
+        } else {                                                                      \
+            QUEX_DEBUG_PRINT1("| Mode change to %s\n", ModeP->name);                  \
         }                                                                                
 #else
-#    define __quex_debug_show_mode_transition(me, ModeP)                                       \
+#    define __quex_debug_show_mode_transition(me, ModeP)                              \
         /* empty */
 #endif
 
 #define __QUEX_MESSAGE_ASSERTS_INFO \
         "## Disable this message by compile option\n"                               \
-        "##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'\n"              \
+        "##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'\n"          \
         "##\n"                                                                      \
         "## Asserts activated! Lexical analyzer is 'paranoid'!\n"                   \
         "## => Even smallest misbehavior causes program exit.\n"                    \

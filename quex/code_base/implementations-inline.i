@@ -27,7 +27,7 @@ $$INC: buffer/bytes/ByteLoader.i$$
 
 $$INC: analyzer/Mode.i$$
 
-$$INC: lexeme_base.i$$
+$$INC: lexeme/basics.i$$
 $$INC: <count> analyzer/Counter.i$$
 
 #endif

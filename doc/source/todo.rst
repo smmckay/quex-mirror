@@ -1,3 +1,5 @@
+-- with '--no-lib-quex', the flag where the headers are '-Idirectory' must be provided !
+
 -- Algebra: pre and post context:
 
          pattern match <=> pre && core && post

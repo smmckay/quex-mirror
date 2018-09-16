@@ -3,12 +3,12 @@ token_type {
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <$$OUTPUT_DIR$$/lib/quex/compatibility/stdint.h>
-#include <$$OUTPUT_DIR$$/lib/quex/MemoryManager>
-#include <$$OUTPUT_DIR$$/lib/definitions>
-#include <$$OUTPUT_DIR$$/lib/asserts>
-#include <$$OUTPUT_DIR$$/lib/lexeme_base>
-#include <$$OUTPUT_DIR$$/converter-from-lexeme>
+#include <$$QUEX_LIB_DIR$$/compatibility/stdint.h>
+#include <$$QUEX_LIB_DIR$$/MemoryManager>
+#include <$$QUEX_LIB_DIR$$/asserts>
+
+#include <$$OUTPUT_DIR$$/lib/lexeme/basics>
+#include <$$OUTPUT_DIR$$/lib/lexeme/converter-from-lexeme>
 
 struct $$TOKEN_CLASS$$_tag;
 
@@ -159,7 +159,7 @@ extern const char*       $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* 
             return buffer;
         }
 
-#include <$$OUTPUT_DIR$$/lib/lexeme_base.i>
+#include <$$OUTPUT_DIR$$/lib/lexeme/basics.i>
    }
 }
 

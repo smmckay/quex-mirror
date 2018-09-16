@@ -2,12 +2,12 @@
 #ifndef QUEX_INCLUDE_GUARD__BUFFER__BUFFER_LOAD_I
 #define QUEX_INCLUDE_GUARD__BUFFER__BUFFER_LOAD_I
 
-$$INC: asserts$$
 $$INC: buffer/asserts$$
 $$INC: definitions$$
 $$INC: buffer/Buffer$$
 $$INC: buffer/Buffer_print.i$$
 $$INC: buffer/lexatoms/LexatomLoader$$
+$$INC: quex/asserts$$
 $$INC: quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
@@ -48,7 +48,7 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
     ptrdiff_t  loaded_n;
     bool       encoding_error_f = false;
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 
     if( me->_read_p != me->content_end(me)) {
         /* If the read pointer does not stand on the end of input pointer, then
@@ -76,7 +76,7 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
         return E_LoadResult_OVERFLOW;
     }
     __quex_debug_buffer_load(me, "LOAD FORWARD(exit)\n");
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
     if     ( encoding_error_f ) return E_LoadResult_ENCODING_ERROR;
     else if( loaded_n )         return E_LoadResult_DONE;
     else                        return E_LoadResult_NO_MORE_DATA;
@@ -120,7 +120,7 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
     bool                         encoding_error_f = false;
     QUEX_NAME(BufferInvariance)  bi;
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 
     QUEX_NAME(BufferInvariance_construct)(&bi, me);
 
@@ -195,7 +195,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
     ptrdiff_t           load_request_n;
     bool                encoding_error_f = false;
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 
     __quex_debug_buffer_load(me, "BACKWARD(entry)\n");
     if( me->_read_p != me->begin(me) ) {
@@ -237,7 +237,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
     }
 
     __quex_debug_buffer_load(me, "BACKWARD(exit)\n");
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
     return E_LoadResult_DONE;     
 }
 

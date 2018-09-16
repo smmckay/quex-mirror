@@ -4,12 +4,12 @@
 
 #ifndef QUEX_OPTION_ASSERTS
 
-#define QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(BI, ME)       /* empty */    
-#define QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY(BI, ME)      /* empty */    
-#define QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY_SAME(BI, ME) /* empty */    
-#define QUEX_BUFFER_ASSERT_pointers_in_range(ME)          /* empty */
-#define QUEX_BUFFER_ASSERT_CONSISTENCY(ME)                /* empty */
-#define QUEX_BUFFER_ASSERT_MEMBER_FUNCTIONS(ME)           /* empty */
+#define QUEX_NAME(BUFFER_ASSERT_INVARIANCE_SETUP)(BI, ME)       /* empty */    
+#define QUEX_NAME(BUFFER_ASSERT_INVARIANCE_VERIFY)(BI, ME)      /* empty */    
+#define QUEX_NAME(BUFFER_ASSERT_INVARIANCE_VERIFY_SAME)(BI, ME) /* empty */    
+#define QUEX_NAME(Buffer_assert_pointers_in_range)(ME)          /* empty */
+#define QUEX_NAME(Buffer_assert_consistency)(ME)                /* empty */
+#define QUEX_NAME(Buffer_member_functions_assert)(ME)           /* empty */
 
 #else
 $$INC: definitions$$
@@ -17,31 +17,18 @@ $$INC: buffer/Buffer$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#define QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(BI, ME)           \
-        QUEX_NAME(BufferInvariance) (BI);                     \
-        QUEX_NAME(BufferInvariance_construct)(&(BI), (ME));   \
-        (void)bi;                                             \
-        QUEX_BUFFER_ASSERT_CONSISTENCY(ME);
+QUEX_INLINE void QUEX_NAME(BUFFER_ASSERT_INVARIANCE_SETUP)(QUEX_NAME(BufferInvariance)* bi, 
+                                                           QUEX_NAME(Buffer)*           me);
+QUEX_INLINE void QUEX_NAME(BUFFER_ASSERT_INVARIANCE_VERIFY)(QUEX_NAME(BufferInvariance)* bi, 
+                                                            QUEX_NAME(Buffer)*           me);
+QUEX_INLINE void QUEX_NAME(BUFFER_ASSERT_INVARIANCE_VERIFY_SAME)(QUEX_NAME(BufferInvariance)* bi, 
+                                                                 QUEX_NAME(Buffer)*           me);
 
-#define QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY(BI, ME)          \
-        QUEX_BUFFER_ASSERT_CONSISTENCY(ME);                   \
-        QUEX_NAME(BufferInvariance_assert)(&(BI), (ME), false);
-
-#define QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY_SAME(BI, ME)     \
-        QUEX_BUFFER_ASSERT_CONSISTENCY(ME);                   \
-        QUEX_NAME(BufferInvariance_assert)(&(BI), (ME), true);
-
-#define QUEX_BUFFER_ASSERT_pointers_in_range    QUEX_NAME(BUFFER_ASSERT_pointers_in_range_core)
-#define QUEX_BUFFER_ASSERT_limit_codes_in_place QUEX_NAME(BUFFER_ASSERT_limit_codes_in_place_core)
-#define QUEX_BUFFER_ASSERT_CONSISTENCY          QUEX_NAME(BUFFER_ASSERT_CONSISTENCY_core)
-#define QUEX_BUFFER_ASSERT_NO_BUFFER_LIMIT_CODE QUEX_NAME(BUFFER_ASSERT_NO_BUFFER_LIMIT_CODE_core)
-#define QUEX_BUFFER_ASSERT_MEMBER_FUNCTIONS     QUEX_NAME(Buffer_member_functions_assert)
-
-QUEX_INLINE void QUEX_NAME(BUFFER_ASSERT_pointers_in_range_core)(const QUEX_NAME(Buffer)* B);                 
-QUEX_INLINE void QUEX_NAME(BUFFER_ASSERT_limit_codes_in_place_core)(const QUEX_NAME(Buffer)* B);
-QUEX_INLINE void QUEX_NAME(BUFFER_ASSERT_CONSISTENCY_core)(const QUEX_NAME(Buffer)* B);                                            
-QUEX_INLINE void QUEX_NAME(BUFFER_ASSERT_NO_BUFFER_LIMIT_CODE_core)(const QUEX_TYPE_LEXATOM* Begin, 
-                                                                     const QUEX_TYPE_LEXATOM* End);
+QUEX_INLINE void QUEX_NAME(Buffer_assert_pointers_in_range)(const QUEX_NAME(Buffer)* B);                 
+QUEX_INLINE void QUEX_NAME(Buffer_assert_limit_codes_in_place)(const QUEX_NAME(Buffer)* B);
+QUEX_INLINE void QUEX_NAME(Buffer_assert_consistency)(const QUEX_NAME(Buffer)* B);                                            
+QUEX_INLINE void QUEX_NAME(Buffer_assert_no_lexatom_is_buffer_border)(const QUEX_TYPE_LEXATOM* Begin, 
+                                                                      const QUEX_TYPE_LEXATOM* End);
 QUEX_INLINE void QUEX_NAME(Buffer_member_functions_assert)(const QUEX_NAME(Buffer)* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE

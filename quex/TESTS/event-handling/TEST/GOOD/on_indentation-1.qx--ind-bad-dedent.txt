@@ -1,17 +1,4 @@
 | Mode change to X
-## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'
-##
-## Asserts activated! Lexical analyzer is 'paranoid'!
-## => Even smallest misbehavior causes program exit.
-##    This helps to find subtle errors.
-##
-## Note however: the paranoia is a heavy load on performance!
-##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED_EXT'
-##
-## Report any bug at
-##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 | [START]
 TOKEN: X 'x'
 INDENT
@@ -20,27 +7,6 @@ DEDENT
 INDENTATION ERROR
 TOKEN: <TERMINATION> ''
 | [END]
-_________________________________________________________________
-   buffer front--------------------------->[0000] 0x0000
-                                           [0001] 0x0078
-                                           [0002] 0x000A
-                                           [0003] 0x0020
-                                           [0004] 0x0020
-                                           ...
-                                           [0006] 0x000A
-                                           [0007] 0x0020
-   lexeme start--------------------------->[0008] 0x0078
-   input---------------------------------->[0009] 0x000A
-                                           [000A] 0x0078
-                                           [000B] 0x000A
-   end of file---------------------------->[000C] 0x0000
-                                           ...
-                                           [FFFB] 0x00FF
-                                           [FFFC] 0x00FF
-                                           [FFFD] 0x00FF
-                                           [FFFE] 0x00FF
-   buffer back---------------------------->[FFFF] 0x0000
-_________________________________________________________________
   mode:       X;
   error_code: Indentation_DedentNotOnIndentationBorder;
   counter: {
@@ -84,5 +50,26 @@ _________________________________________________________________
       end_p:               begin + 12, end - 65524;
     }
   }
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+                                           [0001] 0x0078
+                                           [0002] 0x000A
+                                           [0003] 0x0020
+                                           [0004] 0x0020
+                                           ...
+                                           [0006] 0x000A
+                                           [0007] 0x0020
+   lexeme start--------------------------->[0008] 0x0078
+   input---------------------------------->[0009] 0x000A
+                                           [000A] 0x0078
+                                           [000B] 0x000A
+   end of file---------------------------->[000C] 0x0000
+                                           ...
+                                           [FFFB] 0x00FF
+                                           [FFFC] 0x00FF
+                                           [FFFD] 0x00FF
+                                           [FFFE] 0x00FF
+   buffer back---------------------------->[FFFF] 0x0000
+_________________________________________________________________
 
 

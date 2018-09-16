@@ -26,6 +26,10 @@ def do(Condition):
         return bool(required_support_indentation_count())
     elif Condition == "lib-quex":
         return bool(Setup.implement_lib_quex_f)
+    elif Condition == "lib-lexeme":
+        return Setup.implement_lib_lexeme_f
+    elif Condition == "std-lib":
+        return Setup.standard_library_usage_f
     elif Condition == "token-take-text":
         return token_db.support_take_text()
     elif Condition == "token-repetition":
@@ -51,8 +55,6 @@ def do(Condition):
         return Setup.language == "C"
     elif Condition == "Cpp":
         return Setup.language == "C++"
-    elif Condition == "std-lib":
-        return Setup.standard_library_usage_f
     elif Condition == "begin-of-line-context":
         return required_support_begin_of_line()
     elif Condition == "computed-gotos":

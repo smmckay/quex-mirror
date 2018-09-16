@@ -2,12 +2,12 @@
 #ifndef QUEX_INCLUDE_GUARD__BUFFER__BUFFER_I
 #define QUEX_INCLUDE_GUARD__BUFFER__BUFFER_I
 
-$$INC: asserts$$
 $$INC: buffer/asserts$$
 $$INC: definitions$$
 $$INC: buffer/Buffer$$
 $$INC: buffer/Buffer_print.i$$
 $$INC: buffer/lexatoms/LexatomLoader$$
+$$INC: quex/asserts$$
 $$INC: quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
@@ -60,7 +60,7 @@ QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me,
     QUEX_NAME(Buffer_init)(me, EndOfFileP);
     me->_fallback_n = FallbackN;
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 }
 
 QUEX_INLINE void
@@ -131,7 +131,7 @@ QUEX_NAME(Buffer_shallow_copy)(QUEX_NAME(Buffer)* drain, const QUEX_NAME(Buffer)
  * The caller of this function MUST determine whether 'drain' or 'source'
  * maintains ownership.                                                       */
 {
-    QUEX_BUFFER_ASSERT_CONSISTENCY(source);
+    QUEX_NAME(Buffer_assert_consistency)(source);
     *drain = *source;
 }
 
@@ -167,7 +167,7 @@ QUEX_NAME(Buffer_resources_absent_mark)(QUEX_NAME(Buffer)* me)
                                          (void (*)(void*))0, (void*)0);
     me->filler = (QUEX_NAME(LexatomLoader)*)0;
     QUEX_NAME(BufferMemory_resources_absent_mark)(&me->_memory);
-    QUEX_BUFFER_ASSERT_MEMBER_FUNCTIONS(me);
+    QUEX_NAME(Buffer_member_functions_assert)(me);
 }
 
 QUEX_INLINE bool    
@@ -191,7 +191,7 @@ QUEX_NAME(Buffer_dysfunctional_set)(QUEX_NAME(Buffer)*  me)
     /* LexatomAtLexemeStart           */ (QUEX_TYPE_LEXATOM)0,                                   
     /* LexatomBeforeLexemeStart       */ (QUEX_TYPE_LEXATOM)0,
     /* BackupLexatomIndexOfReadP      */ (QUEX_TYPE_STREAM_POSITION)-1);
-    QUEX_BUFFER_ASSERT_MEMBER_FUNCTIONS(me);
+    QUEX_NAME(Buffer_member_functions_assert)(me);
 }
 
 QUEX_INLINE bool     
@@ -367,7 +367,7 @@ QUEX_NAME(Buffer_input_lexatom_index_end)(QUEX_NAME(Buffer)* me)
  *                                                                           */
 {
     __quex_assert(me->input.lexatom_index_begin >= 0);
-    QUEX_BUFFER_ASSERT_pointers_in_range(me);
+    QUEX_NAME(Buffer_assert_pointers_in_range)(me);
 
     return me->input.lexatom_index_begin + me->content_size(me);
 }
@@ -391,7 +391,7 @@ QUEX_NAME(Buffer_is_end_of_stream_inside)(QUEX_NAME(Buffer)* me)
 QUEX_INLINE bool 
 QUEX_NAME(Buffer_is_end_of_stream)(QUEX_NAME(Buffer)* me)
 { 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
     if( me->input.lexatom_index_end_of_stream == (QUEX_TYPE_STREAM_POSITION)-1 ) {
         return false;
     }
@@ -406,7 +406,7 @@ QUEX_NAME(Buffer_is_end_of_stream)(QUEX_NAME(Buffer)* me)
 QUEX_INLINE bool                  
 QUEX_NAME(Buffer_is_begin_of_stream)(QUEX_NAME(Buffer)* buffer)
 { 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(buffer);
+    QUEX_NAME(Buffer_assert_consistency)(buffer);
     if     ( buffer->_lexeme_start_p != buffer->content_begin(buffer) ) return false;
     else if( QUEX_NAME(Buffer_input_lexatom_index_begin)(buffer) )      return false;
     else                                                                return true;
@@ -451,7 +451,7 @@ QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
     QUEX_TYPE_LEXATOM** pit    = (QUEX_TYPE_LEXATOM**)0x0;
     QUEX_TYPE_LEXATOM** pEnd   = &position_register[PositionRegisterN];
 
-    QUEX_BUFFER_ASSERT_pointers_in_range(me);
+    QUEX_NAME(Buffer_assert_pointers_in_range)(me);
 
     if( offset > 0 ) {
         border = me->content_space_end(me);
@@ -481,7 +481,7 @@ QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
 
     me->input.lexatom_index_begin -= offset;
 
-    QUEX_BUFFER_ASSERT_pointers_in_range(me);
+    QUEX_NAME(Buffer_assert_pointers_in_range)(me);
 
 #   undef QUEX_BUFFER_POINTER_ADD
 #   undef QUEX_BUFFER_POINTER_SUBTRACT

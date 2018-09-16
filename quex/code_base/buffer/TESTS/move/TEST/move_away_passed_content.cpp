@@ -89,7 +89,7 @@ TestAnalyzer_Buffer_free_back(QUEX_NAME(Buffer)*  me,
     ptrdiff_t  move_size;
     (void)move_size;
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 
     move_distance = TestAnalyzer_Buffer_move_get_max_distance_towards_begin(me); 
 
@@ -110,7 +110,7 @@ TestAnalyzer_Buffer_free_back(QUEX_NAME(Buffer)*  me,
     QUEX_IF_ASSERTS_poison(&me->content_space_end(me)[- move_distance + 1], 
                            me->content_space_end(me));
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 
     return free_space;
 }

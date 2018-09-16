@@ -48,32 +48,32 @@ QUEX_NAME(Counter_print_this)(QUEX_NAME(Counter)* me)
 {
     $$<indentation> QUEX_TYPE_INDENTATION* it = 0x0;$$
 
-    __QUEX_STD_printf("  counter: ");
+    QUEX_DEBUG_PRINT("  counter: ");
     if( QUEX_NAME(Counter_resources_absent)(me) ) {
-        __QUEX_STD_printf("<unitialized>\n");
+        QUEX_DEBUG_PRINT("<unitialized>\n");
         return;
     }
-    __QUEX_STD_printf("{\n");
+    QUEX_DEBUG_PRINT("{\n");
 
 $$<count-line>-----------------------------------------------------------------
-    __QUEX_STD_printf("    _line_number_at_begin:   %i;\n", (int)me->_line_number_at_begin);
-    __QUEX_STD_printf("    _line_number_at_end:     %i;\n", (int)me->_line_number_at_end);
+    QUEX_DEBUG_PRINT1("    _line_number_at_begin:   %i;\n", (int)me->_line_number_at_begin);
+    QUEX_DEBUG_PRINT1("    _line_number_at_end:     %i;\n", (int)me->_line_number_at_end);
 $$-----------------------------------------------------------------------------
 $$<count-column>---------------------------------------------------------------
-    __QUEX_STD_printf("    _column_number_at_begin: %i;\n", (int)me->_column_number_at_begin);
-    __QUEX_STD_printf("    _column_number_at_end:   %i;\n", (int)me->_column_number_at_end);
+    QUEX_DEBUG_PRINT1("    _column_number_at_begin: %i;\n", (int)me->_column_number_at_begin);
+    QUEX_DEBUG_PRINT1("    _column_number_at_end:   %i;\n", (int)me->_column_number_at_end);
 $$-----------------------------------------------------------------------------
 $$<indentation>----------------------------------------------------------------
-    __QUEX_STD_printf("    _indentation_stack: [");
+    QUEX_DEBUG_PRINT("    _indentation_stack: [");
     for(it  = me->_indentation_stack.front; 
            it != &me->_indentation_stack.back[1] 
         && it != &me->_indentation_stack.front[QUEX_SETTING_INDENTATION_STACK_SIZE]; 
         ++it) {
-        __QUEX_STD_printf("%i, ", (int)*it);
+        QUEX_DEBUG_PRINT1("%i, ", (int)*it);
     }
-    __QUEX_STD_printf("]\n");
+    QUEX_DEBUG_PRINT("]\n");
 $$-----------------------------------------------------------------------------
-    __QUEX_STD_printf("  }\n");
+    QUEX_DEBUG_PRINT("  }\n");
 }
 
 

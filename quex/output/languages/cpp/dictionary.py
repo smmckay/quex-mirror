@@ -198,9 +198,11 @@ class Language(dict):
         return self._template_converter("TXT-implementation")
 
     def file_name_converter_header(self, Suffix): 
-        return os.path.join(Setup.output_directory, "converter-from-%s" % Suffix)
+        return os.path.join(Setup.output_directory, "lib/lexeme", 
+                            "converter-from-%s" % Suffix)
     def file_name_converter_implementation(self, Suffix): 
-        return os.path.join(Setup.output_directory, "converter-from-%s.i" % Suffix)
+        return os.path.join(Setup.output_directory, "lib/lexeme", 
+                            "converter-from-%s.i" % Suffix)
 
     def DEFINE_SELF(self, Name):
         return "#   ifdef     self\n" \
@@ -1435,7 +1437,7 @@ class Language(dict):
 
     def ERROR_IF_DEFINED_AND_NOT_CONFIGURATION_BY_MACRO(self, ShortNameList):
         def ifdefined(Name, FirstF):
-            condition_str = "defined(QUEX_SETTING_%s_EXT) || defined(QUEX_%s_SETTING_%s_EXT)" % (Name, Setup.analyzer_name_safe, Name)
+            condition_str = "defined(QUEX_<PURE>SETTING_%s_EXT) || defined(QUEX_%s_SETTING_%s_EXT)" % (Name, Setup.analyzer_name_safe, Name)
             if FirstF:
                 return "#if    %s" %  condition_str
             else:
@@ -1451,7 +1453,8 @@ class Language(dict):
             ])
 
     def QUEX_TYPE_DEF(self, Original, TypeName):
-        type_name = "%s_%s" % (Setup.analyzer_name_safe, TypeName)
+        type_name = "%s_%s" % (Setup.analyzer_class_name, TypeName)
+
         if Setup.configuration_by_cmake_f:
             original_type_str = "@QUEX_TYPE_%s_%s@" % (Setup.analyzer_name_safe, Original) 
         else:
@@ -1470,13 +1473,14 @@ class Language(dict):
         else:
             return "typedef %s %s;" % (Original, type_name) 
 
+    def QUEX_SETTING(self, Name):
+        return "QUEX_%s_SETTING_%s" % (Setup.analyzer_name_safe, Name)
+
     def QUEX_SETTING_DEF(self, Name, Value):
         """If 'configuration_by_macros_f' is set, then setting parameters may
         be defined by according macros on the command line.
         """
-        # variable_name = "QUEX_SETTING_%s_%s" % (Setup.analyzer_name_safe, Name)
-
-        variable_name = "QUEX_%s_SETTING_%s" % (Setup.analyzer_name_safe, Name)
+        variable_name = self.QUEX_SETTING(Name)
         if Setup.configuration_by_cmake_f:
             value_str = "@QUEX_%s_SETTING_%s_EXT@" % (Setup.analyzer_name_safe, Name)
         else:
@@ -1528,9 +1532,14 @@ class Language(dict):
             ("QUEX_SETTING_TOKEN_ID_NODENT",         tid("NODENT")),
         ])
 
+        replacements.extend([
+            ("QUEX_LEXEME_TERMINATING_ZERO_SET",  "QUEX_%s_LEXEME_TERMINATING_ZERO_SET" % Setup.analyzer_name_safe),
+            ("QUEX_LEXEME_TERMINATING_ZERO_UNDO", "QUEX_%s_LEXEME_TERMINATING_ZERO_UNDO" % Setup.analyzer_name_safe),
+        ])
+
         txt = blue_print(Txt, replacements, CommonStart="QUEX_")
 
-        txt = self.Match_QUEX_SETTING.sub(r"QUEX_%s_SETTING_\1" % Setup.analyzer_class_name, txt)
+        txt = self.Match_QUEX_SETTING.sub(r"QUEX_%s_SETTING_\1" % Setup.analyzer_name_safe, txt)
         txt = self.Match_QUEX_PURE_SETTING.sub(r"QUEX_SETTING_\1", txt)
         # txt = self.Match_QUEX_OPTION.sub(r"%s_OPTION_\1" % Setup.analyzer_class_name, txt)
 
@@ -1605,14 +1614,14 @@ class Language(dict):
              ("QUEX_TYPE0_ANALYZER",       Setup.analyzer_class_name),
              ("QUEX_TYPE_MEMENTO",         self.NAME_IN_NAMESPACE("%s_Memento" % Setup.analyzer_class_name, Setup.analyzer_name_space)),
              ("QUEX_TYPE0_MEMENTO",        type_memento),
-             ("QUEX_TYPE_LEXATOM",         type_lexatom),
-             ("QUEX_TYPE_TOKEN_ID",        type_token_id),
-             ("QUEX_TYPE_TOKEN_LINE_N",    type_token_line_n),
-             ("QUEX_TYPE_TOKEN_COLUMN_N",  type_token_column_n),
-             ("QUEX_TYPE_ACCEPTANCE_ID",   type_acceptance_id),
-             ("QUEX_TYPE_INDENTATION",     type_indentation),
-             ("QUEX_TYPE_STREAM_POSITION", type_stream_position),
-             ("QUEX_TYPE_GOTO_LABEL",      type_goto_label),
+             ("QUEX_TYPE_LEXATOM",         self.NAME_IN_NAMESPACE(type_lexatom, Setup.analyzer_name_space)),
+             ("QUEX_TYPE_TOKEN_ID",        self.NAME_IN_NAMESPACE(type_token_id, Setup.analyzer_name_space)),
+             ("QUEX_TYPE_TOKEN_LINE_N",    self.NAME_IN_NAMESPACE(type_token_line_n, Setup.analyzer_name_space)),
+             ("QUEX_TYPE_TOKEN_COLUMN_N",  self.NAME_IN_NAMESPACE(type_token_column_n, Setup.analyzer_name_space)),
+             ("QUEX_TYPE_ACCEPTANCE_ID",   self.NAME_IN_NAMESPACE(type_acceptance_id, Setup.analyzer_name_space)),
+             ("QUEX_TYPE_INDENTATION",     self.NAME_IN_NAMESPACE(type_indentation, Setup.analyzer_name_space)),
+             ("QUEX_TYPE_STREAM_POSITION", self.NAME_IN_NAMESPACE(type_stream_position, Setup.analyzer_name_space)),
+             ("QUEX_TYPE_GOTO_LABEL",      self.NAME_IN_NAMESPACE(type_goto_label, Setup.analyzer_name_space)),
         ]
 
 cpp_implementation_headers_txt = """

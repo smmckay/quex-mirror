@@ -7,7 +7,7 @@
 .SECONDARY:
 
 COMPILER := gcc -pedantic -Wconversion -Wall -Werror -W # -ggdb
-LD       := $(COMPILER) -I./ $(ADD_FLAGS) 
+LD       := $(COMPILER) -I./ -IA_B_C $(ADD_FLAGS) 
 # HINTS:    -DQUEX_OPTION_ASSERTS_DISABLED_EXT
 #           -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT 
 #           -DQUEX_OPTION_DEBUG_SHOW_EXT
@@ -21,14 +21,14 @@ COMMON_TOKEN_OPTIONS = --token-class-file A_B_C/A_B_C-token.h \
 					   --token-id-prefix  TKN_ \
 	                   --suppress         0 1 6 
 
-max/Lexer.c:    max.qx A_B_C/A_B_C-token.c A_B_C-token_ids.h
-	quex -i $< -o max_Lexer --odir max -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
+max/max_Lexer.c:       max.qx    A_B_C/A_B_C-token.c A_B_C-token_ids.h
+	quex -i $< -o max_Lexer --odir max -b 4 $(COMMON_TOKEN_OPTIONS) --language C --no-lib-quex
 
-moritz/Lexer.c: moritz.qx A_B_C/A_B_C-token.c A_B_C-token_ids.h
-	quex -i $< -o moritz_Lexer --odir moritz -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
+moritz/moritz_Lexer.c: moritz.qx A_B_C/A_B_C-token.c A_B_C-token_ids.h
+	quex -i $< -o moritz_Lexer --odir moritz -b 4 $(COMMON_TOKEN_OPTIONS) --language C --no-lib-quex
 
-boeck/Lexer.c:  boeck.qx A_B_C/A_B_C-token.c A_B_C-token_ids.h
-	quex -i $< -o boeck_Lexer --odir boeck -b 4 $(COMMON_TOKEN_OPTIONS) --language C
+boeck/boeck_Lexer.c:   boeck.qx  A_B_C/A_B_C-token.c A_B_C-token_ids.h
+	quex -i $< -o boeck_Lexer --odir boeck -b 4 $(COMMON_TOKEN_OPTIONS) --language C --no-lib-quex
 
 A_B_C-token_ids.h \
 A_B_C/A_B_C-token.c: 
@@ -37,7 +37,7 @@ A_B_C/A_B_C-token.c:
 		 --token-class-only            \
 		 --token-class     A_B_C_Token \
 		 -b                4           \
-		 --token-id-prefix TKN_ --language C 
+		 --token-id-prefix TKN_ --language C  # generate lib quex
 
 clean:
 	rm -rf max/ moritz/ boeck/ A_B_C/ *.o lexer tmp.* C

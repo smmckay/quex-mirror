@@ -16,8 +16,8 @@
 #ifndef QUEX_INCLUDE_GUARD__QUEX__BOM
 #define QUEX_INCLUDE_GUARD__QUEX__BOM
 
-$$INC: definitions$$
 $$INC: quex/enums$$
+$$INC: quex/standard_functions$$
 
 QUEX_NAMESPACE_QUEX_OPEN
 

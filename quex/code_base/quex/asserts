@@ -10,14 +10,17 @@
 #ifdef QUEX_OPTION_ASSERTS
 $$<Cpp>--------------------------------------------------------------------------
 #   include <cassert>
+#   ifndef  __quex_assert_no_passage
+#   define  __quex_assert_no_passage()    do { self.error_code_set_if_first(E_Error_DFA_DropIntoOtherState); return; } while ( 0 )
+#   endif
 $$-----------------------------------------------------------------------------
 $$<C>--------------------------------------------------------------------------
 #   include <assert.h>
+#   ifndef  __quex_assert_no_passage
+#   define  __quex_assert_no_passage()    do { self.error_code_set_if_first(&self, E_Error_DFA_DropIntoOtherState); return; } while ( 0 )
+#   endif
 $$-----------------------------------------------------------------------------
 #   define  __quex_assert(X)              assert(X)
-#   ifndef  __quex_assert_no_passage
-#   define  __quex_assert_no_passage()    do { QUEX_NAME(MF_error_code_set_if_first)(&self, E_Error_DFA_DropIntoOtherState); return; } while ( 0 )
-#   endif
 #   define  QUEX_IF_ASSERTS_poison(BEGIN, END) \
             do { \
                 if( END > BEGIN )  \

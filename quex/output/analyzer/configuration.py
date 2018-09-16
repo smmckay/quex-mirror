@@ -95,7 +95,8 @@ def _type_definitions():
 
     def_str = "\n".join(Lng.QUEX_TYPE_DEF(original, customized_name) 
                         for customized_name, original in type_def_list 
-                        if customized_name != excluded)
+                        if customized_name != excluded) \
+              + "\n"
 
     return Lng.FRAME_IN_NAMESPACE_MAIN(def_str)
 

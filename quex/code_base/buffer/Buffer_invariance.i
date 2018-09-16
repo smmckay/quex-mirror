@@ -9,7 +9,7 @@ QUEX_NAME(BufferInvariance_construct)(QUEX_NAME(BufferInvariance)* me,
                                       QUEX_NAME(Buffer)*           subject)
 /* Store all buffer related pointers and indicates present in 'subject'.      */
 {
-    QUEX_BUFFER_ASSERT_pointers_in_range(subject);
+    QUEX_NAME(Buffer_assert_pointers_in_range)(subject);
 
     me->front_p             = subject->begin(subject);
     me->back_p              = subject->content_space_end(subject);

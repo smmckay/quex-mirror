@@ -3,7 +3,7 @@
 
 #include "test_c/lib/definitions"
 typedef  int TestAnalyzer_indentation_t;
-#define  QUEX_SETTING_INDENTATION_STACK_SIZE 64
+#define  QUEX_TestAnalyzer_SETTING_INDENTATION_STACK_SIZE 64
 #include "test_c/lib/analyzer/Counter"
 
 #ifdef __cplusplus
@@ -15,10 +15,10 @@ typedef  int TestAnalyzer_indentation_t;
 typedef unsigned char TestAnalyzer_lexatom_t;
 #define QUEX_NAME_TOKEN(X) TokenName_ ## X
 #define QUEX_NAME(X)       LexerName_ ## X
-#define QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT 
+#define QUEX_TestAnalyzer_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT 
 #define QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 #define QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-#define QUEX_SETTING_TOKEN_ID_REPETITION_TEST(X) true
+#define QUEX_TestAnalyzer_SETTING_TOKEN_ID_REPETITION_TEST(X) true
 #define QUEX_NAMESPACE_MAIN_OPEN 
 #define QUEX_NAMESPACE_MAIN_CLOSE 
 

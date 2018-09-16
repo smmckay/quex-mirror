@@ -1,27 +1,8 @@
 | Mode change to X
-## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'
-##
-## Asserts activated! Lexical analyzer is 'paranoid'!
-## => Even smallest misbehavior causes program exit.
-##    This helps to find subtle errors.
-##
-## Note however: the paranoia is a heavy load on performance!
-##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED_EXT'
-##
-## Report any bug at
-##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 | [START]
 We miss the closing '*/'
 TOKEN: <TERMINATION> ''
 | [END]
-_________________________________________________________________
-   buffer front--------------------------->[0000] 0x0000
-                                           [0001] 0x000A
-   lexeme start, input, end of file------->[0002] 0x0000
-   buffer back---------------------------->[0003] 0x0000
-_________________________________________________________________
   mode:       X;
   error_code: OnSkipRangeOpen;
   _mode_stack: {
@@ -59,5 +40,11 @@ _________________________________________________________________
       end_p:               begin + 2, end - 2;
     }
   }
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+                                           [0001] 0x000A
+   lexeme start, input, end of file------->[0002] 0x0000
+   buffer back---------------------------->[0003] 0x0000
+_________________________________________________________________
 
 

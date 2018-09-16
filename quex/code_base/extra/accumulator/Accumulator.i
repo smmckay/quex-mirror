@@ -208,8 +208,8 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
     __quex_assert(me->text.end < me->text.memory_end);   
 
     if( me->text.begin == me->text.end ) {               
-        begin_p = &QUEX_NAME(LexemeNull);
-        end_p   = &QUEX_NAME(LexemeNull);             /* -> terminating zero. */
+        begin_p = &QUEX_GNAME(LexemeNull);
+        end_p   = &QUEX_GNAME(LexemeNull);             /* -> terminating zero. */
     }
     else {
         begin_p  = me->text.begin;
@@ -241,14 +241,14 @@ QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me)
     /* All functions must ensure that there is one cell left to store the terminating zero. */
 
 
-    __QUEX_STD_printf("  accumulator: ");
+    QUEX_DEBUG_PRINT("  accumulator: ");
     if( ! me->text.end || ! me->text.begin ) {
-        __QUEX_STD_printf("<uninitialized>\n");
+        QUEX_DEBUG_PRINT("<uninitialized>\n");
     }
     else {
         __quex_assert(me->text.end < me->text.memory_end);
         *(me->text.end) = (QUEX_TYPE_LEXATOM)0; /* see above '__quex_assert()' */
-        __QUEX_STD_printf("'%s'\n", (const char*)me->text.begin);
+        QUEX_DEBUG_PRINT1("'%s'\n", (const char*)me->text.begin);
     }
 }
 

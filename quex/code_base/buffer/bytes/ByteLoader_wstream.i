@@ -155,11 +155,11 @@ QUEX_NAME(ByteLoader_wstream_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
 {
     QUEX_NAME(ByteLoader_wstream)*   me = (QUEX_NAME(ByteLoader_wstream)*)alter_ego;
 
-    __QUEX_STD_printf("        stream:           ((%p));\n", (const void*)me->input_handle);
-    __QUEX_STD_printf("        type:             wistream;\n");
-    __QUEX_STD_printf("        stream:           ((%p));\n", (const void*)me->input_handle);
+    QUEX_DEBUG_PRINT1("        stream:           ((%p));\n", (const void*)me->input_handle);
+    QUEX_DEBUG_PRINT("        type:             wistream;\n");
+    QUEX_DEBUG_PRINT1("        stream:           ((%p));\n", (const void*)me->input_handle);
     if( me->input_handle ) {
-        __QUEX_STD_printf("        end_of_stream:    %s;\n", E_Boolean_NAME(me->input_handle->eof()));
+        QUEX_DEBUG_PRINT1("        end_of_stream:    %s;\n", E_Boolean_NAME(me->input_handle->eof()));
     }
 }
 QUEX_NAMESPACE_MAIN_CLOSE

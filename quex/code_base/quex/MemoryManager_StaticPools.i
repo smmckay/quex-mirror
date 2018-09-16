@@ -84,7 +84,7 @@ quex_MemoryManager_allocate(const size_t       ByteN,
     MemoryManager_UnitTest.allocated_byte_n += ByteN;
 
 #   ifdef QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE_EXT
-    __QUEX_STD_printf("allocate: { adr: ((%p)); size: %i; }\n", (void*)me, (int)ByteN);
+    QUEX_DEBUG_PRINT2("allocate: { adr: ((%p)); size: %i; }\n", (void*)me, (int)ByteN);
 #   endif
     return me;
 }
@@ -99,7 +99,7 @@ quex_MemoryManager_reallocate(void*              old_memory,
     if( NewByteN > (size_t)MemoryManager_UnitTest.reallocate_limit_byte_n ) {
         MemoryManager_UnitTest.reallocated_refusal_n += 1;
         if( MemoryManager_UnitTest.reallocate_verbose_f ) {
-            __QUEX_STD_printf("Reallocate: refuse %i;\n", (int)NewByteN);
+            QUEX_DEBUG_PRINT1("Reallocate: refuse %i;\n", (int)NewByteN);
         }
         return (uint8_t*)0;
     }
@@ -107,7 +107,7 @@ quex_MemoryManager_reallocate(void*              old_memory,
         MemoryManager_UnitTest.reallocated_byte_n += NewByteN;
         result_p = __QUEX_STD_realloc(old_memory, NewByteN);
         if( MemoryManager_UnitTest.reallocate_verbose_f ) {
-            __QUEX_STD_printf("Reallocate: done %i;\n", (int)NewByteN);
+            QUEX_DEBUG_PRINT1("Reallocate: done %i;\n", (int)NewByteN);
         }
         return (uint8_t*)result_p;
     }
@@ -121,7 +121,7 @@ quex_MemoryManager_free(void*              alter_ego,
     (void)Type;
 
 #   ifdef QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE_EXT
-    __QUEX_STD_printf("free:     { adr: ((%p)); }\n", (void*)me);
+    QUEX_DEBUG_PRINT1("free:     { adr: ((%p)); }\n", (void*)me);
 #   endif
 
     /* The de-allocator shall never be called for LexemeNull object.         */
@@ -204,18 +204,18 @@ quex_print_relative_positions(const void*  Begin,       const void* End,
     const uint8_t* ByteP      = (const uint8_t*)P;
 
     if( P == 0x0 ) {
-        __QUEX_STD_printf("<void>;");
+        QUEX_DEBUG_PRINT("<void>;");
     }
     else if( P < Begin ) {
-        __QUEX_STD_printf("begin - %i <beyond boarder>;", 
+        QUEX_DEBUG_PRINT1("begin - %i <beyond boarder>;", 
                           (int)(BytePBegin - ByteP) / (int)ElementSize);
     }
     else if( P >= End ) {
-        __QUEX_STD_printf("end + %i <beyond boarder>;", 
+        QUEX_DEBUG_PRINT1("end + %i <beyond boarder>;", 
                           (int)(ByteP - BytePEnd) / (int)ElementSize);
     }
     else {
-        __QUEX_STD_printf("begin + %i, end - %i;", 
+        QUEX_DEBUG_PRINT2("begin + %i, end - %i;", 
                           (int)(ByteP - BytePBegin) / (int)ElementSize, 
                           (int)(BytePEnd - ByteP) / (int)ElementSize);
     }

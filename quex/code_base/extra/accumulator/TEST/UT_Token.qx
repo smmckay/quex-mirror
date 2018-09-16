@@ -2,7 +2,7 @@ token_type {
    header {
 #       include <iostream>
 #       include <string>
-   #include "test_cpp/converter-from-lexeme"
+   #include "test_cpp/lib/lexeme/converter-from-lexeme"
 
    }
    standard {

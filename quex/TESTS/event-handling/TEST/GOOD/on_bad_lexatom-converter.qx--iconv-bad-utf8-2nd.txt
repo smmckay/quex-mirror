@@ -1,17 +1,4 @@
 | Mode change to X
-_________________________________________________________________
-   buffer front--------------------------->[0000] 0x0000
-   lexeme start, input, end of file------->[0001] 0x0000
-                                           [0002] 0xFFFFFFFF
-                                           [0003] 0xFFFFFFFF
-                                           [0004] 0xFFFFFFFF
-                                           ...
-                                           [FFFB] 0xFFFFFFFF
-                                           [FFFC] 0xFFFFFFFF
-                                           [FFFD] 0xFFFFFFFF
-                                           [FFFE] 0xFFFFFFFF
-   buffer back---------------------------->[FFFF] 0x0000
-_________________________________________________________________
 bad_lexatom: '0x0000'
 lexeme:      
 <TERMINATION> '' 
@@ -64,5 +51,18 @@ lexeme:
       end_p:               begin + 1, end - 65535;
     }
   }
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+   lexeme start, input, end of file------->[0001] 0x0000
+                                           [0002] 0xFFFFFFFF
+                                           [0003] 0xFFFFFFFF
+                                           [0004] 0xFFFFFFFF
+                                           ...
+                                           [FFFB] 0xFFFFFFFF
+                                           [FFFC] 0xFFFFFFFF
+                                           [FFFD] 0xFFFFFFFF
+                                           [FFFE] 0xFFFFFFFF
+   buffer back---------------------------->[FFFF] 0x0000
+_________________________________________________________________
 
 

@@ -15,6 +15,7 @@
 #include "$$CONVERTER_HEADER$$"
 
 /* Only with 'std-lib': Memory manager required (see below).                  */
+$$INC: <std-lib> quex/asserts$$
 $$INC: <std-lib> quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN

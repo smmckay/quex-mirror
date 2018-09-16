@@ -153,16 +153,16 @@ QUEX_NAME(ByteLoader_delete)(QUEX_NAME(ByteLoader)** me)
 QUEX_INLINE void                    
 QUEX_NAME(ByteLoader_print_this)(QUEX_NAME(ByteLoader)* me)
 {
-    __QUEX_STD_printf("      byte_loader: {\n");
-    __QUEX_STD_printf("        handle_ownership: %s;\n", E_Ownership_NAME(me->handle_ownership));
-    __QUEX_STD_printf("        binary_mode_f:    %s;\n", E_Boolean_NAME(me->binary_mode_f));
-    __QUEX_STD_printf("        element_size:     %i;\n", (int)me->element_size); 
-    __QUEX_STD_printf("        initial_position: %i;\n", (int)me->initial_position); 
-    __QUEX_STD_printf("        current_position: %i;\n", (int)me->tell(me)); 
+    QUEX_DEBUG_PRINT("      byte_loader: {\n");
+    QUEX_DEBUG_PRINT1("        handle_ownership: %s;\n", E_Ownership_NAME(me->handle_ownership));
+    QUEX_DEBUG_PRINT1("        binary_mode_f:    %s;\n", E_Boolean_NAME(me->binary_mode_f));
+    QUEX_DEBUG_PRINT1("        element_size:     %i;\n", (int)me->element_size); 
+    QUEX_DEBUG_PRINT1("        initial_position: %i;\n", (int)me->initial_position); 
+    QUEX_DEBUG_PRINT1("        current_position: %i;\n", (int)me->tell(me)); 
     if( me->derived.print_this ) {
         me->derived.print_this(me);
     }
-    __QUEX_STD_printf("      }\n");
+    QUEX_DEBUG_PRINT("      }\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

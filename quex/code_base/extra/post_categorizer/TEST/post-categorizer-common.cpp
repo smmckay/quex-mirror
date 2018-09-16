@@ -1,6 +1,6 @@
 #include "post-categorizer-common.h"
 #include "test_cpp/lib/quex/MemoryManager.i"
-#include "test_cpp/converter-from-lexeme.i"
+#include "test_cpp/lib/lexeme/converter-from-lexeme.i"
 
 
 void post_categorizer_setup(QUEX_NAME(Dictionary)* me, int Seed)

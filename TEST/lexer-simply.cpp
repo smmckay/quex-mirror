@@ -3,7 +3,7 @@
 
 #include <Simple/Simple>
 #include "Simple/lib/buffer/bytes/ByteLoader_FILE.i"
-#include <Simple/lib/extra/strange_stream/StrangeStream>
+#include <Simple/lib/quex/StrangeStream>
 #include <Simple/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
 #include <Simple/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #include <Simple/lib/buffer/lexatoms/converter/icu/Converter_ICU>

@@ -2,7 +2,7 @@
 #ifndef QUEX_INCLUDE_GUARD__BUFFER__BUFFER_MOVE_I
 #define QUEX_INCLUDE_GUARD__BUFFER__BUFFER_MOVE_I
 
-$$INC: asserts$$
+$$INC: quex/asserts$$
 $$INC: definitions$$
 $$INC: buffer/Buffer$$
 $$INC: buffer/asserts$$
@@ -156,7 +156,7 @@ QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(QUEX_NAME(Buffer)*  me)
     const ptrdiff_t     FallBackN = me->_fallback_n;
     __quex_assert(FallBackN >= 0);
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 
     if( me->_read_p - me->_lexeme_start_p >= ContentSpaceSize - FallBackN ) { 
         /* OVERFLOW: If stretch from _read_p to _lexeme_start_p 

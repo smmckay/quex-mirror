@@ -21,7 +21,7 @@
 
 #include <common.h>
 #include "test_c/lib/quex/MemoryManager_UnitTest.i"
-#include "test_c/converter-from-lexeme.i"
+#include "test_c/lib/lexeme/converter-from-lexeme.i"
 #include "test_c/lib/buffer/Buffer"
 #include "test_c/lib/buffer/asserts"
 
@@ -183,7 +183,7 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t* depth)
             *p = (QUEX_TYPE_LEXATOM_EXT)('a' + i);
         }
 
-        QUEX_BUFFER_ASSERT_CONSISTENCY(&array[i+1]);
+        QUEX_NAME(Buffer_assert_consistency)(&array[i+1]);
     }
 
     MemoryManager_UnitTest.allocation_addmissible_f = true;

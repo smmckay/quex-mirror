@@ -115,20 +115,20 @@ QUEX_NAME(RawBuffer_load)(QUEX_NAME(RawBuffer)*  me,
 QUEX_INLINE void 
 QUEX_NAME(RawBuffer_print_this)(QUEX_NAME(RawBuffer)*  me)
 {
-    __QUEX_STD_printf("      raw_buffer: {\n");
-    /* __QUEX_STD_printf("        ownership:         %s;\n", E_Ownership_NAME(me->ownership)); */
-    __QUEX_STD_printf("        buffer:            { begin: ((%p)) end: ((%p)) size: %i; }\n",
+    QUEX_DEBUG_PRINT("      raw_buffer: {\n");
+    /* QUEX_DEBUG_PRINT("        ownership:         %s;\n", E_Ownership_NAME(me->ownership)); */
+    QUEX_DEBUG_PRINT3("        buffer:            { begin: ((%p)) end: ((%p)) size: %i; }\n",
                       (void*)me->begin, (void*)me->memory_end, 
                       (int)(me->memory_end - me->begin));
-    __QUEX_STD_printf("        fill_end_p:        ");
+    QUEX_DEBUG_PRINT("        fill_end_p:        ");
     QUEX_GNAME_LIB(print_relative_positions)((void*)me->begin, (void*)me->memory_end,
-                                     sizeof(uint8_t), (void*)me->fill_end_p);
-    __QUEX_STD_printf("\n");
-    __QUEX_STD_printf("        next_to_convert_p: ");
+                                             sizeof(uint8_t), (void*)me->fill_end_p);
+    QUEX_DEBUG_PRINT("\n");
+    QUEX_DEBUG_PRINT("        next_to_convert_p: ");
     QUEX_GNAME_LIB(print_relative_positions)((void*)me->begin, (void*)me->memory_end,
-                                     sizeof(uint8_t), (void*)me->next_to_convert_p);
-    __QUEX_STD_printf("\n");
-    __QUEX_STD_printf("      }\n");
+                                             sizeof(uint8_t), (void*)me->next_to_convert_p);
+    QUEX_DEBUG_PRINT("\n");
+    QUEX_DEBUG_PRINT("      }\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

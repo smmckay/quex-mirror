@@ -282,6 +282,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
     on_indentation_txt = indentation_handler.do(AuxMode(), ["M", "M2"]).replace("$on_indentation", "QUEX_NAME(M_on_indentation)")
 
     Setup.analyzer_class_name = "TestAnalyzer"
+    Setup.analyzer_name_safe = "TestAnalyzer"
     result = adapt.do(main_txt + on_indentation_txt, test_analyzer_dir(Language))
     result = language_defines + result
     result = result.replace("$$TEST_ANALYZER_DIR$$",    test_analyzer_dir(Language))
@@ -325,6 +326,7 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
     txt = txt.replace(Lng._SOURCE_REFERENCE_END(), "")
 
     Setup.analyzer_class_name = "TestAnalyzer"
+    Setup.analyzer_name_safe = "TestAnalyzer"
     return adapt.do(txt, test_analyzer_dir(Language))
 
 def my_own_mr_unit_test_function(SourceCode, EndStr, 

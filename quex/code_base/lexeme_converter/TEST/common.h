@@ -8,11 +8,11 @@
 #define QUEX_SETTING_CHAR_CODEC    8
 #define QUEX_SETTING_WCHAR_CODEC   32
 
-#include "ut/lib/asserts"
+#include "ut/lib/quex/asserts"
 #include "../../TESTS/minimum-definitions.h"
-#include "ut/converter-from-utf8.i"
-#include "ut/converter-from-utf16.i"
-#include "ut/converter-from-utf32.i"
+#include "ut/lib/lexeme/converter-from-utf8.i"
+#include "ut/lib/lexeme/converter-from-utf16.i"
+#include "ut/lib/lexeme/converter-from-utf32.i"
 
 using namespace std;
 

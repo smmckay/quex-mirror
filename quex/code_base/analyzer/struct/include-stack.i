@@ -206,8 +206,8 @@ QUEX_NAME(MF_include_push_core)(QUEX_TYPE_ANALYZER*       me,
     }
 
     __quex_assert(me->buffer.begin(&me->buffer) != memento->buffer.begin(&memento->buffer));
-    QUEX_BUFFER_ASSERT_CONSISTENCY(&memento->buffer);
-    QUEX_BUFFER_ASSERT_CONSISTENCY(&me->buffer);
+    QUEX_NAME(Buffer_assert_consistency)(&memento->buffer);
+    QUEX_NAME(Buffer_assert_consistency)(&me->buffer);
 
     $$<count> (void)QUEX_NAME(Counter_construct)(&me->counter);$$
 

@@ -19,6 +19,8 @@
 #define QUEX_INCLUDE_GUARD__QUEX__BOM_I
 
 $$INC: quex/bom$$
+$$INC: quex/standard_functions$$
+$$INC: quex/debug_print$$
 
 QUEX_NAMESPACE_QUEX_OPEN
 

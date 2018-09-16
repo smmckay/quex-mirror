@@ -102,7 +102,10 @@ def produce_include_statements(OutputDir, Txt):
         if content is None: continue
         condition, path = Symbol.condition_str(content)
         path       = path.strip()
-        local_path = os.path.join(OutputDir, subdir, path.strip())
+        if path.startswith("quex/") and not Setup.implement_lib_quex_f:
+            local_path = os.path.join(subdir, path.strip())
+        else:
+            local_path = os.path.join(OutputDir, subdir, path.strip())
         txt.append(Txt[last_i:begin_i])
         txt.append(Lng.INCLUDE(local_path, condition))
         last_i = Txt.find("\n", end_i) # Step beyond the '\n'

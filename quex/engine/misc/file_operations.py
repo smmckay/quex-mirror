@@ -69,11 +69,26 @@ def __check_codec(fh, FileName):
     fh.seek(start_pos)
     return fh
 
+def __ensure_directory_for_file_exists(FileName):
+    directory = os.path.dirname(FileName)
+    if not directory:
+        return True
+
+    elif not os.path.isdir(directory):
+        try:    os.makedirs(directory)
+        except: return None
+        return True
+    else:
+        return True
+
 def __open_safely(FileName, Mode="rb"):
     file_name = FileName.replace("//","/")
     file_name = os.path.normpath(file_name)
-    try:
-        return open(file_name, Mode)
-    except:
-        return None
+
+    if "w" in Mode:
+        if not __ensure_directory_for_file_exists(file_name):
+            return None
+
+    try:    return open(file_name, Mode)
+    except: return None
 

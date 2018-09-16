@@ -1,38 +1,25 @@
 | Mode change to ONE
-## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'
-##
-## Asserts activated! Lexical analyzer is 'paranoid'!
-## => Even smallest misbehavior causes program exit.
-##    This helps to find subtile errors.
-##
-## Note however: the paranoia is a heavy load on performance!
-##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_EXT_DISABLED'
-##
-## Report any bug at
-##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 | [START]
 TOKEN: IGNORED '1'
 Exit:  to   TWO
+Enter: from ONE
 | Mode change from ONE
 |             to   TWO
-Enter: from ONE
 TOKEN: GOTO '2'
 Exit:  to   THREE
+Enter: from TWO
 | Mode change from TWO
 |             to   THREE
-Enter: from TWO
 TOKEN: GOTO '3'
 Exit:  to   TWO
+Enter: from THREE
 | Mode change from THREE
 |             to   TWO
-Enter: from THREE
 TOKEN: GOTO '2'
 Exit:  to   ONE
+Enter: from TWO
 | Mode change from TWO
 |             to   ONE
-Enter: from TWO
 TOKEN: GOTO '1'
 TOKEN: <TERMINATION> ''
 | [END]

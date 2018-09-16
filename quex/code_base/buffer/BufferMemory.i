@@ -2,7 +2,7 @@
 #ifndef QUEX_INCLUDE_GUARD__BUFFER__BUFFER_MEMORY_I
 #define QUEX_INCLUDE_GUARD__BUFFER__BUFFER_MEMORY_I
 
-$$INC: asserts$$
+$$INC: quex/asserts$$
 $$INC: buffer/asserts$$
 $$INC: definitions$$
 $$INC: buffer/Buffer$$
@@ -119,11 +119,11 @@ QUEX_NAME(BufferMemory_check_chunk)(const QUEX_TYPE_LEXATOM* Front,
 QUEX_INLINE void
 QUEX_NAME(BufferMemory_print_this)(QUEX_NAME(BufferMemory)* me)
 {
-    __QUEX_STD_printf("    memory: {\n");
-    __QUEX_STD_printf("      ownership: %s;\n", E_Ownership_NAME(me->ownership));
-    __QUEX_STD_printf("      begin:     ((%p)) (== _front);\n",       (void*)me->_front);
-    __QUEX_STD_printf("      end:       begin + %i (== _back + 1);\n", (int)(me->_back + 1 - me->_front));
-    __QUEX_STD_printf("    }\n");
+    QUEX_DEBUG_PRINT("    memory: {\n");
+    QUEX_DEBUG_PRINT1("      ownership: %s;\n", E_Ownership_NAME(me->ownership));
+    QUEX_DEBUG_PRINT1("      begin:     ((%p)) (== _front);\n",       (void*)me->_front);
+    QUEX_DEBUG_PRINT1("      end:       begin + %i (== _back + 1);\n", (int)(me->_back + 1 - me->_front));
+    QUEX_DEBUG_PRINT("    }\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

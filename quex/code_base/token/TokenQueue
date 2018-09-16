@@ -4,7 +4,7 @@
 #define QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE
 
 $$INC: definitions$$
-$$INC: asserts$$
+$$INC: quex/asserts$$
 $$INC: quex/MemoryManager$$
 $$INCLUDE_TOKEN_CLASS_DEFINITION$$
 /* $$INCLUDE_LEXER_CLASS_DEFINITION$$ */

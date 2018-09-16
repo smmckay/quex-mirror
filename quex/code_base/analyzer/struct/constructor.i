@@ -400,7 +400,7 @@ QUEX_NAME(Asserts_construct)()
 {
 #   if      defined(QUEX_OPTION_ASSERTS) \
        && ! defined(QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT)
-    __QUEX_STD_printf(__QUEX_MESSAGE_ASSERTS_INFO);
+    QUEX_DEBUG_PRINT(__QUEX_MESSAGE_ASSERTS_INFO);
 #   endif
 
 #   if defined(QUEX_OPTION_ASSERTS) 

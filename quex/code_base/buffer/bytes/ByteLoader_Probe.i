@@ -159,9 +159,9 @@ QUEX_NAME(ByteLoader_Probe_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
 {
     QUEX_NAME(ByteLoader_Probe)* me = (QUEX_NAME(ByteLoader_Probe)*)(alter_ego);
 
-    __QUEX_STD_printf("        remote_controlled: {\n");
+    QUEX_DEBUG_PRINT("        remote_controlled: {\n");
     me->source->print_this(me->source);
-    __QUEX_STD_printf("        }\n");
+    QUEX_DEBUG_PRINT("        }\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

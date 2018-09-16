@@ -13,14 +13,15 @@ def do(OutputDir, DirList=None):
 
 dir_db = {
     "": [
-        "asserts",
-        "lexeme_base",
-        "lexeme_base.i",
         "definitions",
         "include-guard-undef",
         "declarations",
         "implementations.i",
         "implementations-inline.i",
+    ],
+    "lexeme/": [
+        "basics",
+        "basics.i",
     ],
     "token/": [
         "receiving",
@@ -37,9 +38,6 @@ dir_db = {
     "extra/accumulator/": [
         "Accumulator",
         "Accumulator.i",
-    ],
-    "extra/strange_stream/": [
-        "StrangeStream",
     ],
     "buffer/lexatoms/": [
         "LexatomLoader", 
@@ -126,8 +124,11 @@ dir_db = {
         "Statistics.i"
     ],
     "quex/": [
-        "standard_functions", "debug_print", "enums", "operations",
+        "asserts",
+        "debug_print", 
+        "standard_functions", "enums", "operations",
         "bom",            "bom.i",  
+        "StrangeStream",
         "MemoryManager",  "MemoryManager.i", "MemoryManager_UnitTest.i"
     ],
     "quex/compatibility/": [
@@ -156,10 +157,17 @@ def __collect_files(DirList):
     if DirList is None: dir_list = dir_db.keys() 
     else:               dir_list = DirList
 
+    if not Setup.implement_lib_quex_f:
+        dir_list = [ d for d in dir_list if not d.startswith("quex/") ]
+    if not Setup.implement_lib_lexeme_f:
+        dir_list = [ d for d in dir_list if not d.startswith("lexeme/") ]
+
     result = set(flatten_list_of_lists(
         dir_db_get_files(d) for d in dir_list
     ))
-    result.update(dir_db[""])
+
+    if not Setup.token_class_only_f:
+        result.update(dir_db[""])
     return result
 
 def __copy_files(OutputDir, FileSet):

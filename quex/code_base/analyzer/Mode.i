@@ -74,23 +74,23 @@ QUEX_NAME(ModeStack_print)(QUEX_NAME(ModeStack)* me)
 {
     const QUEX_NAME(Mode)** iterator = 0x0;
     if( QUEX_NAME(ModeStack_resources_absent)(me) ) {
-        __QUEX_STD_printf("<uninitialized>\n");
+        QUEX_DEBUG_PRINT("<uninitialized>\n");
     }
     else {
-        __QUEX_STD_printf("{\n");
-        __QUEX_STD_printf("    size:    %i;\n",
+        QUEX_DEBUG_PRINT("{\n");
+        QUEX_DEBUG_PRINT1("    size:    %i;\n",
                           (int)(me->memory_end - me->begin));
-        __QUEX_STD_printf("    content: [");
+        QUEX_DEBUG_PRINT("    content: [");
         if( me->end > me->memory_end || me->end < me->begin ) {
-            __QUEX_STD_printf("<pointer corrupted>");
+            QUEX_DEBUG_PRINT("<pointer corrupted>");
         }
         else {
             for(iterator=&me->end[-1]; iterator >= me->begin; --iterator) {
-                __QUEX_STD_printf("%s, ", (*iterator)->name);
+                QUEX_DEBUG_PRINT1("%s, ", (*iterator)->name);
             }
         }
-        __QUEX_STD_printf("]\n");
-        __QUEX_STD_printf("  }\n");
+        QUEX_DEBUG_PRINT("]\n");
+        QUEX_DEBUG_PRINT("  }\n");
     }
 }
 

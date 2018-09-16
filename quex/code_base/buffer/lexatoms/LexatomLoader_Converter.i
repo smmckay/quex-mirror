@@ -88,8 +88,8 @@ QUEX_NAME(LexatomLoader_Converter_new)(QUEX_NAME(ByteLoader)* byte_loader,
     else if( byte_loader && ! byte_loader->binary_mode_f ) {
         /* Binary mode is ABSOLUTELY REQUIRED for converters, otherwise the 
          * positioning with respect to the raw buffer becomes unreliable.    */
-        __QUEX_STD_printf("! LexatomLoader_Converter_new: QUEX_NAME(ByteLoader )is not in binary mode. !\n");
-        __QUEX_STD_printf("! Has file been opened in binary mode?                          !\n");
+        QUEX_DEBUG_PRINT("! LexatomLoader_Converter_new: QUEX_NAME(ByteLoader )is not in binary mode. !\n");
+        QUEX_DEBUG_PRINT("! Has file been opened in binary mode?                          !\n");
         return (QUEX_NAME(LexatomLoader)*)0;
     }
 #   endif
@@ -424,7 +424,7 @@ QUEX_NAME(LexatomLoader_Converter_print_this)(QUEX_NAME(LexatomLoader)* alter_eg
 {
     QUEX_NAME(LexatomLoader_Converter)* me  = (QUEX_NAME(LexatomLoader_Converter)*)alter_ego;
 
-    __QUEX_STD_printf("      type:                           converter;\n");
+    QUEX_DEBUG_PRINT("      type:                           converter;\n");
     QUEX_NAME(RawBuffer_print_this)(&me->raw_buffer);
     QUEX_NAME(Converter_print_this)(me->converter);
 }

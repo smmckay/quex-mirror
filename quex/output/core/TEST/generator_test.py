@@ -418,6 +418,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     else:                sm_name = "M2"
 
     Setup.analyzer_class_name = "TestAnalyzer"
+    Setup.analyzer_name_safe  = "TestAnalyzer"
 
     # (*) Initialize address handling
     dial_db = DialDB()     # BEFORE constructor of generator; 
@@ -716,7 +717,7 @@ test_program_db = {
     #include <cstring>
     #include <sstream>
     #include "$$TEST_ANALYZER_DIR$$/lib/buffer/lexatoms/LexatomLoader_Plain"
-    #include "$$TEST_ANALYZER_DIR$$/lib/extra/strange_stream/StrangeStream"
+    #include "$$TEST_ANALYZER_DIR$$/lib/quex/StrangeStream"
 
 
     int main(int argc, char** argv)

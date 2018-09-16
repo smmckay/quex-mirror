@@ -34,9 +34,9 @@ common_iterate(QUEX_NAME(Buffer)* reference, size_t NewSize, ptrdiff_t* shrink_n
             reference->_memory._front[0] = (QUEX_TYPE_LEXATOM_EXT)0;
             reference->_memory._back[0]  = (QUEX_TYPE_LEXATOM_EXT)0;
 
-            QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
+            QUEX_NAME(Buffer_assert_consistency)(reference);
             common_test_single_migration(reference, NewSize, shrink_n);
-            QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
+            QUEX_NAME(Buffer_assert_consistency)(reference);
             common_test_single_extension(reference, NewSize);
 
             count += 1;
@@ -58,7 +58,7 @@ common_clone(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
 
     __quex_assert(end_offset > 0);
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
+    QUEX_NAME(Buffer_assert_consistency)(reference);
 
     QUEX_TYPE_LEXATOM_EXT* memory = (QUEX_TYPE_LEXATOM_EXT*)quex_MemoryManager_allocate(
                                         reference_size * sizeof(QUEX_TYPE_LEXATOM_EXT), 
@@ -94,8 +94,8 @@ common_clone(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
     reference->_memory._back[0]  = QUEX_TestAnalyzer_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
     subject->_memory._front[0]   = QUEX_TestAnalyzer_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
     subject->_memory._back[0]    = QUEX_TestAnalyzer_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
-    QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
-    QUEX_BUFFER_ASSERT_CONSISTENCY(subject);
+    QUEX_NAME(Buffer_assert_consistency)(reference);
+    QUEX_NAME(Buffer_assert_consistency)(subject);
 }
 
 void
@@ -147,8 +147,8 @@ common_verify(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
 { 
     ptrdiff_t end_offset = reference->input.end_p - reference->_memory._front;
     ptrdiff_t i;
-    QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
-    QUEX_BUFFER_ASSERT_CONSISTENCY(subject);
+    QUEX_NAME(Buffer_assert_consistency)(reference);
+    QUEX_NAME(Buffer_assert_consistency)(subject);
     QUEX_NAME(Buffer)*  root;
 
     common_verify_offset(reference, subject, reference->_read_p,         subject->_read_p);
@@ -243,6 +243,6 @@ common_construct_reference_base(QUEX_NAME(Buffer)* reference,
                                 QUEX_UT_SETTING_BUFFER_FALLBACK_N_EXT, 
                                 E_Ownership_LEXICAL_ANALYZER,
                                 (QUEX_NAME(Buffer)*)0);
-    QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
+    QUEX_NAME(Buffer_assert_consistency)(reference);
 }
 

@@ -13,7 +13,7 @@
 #define QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE_I
 
 $$INC: definitions$$
-$$INC: asserts$$
+$$INC: quex/asserts$$
 $$INC: quex/MemoryManager$$
 
 /* NOTE: QUEX_TYPE_TOKEN must be defined at this place!                       */

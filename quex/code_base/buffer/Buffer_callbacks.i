@@ -20,7 +20,11 @@ QUEX_NAME(Buffer_callbacks_set)(QUEX_NAME(Buffer)* me,
 QUEX_INLINE void
 QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(QUEX_NAME(Buffer)* me)
 {
-    QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(bi, me);
+#   ifdef QUEX_OPTION_ASSERTS
+    QUEX_NAME(BufferInvariance) bi;
+    QUEX_NAME(BUFFER_ASSERT_INVARIANCE_SETUP)(&bi, me);
+#   endif
+
     if( me->_backup_lexatom_index_of_lexeme_start_p != (QUEX_TYPE_STREAM_POSITION)-1 ) {
         /* Callbacks must have been called bedore the lexeme start position has
          * been back-uped. No pointer positions inside the buffer are referred
@@ -29,17 +33,27 @@ QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(QUEX_NAME(Buffer)* me)
     else if( me->event.on_buffer_before_change ) {
         me->event.on_buffer_before_change(me->event.aux); 
     }
-    QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY_SAME(bi, me);
+
+#   ifdef QUEX_OPTION_ASSERTS
+    QUEX_NAME(BUFFER_ASSERT_INVARIANCE_VERIFY_SAME)(&bi, me);
+#   endif
 }
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_callbacks_on_buffer_overflow)(QUEX_NAME(Buffer)* me)
 {
-    QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(bi, me);
+#   ifdef QUEX_OPTION_ASSERTS
+    QUEX_NAME(BufferInvariance) bi;
+    QUEX_NAME(BUFFER_ASSERT_INVARIANCE_SETUP)(&bi, me);
+#   endif
+
     if( me->event.on_buffer_overflow ) {
         me->event.on_buffer_overflow(me->event.aux);
     }
-    QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY(bi, me);
+
+#   ifdef QUEX_OPTION_ASSERTS
+    QUEX_NAME(BUFFER_ASSERT_INVARIANCE_VERIFY)(&bi, me);
+#   endif
 }
 
 QUEX_INLINE bool

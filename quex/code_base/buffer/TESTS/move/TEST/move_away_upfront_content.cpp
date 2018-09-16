@@ -74,7 +74,7 @@ QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me)
 {
     ptrdiff_t   move_distance;
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 
     if( 0 == me->input.lexatom_index_begin ) {
         return 0;
@@ -89,7 +89,7 @@ QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me)
     (void)QUEX_NAME(Buffer_move_towards_end)(me, move_distance);
 
     /*________________________________________________________________________*/
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 
     return move_distance;
 }

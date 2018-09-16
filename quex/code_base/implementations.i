@@ -27,15 +27,17 @@ $$INC: buffer/bytes/ByteLoader.i$$
 
 $$INC: analyzer/Mode.i$$
 
-$$INC: lexeme_base.i$$
-$$INC: <count> analyzer/Counter.i$$
+$$INC: <lib-lexeme> lexeme/basics.i$$
+$$INC: <count>      analyzer/Counter.i$$
 
 #endif
 
 $$INC: <lib-quex && not-memory-management-extern> quex/MemoryManager.i$$
-$$INC: ../converter-from-lexeme.i$$
+$$INC: <lib-lexeme> lexeme/converter-from-lexeme.i$$
 
+QUEX_NAMESPACE_MAIN_OPEN
 QUEX_TYPE_LEXATOM   QUEX_NAME(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
+QUEX_NAMESPACE_MAIN_CLOSE
 
 
 #endif /* QUEX_INCLUDE_GUARD__IMPLEMENTATIONS_I */

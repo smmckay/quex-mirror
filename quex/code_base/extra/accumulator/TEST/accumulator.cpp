@@ -4,7 +4,7 @@
 
 #include <test_cpp/TestAnalyzer>
 // #include "test_cpp/converter-from-lexeme.i"
-#include "test_cpp/lib/lexeme_base.i"
+#include "test_cpp/lib/lexeme/basics.i"
 #include "test_cpp/lib/extra/accumulator/Accumulator"
 #include "test_cpp/lib/extra/accumulator/Accumulator.i"
 

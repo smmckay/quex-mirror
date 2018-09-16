@@ -10,8 +10,9 @@ $$<memory-management-extern>---------------------------------------------------
 #error "This file is not supposed to be included in the context of external memory management."
 $$-----------------------------------------------------------------------------
 
-$$INC: definitions$$
 $$INC: quex/MemoryManager$$
+$$INC: quex/debug_print$$
+$$INC: quex/standard_functions$$
 
 QUEX_NAMESPACE_QUEX_OPEN
 
@@ -148,7 +149,7 @@ QUEX_NAME_LIB(system_is_little_endian)(void)
 
 void
 QUEX_NAME_LIB(print_relative_positions)(const void*  Begin,       const void* End, 
-                                     size_t       ElementSize, const void* P)
+                                        size_t       ElementSize, const void* P)
 /* Begin       = pointer to first element of buffer.
  * End         = pointer behind last element of buffer.
  * ElementSize = size in bytes of each element of buffer.
@@ -159,18 +160,18 @@ QUEX_NAME_LIB(print_relative_positions)(const void*  Begin,       const void* En
     const uint8_t* ByteP      = (const uint8_t*)P;
 
     if( P == 0x0 ) {
-        __QUEX_STD_printf("<void>;");
+        QUEX_DEBUG_PRINT("<void>;");
     }
     else if( P < Begin ) {
-        __QUEX_STD_printf("begin - %i <beyond boarder>;", 
+        QUEX_DEBUG_PRINT1("begin - %i <beyond boarder>;", 
                           (int)(BytePBegin - ByteP) / (int)ElementSize);
     }
     else if( P >= End ) {
-        __QUEX_STD_printf("end + %i <beyond boarder>;", 
+        QUEX_DEBUG_PRINT1("end + %i <beyond boarder>;", 
                           (int)(ByteP - BytePEnd) / (int)ElementSize);
     }
     else {
-        __QUEX_STD_printf("begin + %i, end - %i;", 
+        QUEX_DEBUG_PRINT2("begin + %i, end - %i;", 
                           (int)(ByteP - BytePBegin) / (int)ElementSize, 
                           (int)(BytePEnd - ByteP) / (int)ElementSize);
     }

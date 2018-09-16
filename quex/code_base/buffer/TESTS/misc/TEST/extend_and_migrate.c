@@ -31,7 +31,7 @@
 #include <common.h>
 #include "test_c/lib/quex/MemoryManager_UnitTest.i"
 #include "test_c/lib/buffer/asserts"
-#include "test_c/converter-from-lexeme.i"
+#include "test_c/lib/lexeme/converter-from-lexeme.i"
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
@@ -57,7 +57,7 @@ main(int argc, char** argv)
     count = 0;
     for(new_size = QUEX_MAX(3, reference_size - 1); 
         new_size <= reference_size + 2 ; ++new_size) {
-        QUEX_BUFFER_ASSERT_CONSISTENCY(&reference);
+        QUEX_NAME(Buffer_assert_consistency)(&reference);
 
         count += common_iterate(&reference, new_size, &shrink_n);
     }

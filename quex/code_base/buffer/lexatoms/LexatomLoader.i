@@ -58,13 +58,13 @@ QUEX_NAME(LexatomLoader_ByteLoader_Converter_consistency)(QUEX_NAME(ByteLoader)*
         return true;
     }
     else {
-        __QUEX_STD_printf("Error: The specified byte loader provides elements of size %i.\n", 
+        QUEX_DEBUG_PRINT1("Error: The specified byte loader provides elements of size %i.\n", 
                           (int)byte_loader->element_size);
-        __QUEX_STD_printf("Error: The converter requires input elements of size <= %i.\n", 
+        QUEX_DEBUG_PRINT1("Error: The converter requires input elements of size <= %i.\n", 
                           (int)converter->input_code_unit_size);
-        __QUEX_STD_printf("Error: This happens, for example, when using 'wistream' input\n"
-                          "Error: without considering 'sizeof(wchar_t)' with respect to\n"
-                          "Error: the encodings code unit's size. (UTF8=1byte, UTF16=2byte, etc.)\n");
+        QUEX_DEBUG_PRINT("Error: This happens, for example, when using 'wistream' input\n"
+                         "Error: without considering 'sizeof(wchar_t)' with respect to\n"
+                         "Error: the encodings code unit's size. (UTF8=1byte, UTF16=2byte, etc.)\n");
         return false;
     }
 }
@@ -222,27 +222,27 @@ QUEX_NAME(LexatomLoader_reverse_byte_order)(QUEX_TYPE_LEXATOM*       Begin,
 QUEX_INLINE void       
 QUEX_NAME(LexatomLoader_print_this)(QUEX_NAME(LexatomLoader)* me)
 {
-    __QUEX_STD_printf("    filler: {\n");
+    QUEX_DEBUG_PRINT("    filler: {\n");
     if( ! me ) {
-        __QUEX_STD_printf("      type: <none>\n");
+        QUEX_DEBUG_PRINT("      type: <none>\n");
     }
     else {
-        __QUEX_STD_printf("      lexatom_index_next_to_fill:     %i;\n", 
+        QUEX_DEBUG_PRINT1("      lexatom_index_next_to_fill:     %i;\n", 
                           (int)me->lexatom_index_next_to_fill);
-        __QUEX_STD_printf("      byte_n_per_lexatom:             %i;\n", 
+        QUEX_DEBUG_PRINT1("      byte_n_per_lexatom:             %i;\n", 
                           (int)me->byte_n_per_lexatom);
-        __QUEX_STD_printf("      _byte_order_reversion_active_f: %s;\n", 
+        QUEX_DEBUG_PRINT1("      _byte_order_reversion_active_f: %s;\n", 
                           E_Boolean_NAME(me->_byte_order_reversion_active_f)); 
         /* me->byte_loader->print_this(me->byte_loader); */
         if( me->derived.print_this ) me->derived.print_this(me);
         if( ! me->byte_loader ) {
-            __QUEX_STD_printf("      byte_loader: <none>\n");
+            QUEX_DEBUG_PRINT("      byte_loader: <none>\n");
         }
         else {
             if( me->byte_loader->print_this ) me->byte_loader->print_this(me->byte_loader); 
         }
     }
-    __QUEX_STD_printf("    }\n");
+    QUEX_DEBUG_PRINT("    }\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

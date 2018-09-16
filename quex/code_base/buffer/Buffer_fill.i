@@ -56,7 +56,7 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
 {
     ptrdiff_t  free_space;
     ptrdiff_t  move_distance;
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 
     move_distance = QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(me); 
 
@@ -90,7 +90,7 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
     }
 
     __quex_assert(*end_p >= *begin_p);
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
     return true;
 }
 
@@ -128,7 +128,7 @@ QUEX_NAME(Buffer_fill_finish)(QUEX_NAME(Buffer)* me,
     QUEX_NAME(Buffer_register_content)(me, &me->content_end(me)[inserted_lexatom_n], -1);
     QUEX_NAME(Buffer_register_eos)(me, me->input.lexatom_index_begin + me->content_size(me));
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

@@ -105,7 +105,7 @@ instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
         buffer->input.lexatom_index_end_of_stream = (TestAnalyzer_stream_position_t)-1;
     }
 
-    QUEX_BUFFER_ASSERT_limit_codes_in_place(buffer);
+    QUEX_NAME(Buffer_assert_limit_codes_in_place)(buffer);
 }
 
 static void

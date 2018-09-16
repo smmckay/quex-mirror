@@ -6,7 +6,6 @@
 $$INC: quex/enums$$
 $$INC: quex/compatibility/stdint.h$$
 $$INC: quex/compatibility/stdbool.h$$
-$$INC: definitions$$
 
 
 QUEX_NAMESPACE_QUEX_OPEN

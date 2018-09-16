@@ -77,7 +77,7 @@ QUEX_NAME(Buffer_seek_forward)(QUEX_NAME(Buffer)* me, const ptrdiff_t CharacterN
     else {
         /* Character index at read_p = lexatom index at begin + offset     */
         if( ! QUEX_NAME(Buffer_load_forward_to_contain)(me, target) ) {
-            QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+            QUEX_NAME(Buffer_assert_consistency)(me);
             return false;
         }
         me->_read_p = &me->content_begin(me)[target - me->input.lexatom_index_begin];
@@ -176,7 +176,7 @@ QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me)
     }
 
     me->_lexeme_start_p = me->_read_p;
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
     return verdict_f;
 }
 

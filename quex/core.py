@@ -58,13 +58,15 @@ def _generate(mode_db):
         content_table = lexeme_converter.do()
         do_converter_info(content_table[0][1], content_table[1][1])
         _write_all(content_table)
-        source_package.do(Setup.output_directory, ["quex"])
+        source_package.do(Setup.output_directory, ["quex", "lexeme"])
         return
 
     content_table = _get_token_class()
 
     if Setup.token_class_only_f:
         _write_all(content_table)
+        if Setup.implement_lib_quex_f:
+            source_package.do(Setup.output_directory, ["quex", "lexeme"])
         return
 
     else:

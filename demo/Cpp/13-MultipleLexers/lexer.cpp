@@ -1,12 +1,12 @@
 #include<cstdio> 
 
-#include "moritz/Lexer"
+#include "moritz/moritz"
 #include "moritz/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
 #include "moritz/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
-#include "max/Lexer"
+#include "max/max"
 #include "max/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
 #include "max/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
-#include "boeck/Lexer"
+#include "boeck/boeck"
 
 using namespace std;
 
@@ -15,12 +15,12 @@ int
 main(int argc, char** argv) 
 {        
     // we want to have error outputs in stdout, so that the unit test could see it.
-    max::Lexer      max_lex("example-utf16.txt", max::Lexer_Converter_IConv_new("UTF16", NULL));
-    moritz::Lexer   moritz_lex("example-ucs2.txt", moritz::Lexer_Converter_IConv_new("UCS-2", NULL));
-    boeck::Lexer    boeck_lex("example-utf8.txt");
-    max::Token*     max_token    = 0x0;
-    moritz::Token*  moritz_token = 0x0;
-    boeck::Token*   boeck_token  = 0x0;
+    lexer::max     max_lex("example-utf16.txt",   lexer::max_Converter_IConv_new("UTF16", NULL));
+    lexer::moritz  moritz_lex("example-ucs2.txt", lexer::moritz_Converter_IConv_new("UCS-2", NULL));
+    lexer::boeck   boeck_lex("example-utf8.txt");
+    max_Token*     max_token    = 0x0;
+    moritz_Token*  moritz_token = 0x0;
+    boeck_Token*   boeck_token  = 0x0;
     (void)argc; (void)argv;
 
     // Different lexers produce different interpretations on same lexeme.
@@ -32,9 +32,9 @@ main(int argc, char** argv)
         boeck_lex.receive(&boeck_token);
 
         /* Lexeme is same for all three. */
-        size_t   L = max::Lexer_lexeme_length(max_token->text);
+        size_t   L = lexer::max_lexeme_length(max_token->text);
 
-        printf("%s", (char*)max::Lexer_lexeme_to_pretty_char(max_token->text).c_str());
+        printf("%s", (char*)lexer::max_lexeme_to_pretty_char(max_token->text).c_str());
 
         for(size_t i=0; i < 10 - L ; ++i) printf(" ");
         printf("\t");

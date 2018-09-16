@@ -171,6 +171,8 @@ QUEX_NAME(Converter_IConv_initialize_by_bom_id)(QUEX_NAME(Converter)* alter_ego,
     return me->base.initialize(alter_ego, name, NULL);
 }
 
+#ifndef QUEX_ADAPTER_ICONV_2ND_ARG_DEFINITION_DONE
+#define QUEX_ADAPTER_ICONV_2ND_ARG_DEFINITION_DONE
 $$<Cpp>------------------------------------------------------------------------
 /* NOTE: At the time of this writing 'iconv' is delivered on different 
  *       systems with different definitions for the second argument. The 
@@ -190,6 +192,7 @@ $$<C>--------------------------------------------------------------------------
 #    define QUEX_ADAPTER_ICONV_2ND_ARG(ARG)  ((char**)(ARG))
 #endif
 $$-----------------------------------------------------------------------------
+#endif
 
 QUEX_INLINE E_LoadResult 
 QUEX_NAME(Converter_IConv_convert)(QUEX_NAME(Converter)*     alter_ego, 
@@ -267,8 +270,8 @@ QUEX_NAME(Converter_IConv_print_this)(QUEX_NAME(Converter)* alter_ego)
 {
     QUEX_NAME(Converter_IConv)* me = (QUEX_NAME(Converter_IConv)*)alter_ego;
 
-    __QUEX_STD_printf("        type:                 IConv, GNU;\n");
-    __QUEX_STD_printf("        handle:               ((%p));\n", (const void*)(me->handle));
+    QUEX_DEBUG_PRINT("        type:                 IConv, GNU;\n");
+    QUEX_DEBUG_PRINT1("        handle:               ((%p));\n", (const void*)(me->handle));
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

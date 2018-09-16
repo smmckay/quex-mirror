@@ -1,12 +1,12 @@
 #include<stdio.h> 
 
-#include "moritz/Lexer.h"
+#include "moritz/moritz_Lexer.h"
 #include "moritz/lib/buffer/lexatoms/converter/icu/Converter_ICU"
 #include "moritz/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
-#include "max/Lexer.h"
+#include "max/max_Lexer.h"
 #include "max/lib/buffer/lexatoms/converter/icu/Converter_ICU"
 #include "max/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
-#include "boeck/Lexer.h"
+#include "boeck/boeck_Lexer.h"
 #include "boeck/lib/buffer/lexatoms/converter/icu/Converter_ICU"
 #include "boeck/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
 

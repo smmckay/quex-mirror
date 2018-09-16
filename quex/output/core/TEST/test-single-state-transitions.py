@@ -155,6 +155,7 @@ main_template = """
  * in 'lib/asserts'.                                                          */
 #define __quex_assert_no_passage()     assert(false)
 #include "ut/lib/quex/compatibility/stdint.h"
+#include "ut/lib/quex/debug_print"
 
 #include "../../../code_base/TESTS/minimum-definitions.h"
 #include <stdio.h>
@@ -174,10 +175,10 @@ typedef struct {
     int      target; 
 } entry_t;
 
-#include "ut/converter-from-utf8"
-#include "ut/converter-from-utf8.i"
-#include "ut/converter-from-unicode"
-#include "ut/converter-from-unicode.i"
+#include "ut/lib/lexeme/converter-from-utf8"
+#include "ut/lib/lexeme/converter-from-utf8.i"
+#include "ut/lib/lexeme/converter-from-unicode"
+#include "ut/lib/lexeme/converter-from-unicode.i"
 
 int
 main(int argc, char** argv) {

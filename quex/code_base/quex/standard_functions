@@ -18,6 +18,7 @@ $$<Cpp>------------------------------------------------------------------------
 #   define __QUEX_STD_FILE     std::FILE
 #   define __QUEX_STD_STDIN    stdin
 #   define __QUEX_STD_STDERR   stderr
+#   define __QUEX_STD_STDOUT   stdout
 #   define __QUEX_STD_fopen    std::fopen
 #   define __QUEX_STD_fclose   std::fclose
 #   define __QUEX_STD_fprintf  std::fprintf
@@ -28,7 +29,6 @@ $$<Cpp>------------------------------------------------------------------------
 #   define __QUEX_STD_memmove  std::memmove
 #   define __QUEX_STD_memset   std::memset
 #   define __QUEX_STD_memcmp   std::memcmp
-#   define __QUEX_STD_printf   std::printf
 #   define __QUEX_STD_sprintf  std::sprintf
 #   define __QUEX_STD_strcmp   std::strcmp
 #   define __QUEX_STD_strcpy   std::strcpy
@@ -46,6 +46,7 @@ $$<C>--------------------------------------------------------------------------
 #define __QUEX_STD_FILE     FILE
 #define __QUEX_STD_STDIN    stdin
 #define __QUEX_STD_STDERR   stderr
+#define __QUEX_STD_STDOUT   stdout
 #define __QUEX_STD_fopen    fopen
 #define __QUEX_STD_fclose   fclose
 #define __QUEX_STD_fprintf  fprintf
@@ -56,7 +57,6 @@ $$<C>--------------------------------------------------------------------------
 #define __QUEX_STD_memmove  memmove
 #define __QUEX_STD_memset   memset
 #define __QUEX_STD_memcmp   memcmp
-#define __QUEX_STD_printf   printf
 #define __QUEX_STD_strcmp   strcmp
 #define __QUEX_STD_strcpy   strcpy
 #define __QUEX_STD_strlen   strlen
@@ -69,5 +69,14 @@ $$<C>--------------------------------------------------------------------------
 $$-----------------------------------------------------------------------------
 
 #define __QUEX_STD_strlcpy(DEST, SRC, MAX) QUEX_GNAME_LIB(strlcpy)((DEST), (SRC), (size_t)(MAX))
+
+#ifndef    QUEX_SETTING_DEBUG_OUTPUT_CHANNEL
+#   define QUEX_SETTING_DEBUG_OUTPUT_CHANNEL __QUEX_STD_STDOUT
+#endif
+
+#define QUEX_DEBUG_PRINT(STR)           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s", (STR))
+#define QUEX_DEBUG_PRINT1(STR, X)       __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, (STR), (X))
+#define QUEX_DEBUG_PRINT2(STR, X, Y)    __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, (STR), (X), (Y))
+#define QUEX_DEBUG_PRINT3(STR, X, Y, Z) __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, (STR), (X), (Y), (Z))
 
 #endif /* QUEX_INCLUDE_GUARD__QUEX__STANDARD_FUNCTIONS */

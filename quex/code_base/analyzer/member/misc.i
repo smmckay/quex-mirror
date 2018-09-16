@@ -7,7 +7,7 @@
 $$INC: <count> analyzer/Counter$$
 $$INC: buffer/Buffer_print$$
 $$INC: buffer/lexatoms/LexatomLoader$$
-$$INC: lexeme_base$$
+$$INC: lexeme/basics$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -127,25 +127,25 @@ QUEX_NAME(MF_print_this)(QUEX_TYPE_ANALYZER* me)
 {
     const char*       handler_name = (const char*)0;
 
-    __QUEX_STD_printf("  mode:       %s;\n", 
+    QUEX_DEBUG_PRINT1("  mode:       %s;\n", 
                       me->__current_mode_p == 0x0 ? "0x0" : me->__current_mode_p->name);
-    __QUEX_STD_printf("  error_code: %s;\n", E_Error_NAME(me->error_code));
+    QUEX_DEBUG_PRINT1("  error_code: %s;\n", E_Error_NAME(me->error_code));
 
     if( me->error_code != E_Error_None ) {
         handler_name = E_Error_MISSING_HANDLER_NAME(me->error_code);
         if( handler_name ) {
-            __QUEX_STD_printf("              (* '%s' has not been specified for mode*)\n", 
+            QUEX_DEBUG_PRINT1("              (* '%s' has not been specified for mode*)\n", 
                               handler_name);
         }
     }
 
     $$<count> QUEX_NAME(Counter_print_this)(&me->counter);$$
     $$<indentation>------------------------------------------------------------
-    __QUEX_STD_printf("  _indentation_handler_active_f: %s;\n" , 
+    QUEX_DEBUG_PRINT1("  _indentation_handler_active_f: %s;\n" , 
                       me->_indentation_handler_active_f ? "true" : "false");
     $$-------------------------------------------------------------------------
 
-    __QUEX_STD_printf("  _mode_stack: ");
+    QUEX_DEBUG_PRINT("  _mode_stack: ");
     QUEX_NAME(ModeStack_print)(&me->_mode_stack);
 
     QUEX_NAME(Buffer_print_this)(&me->buffer);
@@ -154,7 +154,7 @@ QUEX_NAME(MF_print_this)(QUEX_TYPE_ANALYZER* me)
 
     if( me->error_code != E_Error_None ) {
         QUEX_NAME(Buffer_print_content_detailed)(&me->buffer);
-        __QUEX_STD_printf("\n\n");
+        QUEX_DEBUG_PRINT("\n\n");
     }
 }
 

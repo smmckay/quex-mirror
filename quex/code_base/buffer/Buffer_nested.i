@@ -2,7 +2,7 @@
 #ifndef QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NESTED_I
 #define QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NESTED_I
 
-$$INC: asserts$$
+$$INC: quex/asserts$$
 $$INC: buffer/asserts$$
 $$INC: definitions$$
 $$INC: buffer/Buffer$$
@@ -72,7 +72,7 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
     QUEX_NAME(Buffer)*  nesting_buffer_p = (QUEX_NAME(Buffer)*)0;
 
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(nesting);
+    QUEX_NAME(Buffer_assert_consistency)(nesting);
 
     if( QUEX_NAME(Buffer_resources_absent)(nesting) ) {
         goto ERROR_0;
@@ -115,8 +115,8 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
     
     me->event = nesting->event;               /* Plain copy suffices. */
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-    QUEX_BUFFER_ASSERT_CONSISTENCY(nesting);
+    QUEX_NAME(Buffer_assert_consistency)(me);
+    QUEX_NAME(Buffer_assert_consistency)(nesting);
     return true;
 
 ERROR_0:
@@ -176,13 +176,13 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     QUEX_NAME(Buffer)*  focus = me;
     bool                verdict_f = false;
     
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 
     /* The 'Buffer_extend()' function cannot be called for an buffer which is
      * currently including, i.e. has dependent buffers! It can only be called
      * for the currently working buffer.                                      */
     root              = QUEX_NAME(Buffer_nested_find_root)(me);
-    QUEX_BUFFER_ASSERT_CONSISTENCY(root);
+    QUEX_NAME(Buffer_assert_consistency)(root);
 
     /* required: content + 2 lexatoms for border.                             */
     required_size     = me->content_end(me) - root->begin(root) + 1;
@@ -223,7 +223,7 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
         root->_memory.ownership = E_Ownership_LEXICAL_ANALYZER;
         verdict_f = true;
     }
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
     return verdict_f;
 }
 
@@ -252,13 +252,13 @@ QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
     ptrdiff_t          required_size;
     bool               verdict_f = false;
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 
     __quex_assert(old_content_end_p >= me->begin(me));
     __quex_assert(old_content_end_p <= me->content_space_end(me));
 
     root              = QUEX_NAME(Buffer_nested_find_root)(me);
-    QUEX_BUFFER_ASSERT_CONSISTENCY(root);
+    QUEX_NAME(Buffer_assert_consistency)(root);
 
     old_memory_root_p = root->begin(root);
     /* required: content + 2 lexatoms for border.                             */
@@ -290,7 +290,7 @@ QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
         verdict_f = true;
     }
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
     return verdict_f;
 }
 
@@ -352,7 +352,7 @@ QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
         previous      = it;
     } 
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
     return me->content_space_end(me) - me->content_end(me);
 }
     
@@ -366,7 +366,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
     QUEX_NAME(Buffer)* focus = (QUEX_NAME(Buffer)*)0;
     QUEX_TYPE_LEXATOM* new_memory;
     ptrdiff_t          buffer_size;
-    /* NOT: QUEX_BUFFER_ASSERT_CONSISTENCY(me)
+    /* NOT: QUEX_NAME(Buffer_assert_consistency)(me)
      *      Because, memory and its content may have been moved!              */
     
     /* Migration impossible, if the memory is not large enough for content.   */
@@ -382,7 +382,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
     __quex_assert(me->content_end(me) <= &new_memory_root[NewRootSize-1]);
     me->_memory._back    = &new_memory_root[NewRootSize - 1];
     me->_memory._back[0] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
 }
 
 QUEX_INLINE bool
@@ -431,7 +431,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
     /*                                */ $$<not-begin-of-line-context> (QUEX_TYPE_LEXATOM)0, /* ignored */$$
     /* BackupLexatomIndexOfReadP      */ me->_backup_lexatom_index_of_lexeme_start_p);
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_NAME(Buffer_assert_consistency)(me);
     return true;
 }
 

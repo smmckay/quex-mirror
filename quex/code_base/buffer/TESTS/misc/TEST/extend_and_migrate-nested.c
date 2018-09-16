@@ -32,7 +32,7 @@
 #include <common.h>
 #include "test_c/lib/quex/MemoryManager_UnitTest.i"
 #include "test_c/lib/buffer/Buffer"
-#include "test_c/converter-from-lexeme.i"
+#include "test_c/lib/lexeme/converter-from-lexeme.i"
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 

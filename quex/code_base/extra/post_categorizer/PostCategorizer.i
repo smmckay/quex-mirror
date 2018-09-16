@@ -3,9 +3,13 @@
 #define QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER_I
 
 $$INC: extra/post_categorizer/PostCategorizer$$
-$$INC: lexeme_base$$
-$$INC: ../converter-from-lexeme$$
+$$INC: lexeme/basics$$
+$$INC: lexeme/converter-from-lexeme$$
 $$INC: quex/MemoryManager$$
+$$INC: quex/standard_functions$$
+$$INC: quex/debug_print$$
+$$INC: quex/asserts$$
+
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -319,17 +323,17 @@ QUEX_NAME(PostCategorizer__print_tree)(QUEX_NAME(DictionaryNode)* node, int Dept
 {
     int i = 0;
     if( ! node ) {
-        for(i=0; i<Depth; ++i) __QUEX_STD_printf("        ");
-        __QUEX_STD_printf("[EMPTY]\n");
+        for(i=0; i<Depth; ++i) QUEX_DEBUG_PRINT("        ");
+        QUEX_DEBUG_PRINT("[EMPTY]\n");
         return;
     }
 
     QUEX_NAME(PostCategorizer__print_tree)(node->greater, Depth + 1);
 
-    for(i=0; i < Depth + 1; ++i) __QUEX_STD_printf("        ");
-    __QUEX_STD_printf("/\n");
+    for(i=0; i < Depth + 1; ++i) QUEX_DEBUG_PRINT("        ");
+    QUEX_DEBUG_PRINT("/\n");
 
-    for(i=0; i<Depth; ++i) __QUEX_STD_printf("        ");
+    for(i=0; i<Depth; ++i) QUEX_DEBUG_PRINT("        ");
     {
         uint8_t                  drain[256];
         uint8_t*                 drain_p     = &drain[0];
@@ -348,12 +352,12 @@ QUEX_NAME(PostCategorizer__print_tree)(QUEX_NAME(DictionaryNode)* node, int Dept
         /* Convert the remainder                                             */
         QUEX_NAME(lexeme_nnzt_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
 
-        __QUEX_STD_printf("[%s]%s: %i\n", &drain[0], remainder_p, 
+        QUEX_DEBUG_PRINT3("[%s]%s: %i\n", &drain[0], remainder_p, 
                           (int)node->token_id);
     }
 
-    for(i=0; i<Depth + 1; ++i) __QUEX_STD_printf("        ");
-    __QUEX_STD_printf("\\\n");
+    for(i=0; i<Depth + 1; ++i) QUEX_DEBUG_PRINT("        ");
+    QUEX_DEBUG_PRINT("\\\n");
 
     QUEX_NAME(PostCategorizer__print_tree)(node->lesser, Depth + 1);
 }
@@ -399,6 +403,6 @@ $$-----------------------------------------------------------------------------
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-$$INC: lexeme_base.i$$
+$$INC: lexeme/basics.i$$
 
 #endif /* QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER_I */

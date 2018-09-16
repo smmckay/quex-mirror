@@ -5,6 +5,7 @@
 
 $$INC: buffer/bytes/ByteLoader_POSIX$$
 $$INC: quex/MemoryManager$$
+$$INC: definitions$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -135,9 +136,9 @@ QUEX_NAME(ByteLoader_POSIX_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
 {
     QUEX_NAME(ByteLoader_POSIX)* me = (QUEX_NAME(ByteLoader_POSIX)*)(alter_ego);
 
-    __QUEX_STD_printf("        type:             POSIX;\n");
-    __QUEX_STD_printf("        file_descriptor:  ((%i));\n", (int)me->fd);
-    __QUEX_STD_printf("        end_of_stream_f:  <no means to detect>;\n");
+    QUEX_DEBUG_PRINT("        type:             POSIX;\n");
+    QUEX_DEBUG_PRINT1("        file_descriptor:  ((%i));\n", (int)me->fd);
+    QUEX_DEBUG_PRINT("        end_of_stream_f:  <no means to detect>;\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

@@ -77,9 +77,15 @@ def _do_core(Descr):
     else:
         helper_definitions = ""
 
+    if not Setup.implement_lib_quex_f:
+        quex_lib_dir = "lib/quex"
+    else:
+        quex_lib_dir = "%s/lib/quex" % Setup.output_directory
+
     helper_variable_replacements = [
         ["$$HELPER_DEFINITIONS$$", helper_definitions],
         ["$$OUTPUT_DIR$$",         Setup.output_directory],
+        ["$$QUEX_LIB_DIR$$",       quex_lib_dir],
         ["$$NAMESPACE_OPEN$$",     Lng.NAMESPACE_OPEN(Descr.name_space)],
         ["$$NAMESPACE_CLOSE$$",    Lng.NAMESPACE_CLOSE(Descr.name_space)],
         ["$$TOKEN_CLASS$$",        token_class_name],
