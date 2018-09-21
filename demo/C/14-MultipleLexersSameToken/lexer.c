@@ -40,7 +40,8 @@ main(int argc, char** argv)
         boeck_lex.receive(&boeck_lex, &boeck_token);
 
         /* Lexeme is same for all three.                                      */
-        (void)QUEX_NAME_TOKEN(lexeme_to_pretty_char)(boeck_token->text, buffer, BufferSize);
+        (void)A_B_C_lexeme_to_pretty_char(boeck_token->text, buffer, &buffer[BufferSize]);
+
         printf("%s", &buffer[0]);
 
         size_t      preL   = (size_t)strlen((const char*)boeck_token->text);
@@ -48,9 +49,9 @@ main(int argc, char** argv)
         for(i=0; i < 10 - L ; ++i) printf(" ");
         printf("\t");
         printf("%s   %s   %s\n", 
-               A_B_C_map_token_id_to_name(max_token->id),
-               A_B_C_map_token_id_to_name(moritz_token->id),
-               A_B_C_map_token_id_to_name(boeck_token->id));
+               max_Lexer_map_token_id_to_name(max_token->id),
+               moritz_Lexer_map_token_id_to_name(moritz_token->id),
+               boeck_Lexer_map_token_id_to_name(boeck_token->id));
 
     } while( boeck_token->id != TKN_TERMINATION );
 

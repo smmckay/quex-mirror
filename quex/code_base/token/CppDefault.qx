@@ -133,11 +133,18 @@ QUEX_NAMESPACE_MAIN_CLOSE
    }
 
    footer {
+
+$$<token-class-only>-----------------------------------------------------------
+inline const char* QUEX_GNAME(map_token_id_to_name)(QUEX_TYPE_TOKEN_ID Id)
+{ (void)Id; return "<token ids unknown at class generation time>"; }
+$$-----------------------------------------------------------------------------
+
 $$NAMESPACE_OPEN$$
 inline std::ostream&
 operator<<(std::ostream& ostr, const $$TOKEN_CLASS$$& Tok)
 { ostr << Tok.get_string(); return ostr; }
 $$NAMESPACE_CLOSE$$
+
 #include <$$OUTPUT_DIR$$/lib/lexeme/basics.i>
    }
 }

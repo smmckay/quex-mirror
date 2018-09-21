@@ -163,13 +163,13 @@ struct UnicodeTester {
             utf32_drain_p = utf32_drain;
 
             utf8_source_p  = utf8_source; utf16_source_p = utf16_source; utf32_source_p = utf32_source;
-            QUEX_NAME(utf8_to_utf8_character)((const uint8_t**)&utf8_source_p, (uint8_t**)&utf8_drain_p);
+            TestAnalyzer_utf8_to_utf8_character((const uint8_t**)&utf8_source_p, (uint8_t**)&utf8_drain_p);
 
             utf8_source_p  = utf8_source; utf16_source_p = utf16_source; utf32_source_p = utf32_source;
-            QUEX_NAME(utf8_to_utf16_character)((const uint8_t**)&utf8_source_p, (uint16_t**)&utf16_drain_p);
+            TestAnalyzer_utf8_to_utf16_character((const uint8_t**)&utf8_source_p, (uint16_t**)&utf16_drain_p);
 
             utf8_source_p  = utf8_source; utf16_source_p = utf16_source; utf32_source_p = utf32_source;
-            QUEX_NAME(utf8_to_utf32_character)((const uint8_t**)&utf8_source_p, (uint32_t**)&utf32_drain_p);
+            TestAnalyzer_utf8_to_utf32_character((const uint8_t**)&utf8_source_p, (uint32_t**)&utf32_drain_p);
 
             check("From UTF8 ", 
                   utf8_source,  utf8_drain, 
@@ -186,13 +186,13 @@ struct UnicodeTester {
             utf32_drain_p = utf32_drain;
 
             utf8_source_p  = utf8_source; utf16_source_p = utf16_source; utf32_source_p = utf32_source;
-            QUEX_NAME(utf16_to_utf8_character)((const uint16_t**)&utf16_source_p, (uint8_t**)&utf8_drain_p);
+            TestAnalyzer_utf16_to_utf8_character((const uint16_t**)&utf16_source_p, (uint8_t**)&utf8_drain_p);
 
             utf8_source_p  = utf8_source; utf16_source_p = utf16_source; utf32_source_p = utf32_source;
-            QUEX_NAME(utf16_to_utf16_character)((const uint16_t**)&utf16_source_p, (uint16_t**)&utf16_drain_p);
+            TestAnalyzer_utf16_to_utf16_character((const uint16_t**)&utf16_source_p, (uint16_t**)&utf16_drain_p);
 
             utf8_source_p  = utf8_source; utf16_source_p = utf16_source; utf32_source_p = utf32_source;
-            QUEX_NAME(utf16_to_utf32_character)((const uint16_t**)&utf16_source_p, (uint32_t**)&utf32_drain_p);
+            TestAnalyzer_utf16_to_utf32_character((const uint16_t**)&utf16_source_p, (uint32_t**)&utf32_drain_p);
 
             check("From UTF16 ", utf8_source,  utf8_drain, 
                   utf16_source, utf16_drain, UTF32Source, *utf32_drain);
@@ -207,13 +207,13 @@ struct UnicodeTester {
             utf32_drain_p = utf32_drain;
 
             utf8_source_p  = utf8_source; utf16_source_p = utf16_source; utf32_source_p = utf32_source;
-            QUEX_NAME(utf32_to_utf8_character)((const uint32_t**)&utf32_source_p, (uint8_t**)&utf8_drain_p);
+            TestAnalyzer_utf32_to_utf8_character((const uint32_t**)&utf32_source_p, (uint8_t**)&utf8_drain_p);
 
             utf8_source_p  = utf8_source; utf16_source_p = utf16_source; utf32_source_p = utf32_source;
-            QUEX_NAME(utf32_to_utf16_character)((const uint32_t**)&utf32_source_p, (uint16_t**)&utf16_drain_p);
+            TestAnalyzer_utf32_to_utf16_character((const uint32_t**)&utf32_source_p, (uint16_t**)&utf16_drain_p);
 
             utf8_source_p  = utf8_source; utf16_source_p = utf16_source; utf32_source_p = utf32_source;
-            QUEX_NAME(utf32_to_utf32_character)((const uint32_t**)&utf32_source_p, (uint32_t**)&utf32_drain_p);
+            TestAnalyzer_utf32_to_utf32_character((const uint32_t**)&utf32_source_p, (uint32_t**)&utf32_drain_p);
 
             check("From UTF32 ", utf8_source,  utf8_drain, 
                   utf16_source, utf16_drain, UTF32Source, *utf32_drain);

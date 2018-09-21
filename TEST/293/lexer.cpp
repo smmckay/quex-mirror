@@ -14,10 +14,6 @@
 
 #include "Codec/Lexer"
 
-/* When using multiple lexical analyzers, it must be compiled with 
- * QUEX_OPTION_MULTI and 'multi.i' must be included in one single file.       */
-#include <Codec/lib/multi.i>
-
 using namespace std;
 
 int main(int argc, char** argv) 
@@ -26,14 +22,14 @@ int main(int argc, char** argv)
     wstringstream* istr = new std::wstringstream(str);
 
     if( argc > 1 && strcmp(argv[1], "bad") == 0 ) {
-        IConv::QUEX_NAME(ByteLoader)*  byte_loader = IConv::QUEX_NAME(ByteLoader_wstream_new)(istr);
-        IConv::QUEX_NAME(Converter)*   converter   = IConv::QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+        IConv::Lexer_ByteLoader*  byte_loader = IConv::Lexer_ByteLoader_wstream_new(istr);
+        IConv::Lexer_Converter*   converter   = IConv::Lexer_Converter_IConv_new("UTF8", NULL);
         IConv::Lexer lex(byte_loader, converter); // Should break HERE!
     }
     else /* 'good' */ {
-        Codec::QUEX_NAME(ByteLoader)*  byte_loader = Codec::QUEX_NAME(ByteLoader_wstream_new)(istr);
-        Codec::Lexer  lex(byte_loader, NULL); 
-        Codec::Token* token;
+        Codec::Lexer_ByteLoader*  byte_loader = Codec::Lexer_ByteLoader_wstream_new(istr);
+        Codec::Lexer              lex(byte_loader, NULL); 
+        Codec::Lexer_Token*       token;
 
         do {
             (void)lex.receive(&token);

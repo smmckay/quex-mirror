@@ -71,11 +71,6 @@ def do():
                                           Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name),
                                           Lng.SAFE_IDENTIFIER(Setup.lexatom.type))).upper()
 
-    implementation_txt = implementation_txt.replace("$$INCLUDE_GUARD_SUFFIX$$", 
-                                                    include_guard_suffix)
-    header_txt         = header_txt.replace("$$INCLUDE_GUARD_SUFFIX$$", 
-                                            include_guard_suffix)
-
     return [
         (header_txt,         Lng.file_name_converter_header(source_name)), 
         (implementation_txt, Lng.file_name_converter_implementation(source_name)),

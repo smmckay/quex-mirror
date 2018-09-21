@@ -57,14 +57,10 @@ def do(setup):
         # Content of file = inclusion of 'Setup.extern_token_id_file'.
         token_id_txt = ["%s\n" % Lng.INCLUDE(Setup.extern_token_id_file)]
 
-    include_guard_ext = Lng.INCLUDE_GUARD(Setup.analyzer_name_safe.upper() \
-                                          + "__" + Setup.token_class_name_safe.upper())
-
     return blue_print(file_str, [
         ["$$TOKEN_ID_DEFINITIONS$$", "".join(token_id_txt)],
         ["$$DATE$$",                 time.asctime()],
         ["$$TOKEN_PREFIX$$",         Setup.token_id_prefix], 
-        ["$$INCLUDE_GUARD_EXT$$",    include_guard_ext], 
     ])
 
 def do_map_id_to_name_cases():
@@ -159,14 +155,14 @@ file_str = \
  *
  * (C) 2005-2010 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                                                     */
-#ifndef __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_$$INCLUDE_GUARD_EXT$$__
-#define __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_$$INCLUDE_GUARD_EXT$$__
+#ifndef QUEX_INCLUDE_GUARD__GENERATED_TOKEN_IDS
+#define QUEX_INCLUDE_GUARD__GENERATED_TOKEN_IDS
 
 /* Note: When multiple lexical analyzers are included, then their
  *       token prefix must differ! Use '--token-id-prefix'.                   */
 $$TOKEN_ID_DEFINITIONS$$
 
-#endif /* __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_$$INCLUDE_GUARD_EXT$$__        */
+#endif /* QUEX_INCLUDE_GUARD__GENERATED_TOKEN_IDS */
 """
 
 map_id_to_name_cases = \

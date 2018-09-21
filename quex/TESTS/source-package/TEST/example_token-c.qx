@@ -20,7 +20,7 @@ token_type {
                                          size_t                  BufferSize); 
 #      endif
 
-#include <pkg/converter-from-lexeme>
+#include <pkg/lib/lexeme/converter-from-lexeme>
    }
    standard {
         id            : uint32_t;
@@ -182,7 +182,7 @@ token_type {
             return buffer;
         }
 
-#include <pkg/converter-from-lexeme.i>
+#include <pkg/lib/lexeme/converter-from-lexeme.i>
    }
 }
 

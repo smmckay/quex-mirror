@@ -35,7 +35,7 @@ main(int argc, char** argv)
                                                * does not matter.                     */
 #   if defined(UNIT_TEST_PSEUDO_ANALYSIS)
     printf("Pseudo Analysis: Replace analysis pointer with own function.\n");
-    printf("Queue Size: %i\n", QUEX_SETTING_TOKEN_QUEUE_SIZE);
+    printf("Queue Size: %i\n", QUEX_TPLex_SETTING_TOKEN_QUEUE_SIZE);
     qlex->current_analyzer_function = pseudo_analysis;
 #   endif
 

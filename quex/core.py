@@ -64,6 +64,8 @@ def _generate(mode_db):
     content_table = _get_token_class()
 
     if Setup.token_class_only_f:
+        if Setup.implement_lib_lexeme_f:
+           content_table.extend(lexeme_converter.do())
         _write_all(content_table)
         if Setup.implement_lib_quex_f:
             source_package.do(Setup.output_directory, ["quex", "lexeme"])

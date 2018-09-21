@@ -2,7 +2,6 @@ from   quex.engine.loop.loop_map                          import LoopMapEntry
 import quex.engine.analyzer.door_id_address_label         as     dial
 import quex.engine.state_machine.construction.combination as     combination
 import quex.engine.state_machine.algebra.intersection     as     intersection
-import quex.engine.state_machine.algebra.union            as     union
 from   quex.engine.state_machine.character_counter        import SmLineColumnCountInfo
 from   quex.engine.counter                                import CountAction, \
                                                                  CountActionMap
@@ -14,8 +13,6 @@ from   quex.blackboard import setup as Setup
 from   quex.constants  import E_CharacterCountType, \
                               E_R, \
                               E_IncidenceIDs
-
-from   copy import copy
 
 @typed(CaMap=CountActionMap)
 def do(loop_config, CaMap, SmList):
@@ -218,9 +215,10 @@ def split_first_character_set_for_distinct_count_actions(CaMap, FirstVsAppendixS
     """Each entry in 'FirstVsAppendixSmList' is split up into subsets 
     where the character set has the same count action.
 
-    RETURNS: list of [0] Character Set
-                     [1] CountAction related to that character set.
-                     [2] Appendix state machine related to that character set.
+    RETURNS: [0] list of [0] Character Set
+                         [1] CountAction related to that character set.
+                         [2] Appendix state machine related to that character set.
+             [1] Bad lexatom character set
 
     The iterable reports character sets for which their is a distinct count
     action and appendix state machine.

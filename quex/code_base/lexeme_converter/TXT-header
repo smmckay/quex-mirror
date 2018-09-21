@@ -5,8 +5,8 @@
  *
  * (C) 2018 Frank-Rene Schaefer. 
  *     ABSOLUTELY NO WARRANTY                                                */
-#ifndef __QUEX_INCLUDE_GUARD__$$INCLUDE_GUARD_SUFFIX$$
-#define __QUEX_INCLUDE_GUARD__$$INCLUDE_GUARD_SUFFIX$$
+#ifndef QUEX_LC_INCLUDE_GUARD__LEXEME__CONVERTER_FROM_LEXEME
+#define QUEX_LC_INCLUDE_GUARD__LEXEME__CONVERTER_FROM_LEXEME
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -114,4 +114,4 @@ $$-----------------------------------------------------------------------------
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__$$INCLUDE_GUARD_SUFFIX$$ */
+#endif /* QUEX_LC_INCLUDE_GUARD__LEXEME__CONVERTER_FROM_LEXEME */

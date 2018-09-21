@@ -2,8 +2,8 @@
  * (C) 2004-2017 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY
  */
-#ifndef QUEX_INCLUDE_GUARD__TOKEN__GENERATED
-#define QUEX_INCLUDE_GUARD__TOKEN__GENERATED
+#ifndef QUEX_TOKEN_INCLUDE_GUARD__TOKEN__GENERATED
+#define QUEX_TOKEN_INCLUDE_GUARD__TOKEN__GENERATED
 
 /* For '--token-class-only' the following option may not come directly
  * from the configuration file.                                        */

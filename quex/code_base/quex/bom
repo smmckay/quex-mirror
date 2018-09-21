@@ -18,6 +18,7 @@
 
 $$INC: quex/enums$$
 $$INC: quex/standard_functions$$
+$$INC: quex/compatibility/stdint.h$$
 
 QUEX_NAMESPACE_QUEX_OPEN
 

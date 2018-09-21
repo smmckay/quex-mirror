@@ -166,7 +166,10 @@ def __setup_token_class(Setup):
     # Default set here => able to detect seting on command line.
     if not Setup.token_class:
         if Setup.analyzer_class:
-            token_class = "%s_Token" % Setup.analyzer_class_name
+            if Setup.analyzer_name_space:
+                token_class = "%s::%s_Token" % ("::".join(Setup.analyzer_name_space), Setup.analyzer_class_name)
+            else:
+                token_class = "%s_Token" % Setup.analyzer_class_name
         else:
             token_class = "Token"
     else:

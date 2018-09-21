@@ -49,6 +49,8 @@ def _do(Descr):
         if not implementation_txt:
             implementation_txt = "%s\n" % Lng.INCLUDE(Setup.output_token_class_file)
 
+    implementation_txt += extra_lib_implementations_txt
+
     return header_txt, implementation_txt
 
 def _do_core(Descr):
@@ -56,7 +58,6 @@ def _do_core(Descr):
     assert Descr is not None
     assert isinstance(Descr, TokenTypeDescriptor)
 
-    include_guard_extension_str, \
     virtual_destructor_str,      \
     copy_str,                    \
     take_text_str                = _some_standard_stuff(Descr)
@@ -101,7 +102,6 @@ def _do_core(Descr):
         ["$$FOOTER$$",                  Lng.SOURCE_REFERENCED(Descr.footer)],
         ["$$FUNC_TAKE_TEXT$$",          take_text_str],
         ["$$HEADER$$",                  Lng.SOURCE_REFERENCED(Descr.header)],
-        ["$$INCLUDE_GUARD_EXTENSION$$", include_guard_extension_str],
         ["$$QUICK_SETTERS$$",           get_quick_setters(Descr)],
         ["$$SETTERS_GETTERS$$",         get_setter_getter(Descr)],
         ["$$TOKEN_REPETITION_N_GET$$",  Lng.SOURCE_REFERENCED(Descr.repetition_get)],
@@ -119,7 +119,6 @@ def _do_core(Descr):
         ["$$FOOTER$$",                     Lng.SOURCE_REFERENCED(Descr.footer)],
         ["$$FUNC_TAKE_TEXT$$",             take_text_str],
         ["$$TOKEN_CLASS_HEADER$$",         token_db.token_type_definition.get_file_name()],
-        ["$$INCLUDE_GUARD_EXTENSION$$",    include_guard_extension_str],
         ["$$TOKEN_REPETITION_N_GET$$",     Lng.SOURCE_REFERENCED(Descr.repetition_get)],
         ["$$TOKEN_REPETITION_N_SET$$",     Lng.SOURCE_REFERENCED(Descr.repetition_set)],
     ])
@@ -134,6 +133,17 @@ def _do_core(Descr):
         txt_i = blue_print(txt_i, replacements, "QUEX_TYPE_")
 
     return txt, txt_i
+
+extra_lib_implementations_txt = """
+$$INC: <token-class-only && lib-lexeme> lexeme/basics.i$$
+$$INC: <token-class-only && lib-lexeme> lexeme/converter-from-lexeme.i$$
+$$INC: <token-class-only && lib-quex>   quex/MemoryManager.i$$
+$$INC: <token-class-only && lib-quex>   quex/bom.i$$
+
+$$<token-class-only && lexeme-null>--------------------------------------------
+QUEX_TYPE_LEXATOM QUEX_GNAME(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
+$$-----------------------------------------------------------------------------
+"""
 
 #______________________________________________________________________________
 # [MEMBER PACKAGING]
@@ -318,14 +328,10 @@ $$<C>   #   include <assert.h>$$
 """
 
 def _some_standard_stuff(Descr):
-    """RETURNS: [0] include guard string
-                [1] virtual_destructor_str
-                [2] body of the 'copy' function
-                [3] body of the 'take_text' function
+    """RETURNS: [0] virtual_destructor_str
+                [1] body of the 'copy' function
+                [2] body of the 'take_text' function
     """
-    include_guard_extension_str = Lng.INCLUDE_GUARD(Lng.NAMESPACE_REFERENCE(Descr.name_space) 
-                                                    + "__" + Descr.class_name)
-
     virtual_destructor_str = ""
     if Descr.open_for_derivation_f: 
         virtual_destructor_str = Lng.VIRTUAL_DESTRUCTOR_PREFIX
@@ -341,8 +347,7 @@ def _some_standard_stuff(Descr):
     else:
         take_text_str = Lng.SOURCE_REFERENCED(Descr.take_text)
 
-    return include_guard_extension_str, \
-           virtual_destructor_str, \
+    return virtual_destructor_str, \
            copy_str, \
            take_text_str
 

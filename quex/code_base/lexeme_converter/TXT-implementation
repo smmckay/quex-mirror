@@ -9,13 +9,13 @@
  *
  * 2010 (C) Frank-Rene Schaefer; 
  * ABSOLUTELY NO WARRANTY                                                     */
-#ifndef __QUEX_INCLUDE_GUARD__$$INCLUDE_GUARD_SUFFIX$$_I
-#define __QUEX_INCLUDE_GUARD__$$INCLUDE_GUARD_SUFFIX$$_I
+#ifndef QUEX_LC_INCLUDE_GUARD__LEXEME__CONVERTER_FROM_LEXEME_I
+#define QUEX_LC_INCLUDE_GUARD__LEXEME__CONVERTER_FROM_LEXEME_I
 
 #include "$$CONVERTER_HEADER$$"
 
+$$INC: quex/asserts$$
 /* Only with 'std-lib': Memory manager required (see below).                  */
-$$INC: <std-lib> quex/asserts$$
 $$INC: <std-lib> quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
@@ -81,5 +81,5 @@ $$STRING_CONVERTERS$$
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__$$INCLUDE_GUARD_SUFFIX$$ */
+#endif /* QUEX_LC_INCLUDE_GUARD__LEXEME__CONVERTER_FROM_LEXEME_I                 */
 

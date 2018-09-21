@@ -1,3 +1,4 @@
+-- token-class only: All lexers generated with '--no-lib-quex', token generation without '--no-lib-quex'.
 -- with '--no-lib-quex', the flag where the headers are '-Idirectory' must be provided !
 
 -- Algebra: pre and post context:

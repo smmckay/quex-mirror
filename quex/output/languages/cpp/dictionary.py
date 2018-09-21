@@ -23,6 +23,7 @@ from   quex.DEFINITIONS  import QUEX_PATH
 import quex.token_db     as     token_db
 import quex.condition    as     condition
 from   quex.blackboard   import setup as Setup, \
+                                Lng, \
                                 standard_incidence_db_get_incidence_id
 from   quex.constants    import E_Files, \
                                 E_StateIndices,  \
@@ -57,9 +58,10 @@ class Language(dict):
     Match_QUEX_PURE_SETTING   = re.compile(r"\bQUEX_<PURE>SETTING_([A-Z_0-9]+)\b")
     Match_QUEX_OPTION         = re.compile(r"\bQUEX_OPTION_([A-Z_0-9]+)\b")
     # Note: When the first two are replaced, the last cannot match anymore.
-    Match_QUEX_INCLUDE_GUARD_TOKEN = re.compile(r"\bQUEX_INCLUDE_GUARD__TOKEN__([a-zA-Z_0-9]+)\b")
-    Match_QUEX_INCLUDE_GUARD_QUEX  = re.compile(r"\bQUEX_INCLUDE_GUARD__QUEX__([a-zA-Z_0-9]+)\b")
-    Match_QUEX_INCLUDE_GUARD       = re.compile(r"\bQUEX_INCLUDE_GUARD__([a-zA-Z_0-9]+)\b")
+    Match_QUEX_INCLUDE_GUARD_LEXEME_CONVERTER = re.compile(r"\bQUEX_LC_INCLUDE_GUARD__([a-zA-Z_0-9]+)\b")
+    Match_QUEX_INCLUDE_GUARD_TOKEN            = re.compile(r"\bQUEX_TOKEN_INCLUDE_GUARD__([a-zA-Z_0-9]+)\b")
+    Match_QUEX_INCLUDE_GUARD_QUEX             = re.compile(r"\bQUEX_INCLUDE_GUARD__QUEX__([a-zA-Z_0-9]+)\b")
+    Match_QUEX_INCLUDE_GUARD                  = re.compile(r"\bQUEX_INCLUDE_GUARD__([a-zA-Z_0-9]+)\b")
 
     CommentDelimiterList      = [["//", "\n"], ["/*", "*/"]]
     
@@ -1503,7 +1505,8 @@ class Language(dict):
         if not Txt: return Txt
 
         # Types
-        replacements = self.type_replacements()
+        if Setup.token_class_only_f: replacements = self.type_replacements(True)
+        else:                        replacements = self.type_replacements()
 
         # Namespaces
         replacements.extend([
@@ -1547,19 +1550,24 @@ class Language(dict):
         txt = self.replace_naming(txt)
 
         # INCLUDE GUARDS_______________________________________________________
+        txt = self.Match_QUEX_INCLUDE_GUARD_LEXEME_CONVERTER.sub(r"QUEX_INCLUDE_GUARD_%s__%s__\1"              
+                                                                 % (Setup.analyzer_name_safe, Lng.SAFE_IDENTIFIER(Setup.buffer_encoding_name)),
+                                                                 txt)
         # Include guards of token files are named according to token class.
-        txt = self.Match_QUEX_INCLUDE_GUARD_TOKEN.sub(r"QUEX_INCLUDE_GUARD_%s__TOKEN__\1" % Setup.token_class_name_safe, txt)
+        txt = self.Match_QUEX_INCLUDE_GUARD_TOKEN.sub(r"QUEX_INCLUDE_GUARD_%s__TOKEN__\1" 
+                                                      % Setup.token_class_name_safe, txt)
         # LIB_QUEX include guards are the same for all lexers
         txt = self.Match_QUEX_INCLUDE_GUARD_QUEX.sub(r"QUEX_INCLUDE_GUARD_LIB_QUEX__\1", txt)
         # Replace general include guard last.
         # (Cannot change previous include guards)
-        txt = self.Match_QUEX_INCLUDE_GUARD.sub(r"QUEX_INCLUDE_GUARD_%s__\1"              % Setup.analyzer_name_safe, txt)
+        txt = self.Match_QUEX_INCLUDE_GUARD.sub(r"QUEX_INCLUDE_GUARD_%s__\1"              
+                                                % Setup.analyzer_name_safe, txt)
         return txt
 
     def replace_naming(self, txt):
-        def _replace(txt, re0, re1, Prefix, NameSpace):
-            txt = re0.sub(r"%s\1" % self.name_spaced_prefix(Prefix), txt) 
-            txt = re1.sub(r"%s\1" % self.name_spaced_prefix(Prefix, NameSpace), txt)
+        def _replace(txt, local_re, global_re, Prefix, NameSpace):
+            txt = local_re.sub(r"%s\1" % self.name_spaced_prefix(Prefix), txt) 
+            txt = global_re.sub(r"%s\1" % self.name_spaced_prefix(Prefix, NameSpace), txt)
             return txt
 
         # Analyzer
@@ -1586,6 +1594,7 @@ class Language(dict):
         if DirectF:
             token_descr = token_db.token_type_definition
             type_memento         = "(void*)"
+            type0_memento        = "(void*)"
             type_lexatom         = Setup.lexatom.type
             type_token_id        = token_descr.token_id_type
             type_token_line_n    = token_descr.line_number_type.get_pure_text()
@@ -1596,32 +1605,34 @@ class Language(dict):
             if Setup.computed_gotos_f: type_goto_label  = "void*"
             else:                      type_goto_label  = "int32_t"
         else:
-            acn = Setup.analyzer_class_name
-            type_memento         = "%s_Memento" % acn
-            type_lexatom         = "%s_lexatom_t" % acn
-            type_token_id        = "%s_token_id_t" % acn
-            type_token_line_n    = "%s_token_line_n_t" % acn
-            type_token_column_n  = "%s_token_column_n_t" % acn
-            type_acceptance_id   = "%s_acceptance_id_t" % acn
-            type_indentation     = "%s_indentation_t" % acn
-            type_stream_position = "%s_stream_position_t" % acn
-            type_goto_label      = "%s_goto_label_t" % acn
+            def namespaced(Raw):
+                return self.NAME_IN_NAMESPACE("%s_%s" % (Setup.analyzer_class_name, Raw), Setup.analyzer_name_space)
+            type_memento         = namespaced("Memento")
+            type0_memento        = "%s_Memento" % Setup.analyzer_class_name
+            type_lexatom         = namespaced("lexatom_t")
+            type_token_id        = namespaced("token_id_t")
+            type_token_line_n    = namespaced("token_line_n_t")
+            type_token_column_n  = namespaced("token_column_n_t")
+            type_acceptance_id   = namespaced("acceptance_id_t")
+            type_indentation     = namespaced("indentation_t")
+            type_stream_position = namespaced("stream_position_t")
+            type_goto_label      = namespaced("goto_label_t")
 
         return [
              ("QUEX_TYPE_TOKEN",           self.NAME_IN_NAMESPACE(Setup.token_class_name, Setup.token_class_name_space)),
              ("QUEX_TYPE0_TOKEN",          Setup.token_class_name),
              ("QUEX_TYPE_ANALYZER",        self.NAME_IN_NAMESPACE(Setup.analyzer_class_name, Setup.analyzer_name_space)),
              ("QUEX_TYPE0_ANALYZER",       Setup.analyzer_class_name),
-             ("QUEX_TYPE_MEMENTO",         self.NAME_IN_NAMESPACE("%s_Memento" % Setup.analyzer_class_name, Setup.analyzer_name_space)),
-             ("QUEX_TYPE0_MEMENTO",        type_memento),
-             ("QUEX_TYPE_LEXATOM",         self.NAME_IN_NAMESPACE(type_lexatom, Setup.analyzer_name_space)),
-             ("QUEX_TYPE_TOKEN_ID",        self.NAME_IN_NAMESPACE(type_token_id, Setup.analyzer_name_space)),
-             ("QUEX_TYPE_TOKEN_LINE_N",    self.NAME_IN_NAMESPACE(type_token_line_n, Setup.analyzer_name_space)),
-             ("QUEX_TYPE_TOKEN_COLUMN_N",  self.NAME_IN_NAMESPACE(type_token_column_n, Setup.analyzer_name_space)),
-             ("QUEX_TYPE_ACCEPTANCE_ID",   self.NAME_IN_NAMESPACE(type_acceptance_id, Setup.analyzer_name_space)),
-             ("QUEX_TYPE_INDENTATION",     self.NAME_IN_NAMESPACE(type_indentation, Setup.analyzer_name_space)),
-             ("QUEX_TYPE_STREAM_POSITION", self.NAME_IN_NAMESPACE(type_stream_position, Setup.analyzer_name_space)),
-             ("QUEX_TYPE_GOTO_LABEL",      self.NAME_IN_NAMESPACE(type_goto_label, Setup.analyzer_name_space)),
+             ("QUEX_TYPE_MEMENTO",         type_memento),
+             ("QUEX_TYPE0_MEMENTO",        type0_memento),
+             ("QUEX_TYPE_LEXATOM",         type_lexatom),
+             ("QUEX_TYPE_TOKEN_ID",        type_token_id),
+             ("QUEX_TYPE_TOKEN_LINE_N",    type_token_line_n),
+             ("QUEX_TYPE_TOKEN_COLUMN_N",  type_token_column_n),
+             ("QUEX_TYPE_ACCEPTANCE_ID",   type_acceptance_id),
+             ("QUEX_TYPE_INDENTATION",     type_indentation),
+             ("QUEX_TYPE_STREAM_POSITION", type_stream_position),
+             ("QUEX_TYPE_GOTO_LABEL",      type_goto_label),
         ]
 
 cpp_implementation_headers_txt = """

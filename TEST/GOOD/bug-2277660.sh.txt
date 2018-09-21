@@ -11,8 +11,6 @@ tokenizer.qx:75:warning: (Buffer element size is 1 [byte])
 ## 1 seconds
 Oll Korrekt
 ----
-converter-from-lexeme
-converter-from-lexeme.i
 Lexer
 Lexer-configuration
 Lexer.cpp

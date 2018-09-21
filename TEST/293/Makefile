@@ -2,7 +2,7 @@ include ../Makefile.lexer
 
 OBJS =  lexer.o IConvLexer.o CodecLexer.o
 
-CC := $(LDCPP_ICONV) \
+CC := $(LDCPP_ICONV) -ICodec \
 	  -DQUEX_OPTION_MULTI_EXT \
 	  -DQUEX_OPTION_CONVERTER_ICONV_EXT
 	  # -DQUEX_OPTION_ASSERTS_DISABLED_EXT
@@ -12,11 +12,15 @@ all: lexer
 
 lexer: lexer.cpp IConv/Lexer.cpp Codec/Lexer.cpp
 	@$(CC) $^ -o $@ -I. \
-		 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED_EXT
+		 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED_EXT 
+
+lexer.E: lexer.cpp 
+	@$(CC) -E $^ -o $@ -I. \
+		 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED_EXT 
 
 IConv/Lexer.cpp:    iconv.qx
 	quex --cbm -i $< -o IConv::Lexer --odir IConv -b 4 \
-		 --token-id-prefix ICONV_TKN_
+		 --token-id-prefix ICONV_TKN_ --no-lib-quex
 
 Codec/Lexer.cpp:    codec.qx
 	quex --cbm -i $< -o Codec::Lexer --odir Codec --encoding utf8 --bet wchar_t  \

@@ -18,9 +18,9 @@ main(int argc, char** argv)
     lexer::max     max_lex("example-utf16.txt",   lexer::max_Converter_IConv_new("UTF16", NULL));
     lexer::moritz  moritz_lex("example-ucs2.txt", lexer::moritz_Converter_IConv_new("UCS-2", NULL));
     lexer::boeck   boeck_lex("example-utf8.txt");
-    max_Token*     max_token    = 0x0;
-    moritz_Token*  moritz_token = 0x0;
-    boeck_Token*   boeck_token  = 0x0;
+    lexer::max_Token*     max_token    = 0x0;
+    lexer::moritz_Token*  moritz_token = 0x0;
+    lexer::boeck_Token*   boeck_token  = 0x0;
     (void)argc; (void)argv;
 
     // Different lexers produce different interpretations on same lexeme.

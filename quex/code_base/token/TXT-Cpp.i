@@ -1,8 +1,8 @@
 /* This content is pasted into header, so the include guard is superfluous. 
  * It is left in place, so that if some time later the code generator is 
  * adapted to generate independent files, it will still work safely.          */
-#ifndef QUEX_INCLUDE_GUARD__TOKEN__GENERATED_I
-#define QUEX_INCLUDE_GUARD__TOKEN__GENERATED_I
+#ifndef QUEX_TOKEN_INCLUDE_GUARD__TOKEN__GENERATED_I
+#define QUEX_TOKEN_INCLUDE_GUARD__TOKEN__GENERATED_I
 
 $$INCLUDE_TOKEN_CLASS_HEADER$$
 
@@ -116,4 +116,4 @@ $$-----------------------------------------------------------------------------
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#endif /* QUEX_INCLUDE_GUARD__TOKEN__GENERATED_I */
+#endif /* QUEX_TOKEN_INCLUDE_GUARD__TOKEN__GENERATED_I */

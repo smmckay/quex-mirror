@@ -257,7 +257,6 @@ class LoopEvents:
 
         return before, after
 
-
 class LoopConfig:
     Lazy_DoorIdLoop = ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)
     @typed(LexemeEndCheckF=bool, UserOnLoopExitDoorId=DoorID, dial_db=DialDB, 
@@ -345,7 +344,10 @@ class LoopConfig:
         # When the appendix drops out, the loop must continue where the
         # appendix has began => Set 'LoopRestartP' to current position.
         self.__appendix_dfa_present_f = True
-        cmd_list        = [ Op.Assign(E_R.LoopRestartP, E_R.InputP) ]
+        cmd_list        = [ 
+            Op.Assign(E_R.LoopRestartP, E_R.InputP),
+            Op.Assign(E_R.LexemeStartP, E_R.InputP)
+        ]
         target_door_id = DoorID.state_machine_entry(AppendixDfaId, self.dial_db)
         return self._cmd_list_Frame(CA, cmd_list, target_door_id)
 

@@ -35,9 +35,11 @@ $$INC: <count>      analyzer/Counter.i$$
 $$INC: <lib-quex && not-memory-management-extern> quex/MemoryManager.i$$
 $$INC: <lib-lexeme> lexeme/converter-from-lexeme.i$$
 
+$$<not-token-class-only && lexeme-null>----------------------------------------
 QUEX_NAMESPACE_MAIN_OPEN
 QUEX_TYPE_LEXATOM   QUEX_NAME(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
 QUEX_NAMESPACE_MAIN_CLOSE
+$$-----------------------------------------------------------------------------
 
 
 #endif /* QUEX_INCLUDE_GUARD__IMPLEMENTATIONS_I */

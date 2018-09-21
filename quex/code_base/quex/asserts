@@ -1,10 +1,12 @@
 /* vim: set syntax=cpp: */
-#ifndef QUEX_INCLUDE_GUARD__ASSERTS
-#define QUEX_INCLUDE_GUARD__ASSERTS
+#ifndef QUEX_INCLUDE_GUARD__QUEX__ASSERTS
+#define QUEX_INCLUDE_GUARD__QUEX__ASSERTS
 
+#if 0
 #if    ! defined(QUEX_INDICATE_CONFIGURATION_FILE_PASSED) \
     && ! defined(QUEX_OPTION_ASSERTS)
 #   error "Asserts included before configuration file. However, configuration file CONTROLS asserts!"
+#endif
 #endif
 
 #ifdef QUEX_OPTION_ASSERTS
@@ -35,5 +37,5 @@ $$-----------------------------------------------------------------------------
 
 #define __QUEX_INCLUDE_INDICATOR__ASSERTS
 
-#endif /* QUEX_INCLUDE_GUARD__ASSERTS */
+#endif /* QUEX_INCLUDE_GUARD__QUEX__ASSERTS */
 

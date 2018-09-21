@@ -28,10 +28,9 @@ nonsense.qx:1:warning: Above token ids must be defined in 'token_ids.h'
 
 
 Generated Files:
-converter-from-lexeme
-converter-from-lexeme.i
 EasyLexer
 EasyLexer-configuration
+
 EasyLexer.cpp
 lib
 

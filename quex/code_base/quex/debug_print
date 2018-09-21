@@ -1,5 +1,5 @@
-#ifndef QUEX_INCLUDE_GUARD__DEBUG_PRINT
-#define QUEX_INCLUDE_GUARD__DEBUG_PRINT
+#ifndef QUEX_INCLUDE_GUARD__QUEX__DEBUG_PRINT
+#define QUEX_INCLUDE_GUARD__QUEX__DEBUG_PRINT
 
 #define QUEX_STRING(X)            #X
 #define QUEX_NUMBER_TO_STRING(x)  QUEX_STRING(x)
@@ -32,7 +32,7 @@ $$INC: buffer/Buffer_print$$
            QUEX_DEBUG_PRINT(Str) 
 #   define __quex_debug1(Str)                                       \
            __QUEX_PRINT_SOURCE_POSITION();                          \
-           QUEX_DEBUG_PRINT1("%s\n", (Str)) 
+           QUEX_DEBUG_PRINT1("%s\n", (Str))
 #   define __quex_debug2(FormatStr, Arg)                            \
            __QUEX_PRINT_SOURCE_POSITION();                          \
            QUEX_DEBUG_PRINT1(FormatStr "\n", Arg)

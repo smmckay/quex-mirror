@@ -5,7 +5,7 @@ all:       $(PROGRAMS)
 TESTENV   := $(QUEX_PATH)/quex/code_base/TESTS
 
 MYFLAGS   := -ggdb -Wall -Werror  \
-			-I. -I$(TESTENV) \
+			-I. -I$(TESTENV) -I$(TESTENV)/test_cpp \
 		     -DQUEX_OPTION_COUNTER_LINE_EXT  \
 		     -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER_EXT \
 		     -DQUEX_SETTING_ACCUMULATOR_INITIAL_SIZE_EXT=0 \
@@ -26,7 +26,8 @@ test_cpp/TestAnalyzer-dummy.cpp: # test_cpp
 
 	# Generate a 'TestAnalyzer-token' class just for the experiment
 	# => print out on 'take_text'
-	quex -i UT_Token.qx --token-class-only -o TestAnalyzer --odir test_cpp --token-class-support-repetition
+	quex -i UT_Token.qx --token-class-only -o TestAnalyzer --odir test_cpp --token-class-support-repetition \
+		 --no-lexeme-null --no-lib-quex --no-lib-lexeme
 
 accumulator.exe: accumulator.cpp test_cpp/TestAnalyzer-dummy.cpp
 	$(CC) $^ -o $@ 

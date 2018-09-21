@@ -17,7 +17,7 @@ case $1 in
         ;;
     bad)
         make lexer 2>&1 | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ '
-        ./lexer bad
+        ./lexer bad 2> /dev/null
         ;;
     invokation)
         make Message0;

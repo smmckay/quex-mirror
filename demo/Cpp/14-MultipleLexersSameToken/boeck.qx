@@ -1,5 +1,17 @@
 start = NORMAL;
 
+token {
+  SCALLYWAG_;
+  PREDICATE_;
+   FILL_WORD_;
+   ARTICLE___;
+   SUBJECT___;
+   ADVERB____;
+   NEGATION__;
+   MARK______;
+   VERB______;
+   UKNOWN____;
+}
 
 mode NORMAL 
 : <skip: [ \n\t] >

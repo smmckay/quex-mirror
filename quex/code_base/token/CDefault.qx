@@ -6,6 +6,7 @@ token_type {
 #include <$$QUEX_LIB_DIR$$/compatibility/stdint.h>
 #include <$$QUEX_LIB_DIR$$/MemoryManager>
 #include <$$QUEX_LIB_DIR$$/asserts>
+#include <$$QUEX_LIB_DIR$$/standard_functions>
 
 #include <$$OUTPUT_DIR$$/lib/lexeme/basics>
 #include <$$OUTPUT_DIR$$/lib/lexeme/converter-from-lexeme>
@@ -158,6 +159,11 @@ extern const char*       $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* 
             *writerator = '\0';
             return buffer;
         }
+
+$$<token-class-only>-----------------------------------------------------------
+inline const char* QUEX_GNAME(map_token_id_to_name)(QUEX_TYPE_TOKEN_ID Id)
+{ (void)Id; return "<token ids unknown at class generation time>"; }
+$$-----------------------------------------------------------------------------
 
 #include <$$OUTPUT_DIR$$/lib/lexeme/basics.i>
    }

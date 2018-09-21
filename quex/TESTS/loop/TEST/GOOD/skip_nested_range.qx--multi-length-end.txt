@@ -1,12 +1,12 @@
 ,------------------------------------------------------------------------------------
 | [START]
-LETTER 'A'
-LETTER 'B'
-LETTER 'C'
-LETTER 'D'
-LETTER 'E'
-LETTER 'F'
-LETTER 'G'
-<TERMINATION> ''
+(1, 1)  	LETTER 'A'
+(1, 22)  	LETTER 'B'
+(1, 50)  	LETTER 'C'
+(1, 66)  	LETTER 'D'
+(1, 82)  	LETTER 'E'
+(2, 1)  	LETTER 'F'
+(2, 24)  	LETTER 'G'
+(5, 1)  	<TERMINATION> ''
 | [END] number of token = 8
 `------------------------------------------------------------------------------------

@@ -5,8 +5,6 @@ quex: no output is just fine.
 
 file list after:
 ||||
-converter-from-lexeme
-converter-from-lexeme.i
 lib
 Simple
 Simple-configuration

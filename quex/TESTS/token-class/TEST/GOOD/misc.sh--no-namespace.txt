@@ -6,7 +6,7 @@ inline void         QToken_copy(QToken*, const QToken*);
 inline void         QToken_destruct(QToken*);
 inline void         QToken_set(QToken*         me, 
 inline bool         QToken_take_text(QToken*            me, 
-class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QToken {
+class QUEX_Simple_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QToken {
     QToken();
     QToken(const QToken& That);
     QToken& operator=(const QToken& That);

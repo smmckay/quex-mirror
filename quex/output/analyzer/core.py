@@ -34,12 +34,6 @@ def do(ModeDB, Epilog):
     token_class_name      = token_db.token_type_definition.class_name
     token_class_name_safe = token_db.token_type_definition.class_name_safe
 
-    include_guard_ext = Lng.INCLUDE_GUARD(
-            Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space) 
-            + "__" + Setup.analyzer_class_name)
-
-    lexer_name_space_safe = Lng.INCLUDE_GUARD(Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space))
-
     template_code_txt = Lng.open_template(Lng.analyzer_template_file())
 
     template_code_txt, \
@@ -48,9 +42,7 @@ def do(ModeDB, Epilog):
     txt = blue_print(template_code_txt, [
         ["$$___SPACE___$$",                      " " * (len(LexerClassName) + 1)],
         ["$$CLASS_BODY_EXTENSION$$",             Lng.SOURCE_REFERENCED(blackboard.class_body_extension)],
-        ["$$INCLUDE_GUARD_EXTENSION$$",          include_guard_ext],
         ["$$LEXER_CLASS_NAME$$",                 LexerClassName],
-        ["$$LEXER_NAME_SPACE_EXT$$",             lexer_name_space_safe],
         ["$$LEXER_CLASS_NAME_SAFE$$",            Setup.analyzer_name_safe],
         ["$$LEXER_CONFIG_FILE$$",                Setup.output_configuration_file],
         ["$$LEXER_DERIVED_CLASS_DECL$$",         derived_class_type_declaration],

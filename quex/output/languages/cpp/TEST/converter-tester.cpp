@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <../../../../code_base/TESTS/minimum-definitions.h>
-#include "Conv/converter-from-lexeme"
-#include "Conv/converter-from-lexeme.i"
+#include "Conv/lib/lexeme/converter-from-lexeme"
+#include "Conv/lib/lexeme/converter-from-lexeme.i"
 #include <test_cpp/lib/quex/MemoryManager.i>
 
 #define __MY_STRING(X)   # X

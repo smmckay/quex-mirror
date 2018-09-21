@@ -248,6 +248,7 @@ SETUP_INFO = {
     "character_display":              [["--character-display"],                "utf8"],
     "path_limit_code":                [["--path-termination"],                 0x1],
     "dos_carriage_return_newline_f":  [["--no-DOS"],                           SetupParTypes.NEGATED_FLAG],
+    "implement_lexeme_null_f":        [["--no-lexeme-null", "--nln"],          SetupParTypes.NEGATED_FLAG],
     "insight_f":                      [["--insight"],                          SetupParTypes.FLAG],
     "converter_only_f":               [["--converter-only", "--co"],           SetupParTypes.FLAG],
     "converter_source_name":          [["--converter-source-name", "--csn"],  ""],

@@ -12,6 +12,12 @@ def do(Condition):
         return True
     elif Condition.startswith("not-"):
         return not do(Condition[4:])
+    elif "&&" in Condition:
+        return all(do(x.strip()) for x in Condition.split("&&"))
+    elif "||" in Condition:
+        return any(do(x.strip()) for x in Condition.split("||"))
+    elif Condition == "lexeme-null":
+        return Setup.implement_lexeme_null_f
     elif Condition == "count-line":
         return bool(Setup.count_line_number_f)
     elif Condition == "count-column":
@@ -20,6 +26,12 @@ def do(Condition):
         return do("count-line")                      # NEEDS REWORK
     elif Condition == "token-stamp-column":
         return do("count-column")                    # NEEDS REWORK
+    elif Condition == "token-take-text":
+        return token_db.support_take_text()
+    elif Condition == "token-repetition":
+        return token_db.support_repetition()
+    elif Condition == "token-class-only":
+        return Setup.token_class_only_f
     elif Condition == "count":
         return Setup.count_line_number_f or Setup.count_column_number_f
     elif Condition == "indentation":
@@ -30,10 +42,6 @@ def do(Condition):
         return Setup.implement_lib_lexeme_f
     elif Condition == "std-lib":
         return Setup.standard_library_usage_f
-    elif Condition == "token-take-text":
-        return token_db.support_take_text()
-    elif Condition == "token-repetition":
-        return token_db.support_repetition()
     elif Condition == "mode-on-entry-handler":
         return True                                  # NEEDS REWORK
         return any(
@@ -46,11 +54,6 @@ def do(Condition):
             mode.incidence_db.has_key(E_IncidenceIDs.MODE_EXIT)
             for mode in blackboard.mode_db.values()
         )
-    elif "&&" in Condition:
-        return all(do(x.strip()) for x in Condition.split("&&"))
-
-    elif "||" in Condition:
-        return any(do(x.strip()) for x in Condition.split("||"))
     elif Condition == "C":
         return Setup.language == "C"
     elif Condition == "Cpp":

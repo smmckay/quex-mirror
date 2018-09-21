@@ -452,7 +452,7 @@ def _get_terminal_list_for_loop(loop_map, loop_config, DoorIdLoop):
     if loop_config.iid_loop_after_appendix_drop_out is not None:
         txt = Lng.COMMAND_LIST(
             loop_config.events.on_loop_after_appendix_drop_out(DoorIdLoop,
-                                                                loop_config.column_number_per_code_unit),
+                                                               loop_config.column_number_per_code_unit),
             loop_config.dial_db
         )
         result.append(

@@ -9,7 +9,7 @@ main(int argc, char** argv)
     uint8_t buffer[4711];
     size_t  BufferSize = 4711;
 
-    buffer[0] = buffer[4711 - 1] = QUEX_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
+    buffer[0] = buffer[4711 - 1] = QUEX_Simple_SETTING_BUFFER_LEXATOM_BUFFER_BORDER;
     Simple_from_memory(&qlex, 
                        &buffer[0], BufferSize, &buffer[1]); 
 

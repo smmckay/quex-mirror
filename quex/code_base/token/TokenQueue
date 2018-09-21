@@ -18,10 +18,6 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT {
     QUEX_TYPE_TOKEN*   read_iterator;    /* pointer to next token to be read          */
     QUEX_TYPE_TOKEN*   write_iterator;   /* pointer to next token to be written       */
     QUEX_TYPE_TOKEN*   end;
-    /* A token might be 'N' times repeated. This is the only case where a token
-     * queue overflow might occur. When the token queue is full and there are still
-     * 'N' tokens to be repeated, then the remaining 'N' are stored in the following
-     * variable.                                                                      */
 
 } QUEX_NAME(TokenQueue);
 

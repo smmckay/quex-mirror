@@ -1,8 +1,11 @@
 /* -*- C++ -*- vim:set syntax=cpp: 
  * (C) Frank-Rene Schaefer    
  * ABSOLUTELY NO WARRANTY                                                     */
-#ifndef QUEX_INCLUDE_GUARD__LEXEME_BASE_I
-#define QUEX_INCLUDE_GUARD__LEXEME_BASE_I
+#ifndef QUEX_INCLUDE_GUARD__LEXEME__BASICS_I
+#define QUEX_INCLUDE_GUARD__LEXEME__BASICS_I
+
+$$INC: quex/standard_functions$$
+$$INC: quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -54,4 +57,4 @@ QUEX_NAME(lexeme_compare)(const QUEX_TYPE_LEXATOM* it0,
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* QUEX_INCLUDE_GUARD__LEXEME_BASE_I */
+#endif /* QUEX_INCLUDE_GUARD__LEXEME_BASICS_I */

@@ -2,8 +2,8 @@
  * (C) 2004-2009 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY
  */
-#ifndef QUEX_INCLUDE_GUARD__TOKEN__GENERATED__I
-#define QUEX_INCLUDE_GUARD__TOKEN__GENERATED__I
+#ifndef QUEX_TOKEN_INCLUDE_GUARD__TOKEN__GENERATED__I
+#define QUEX_TOKEN_INCLUDE_GUARD__TOKEN__GENERATED__I
 
 $$INCLUDE_TOKEN_CLASS_HEADER$$
 
@@ -114,4 +114,4 @@ $$-----------------------------------------------------------------------------
 
 $$FOOTER$$
 
-#endif /* QUEX_INCLUDE_GUARD__TOKEN__GENERATED__I */
+#endif /* QUEX_TOKEN_INCLUDE_GUARD__TOKEN__GENERATED__I */
