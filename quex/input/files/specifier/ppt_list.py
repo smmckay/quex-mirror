@@ -437,15 +437,17 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_range):
+            closer_pattern = data["closer_pattern"].finalize(CaMap)
+            opener_pattern = data["opener_pattern"].finalize(CaMap)
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
-                                                            data["closer_pattern"],
+                                                            closer_pattern,
                                                             dial_db) 
             new_analyzer_list,     \
             new_terminal_list,     \
             required_register_set, \
             run_time_counter_f     = skip_range.do(ModeName      = self.terminal_factory.mode_name, 
                                                    CaMap         = CaMap, 
-                                                   CloserPattern = data["closer_pattern"], 
+                                                   CloserPattern = closer_pattern, 
                                                    DoorIdExit    = door_id_exit,
                                                    ReloadState   = ReloadState, 
                                                    dial_db       = dial_db)
@@ -457,7 +459,7 @@ class PPT_List(list):
             extra_analyzer_list.extend(new_analyzer_list)
             extra_terminal_list.extend(new_terminal_list)
 
-            pattern  = data["opener_pattern"].clone_with_new_incidence_id()
+            pattern  = opener_pattern.clone_with_new_incidence_id()
             terminal = self._terminal_goto_to_looper(new_analyzer_list, None, 
                                                      "<skip range>", required_register_set, 
                                                      Pattern=pattern)
@@ -476,10 +478,12 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_nested_range):
-            pattern  = data["opener_pattern"].clone_with_new_incidence_id()
+            closer_pattern     = data["closer_pattern"].finalize(CaMap)
+            opener_pattern_pre = data["opener_pattern"].finalize(CaMap)
+            pattern            = opener_pattern_pre.clone_with_new_incidence_id()
 
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
-                                                            data["closer_pattern"],
+                                                            closer_pattern,
                                                             dial_db)
 
             new_analyzer_list,     \
@@ -488,7 +492,7 @@ class PPT_List(list):
             run_time_counter_f     = skip_nested_range.do(ModeName      = self.terminal_factory.mode_name, 
                                                           CaMap         = CaMap, 
                                                           OpenerPattern = pattern,
-                                                          CloserPattern = data["closer_pattern"], 
+                                                          CloserPattern = closer_pattern, 
                                                           DoorIdExit    = door_id_exit,
                                                           ReloadState   = ReloadState, 
                                                           dial_db       = dial_db)

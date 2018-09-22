@@ -26,11 +26,6 @@ class SkipRangeData(dict):
         self["opener_pattern"] = OpenerPattern
         self["closer_pattern"] = CloserPattern
 
-    def finalize(self, CaMap):
-        return SkipRangeData(self["opener_pattern"].finalize(CaMap),
-                             self["closer_pattern"].finalize(CaMap),
-                             self)
-
 class Loopers:
     """Loopers -- loops that are integrated into the pattern state machine.
     """
@@ -79,16 +74,6 @@ class Loopers:
             self.skip = [
                 (pattern.finalize(CaMap), total_set)
                 for pattern, total_set in self.skip
-            ]
-
-        if self.skip_range is not None:
-            self.skip_range = [
-                data.finalize(CaMap) for data in self.skip_range
-            ]
-
-        if self.skip_nested_range is not None:
-            self.skip_nested_range = [
-                data.finalize(CaMap) for data in self.skip_nested_range
             ]
 
         if self.indentation_handler is not None:
