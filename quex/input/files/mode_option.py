@@ -41,7 +41,7 @@ class Loopers:
 
         self.__finalized_f       = False
 
-    def combined_skip(self):
+    def combined_skip(self, CaMap):
         """Character Set Skipper: Multiple skippers from different modes are 
         combined into one pattern.
 
@@ -69,12 +69,6 @@ class Loopers:
     def finalize(self, CaMap):
         if self.__finalized_f: 
             return self
-
-        if self.skip is not None:
-            self.skip = [
-                (pattern.finalize(CaMap), total_set)
-                for pattern, total_set in self.skip
-            ]
 
         if self.indentation_handler is not None:
             self.indentation_handler = self.indentation_handler.finalize(CaMap)

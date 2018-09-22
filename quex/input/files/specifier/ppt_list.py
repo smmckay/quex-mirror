@@ -381,7 +381,7 @@ class PPT_List(list):
 
         skipped_character_set, \
         pattern_str,           \
-        aux_source_reference   = Loopers.combined_skip()
+        aux_source_reference   = Loopers.combined_skip(CaMap)
 
         new_analyzer_list,        \
         new_terminal_list,    \
