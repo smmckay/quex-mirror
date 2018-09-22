@@ -16,9 +16,9 @@ main(int argc, char** argv)
     max_Lexer     max_lex;
     moritz_Lexer  moritz_lex;
     boeck_Lexer   boeck_lex;
-    A_B_C_Token*  max_token    = 0x0;
-    A_B_C_Token*  moritz_token = 0x0;
-    A_B_C_Token*  boeck_token  = 0x0;
+    Common_Token* max_token    = 0x0;
+    Common_Token* moritz_token = 0x0;
+    Common_Token* boeck_token  = 0x0;
     const size_t  BufferSize = 1024;
     char          buffer[1024];
     size_t        i = 0;
@@ -40,7 +40,7 @@ main(int argc, char** argv)
         boeck_lex.receive(&boeck_lex, &boeck_token);
 
         /* Lexeme is same for all three.                                      */
-        (void)A_B_C_lexeme_to_pretty_char(boeck_token->text, buffer, &buffer[BufferSize]);
+        (void)Global_lexeme_to_pretty_char(boeck_token->text, buffer, &buffer[BufferSize]);
 
         printf("%s", &buffer[0]);
 

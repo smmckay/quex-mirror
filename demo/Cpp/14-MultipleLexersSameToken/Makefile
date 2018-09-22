@@ -35,6 +35,7 @@ boeck/Lexer.cpp:  boeck.qx A_B_C/Global-token.cpp
 A_B_C/Global-token.cpp: 
 	quex -i token_ids.qx --token-class-only -o Global --token-class Common::Token \
 		 --odir A_B_C    -b 4
+		 # generate lib-quex
 
 clean:
 	rm -rf max/ moritz/ boeck/ A_B_C/ *.o lexer tmp.* 

@@ -17,15 +17,15 @@ lexer: lexer.cpp max/max.cpp moritz/moritz.cpp boeck/boeck.cpp
 	$(LD) $^ -o $@ 
 	 
 max/max.cpp:    max.qx
-	quex -i token.qx $< -o lexer::max --odir max/ -b 4 \
+	quex -i token.qx $< -o lexer::max -b 4 \
 	     --token-id-prefix MAX_TKN_ --suppress 6 --no-lib-quex
 
 moritz/moritz.cpp: moritz.qx
-	quex -i token.qx $< -o lexer::moritz --odir moritz/ -b 2 \
+	quex -i token.qx $< -o lexer::moritz -b 2 \
 		 --token-id-prefix MORITZ_TKN_ --suppress 6 --no-lib-quex
 
 boeck/boeck.cpp:  boeck.qx
-	quex -i token.qx $< -o lexer::boeck --odir boeck/ --encoding utf8 \
+	quex -i token.qx $< -o lexer::boeck --encoding utf8 \
 		 --token-id-prefix TKN_ --suppress 6 # for once: lib-quex
 
 clean:
