@@ -67,10 +67,6 @@ def do():
         header_txt         = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % source_name, 
                                                             header_txt)
 
-    include_guard_suffix = ("%s_%s_%s" % (Lng.SAFE_IDENTIFIER(Setup.analyzer_class_name),
-                                          Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name),
-                                          Lng.SAFE_IDENTIFIER(Setup.lexatom.type))).upper()
-
     return [
         (header_txt,         Lng.file_name_converter_header(source_name)), 
         (implementation_txt, Lng.file_name_converter_implementation(source_name)),

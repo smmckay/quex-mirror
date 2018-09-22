@@ -329,13 +329,5 @@ $$-----------------------------------------------------------------------------
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-$$<token-class-only && lexeme-null>--------------------------------------------
-QUEX_TYPE_LEXATOM QUEX_GNAME(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
-$$-----------------------------------------------------------------------------
-
-$$INC: <token-class-only && lib-lexeme> lexeme/basics.i$$
-$$INC: <token-class-only && lib-lexeme> lexeme/converter-from-lexeme.i$$
-$$INC: <token-class-only && lib-quex>   quex/MemoryManager.i$$
-$$INC: <token-class-only && lib-quex>   quex/bom.i$$
 #endif /* QUEX_TOKEN_INCLUDE_GUARD__TOKEN__GENERATED_I */
 

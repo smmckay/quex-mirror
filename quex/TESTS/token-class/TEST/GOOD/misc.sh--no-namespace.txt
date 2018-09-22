@@ -1,5 +1,5 @@
-#ifndef QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED
-#define QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED
+#ifndef QUEX_INCLUDE_GUARD_QToken__TOKEN__TOKEN__GENERATED
+#define QUEX_INCLUDE_GUARD_QToken__TOKEN__TOKEN__GENERATED
 class QToken;
 inline void         QToken_construct(QToken*);
 inline void         QToken_copy(QToken*, const QToken*);
@@ -14,9 +14,9 @@ class QUEX_Simple_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QToken {
         friend void QToken_copy(QToken*       __this, 
                                          const QToken* That);
         friend bool QToken_take_text(QToken*             __this, 
-#endif /* QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED */
-#ifndef QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED_I
-#define QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED_I
+#endif /* QUEX_INCLUDE_GUARD_QToken__TOKEN__TOKEN__GENERATED */
+#ifndef QUEX_INCLUDE_GUARD_QToken__TOKEN__TOKEN__GENERATED_I
+#define QUEX_INCLUDE_GUARD_QToken__TOKEN__TOKEN__GENERATED_I
 QToken::QToken()
 QToken::QToken(const QToken& Other)
    QToken_copy(this, &Other);
@@ -31,4 +31,4 @@ QToken_destruct(QToken* __this)
 QToken_copy(QToken* __this, const QToken* __That)
 __QUEX_STD_memcpy((void*)__this, (void*)__That, sizeof(QToken));
 QToken_take_text(QToken*         __this, 
-#endif /* QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED_I */
+#endif /* QUEX_INCLUDE_GUARD_QToken__TOKEN__TOKEN__GENERATED_I */
