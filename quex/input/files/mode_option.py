@@ -19,12 +19,10 @@ from   copy import copy
 def __get_mode_name_list():
     return blackboard.mode_db.keys()
 
-class SkipRangeData(dict): 
+class SkipRangeData: 
     def __init__(self, OpenerPattern, CloserPattern, CoreDict=None):
-        if CoreDict:
-            dict.update(self, CoreDict)
-        self["opener_pattern"] = OpenerPattern
-        self["closer_pattern"] = CloserPattern
+        self.opener_pattern = OpenerPattern
+        self.closer_pattern = CloserPattern
 
 class Loopers:
     """Loopers -- loops that are integrated into the pattern state machine.

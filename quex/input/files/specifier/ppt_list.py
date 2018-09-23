@@ -437,8 +437,8 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_range):
-            closer_pattern = data["closer_pattern"].finalize(CaMap)
-            opener_pattern = data["opener_pattern"].finalize(CaMap)
+            closer_pattern = data.closer_pattern.finalize(CaMap)
+            opener_pattern = data.opener_pattern.finalize(CaMap)
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
                                                             closer_pattern,
                                                             dial_db) 
@@ -478,8 +478,8 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_nested_range):
-            closer_pattern     = data["closer_pattern"].finalize(CaMap)
-            opener_pattern_pre = data["opener_pattern"].finalize(CaMap)
+            closer_pattern     = data.closer_pattern.finalize(CaMap)
+            opener_pattern_pre = data.opener_pattern.finalize(CaMap)
             pattern            = opener_pattern_pre.clone_with_new_incidence_id()
 
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
