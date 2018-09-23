@@ -1,12 +1,10 @@
 // skip-nested-range: Concurrent regular expressions;
-// CHOICES:    whitespace, multiple, post-context-end, post-context-end-2, multi-length-end;
+// CHOICES:    whitespace, multiple, multi-length-end;
 token { LETTER; STAR; CLOSING_BRACKET; }
 
 mode X : 
 <skip:              [ \t\n]                 >  // whitespace
 <skip_nested_range: ("/-"|"/+") ("-/"|"+/") >  // multiple
-<skip_nested_range: "["  "]]"/"*"           >  // post-context-end
-<skip_nested_range: "("+ "))"/"*"+          >  // post-context-end-2
 <skip_nested_range: ">"  ">"{2,}            >  // multi-length-end
 {
     <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);

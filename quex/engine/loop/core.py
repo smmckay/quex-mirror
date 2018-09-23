@@ -186,6 +186,7 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
     appendix_sm_list, \
     appendix_lcci_db  = _get_loop_map(loop_config, CaMap, parallel_sm_list, 
                                       loop_config.iid_loop_exit, LoopCharacterSet)
+
     # Loop DFA
     loop_sm = DFA.from_IncidenceIdMap(
         ((lei.character_set, lei.iid_couple_terminal) for lei in loop_map),

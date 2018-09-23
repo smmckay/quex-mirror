@@ -390,8 +390,6 @@ def read_until_closing_bracket(fh, Opener, Closer,
                                SkipClosingDelimiterF = True):                    
     """This function does not eat the closing bracket from the stream.
     """                                                             
-    # print "# # read_until_closing_bracket: ", Opener, ", ", Closer, ", ", IgnoreRegions
-
     open_brackets_n = 1
     backslash_f     = False
     txt     = ""

@@ -104,6 +104,9 @@ QUEX_INLINE void
 QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me)
 /* Destruct 'me' and mark all resources as absent.                            */
 {
+    if( QUEX_NAME(Buffer_resources_absent)(me) ) {
+        return;
+    }
     QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(me);
 
     if( me->filler ) {
