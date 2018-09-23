@@ -36,7 +36,7 @@ def build(ISetup):
     return executable_name, source
 
 pattern_newline            = get_Pattern_Prep(DFA.from_character_set(NumberSet(ord('\n'))))
-pattern_suppressed_newline = get_Pattern(DFA.from_sequence([ord(x) for x in "\\\n"]))
+pattern_suppressed_newline = get_Pattern_Prep(DFA.from_sequence([ord(x) for x in "\\\n"]))
 
 indent_setup = IndentationCount(SourceRef_VOID,  
                                 WhiteSpaceCharacterSet   = NumberSet([Interval(ord(x)) for x in " :"]), 

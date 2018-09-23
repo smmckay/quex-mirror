@@ -325,10 +325,6 @@ class IndentationCount_Pre:
             if P: return P.finalize(CaMap)
             else: return None
 
-        # pattern_newline            = _finalize(self.pattern_newline, CaMap)
-        pattern_newline            = self.pattern_newline
-        pattern_suppressed_newline = _finalize(self.pattern_suppressed_newline, 
-                                               CaMap) 
         pattern_comment_list = [
             _finalize(pattern_comment, CaMap) 
             for pattern_comment in self.pattern_comment_list
@@ -336,8 +332,8 @@ class IndentationCount_Pre:
         return IndentationCount(self.sr, 
                                 self.whitespace_character_set, 
                                 self.bad_space_character_set,
-                                pattern_newline,
-                                pattern_suppressed_newline,
+                                self.pattern_newline,
+                                self.pattern_suppressed_newline,
                                 pattern_comment_list)
 
     def __str__(self):

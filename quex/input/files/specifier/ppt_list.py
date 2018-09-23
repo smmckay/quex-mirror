@@ -366,7 +366,8 @@ class PPT_List(list):
             # 'newline-suppressor' causes following 'newline' to be ignored.
             # => next line not subject to new indentation counting.
             new_incidence_id = dial.new_incidence_id()
-            pattern = ISetup.pattern_suppressed_newline.clone_with_new_incidence_id(new_incidence_id)
+            pattern = ISetup.pattern_suppressed_newline.finalize(CaMap)
+            pattern = pattern.clone_with_new_incidence_id(new_incidence_id)
             door_id = DoorID.global_reentry(self.terminal_factory.dial_db)
             code    = CodeTerminal([Lng.GOTO(door_id, self.terminal_factory.dial_db)])
             new_ppt_list.append(

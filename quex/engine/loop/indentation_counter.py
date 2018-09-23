@@ -72,8 +72,11 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
     whitespace_set        = IndentationSetup.whitespace_character_set
     bad_space_set         = IndentationSetup.bad_space_character_set
     sm_newline            = IndentationSetup.pattern_newline.finalize(CaMap).sm
+    if IndentationSetup.pattern_suppressed_newline:
+        sm_suppressed_newline = IndentationSetup.pattern_suppressed_newline.finalize(CaMap).sm
+    else:
+        sm_suppressed_newline = None
     sm_comment_list       = IndentationSetup.get_sm_comment_list()
-    sm_suppressed_newline = IndentationSetup.get_sm_suppressed_newline()
 
     assert sm_suppressed_newline  is None or sm_suppressed_newline.is_DFA_compliant()
     assert sm_newline is None             or sm_newline.is_DFA_compliant()
