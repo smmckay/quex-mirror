@@ -325,8 +325,8 @@ class IndentationCount_Pre:
             if P: return P.finalize(CaMap)
             else: return None
 
-        pattern_newline            = _finalize(self.pattern_newline, 
-                                               CaMap)
+        # pattern_newline            = _finalize(self.pattern_newline, CaMap)
+        pattern_newline            = self.pattern_newline
         pattern_suppressed_newline = _finalize(self.pattern_suppressed_newline, 
                                                CaMap) 
         pattern_comment_list = [

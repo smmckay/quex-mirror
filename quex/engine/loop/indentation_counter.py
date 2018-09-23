@@ -71,7 +71,7 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
     """
     whitespace_set        = IndentationSetup.whitespace_character_set
     bad_space_set         = IndentationSetup.bad_space_character_set
-    sm_newline            = IndentationSetup.get_sm_newline()
+    sm_newline            = IndentationSetup.pattern_newline.finalize(CaMap).sm
     sm_comment_list       = IndentationSetup.get_sm_comment_list()
     sm_suppressed_newline = IndentationSetup.get_sm_suppressed_newline()
 

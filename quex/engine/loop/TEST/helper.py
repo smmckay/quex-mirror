@@ -2,6 +2,8 @@ import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.output.analyzer.indentation_handler      as     indentation_handler
+from   quex.engine.pattern                           import Pattern
+from   quex.input.regular_expression.pattern         import Pattern_Prep
 from   quex.input.code.base                          import CodeFragment, SourceRef_VOID
 from   quex.input.files.specifier.counter            import LineColumnCount_Default
 import quex.engine.loop.skip_character_set           as     character_set_skipper
@@ -526,4 +528,10 @@ $$MARKER_LIST$$
     return true;
 }
 """
+
+def get_Pattern(SM):
+    return Pattern(SM.get_id(), SM, None, None, None, "", SourceRef_VOID)
+
+def get_Pattern_Prep(SM):
+    return Pattern_Prep(SM, Sr=SourceRef_VOID)
 

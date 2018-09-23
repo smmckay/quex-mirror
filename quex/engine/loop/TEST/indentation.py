@@ -2,9 +2,9 @@
 import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
-from   quex.input.regular_expression.pattern       import Pattern
 from   quex.input.code.base                        import SourceRef_VOID
 from   quex.engine.pattern                         import Pattern
+from   quex.input.regular_expression.pattern       import Pattern_Prep
 from   quex.engine.state_machine.core              import DFA
 from   quex.engine.misc.interval_handling          import NumberSet, Interval
 from   quex.engine.counter                         import IndentationCount
@@ -35,10 +35,7 @@ def build(ISetup):
     source           = compile(Language, txt, AssertsActionvation_str = "") 
     return executable_name, source
 
-def get_Pattern(SM):
-    return Pattern(SM.get_id(), SM, None, None, None, "", SourceRef_VOID)
-
-pattern_newline            = get_Pattern(DFA.from_character_set(NumberSet(ord('\n'))))
+pattern_newline            = get_Pattern_Prep(DFA.from_character_set(NumberSet(ord('\n'))))
 pattern_suppressed_newline = get_Pattern(DFA.from_sequence([ord(x) for x in "\\\n"]))
 
 indent_setup = IndentationCount(SourceRef_VOID,  

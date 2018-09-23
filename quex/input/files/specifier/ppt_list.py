@@ -35,6 +35,7 @@ from   quex.blackboard import Lng
 
 from   collections  import namedtuple
 from   operator     import attrgetter
+from   copy         import deepcopy
 
 class PatternPriority(object):
     """Description of a pattern's priority.
@@ -353,7 +354,8 @@ class PPT_List(list):
         self.required_register_set.update(required_register_set)
 
         # 'newline' triggers --> indentation counter
-        pattern  = ISetup.pattern_newline.clone_with_new_incidence_id(E_IncidenceIDs.INDENTATION_HANDLER)
+        pattern  = ISetup.pattern_newline.finalize(CaMap)
+        pattern  = pattern.clone_with_new_incidence_id(E_IncidenceIDs.INDENTATION_HANDLER)
         terminal = self._terminal_goto_to_looper(new_analyzer_list, None, "<indentation handler>", 
                                                  required_register_set, Pattern=pattern)
         new_ppt_list = [
@@ -437,10 +439,11 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_range):
-            closer_pattern = data.closer_pattern.finalize(CaMap)
-            opener_pattern = data.opener_pattern.finalize(CaMap)
+            opener_pattern     = data.opener_pattern.finalize(CaMap)
+            closer_pattern_raw = deepcopy(data.closer_pattern)
+            closer_pattern     = data.closer_pattern.finalize(CaMap)
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
-                                                            closer_pattern,
+                                                            closer_pattern_raw,
                                                             dial_db) 
             new_analyzer_list,     \
             new_terminal_list,     \
@@ -478,12 +481,13 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_nested_range):
-            closer_pattern     = data.closer_pattern.finalize(CaMap)
             opener_pattern_pre = data.opener_pattern.finalize(CaMap)
+            closer_pattern_raw = deepcopy(data.closer_pattern)
+            closer_pattern     = data.closer_pattern.finalize(CaMap)
             pattern            = opener_pattern_pre.clone_with_new_incidence_id()
 
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
-                                                            closer_pattern,
+                                                            closer_pattern_raw,
                                                             dial_db)
 
             new_analyzer_list,     \
@@ -521,12 +525,16 @@ class PPT_List(list):
             return DoorID.continue_without_on_after_match(dial_db)
             
     def _match_indentation_counter_newline_pattern(self, indentation_handler, CloserPattern):
-        if indentation_handler is None: return False
-        indentation_sm_newline = indentation_handler.pattern_newline.sm
-        if indentation_sm_newline is None: return False
+
+        if   indentation_handler                    is None: return False
+        elif indentation_handler.pattern_newline.sm is None: return False
+        elif CloserPattern                          is None: return False
+
+        assert CloserPattern.sm is not None
+        ## elif CloserPattern.sm                       is None: return False
 
         only_common_f, \
-        common_f       = tail.do(indentation_sm_newline, CloserPattern.sm)
+        common_f       = tail.do(indentation_handler.pattern_newline.sm, CloserPattern.sm)
 
         error_check.tail(only_common_f, common_f, 
                         "indentation handler's newline", indentation_handler.pattern_newline.sr, 
