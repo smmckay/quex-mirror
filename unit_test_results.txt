@@ -8,8 +8,8 @@ TEST                                                                 <no date>
  * Dizzzy:
 
     293 0.66.5: Encoding running on wchar_t
-        bug-293.sh bad .............................................[FAIL]
-                   good ............................................[FAIL]
+        bug-293.sh bad ...............................................[OK]
+                   good ..............................................[OK]
                    invokation ........................................[OK]
 
  * alexeevm:
@@ -69,7 +69,7 @@ TEST                                                                 <no date>
     3485516 0.60.1 0.60.1 Exception Handling Disorder
         bug-3485516.sh ...............................................[OK]
     3486388 0.61.2 Need better errmsg when incorrectly using 2 Lexers at once
-        bug-3486388.sh .............................................[FAIL]
+        bug-3486388.sh ...............................................[OK]
     3495127 Event Handler on_after_match
         feature-3495127.sh queue .....................................[OK]
     3503831 0.61.2 Missleading error message in anti-pattern A{foo$}
@@ -278,11 +278,11 @@ TEST                                                                 <no date>
  * patrikj-kt:
 
     298 Quex exception in loop generation.
-        bug-298.sh ...................................................[OK]
+        bug-298.sh .................................................[FAIL]
     299 LoopRestartP -- generated code does not compile
-        bug-299.sh original ..........................................[OK]
-                   with-derivation ...................................[OK]
-                   without-derivation ................................[OK]
+        bug-299.sh original ........................................[FAIL]
+                   with-derivation .................................[FAIL]
+                   without-derivation ..............................[FAIL]
     300 Missing error message on non-existing mode.
         bug-300.sh ...................................................[OK]
 
@@ -496,9 +496,10 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] bug-293.sh _ bad
-                    \__ good
-    [FAIL] bug-3486388.sh
+    [FAIL] bug-298.sh
+    [FAIL] bug-299.sh _ original
+                    \__ with-derivation
+                    \__ without-derivation
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -511,13 +512,11 @@ demo/TEST                                                            <no date>
  * Demo Consistency:
 
     C and C++ Makefiles
-        makefile-diff.sh ...........................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] makefile-diff.sh
+        makefile-diff.sh .............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   Demos for C                                  
@@ -630,14 +629,14 @@ demo/C/TEST                                                          <no date>
  * 13-MultipleLexers:
 
     Single Application/Multiple Lexical Analyzers
-        13-MultipleLexers.sh asserts ...............................[FAIL]
-                             no-asserts ............................[FAIL]
+        13-MultipleLexers.sh asserts .................................[OK]
+                             no-asserts ..............................[OK]
 
  * 14-MultipleLexersSameToken:
 
     Multiple Lexical Analyzers -- shared token
-        14-MultipleLexersSameToken.sh asserts ......................[FAIL]
-                                      no-asserts ...................[FAIL]
+        14-MultipleLexersSameToken.sh asserts ........................[OK]
+                                      no-asserts .....................[OK]
 
  * demo/006:
 
@@ -650,15 +649,10 @@ demo/C/TEST                                                          <no date>
     Engine Encoding UTF16
         12-EngineEncoding-2nd.sh BE ..................................[OK]
                                  LE ..................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] 13-MultipleLexers.sh _ asserts
-                              \__ no-asserts
-    [FAIL] 14-MultipleLexersSameToken.sh _ asserts
-                                       \__ no-asserts
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  Demos for Cpp                                 
@@ -771,14 +765,14 @@ demo/Cpp/TEST                                                        <no date>
  * 13-MultipleLexers:
 
     Single Application/Multiple Lexical Analyzers
-        13-MultipleLexers.sh asserts ...............................[FAIL]
-                             no-asserts ............................[FAIL]
+        13-MultipleLexers.sh asserts .................................[OK]
+                             no-asserts ..............................[OK]
 
  * 14-MultipleLexersSameToken:
 
     Multiple Lexical Analyzers -- shared token
-        14-MultipleLexersSameToken.sh asserts ......................[FAIL]
-                                      no-asserts ...................[FAIL]
+        14-MultipleLexersSameToken.sh asserts ........................[OK]
+                                      no-asserts .....................[OK]
 
  * demo/006:
 
@@ -791,15 +785,10 @@ demo/Cpp/TEST                                                        <no date>
     Engine Encoding UTF16
         12-EngineEncoding-2nd.sh BE ..................................[OK]
                                  LE ..................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] 13-MultipleLexers.sh _ asserts
-                              \__ no-asserts
-    [FAIL] 14-MultipleLexersSameToken.sh _ asserts
-                                       \__ no-asserts
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   Core Engine                                  
@@ -990,46 +979,32 @@ quex/TESTS/bof-eos-context/TEST                                      <no date>
                                                                                
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
- * -----------------------------------------
-        no-meaningless-macro-definitions.sh ................[NO GOOD FILE]
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ..................................[FAIL]
+        no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .....................................[FAIL]
+                          real .......................................[OK]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ................................[FAIL]
-                         undefinition ..............................[FAIL]
+        include_guard.py convention ..................................[OK]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
- * Propper undefinition of configuration parameters.
-        macro-check.py .............................................[FAIL]
 
  * User defined token id file:
 
     __parse_token_id_file
         test-token_id_file-find_ids.py ...............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] no-meaningless-macro-definitions.sh
-    [FAIL] no-use-of-lexeme-macro.sh
-    [FAIL] svn-status.sh
-    [FAIL] function-check.sh _ real
-    [FAIL] pyflakes-check.sh
-    [FAIL] include_guard.py _ convention
-                          \__ undefinition
-    [FAIL] macro-check.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1243,50 +1218,23 @@ quex/TESTS/indentation_count/TEST                                    <no date>
 quex/TESTS/loop/TEST                                                 <no date>
 -------------------------------------------------------------------------------
 
- * Wild:
-
-    Deliberately complicated case of loop development
-        wild.qx 0 ....................................................[OK]
-
  * skip-nested-range:
 
     Concurrent regular expressions
-        skip_nested_range.qx multi-length-end ......................[FAIL]
+        skip_nested_range.qx multi-length-end ........................[OK]
                              multiple ................................[OK]
-                             post-context-end ......................[FAIL]
-                             post-context-end-2 ....................[FAIL]
                              whitespace ..............................[OK]
 
  * skip-range:
 
     Concurrent regular expressions
-        dummy.qx multi-length-end ..........................[NO GOOD FILE]
-                 multiple ..................................[NO GOOD FILE]
-                 post-context-end ..........................[NO GOOD FILE]
-                 post-context-end-2 ........................[NO GOOD FILE]
-                 whitespace ................................[NO GOOD FILE]
-    Concurrent regular expressions
-        skip_range.qx multi-length-end .............................[FAIL]
+        skip_range.qx multi-length-end ...............................[OK]
                       multiple .......................................[OK]
-                      post-context-end .............................[FAIL]
-                      post-context-end-2 ...........................[FAIL]
                       whitespace .....................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] skip_nested_range.qx _ multi-length-end
-                              \__ post-context-end
-                              \__ post-context-end-2
-    [FAIL] dummy.qx _ multi-length-end
-                  \__ multiple
-                  \__ post-context-end
-                  \__ post-context-end-2
-                  \__ whitespace
-    [FAIL] skip_range.qx _ multi-length-end
-                       \__ post-context-end
-                       \__ post-context-end-2
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                Match Precedence                                
@@ -1868,7 +1816,7 @@ quex/engine/misc/TEST                                                <no date>
 quex/engine/operations/TEST                                          <no date>
 -------------------------------------------------------------------------------
  * Check that there are no trailing unused Ops
-        no-unused-ops.py ...........................................[FAIL]
+        no-unused-ops.py .............................................[OK]
  * SharedTailDB
         test-SharedTailDB.py init ....................................[OK]
                              pop_best ................................[OK]
@@ -1876,7 +1824,7 @@ quex/engine/operations/TEST                                          <no date>
  * Command:
 
     Basic
-        basic.py ...................................................[FAIL]
+        basic.py .....................................................[OK]
 
  * Op:
 
@@ -1900,13 +1848,10 @@ quex/engine/operations/TEST                                          <no date>
                             one-or-none ..............................[OK]
                             two ......................................[OK]
                             two-bad ..................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] no-unused-ops.py
-    [FAIL] basic.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                    DFA Tests                                   
@@ -2795,7 +2740,7 @@ quex/engine/state_machine/transformation/TEST                        <no date>
 quex/output/languages/cpp/TEST                                       <no date>
 -------------------------------------------------------------------------------
  * Files for Packaging vs. Files in Code Base
-        package-file-db.py .........................................[FAIL]
+        package-file-db.py ...........................................[OK]
  * Name and Namespace Replacement
         name_replacement.py C ........................................[OK]
                             C++ ......................................[OK]
@@ -2840,12 +2785,10 @@ quex/output/languages/cpp/TEST                                       <no date>
                           2 ..........................................[OK]
                           3 ..........................................[OK]
                           4 ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] package-file-db.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3447,24 +3390,18 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
     [NO GOOD FILE] on_bad_lexatom-utf8.qx _ bad-utf8-4th
-    [NO GOOD FILE] dummy.qx _ multi-length-end
-                          \__ multiple
-                          \__ post-context-end
-                          \__ post-context-end-2
-                          \__ whitespace
-    [NO GOOD FILE] no-meaningless-macro-definitions.sh
 ===============================================================================
 
 SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        3  240   [FAIL] TEST                                                          
-        4  56    [FAIL] demo/C/TEST                                                   
-        4  56    [FAIL] ..../Cpp/TEST                                                 
-        1  2     [FAIL] ..../TEST                                                     
+        4  240   [FAIL] TEST                                                          
+           56      [OK] demo/C/TEST                                                   
+           56      [OK] ..../Cpp/TEST                                                 
+           2       [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        8  13    [FAIL] ........../code/TEST                                          
+           10      [OK] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            5       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3473,7 +3410,7 @@ SUMMARY:
         1  32    [FAIL] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
-       11  16    [FAIL] ........../loop/TEST                                          
+           6       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
            33      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
@@ -3500,7 +3437,7 @@ SUMMARY:
            27      [OK] .............................../template/TEST                 
            39      [OK] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
-        2  17    [FAIL] .........../operations/TEST                                   
+           17      [OK] .........../operations/TEST                                   
            55      [OK] .........../state_machine/TEST                                
            9       [OK] ........................./algebra/TESTS/additional_laws/TEST  
            21      [OK] ......................................./basics/TEST           
@@ -3516,15 +3453,15 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
            205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        1  33    [FAIL] .........../languages/cpp/TEST                                
+           33      [OK] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  ____             
-    |  ___|_ _(_) |___     |___ / | ___|      __  __
-    | |_ / _` | | / __|      |_ \ |___ \      \ \/ /
-    |  _| (_| | | \__ \     ___) | ___) |      >  < 
-    |_|  \__,_|_|_|___/    |____/ |____/      /_/\_\
-                                                                   (1732 tests)
+     _____     _ _          ____             
+    |  ___|_ _(_) |___     | ___|      __  __
+    | |_ / _` | | / __|    |___ \      \ \/ /
+    |  _| (_| | | \__ \     ___) |      >  < 
+    |_|  \__,_|_|_|___/    |____/      /_/\_\
+                                                                   (1719 tests)
 
 ===============================================================================
