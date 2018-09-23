@@ -65,12 +65,6 @@ class Loopers:
         return total_set, pattern_str, source_reference
 
     def finalize(self, CaMap):
-        if self.__finalized_f: 
-            return self
-
-        if self.indentation_handler is not None:
-            self.indentation_handler = self.indentation_handler.finalize(CaMap)
-
         self.__finalized_f = True
         return self
 

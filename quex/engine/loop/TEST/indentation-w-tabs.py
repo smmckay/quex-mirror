@@ -7,7 +7,7 @@ from   quex.input.code.base                        import SourceRef_VOID
 from   quex.engine.pattern                         import Pattern
 from   quex.engine.state_machine.core              import DFA
 from   quex.engine.misc.interval_handling          import NumberSet, Interval
-from   quex.engine.counter                         import IndentationCount
+from   quex.engine.counter                         import IndentationCount_Pre
 import quex.engine.analyzer.door_id_address_label  as     dial
 from   quex.engine.misc.interval_handling          import NumberSet, Interval
 from   quex.output.core.variable_db                import variable_db
@@ -41,7 +41,7 @@ pattern_comment_w_newline  = regex.do("#[^\\n]*\\n", {})
 pattern_comment_wo_newline = regex.do("\\([^\\)]*\\)", {})
 whitespace                 = NumberSet([Interval(ord(x)) for x in " :\t"]) 
 
-indent_setup = IndentationCount(SourceRef_VOID,  
+indent_setup = IndentationCount_Pre(SourceRef_VOID,  
                                 WhiteSpaceCharacterSet   = whitespace,
                                 BadSpaceCharacterSet     = None,
                                 PatternNewline           = pattern_newline, 

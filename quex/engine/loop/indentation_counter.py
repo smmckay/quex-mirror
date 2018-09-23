@@ -5,13 +5,13 @@ from   quex.engine.operations.operation_list        import Op
 import quex.engine.analyzer.door_id_address_label   as     dial
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.misc.tools                       import typed
-from   quex.engine.counter                          import IndentationCount, \
+from   quex.engine.counter                          import IndentationCount_Pre, \
                                                            CountActionMap
 import quex.engine.loop.core                        as     loop
 from   quex.blackboard                              import Lng, \
                                                            E_IncidenceIDs
 
-@typed(CaMap=CountActionMap, IndentationSetup=IndentationCount)
+@typed(CaMap=CountActionMap, IndentationSetup=IndentationCount_Pre)
 def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
     """________________________________________________________________________
     Counting whitespace at the beginning of a line.
