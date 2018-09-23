@@ -37,8 +37,8 @@ def build(ISetup):
 
 pattern_newline            = get_Pattern_Prep(DFA.from_character_set(NumberSet(ord('\n'))))
 pattern_suppressed_newline = get_Pattern_Prep(DFA.from_sequence([ord(x) for x in "\\\n"]))
-pattern_comment_w_newline  = regex.do("#[^\\n]*\\n", {}).finalize(None)
-pattern_comment_wo_newline = regex.do("\\([^\\)]*\\)", {}).finalize(None)
+pattern_comment_w_newline  = regex.do("#[^\\n]*\\n", {})
+pattern_comment_wo_newline = regex.do("\\([^\\)]*\\)", {})
 whitespace                 = NumberSet([Interval(ord(x)) for x in " :\t"]) 
 
 indent_setup = IndentationCount(SourceRef_VOID,  

@@ -529,9 +529,6 @@ $$MARKER_LIST$$
 }
 """
 
-def get_Pattern(SM):
-    return Pattern(SM.get_id(), SM, None, None, None, "", SourceRef_VOID)
-
 def get_Pattern_Prep(SM):
     return Pattern_Prep(SM, Sr=SourceRef_VOID)
 

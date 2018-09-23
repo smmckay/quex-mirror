@@ -69,14 +69,15 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
     the analyzer will immediately be back to the indentation counter state.
     ___________________________________________________________________________
     """
+    def _get_finalized_sm(P, CaMap):
+        if P is None: return
+        else:         return P.finalize(CaMap).sm
     whitespace_set        = IndentationSetup.whitespace_character_set
     bad_space_set         = IndentationSetup.bad_space_character_set
-    sm_newline            = IndentationSetup.pattern_newline.finalize(CaMap).sm
-    if IndentationSetup.pattern_suppressed_newline:
-        sm_suppressed_newline = IndentationSetup.pattern_suppressed_newline.finalize(CaMap).sm
-    else:
-        sm_suppressed_newline = None
-    sm_comment_list       = IndentationSetup.get_sm_comment_list()
+    sm_newline            = _get_finalized_sm(IndentationSetup.pattern_newline, CaMap)
+    sm_suppressed_newline = _get_finalized_sm(IndentationSetup.pattern_suppressed_newline, CaMap)
+    sm_comment_list       = [ _get_finalized_sm(p, CaMap) for p in IndentationSetup.pattern_comment_list ]
+    sm_comment_list       = [ sm for sm in sm_comment_list if sm is not None ]
 
     assert sm_suppressed_newline  is None or sm_suppressed_newline.is_DFA_compliant()
     assert sm_newline is None             or sm_newline.is_DFA_compliant()
