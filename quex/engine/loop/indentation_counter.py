@@ -74,10 +74,21 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
         else:         return P.finalize(CaMap).sm
     whitespace_set        = IndentationSetup.whitespace_character_set
     bad_space_set         = IndentationSetup.bad_space_character_set
-    sm_newline            = _get_finalized_sm(IndentationSetup.pattern_newline, CaMap)
-    sm_suppressed_newline = _get_finalized_sm(IndentationSetup.pattern_suppressed_newline, CaMap)
-    sm_comment_list       = [ _get_finalized_sm(p, CaMap) for p in IndentationSetup.pattern_comment_list ]
-    sm_comment_list       = [ sm for sm in sm_comment_list if sm is not None ]
+    if True:
+        sm_newline            = _get_finalized_sm(IndentationSetup.pattern_newline, CaMap)
+        sm_suppressed_newline = _get_finalized_sm(IndentationSetup.pattern_suppressed_newline, CaMap)
+        sm_comment_list       = [ _get_finalized_sm(p, CaMap) for p in IndentationSetup.pattern_comment_list ]
+        sm_comment_list       = [ sm for sm in sm_comment_list if sm is not None ]
+    else:
+        def _get_sm(P):
+            if P is None: return
+            else:         return P.sm
+        # BETTER, but then it seems to count badly => demo/C/03-Indentation.
+        sm_newline            = _get_sm(IndentationSetup.pattern_newline)
+        sm_suppressed_newline = _get_sm(IndentationSetup.pattern_suppressed_newline)
+        sm_comment_list       = [ _get_sm(p) for p in IndentationSetup.pattern_comment_list ]
+        sm_comment_list       = [ sm for sm in sm_comment_list if sm is not None ]
+
 
     assert sm_suppressed_newline  is None or sm_suppressed_newline.is_DFA_compliant()
     assert sm_newline is None             or sm_newline.is_DFA_compliant()

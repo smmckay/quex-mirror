@@ -440,7 +440,7 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_range):
-            opener_pattern     = data.opener_pattern.finalize(CaMap)
+            entry_pattern      = data.opener_pattern.finalize(CaMap)
             closer_pattern_raw = deepcopy(data.closer_pattern)
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
                                                             closer_pattern_raw,
@@ -462,13 +462,12 @@ class PPT_List(list):
             extra_analyzer_list.extend(new_analyzer_list)
             extra_terminal_list.extend(new_terminal_list)
 
-            pattern  = opener_pattern.clone_with_new_incidence_id()
             terminal = self._terminal_goto_to_looper(new_analyzer_list, None, 
                                                      "<skip range>", required_register_set, 
-                                                     Pattern=pattern)
+                                                     Pattern=entry_pattern)
 
             new_ppt_list.append(
-                PPT(PatternPriority(MHI, i), pattern, terminal)
+                PPT(PatternPriority(MHI, i), entry_pattern, terminal)
             )
 
         return new_ppt_list, extra_analyzer_list, extra_terminal_list
@@ -481,9 +480,9 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_nested_range):
-            opener_pattern_pre = data.opener_pattern.finalize(CaMap)
-            closer_pattern_raw = deepcopy(data.closer_pattern)
-            pattern            = opener_pattern_pre.clone_with_new_incidence_id()
+            opener_pattern_raw = deepcopy(data.opener_pattern)
+            entry_pattern      = data.opener_pattern.finalize(CaMap).clone_with_new_incidence_id()
+            closer_pattern_raw = data.closer_pattern
 
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
                                                             closer_pattern_raw,
@@ -494,7 +493,7 @@ class PPT_List(list):
             required_register_set, \
             run_time_counter_f     = skip_nested_range.do(ModeName      = self.terminal_factory.mode_name, 
                                                           CaMap         = CaMap, 
-                                                          OpenerPattern = pattern,
+                                                          OpenerPattern = opener_pattern_raw,
                                                           CloserPattern = closer_pattern_raw, 
                                                           DoorIdExit    = door_id_exit,
                                                           ReloadState   = ReloadState, 
@@ -508,10 +507,11 @@ class PPT_List(list):
             extra_terminal_list.extend(new_terminal_list)
 
             terminal = self._terminal_goto_to_looper(new_analyzer_list, None, "<skip nested range>", 
-                                                     required_register_set, Pattern=pattern)
+                                                     required_register_set, 
+                                                     Pattern=entry_pattern)
 
             new_ppt_list.append(
-                PPT(PatternPriority(MHI, i), pattern, terminal)
+                PPT(PatternPriority(MHI, i), entry_pattern, terminal)
             )
 
         return new_ppt_list, extra_analyzer_list, extra_terminal_list
