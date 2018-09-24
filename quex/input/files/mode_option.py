@@ -37,8 +37,6 @@ class Loopers:
         self.skip_nested_range   = SkipNestedRange
         self.indentation_handler = IndentationHandler
 
-        self.__finalized_f       = False
-
     def combined_skip(self, CaMap):
         """Character Set Skipper: Multiple skippers from different modes are 
         combined into one pattern.
@@ -52,8 +50,6 @@ class Loopers:
         this point in time. The given source reference is 'auxiliary' to 
         be able to point at least to some position.
         """
-        assert self.__finalized_f
-
         iterable           = iter(self.skip)
         pattern, total_set = iterable.next()
         pattern_str        = pattern.pattern_string()
@@ -63,10 +59,6 @@ class Loopers:
             pattern_str += "|" + ipattern.pattern_string()
 
         return total_set, pattern_str, source_reference
-
-    def finalize(self, CaMap):
-        self.__finalized_f = True
-        return self
 
 #-----------------------------------------------------------------------------------------
 # mode_option_info_db: Information about properties of mode options.

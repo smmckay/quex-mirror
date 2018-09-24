@@ -1,0 +1,10 @@
+token { SOMETHING; FAILURE; }
+
+mode Program : <skip_range: "/*" "*/">
+{
+       [ ]        => QUEX_TKN_DECLIT(Lexeme); 
+       "\n"       => QUEX_TKN_NEWLINE(Lexeme);
+       on_failure => QUEX_TKN_FAILURE_THIS_TOKEN_ID_SHOULD_NEVER_OCCUR(Lexeme);
+}
+
+start = Program;

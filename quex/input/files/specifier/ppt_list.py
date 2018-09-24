@@ -442,7 +442,6 @@ class PPT_List(list):
         for i, data in enumerate(Loopers.skip_range):
             opener_pattern     = data.opener_pattern.finalize(CaMap)
             closer_pattern_raw = deepcopy(data.closer_pattern)
-            closer_pattern     = data.closer_pattern.finalize(CaMap)
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
                                                             closer_pattern_raw,
                                                             dial_db) 
@@ -451,7 +450,7 @@ class PPT_List(list):
             required_register_set, \
             run_time_counter_f     = skip_range.do(ModeName      = self.terminal_factory.mode_name, 
                                                    CaMap         = CaMap, 
-                                                   CloserPattern = closer_pattern, 
+                                                   CloserPattern = closer_pattern_raw, 
                                                    DoorIdExit    = door_id_exit,
                                                    ReloadState   = ReloadState, 
                                                    dial_db       = dial_db)
@@ -484,7 +483,6 @@ class PPT_List(list):
         for i, data in enumerate(Loopers.skip_nested_range):
             opener_pattern_pre = data.opener_pattern.finalize(CaMap)
             closer_pattern_raw = deepcopy(data.closer_pattern)
-            closer_pattern     = data.closer_pattern.finalize(CaMap)
             pattern            = opener_pattern_pre.clone_with_new_incidence_id()
 
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
@@ -497,7 +495,7 @@ class PPT_List(list):
             run_time_counter_f     = skip_nested_range.do(ModeName      = self.terminal_factory.mode_name, 
                                                           CaMap         = CaMap, 
                                                           OpenerPattern = pattern,
-                                                          CloserPattern = closer_pattern, 
+                                                          CloserPattern = closer_pattern_raw, 
                                                           DoorIdExit    = door_id_exit,
                                                           ReloadState   = ReloadState, 
                                                           dial_db       = dial_db)
