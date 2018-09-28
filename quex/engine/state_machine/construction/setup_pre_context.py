@@ -47,14 +47,11 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamP
                 state.set_acceptance_condition_id(E_AcceptanceCondition.BEGIN_OF_STREAM)
         return None
 
+    if BeginOfLinePreContextF:
+        pre_context_sm = sequentialize.do([DFA_Newline(), pre_context_sm])
+
     # (*) Reverse the state machine of the pre-condition 
     reverse_pre_context = reverse.do(pre_context_sm, EnsureDFA_f=False)
-        
-    if BeginOfLinePreContextF:
-        # Extend the existing pre-context with a preceeding 'begin-of-line'.
-        reverse_newline_sm  = reverse.do(DFA_Newline(), EnsureDFA_f=False)
-        reverse_pre_context = sequentialize.do([reverse_pre_context, 
-                                                reverse_newline_sm])
 
     # (*) Once an acceptance state is reached no further analysis is necessary.
     stem_and_branches.prune_branches(reverse_pre_context)
