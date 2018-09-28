@@ -5,8 +5,7 @@ from   quex.engine.misc.tools                      import typed
 from   quex.constants                              import E_AcceptanceCondition
 
 class Pattern:
-    """ALL STATE MACHINES ARE GIVEN IN THE CODEC OF 'Setup.buffer_encoding'!
-
+    """ 
     .sm:
             Main state machine to match in forward direction for 
             incoming lexemes.

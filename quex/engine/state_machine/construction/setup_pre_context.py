@@ -1,7 +1,5 @@
 # (C) Frank-Rene Schaefer
 #     ABSOLUTELY NO WARRANTY
-import quex.engine.state_machine.algorithm.beautifier            as     beautifier
-import quex.engine.state_machine.algebra.reverse                 as     reverse
 import quex.engine.state_machine.construction.sequentialize      as     sequentialize
 from   quex.engine.state_machine.construction.setup_post_context import DFA_Newline
 import quex.engine.misc.error                                    as     error
@@ -53,25 +51,18 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamP
     ## stem_and_branches.prune_branches(reverse_pre_context)
     pre_context_sm.delete_loops_to_init_state()
 
-    # (*) Reverse the state machine of the pre-condition 
-    reverse_pre_context = reverse.do(pre_context_sm, EnsureDFA_f=False)
-
     if     Setup.fallback_mandatory_f \
-       and reverse_pre_context.longest_path_to_first_acceptance() is None:
+       and pre_context_sm.longest_path_to_first_acceptance() is None:
         error.log("Pre-context contains patterns of arbitrary length to first acceptance backwards.")
-
-    # (*) Clean up what has been done by inversion (and optionally 'BeginOfLinePreContextF')
-    #     AFTER 'prune_branches' (!)
-    reverse_pre_context = beautifier.do(reverse_pre_context)
 
     # (*) let the state machine refer to it 
     #     [Is this necessary? Is it not enough that the acceptance origins point to it? <fschaef>]
-    pre_context_sm_id = reverse_pre_context.get_id()
+    pre_context_sm_id = pre_context_sm.get_id()
 
     # (*) Associate acceptance with pre-context id. 
     for state in the_state_machine.get_acceptance_state_list():
         state.set_acceptance_condition_id(pre_context_sm_id)
     
-    return reverse_pre_context
+    return pre_context_sm
 
             

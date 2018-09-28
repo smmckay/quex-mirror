@@ -79,10 +79,10 @@ init-state = 0L
 00000 
      == ['a', 'z'] ==> 00001
     
-00001 A(pre=eos, pre=50), S
+00001 A(pre=eos, pre=46), S
      == '\n' ==> 00002
     
-00002 A(pre=50,R)
+00002 A(pre=46,R)
     
 
 pre-context =  init-state = 0L
@@ -104,7 +104,7 @@ init-state = 0L
 00000 
      == ['a', 'z'] ==> 00001
     
-00001 A(pre=63)
+00001 A(pre=59)
     
 
 pre-context =  init-state = 0L

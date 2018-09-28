@@ -7,6 +7,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 from   quex.input.code.base              import SourceRef_VOID
 import quex.engine.state_machine.construction.setup_post_context as setup_post_context
 import quex.engine.state_machine.construction.setup_pre_context  as setup_pre_context 
+import quex.engine.state_machine.algebra.reverse                 as reverse
 # import quex.engine.state_machine.construction.setup_border_conditions as setup_border_conditions 
 import quex.engine.state_machine.algorithm.beautifier as beautifier
 import quex.engine.state_machine.check.identity      as identity_checker
@@ -38,7 +39,12 @@ def test(Idx, sm_pre, sm, sm_post, BOL_F, EOL_F):
     print " -- end of line    = ", EOL_F
 
     ipsb_sm                = setup_post_context.do(result, sm_post, EOL_F, False, SourceRef_VOID)
-    inverse_pre_context_sm = setup_pre_context.do(result, sm_pre, BOL_F, False)
+    pre_context_sm         = setup_pre_context.do(result, sm_pre, BOL_F, False)
+    if pre_context_sm is None:
+        inverse_pre_context_sm = None
+    else:
+        inverse_pre_context_sm = reverse.do(pre_context_sm)
+        inverse_pre_context_sm.set_id(pre_context_sm.get_id())
     #
     # print "EXPRESSION = ", result
     # print "POST CONDITION = ", post_sm

@@ -6,6 +6,7 @@ from   quex.engine.state_machine.character_counter               import SmLineCo
 import quex.engine.state_machine.construction.setup_post_context as     setup_post_context
 import quex.engine.state_machine.construction.setup_pre_context  as     setup_pre_context
 import quex.engine.state_machine.algorithm.beautifier            as     beautifier
+import quex.engine.state_machine.algebra.reverse                 as     reverse
 import quex.engine.misc.error                                    as     error
 from   quex.engine.misc.tools                                    import typed
 
@@ -311,9 +312,15 @@ class Pattern_Prep(object):
                        Sr            = sr)
 
     def __finalize_mount_pre_context_sm(self, Sm, SmPreContextToBeInverted): 
-        return setup_pre_context.do(Sm, SmPreContextToBeInverted, 
+        pre_context_sm = setup_pre_context.do(Sm, SmPreContextToBeInverted, 
                                     self.__pre_context_begin_of_line_f, 
                                     self.__pre_context_begin_of_stream_f)
+        if pre_context_sm is None: return None
+
+        pre_context_sm_id = pre_context_sm.get_id()
+        reverse_pre_context = reverse.do(pre_context_sm)
+        reverse_pre_context.set_id(pre_context_sm_id)
+        return reverse_pre_context
 
     def __finalize_mount_post_context_sm(self, Sm, SmPostContext):
         # In case of a 'trailing post context' a 'bipd_sm' may be provided

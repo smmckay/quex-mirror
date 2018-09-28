@@ -5,6 +5,9 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 
 import quex.engine.state_machine.construction.setup_pre_context as setup_pre_context 
+import quex.engine.state_machine.algebra.reverse                 as reverse
+from   quex.engine.state_machine.TEST_help.some_dfas   import *
+
 from   quex.engine.state_machine.TEST_help.some_dfas   import *
 
 if "--hwut-info" in sys.argv:
@@ -14,7 +17,9 @@ if "--hwut-info" in sys.argv:
 def test(sm, pre_sm):    
     print "EXPRESSION = ", sm
     print "PRE-CONDITION = ", pre_sm
-    inverse_pre_context_sm = setup_pre_context.do(sm, pre_sm, False, False)
+    pre_context_sm         = setup_pre_context.do(sm, pre_sm, False, False)
+    inverse_pre_context_sm = reverse.do(pre_context_sm)
+    inverse_pre_context_sm.set_id(pre_context_sm.get_id())
     #
     print "with pre-context = ", sm
     print "inverse pre-context = ", inverse_pre_context_sm
