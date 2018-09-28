@@ -57,16 +57,6 @@ Default: empty list
 
     
 
-.. cmdoption:: --no-lib-quex, --nlq 
-
-    If set, no code is produced in the 'lib/quex' subdirectory. The code in this subdirectory is 
-    general over any Quex-generated lexer. When linking multiple lexical analyzers, only one 
-    may include 'lib/quex'. All other lexers need to be generated with this flag being set.  
-
-    
-
-Default: true (not disabled)
-
 .. cmdoption:: --insight 
 
     Prints insights on construction process together with time stamps. This option is usefule 
@@ -158,6 +148,14 @@ Default: false (disabled)
 
 Default: C++
 
+.. cmdoption:: --computed-gotos, --cg 
+
+    Generate code using a GCC's computed goto features.  
+
+    
+
+Default: false (disabled)
+
 .. cmdoption:: --character-display hex|utf8
 
     Specifies how the character of the state transition are to be displayed when `--language dot` 
@@ -176,6 +174,24 @@ Default: utf8
     If this option is set, the output of '--language dot' will be a normalized state machine. That 
     is, the state numbers will start from zero. If this flag is not set, the state indices are 
     the same as in the generated code.  
+
+    
+
+Default: false (disabled)
+
+.. cmdoption:: --cbm, --config-by-macros 
+
+    When this flag is set, the configuration file is setup so that the configuration can be overwritten 
+    by external macro definitions of type `-D...=...`.  
+
+    
+
+Default: false (disabled)
+
+.. cmdoption:: --cbcm, --config-by-cmake 
+
+    When this flag is set, the configuration file is setup so that the configuration *must* be done 
+    relying on the CMake configuration file feature.  
 
     
 
@@ -556,6 +572,90 @@ Default: -1
     default, the buffer element type is determined by the buffer element size.  
 
     
+
+Upon reload forward it may make sense to leave some of the tail of the current content in the buffer--right 
+in front of the newly loaded content. This content is called 'fallback region'. By 
+default its holds:  
+
+If and only if the maximum length of pre-context patterns can be determined, 
+then this distance is *imposed* as the length of the fallback region. Otherwise, no 
+fallback region is imposed.  
+
+A fallback region implies, that a buffer must not only hold the current 
+lexeme, but also the backward region. On the event of reload where this cannot be maintained, 
+an overflow is notified. The behavior can be modified by the following options.  
+
+.. cmdoption:: --fallback-mandatory, --fbm 
+
+    Enforces the fallback region for buffers. Quex signalizes an error, if a pre-context pattern 
+    with arbitrary length occurrs. This option *must* be set in the context of ByteLoader-s 
+    that cannot do backward loading, or with manual buffer filling using 'gavagers' 
+    or 'feeders'. It is advisable to set when backward loading is time-inefficient. 
+     
+
+    
+
+Default: false (disabled)
+
+.. cmdoption:: --fallback-optional, --fbo 
+
+    This option imposes that fallback is not mandatory. It can be used for cases where all pre-contexts 
+    are of deterministic maximum size, but still fallback shall not be imposed. If 
+    there are any pre-contexts, then in that case, the related ByteLoader must be able to perform 
+    backward loading.  
+
+    
+
+Default: false (disabled)
+
+.. cmdoption:: --no-lib-std, --nostdlib, --nsl 
+
+    This option disables the usage of the Standard C/C++ library. It may be used for minimal dependency 
+    lexical analyzers.  
+
+    
+
+Default: true (not disabled)
+
+.. cmdoption:: --no-lib-lexeme, --nll 
+
+    By means of this option, the implementation of 'lib lexeme' is controlled. In the context of 
+    multiple lexical analyzers running on the same lexatom type, it may make sense to produce 
+    only one 'lib lexeme'. The library is created in ``lib/lexeme`` of the current lexer. 
+     
+
+    
+
+Default: true (not disabled)
+
+.. cmdoption:: --no-lib-quex, --nlq 
+
+    'Lib quex' is the part of the lexers which is the same for all Quex generated analyzers. When multiple 
+    lexers are linked into one application, 'lib quex' may only be implemented once. The 
+    library is created in ``lib/quex`` of the current lexer.  
+
+    
+
+Default: true (not disabled)
+
+.. cmdoption:: --extern-memory-management, --emm 
+
+    If set, functions of 'MemoryManager' are not implemented by Quex. Instead, the user must/can 
+    implement them. This makes sense, in environments where memory manager cannot be 
+    accomplished by 'malloc/free' or 'new/delete'.  
+
+    
+
+Default: false (disabled)
+
+.. cmdoption:: --no-lexeme-null, --nln 
+
+    By this option it is controlled, whether a ``LexemeNull`` object is to be implemented for the 
+    current lexer.  
+
+    
+
+Default: true (not disabled)
 
 The implementation of customized converters is supported by the following options.  
 
@@ -1026,6 +1126,15 @@ Default: false (disabled)
 
 For the support of software development of Quex and debugging, the following options are provided. 
  
+
+.. cmdoption:: --unit-test 
+
+    Implements some features for Unit Testing. This includes things such as statistics on memory 
+    management, or the implementation of a 'strange input stream'.  
+
+    
+
+Default: true (not disabled)
 
 .. cmdoption:: --debug-exception 
 

@@ -89,7 +89,7 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
     if post_context_dfa is None:
         # -- Solely 'End-Of-Stream' post contexts (done at end of function)
         #
-        bipd_sm_to_be_inverted = None
+        bipd_sm_to_be_reversed = None
     
     elif ambiguous_post_context.detect_forward(dfa, post_context_dfa):
         # -- Seldom Exception: 
@@ -107,7 +107,7 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
         
         # NOTE: May be, dfa does contain now an epsilon transition. See
         #       comment at entry of this function.
-        bipd_sm_to_be_inverted = ambiguous_post_context.mount(dfa, post_context_dfa)
+        bipd_sm_to_be_reversed = ambiguous_post_context.mount(dfa, post_context_dfa)
 
     else:
         # -- The 'normal' way: storing the input position at the end of the core
@@ -147,7 +147,7 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
             state.set_read_position_store_f(False)
             state.set_read_position_restore_f(True)
 
-        bipd_sm_to_be_inverted = None
+        bipd_sm_to_be_reversed = None
 
     if EndOfStreamPostContextF:
         for si in where_to_setup_eos_state_index_list:
@@ -156,7 +156,7 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
             state.set_acceptance_condition_id(E_AcceptanceCondition.END_OF_STREAM)
 
     # No input position backward search required
-    return beautifier.do(dfa), bipd_sm_to_be_inverted
+    return beautifier.do(dfa), bipd_sm_to_be_reversed
 
 def DFA_Newline():
     """Creates a state machine matching newline according to what has been 

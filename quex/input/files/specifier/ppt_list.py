@@ -35,7 +35,6 @@ from   quex.blackboard import Lng
 
 from   collections  import namedtuple
 from   operator     import attrgetter
-from   copy         import deepcopy
 
 class PatternPriority(object):
     """Description of a pattern's priority.
@@ -339,6 +338,14 @@ class PPT_List(list):
 
         check_indentation_setup(ISetup)
 
+        # Isolate the pattern objects, so alternatively, 
+        # they may be treated in 'indentation_counter'.
+        pattern_newline = ISetup.pattern_newline.clone()
+        if ISetup.pattern_suppressed_newline:
+            pattern_suppressed_newline = ISetup.pattern_suppressed_newline.clone()
+        else:
+            pattern_suppressed_newline = None
+
         new_analyzer_list,     \
         new_terminal_list,     \
         required_register_set, \
@@ -354,7 +361,7 @@ class PPT_List(list):
         self.required_register_set.update(required_register_set)
 
         # 'newline' triggers --> indentation counter
-        pattern  = ISetup.pattern_newline.finalize(CaMap)
+        pattern  = pattern_newline.finalize(CaMap)
         pattern  = pattern.clone_with_new_incidence_id(E_IncidenceIDs.INDENTATION_HANDLER)
         terminal = self._terminal_goto_to_looper(new_analyzer_list, None, "<indentation handler>", 
                                                  required_register_set, Pattern=pattern)
@@ -362,11 +369,11 @@ class PPT_List(list):
             PPT(PatternPriority(MHI, 0), pattern, terminal)
         ]
 
-        if ISetup.pattern_suppressed_newline is not None:
+        if pattern_suppressed_newline is not None:
             # 'newline-suppressor' causes following 'newline' to be ignored.
             # => next line not subject to new indentation counting.
             new_incidence_id = dial.new_incidence_id()
-            pattern = ISetup.pattern_suppressed_newline.finalize(CaMap)
+            pattern = pattern_suppressed_newline.finalize(CaMap)
             pattern = pattern.clone_with_new_incidence_id(new_incidence_id)
             door_id = DoorID.global_reentry(self.terminal_factory.dial_db)
             code    = CodeTerminal([Lng.GOTO(door_id, self.terminal_factory.dial_db)])
@@ -440,8 +447,8 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_range):
-            entry_pattern      = data.opener_pattern.finalize(CaMap)
-            closer_pattern_raw = deepcopy(data.closer_pattern)
+            entry_pattern      = data.opener_pattern.clone().finalize(CaMap)
+            closer_pattern_raw = data.closer_pattern.clone()
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
                                                             closer_pattern_raw,
                                                             dial_db) 
@@ -480,9 +487,9 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_nested_range):
-            opener_pattern_raw = deepcopy(data.opener_pattern)
+            opener_pattern_raw = data.opener_pattern.clone()
             entry_pattern      = data.opener_pattern.finalize(CaMap).clone_with_new_incidence_id()
-            closer_pattern_raw = data.closer_pattern
+            closer_pattern_raw = data.closer_pattern.clone()
 
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
                                                             closer_pattern_raw,

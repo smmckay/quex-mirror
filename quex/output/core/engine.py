@@ -1,7 +1,6 @@
 # (C) Frank-Rene Schaefer
 #______________________________________________________________________________
 from   quex.engine.analyzer.door_id_address_label import get_plain_strings
-from   quex.engine.counter                        import CountActionMap
 from   quex.engine.misc.tools                     import all_isinstance, \
                                                          typed, \
                                                          flatten_list_of_lists
@@ -31,9 +30,10 @@ def do(Mode, ModeNameList):
 def do_with_counter(Mode, ModeNameList):
     txt = []
     if Mode.run_time_counter_db is not None:
-        counter_txt = do_run_time_counter(Mode) 
-        assert isinstance(counter_txt, (str, unicode))
-        if counter_txt:  txt.append(counter_txt)
+        variable_db.init()
+        txt.append(
+            run_time_counter.get(Mode.run_time_counter_db, Mode.name)
+        )
 
     analyzer_txt = do(Mode, ModeNameList)
     assert isinstance(analyzer_txt, list)
@@ -135,17 +135,6 @@ def wrap_up(ModeName, FunctionBody, VariableDefs, ModeNameList, dial_db):
     assert all_isinstance(txt_analyzer, (str, unicode))
 
     return [ txt_header ] + txt_analyzer
-
-def do_run_time_counter(Mode):
-    assert Mode.run_time_counter_db is not None
-    assert isinstance(Mode.run_time_counter_db, CountActionMap)
-
-    variable_db.init()
-
-    # May be, the default counter is the same as for another mode. In that
-    # case call the default counter of the other mode with the same one and
-    # only macro.
-    return run_time_counter.get(Mode.run_time_counter_db, Mode.name)
 
 def comment_match_behavior(ModeIterable):
     """Generate comment that documents the matching behavior of the

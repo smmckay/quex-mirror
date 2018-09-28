@@ -62,11 +62,12 @@ def get(CaMap, ModeName):
     dummy_door_id_loop,      \
     required_register_set,   \
     dummy_run_time_counter_f = loop.do(CaMap, 
-                                       OnLoopExitDoorId = door_id_return,
-                                       LexemeEndCheckF  = True,
-                                       EngineType       = engine.CHARACTER_COUNTER, 
-                                       dial_db          = dial_db,
-                                       ModeName         = ModeName)
+                                       OnLoopExitDoorId   = door_id_return,
+                                       LexemeEndCheckF    = True,
+                                       EngineType         = engine.CHARACTER_COUNTER, 
+                                       dial_db            = dial_db,
+                                       ModeName           = ModeName, 
+                                       CutSignalLexatomsF = False)
 
     code = generator.do_analyzer_list(analyzer_list)
 

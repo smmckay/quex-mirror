@@ -93,25 +93,23 @@ PROCEDURE:
 
     -- Setup 'store input reference' upon entry in all parallel state machines.
 """
-from   quex.input.code.core                               import CodeTerminal
 import quex.engine.loop.parallel_state_machines           as     parallel_state_machines
+import quex.engine.loop.analyzer_construction             as     analyzer_construction
+import quex.engine.loop.terminal_construction             as     terminal_construction
 from   quex.engine.loop.loop_map                          import MiniTerminal, \
                                                                  LoopMapEntry, \
                                                                  LoopMap, \
                                                                  LoopConfig, LoopEvents
-import quex.engine.analyzer.core                          as     analyzer_generator
-from   quex.engine.analyzer.terminal.core                 import Terminal
 from   quex.engine.analyzer.door_id_address_label         import DialDB
 import quex.engine.analyzer.door_id_address_label         as     dial
 import quex.engine.analyzer.engine_supply_factory         as     engine
 from   quex.engine.state_machine.core                     import DFA  
-import quex.engine.state_machine.index                    as     index
 from   quex.engine.counter                                import CountActionMap
 from   quex.engine.misc.interval_handling                 import NumberSet
 from   quex.engine.misc.tools                             import typed
 import quex.engine.misc.error                             as     error
 
-from   quex.blackboard import setup as Setup, Lng
+from   quex.blackboard import setup as Setup
 from   quex.constants  import E_IncidenceIDs
 
 @typed(CaMap=CountActionMap, dial_db=DialDB, 
@@ -120,7 +118,7 @@ from   quex.constants  import E_IncidenceIDs
 def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None, 
        OnLoopExitDoorId=None, BeforeEntryOpList=None, LexemeEndCheckF=False, EngineType=None, 
        ReloadStateExtern=None, dial_db=None,
-       OnReloadFailureDoorId=None, ModeName=None):
+       OnReloadFailureDoorId=None, ModeName=None, CutSignalLexatomsF=True):
     """Generates a structure that 'loops' quickly over incoming characters.
 
                                                              Loop continues           
@@ -199,16 +197,17 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
     appendix_sm_list = [ _encoding_transform(sm) for sm in appendix_sm_list ]
 
     analyzer_list,   \
-    door_id_loop     = _get_analyzer_list(loop_sm, appendix_sm_list, loop_config) 
+    door_id_loop     = analyzer_construction.do(loop_sm, appendix_sm_list, loop_config, 
+                                                CutSignalLexatomsF) 
 
     if not loop_config.appendix_dfa_present_f():
         loop_config.iid_loop_after_appendix_drop_out = None
 
     terminal_list, \
-    run_time_counter_required_f = _get_terminal_list(loop_map, loop_config, 
-                                                     appendix_lcci_db, 
-                                                     parallel_terminal_list,
-                                                     door_id_loop)
+    run_time_counter_required_f = terminal_construction.do(loop_map, loop_config, 
+                                                           appendix_lcci_db, 
+                                                           parallel_terminal_list,
+                                                           door_id_loop)
 
     # Clean the loop map from the 'exit transition'.
     clean_loop_map = [lei for lei in loop_map if lei.iid_couple_terminal != loop_config.iid_loop_exit]
@@ -240,47 +239,6 @@ def _sm_terminal_pair_list_assert(SmTerminalList):
     for sm, terminal in SmTerminalList:
         assert isinstance(terminal, MiniTerminal)
         assert sm.get_id() == terminal.incidence_id
-
-@typed(loop_sm=DFA, AppendixSmList=[DFA])
-def _get_analyzer_list(loop_sm, AppendixSmList, loop_config):
-    """An appendix state machine is a parallel state machine that is pruned by
-    its first transition. The first transition is absorbed into the 'loop_map'.
-    
-    RETURNS: list of FSM-s.
-    """
-    # AppendixSm Ids MUST be unique!
-    assert len(set([sm.get_id() for sm in AppendixSmList])) == len(AppendixSmList)
-
-    # Core Loop FSM 
-    loop_analyzer,         \
-    door_id_loop           = _get_analyzer_for_loop(loop_sm, loop_config)
-
-    # Appendix Analyzers 
-    appendix_analyzer_list = _get_analyzer_list_for_appendices(AppendixSmList, 
-                                                               loop_config) 
-    
-    analyzer_list          = [ loop_analyzer ] + appendix_analyzer_list
-
-    # FSM Ids MUST be unique (LEAVE THIS ASSERT IN PLACE!)
-    assert len(set(a.state_machine_id for a in analyzer_list)) == len(analyzer_list)
-
-    return analyzer_list, door_id_loop
-
-def _get_terminal_list(loop_map, loop_config, 
-                       appendix_lcci_db, ParallelMiniTerminalList, 
-                       DoorIdLoop):
-    """RETURNS: list of all Terminal-s.
-    """
-    loop_terminal_list           = _get_terminal_list_for_loop(loop_map, loop_config,
-                                                               DoorIdLoop) 
-
-    run_time_counter_required_f, \
-    parallel_terminal_list       = _get_terminal_list_for_appendices(loop_config, 
-                                                                     appendix_lcci_db,
-                                                                     ParallelMiniTerminalList)
-
-    return loop_terminal_list + parallel_terminal_list, \
-           run_time_counter_required_f
 
 @typed(CaMap=CountActionMap, L_subset=(None, NumberSet))
 def _get_loop_map(loop_config, CaMap, SmList, IidLoopExit, L_subset):
@@ -370,168 +328,13 @@ def _get_LoopMapEntry_list_plain(loop_config, CaMap, L_pure):
         for character_set, ca in CaMap.iterable_in_sub_set(L_pure)
     ]
 
-@typed(loop_sm=DFA)
-def _get_analyzer_for_loop(loop_sm, loop_config):
-    """Construct a state machine that triggers only on one character. Actions
-    according the the triggered character are implemented using terminals which
-    are entered upon acceptance.
-
-            .------.
-       ---->| Loop |
-            |      |----> accept A                 (normal loop terminals)
-            |      |----> accept B
-            |      |----> accept C
-            :      :         :
-            |      |----> accept CoupleIncidenceA  (couple terminals towards
-            |      |----> accept CoupleIncidenceB   appendix state machines)
-            |      |----> accept CoupleIncidenceC    
-            :______:         :
-            | else |----> accept iid_loop_exit
-            '------'
-
-    RETURNS: [0] Loop analyzer (prepared state machine)
-             [1] DoorID of loop entry
-    """
-
-    # Loop FSM
-    analyzer = analyzer_generator.do(loop_sm, 
-                                     loop_config.engine_type, 
-                                     loop_config.reload_state_extern, 
-                                     OnBeforeReload = loop_config.events.on_before_reload, 
-                                     OnAfterReload  = loop_config.events.on_after_reload,
-                                     OnBeforeEntry  = loop_config.events.on_loop_entry, 
-                                     dial_db        = loop_config.dial_db,
-                                     OnReloadFailureDoorId = loop_config.door_id_on_reload_failure)
-
-    # If reload state is generated 
-    # => All other analyzers MUST use the same generated reload state.
-    if loop_config.reload_state_extern is None:
-        loop_config.reload_state_extern = analyzer.reload_state
-
-    # Set the 'Re-Entry' Operations.
-    entry       = analyzer.init_state().entry
-    tid_reentry = entry.enter_OpList(analyzer.init_state_index, index.get(), 
-                                     loop_config.events.on_loop_reentry)
-    entry.categorize(analyzer.init_state_index)
-
-    return analyzer, entry.get(tid_reentry).door_id
-
-@typed(loop_map=LoopMap)
-def _get_terminal_list_for_loop(loop_map, loop_config, DoorIdLoop):
-    """RETURNS: List of terminals of the loop state:
-
-        (i)   Counting terminals: Count and return to loop entry.
-        (ii)  Couple terminals:   Count and goto appendix state machine.
-        (iii) Exit terminal:      Exit loop.
-
-    The '<LOOP>' terminal serves as an address for the appendix state machines.
-    If they fail, they can accept its incidence id and re-enter the loop from
-    there.
-    """
-    # Terminal: Normal Loop Characters
-    # (LOOP EXIT terminal is generated later, see below).
-    result = []
-    done   = set()
-    for lme in loop_map:
-        if   lme.iid_couple_terminal in done:                      continue
-        elif lme.iid_couple_terminal == loop_config.iid_loop_exit: continue
-        elif lme.code is None:                                     continue
-        done.add(lme.iid_couple_terminal)
-
-        code = [ 
-            loop_config.replace_Lazy_DoorIdLoop(cmd, DoorIdLoop) 
-            for cmd in lme.code 
-        ]
-        result.append(
-            Terminal(CodeTerminal(Lng.COMMAND_LIST(code, loop_config.dial_db)), 
-                     "<LOOP TERMINAL %s>" % lme.iid_couple_terminal, 
-                     IncidenceId = lme.iid_couple_terminal,
-                     dial_db     = loop_config.dial_db)
-        )
-
-    # Terminal: Re-enter Loop
-    if loop_config.iid_loop_after_appendix_drop_out is not None:
-        txt = Lng.COMMAND_LIST(
-            loop_config.events.on_loop_after_appendix_drop_out(DoorIdLoop,
-                                                               loop_config.column_number_per_code_unit),
-            loop_config.dial_db
-        )
-        result.append(
-            Terminal(CodeTerminal(txt),
-                     "<LOOP>", loop_config.iid_loop_after_appendix_drop_out,
-                     dial_db=loop_config.dial_db)
-        )
-
-    # Terminal: Exit Loop
-    result.append(
-        Terminal(CodeTerminal(loop_config.events.on_loop_exit_text(loop_config.dial_db)), 
-                 "<LOOP EXIT>", loop_config.iid_loop_exit,
-                 dial_db=loop_config.dial_db)
-    )
-
-    return result
-
-@typed(ParallelMiniTerminalList=[MiniTerminal])
-def _get_terminal_list_for_appendices(loop_config, appendix_lcci_db, 
-                                      ParallelMiniTerminalList):
-    """RETURNS: [0] True, default counter is required.
-                    False, else.
-                [1] list of terminals of the appendix state machines.
-    """
-    run_time_counter_required_f = False
-    terminal_list               = []
-    for mini_terminal in ParallelMiniTerminalList:
-        rtcr_f, cmd_list = loop_config.get_count_code(
-            appendix_lcci_db.get(mini_terminal.incidence_id)
-        )
-        count_code = Lng.COMMAND_LIST(cmd_list, loop_config.dial_db)
-        run_time_counter_required_f |= rtcr_f
-
-        terminal_list.append(
-            mini_terminal.get_Terminal(count_code, 
-                                       loop_config.dial_db, 
-                                       loop_config.loop_state_machine_id)
-        )
-
-    return run_time_counter_required_f, terminal_list
-
-def _get_analyzer_list_for_appendices(AppendixSmList, loop_config): 
-    """Parallel state machines are mounted to the loop by cutting the first
-    transition and implementing it in the loop. Upon acceptance of the first
-    character the according tail (appendix) of the state machine is entered.
-
-    RETURNS: [0] List of appendix state machines in terms of analyzers.
-             [1] Appendix terminals.
-    """
-    # Appendix Sm Drop Out => Restore position of last loop character.
-    # (i)  Couple terminal stored input position in 'LoopRestartP'.
-    # (ii) Terminal 'LoopAfterAppendixDropOut' restores that position.
-    # Accepting on the initial state of an appendix state machine ensures
-    # that any drop-out ends in this restore terminal.
-    for init_state in (sm.get_init_state() for sm in AppendixSmList):
-        if init_state.has_specific_acceptance_id(): continue
-        init_state.set_acceptance()
-        init_state.set_specific_acceptance_id(loop_config.iid_loop_after_appendix_drop_out)
-
-    # Appendix FSM List
-    return [
-        analyzer_generator.do(sm, 
-                              loop_config.engine_type, 
-                              loop_config.reload_state_extern, 
-                              OnBeforeReload = loop_config.events.on_before_reload_in_appendix, 
-                              OnAfterReload  = loop_config.events.on_after_reload_in_appendix, 
-                              dial_db        = loop_config.dial_db)
-        for sm in AppendixSmList
-    ]
-
 def _encoding_transform(sm):
     """Transform the given state machines into the buffer's encoding.
     The original 'DFA-Id' remains intact! That is, both state machines
     have the same id (supposed the old one vanishes).
     """
     verdict_f, \
-    sm_transformed = Setup.buffer_encoding.do_state_machine(sm, 
-                                                            BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
+    sm_transformed = Setup.buffer_encoding.do_state_machine(sm) 
 
     if not verdict_f:
         error.log("Deep error: loop (skip range, skip nested range, indentation, ...)\n"

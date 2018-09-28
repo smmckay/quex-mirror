@@ -62,7 +62,6 @@ import quex.blackboard as blackboard
 from   quex.constants  import E_Compression, \
                               E_IncidenceIDs
 from   quex.blackboard import setup as Setup, \
-                              signal_character_list, \
                               Lng
 
 from   copy import deepcopy

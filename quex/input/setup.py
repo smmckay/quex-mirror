@@ -272,7 +272,7 @@ SETUP_INFO = {
     "output_directory":               [["--output-directory", "--odir"],     ""],
     "show_name_spaces_f":             [["--show-name-spaces", "--sns"],      SetupParTypes.FLAG],
     "user_application_version_id":    [["--version-id"],                     "0.0.0-pre-release"],
-    "standard_library_usage_f":       [["--no-std-lib", "--nostdlib", "--nsl"], SetupParTypes.NEGATED_FLAG],
+    "standard_library_usage_f":       [["--no-lib-std", "--nostdlib", "--nsl"], SetupParTypes.NEGATED_FLAG],
     "implement_lib_quex_f":           [["--no-lib-quex", "--nlq"],           SetupParTypes.NEGATED_FLAG],
     "implement_lib_lexeme_f":         [["--no-lib-lexeme", "--nll"],         SetupParTypes.NEGATED_FLAG],
     "unit_test_f":                    [["--unit-test"],                      SetupParTypes.NEGATED_FLAG],

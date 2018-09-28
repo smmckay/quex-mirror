@@ -35,7 +35,7 @@ class EncodingTrafo:
         return any(not error_range.is_empty() 
                    for error_range in self._error_range_by_code_unit_db.itervalues())
 
-    def do_state_machine(self, sm, BadLexatomDetectionF):
+    def do_state_machine(self, sm):
         """Transforms a given state machine from 'Unicode Driven' to another
         character encoding type.
         
@@ -53,7 +53,7 @@ class EncodingTrafo:
         assert sm.is_DFA_compliant()
 
         all_complete_f = True
-        if BadLexatomDetectionF: 
+        if Setup.bad_lexatom_detection_f: 
             bad_lexatom_si = state_machine_index.get()
             # Generate the 'bad lexatom accepter'.
             bad_lexatom_state = DFA_State(AcceptanceF=True)

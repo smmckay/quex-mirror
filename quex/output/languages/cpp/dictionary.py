@@ -1038,7 +1038,7 @@ class Language(dict):
 
     def TRANSITION_MAP_TARGET(self, Interval, Target):
         assert isinstance(Target, str)
-        if not Setup.comment_transitions_f:
+        if not Setup.comment_transitions_f or Interval is None:
             return Target
         else:
             return "%s %s" % (Target, self.COMMENT(Interval.get_utf8_string()))

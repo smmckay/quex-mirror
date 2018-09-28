@@ -1,6 +1,6 @@
 # TEST: Generate all FSM-s based on a given LoopMap
 #
-# This test calls '_get_analyzer_list()' to generate a list of analyzers
+# This test calls 'analyzer_construction' to generate a list of analyzers
 # related to a loop map. 
 #
 # IMPORTANT:
@@ -45,6 +45,7 @@ import quex.engine.analyzer.door_id_address_label as     dial
 from   quex.engine.analyzer.door_id_address_label import DialDB
 import quex.engine.state_machine.transformation.core as  bc_factory
 import quex.engine.loop.core                      as     loop
+import quex.engine.loop.analyzer_construction     as     analyzer_construction
 import quex.engine.analyzer.engine_supply_factory as     engine
 from   quex.blackboard                            import setup as Setup
 from   quex.constants                             import E_CharacterCountType
@@ -96,8 +97,7 @@ def test(LoopMap, ColumnNPerCodeUnit):
     appendix_sm_list = [ loop._encoding_transform(sm) for sm in appendix_sm_list ]
 
     analyzer_list, \
-    door_id_loop   = loop._get_analyzer_list(loop_sm, appendix_sm_list, 
-                                             config) 
+    door_id_loop   = analyzer_construction.do(loop_sm, appendix_sm_list, config, True) 
 
     print_this(analyzer_list)
 

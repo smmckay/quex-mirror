@@ -67,13 +67,6 @@ Option("analyzer_class", "[name ::]* name",
     """generates a lexical analyzer class \\v{Lexer} in default name space \\v{quex}.
     """
     ),
-Option("implement_lib_quex_f", None,
-    """
-    If set, no code is produced in the 'lib/quex' subdirectory. The code in
-    this subdirectory is general over any Quex-generated lexer. When linking
-    multiple lexical analyzers, only one may include 'lib/quex'. All other
-    lexers need to be generated with this flag being set.
-    """),
 Option("insight_f", None,
     """
     Prints insights on construction process together with time stamps. This
@@ -122,7 +115,8 @@ Option("language", "name",
      List("\\v{C} for plain C code.",
           "\\v{C++} for C++ code.",
           "\\v{dot} for plotting information in graphviz format.")),
-
+Option("computed_gotos_f", None,
+       "Generate code using a GCC's computed goto features."),
 Option("character_display", "hex|utf8",
      """Specifies how the character of the state transition are to be displayed
      when `--language dot` is used.
@@ -135,6 +129,16 @@ Option("normalize_f", None,
     If this option is set, the output of '--language dot' will be a normalized
     state machine. That is, the state numbers will start from zero. If this flag 
     is not set, the state indices are the same as in the generated code.
+    """),
+Option("configuration_by_macros_f", None,
+    """
+    When this flag is set, the configuration file is setup so that the configuration
+    can be overwritten by external macro definitions of type `-D...=...`.
+    """),
+Option("configuration_by_cmake_f", None,
+    """
+    When this flag is set, the configuration file is setup so that the configuration
+    *must* be done relying on the CMake configuration file feature. 
     """),
 Option("user_application_version_id", "string",
     """
@@ -437,6 +441,66 @@ Option("__buffer_lexatom_type", "type name",
      By default, the buffer element type is determined by the buffer element 
      size.
      """),
+"""Upon reload forward it may make sense to leave some of the tail of the
+current content in the buffer--right in front of the newly loaded content. 
+This content is called 'fallback region'. By default its holds:
+    
+    If and only if the maximum length of pre-context patterns can be
+    determined, then this distance is *imposed* as the length of the fallback
+    region. Otherwise, no fallback region is imposed.
+    
+A fallback region implies, that a buffer must not only hold the current lexeme,
+but also the backward region. On the event of reload where this cannot be 
+maintained, an overflow is notified.  The behavior can be modified by the following 
+options.
+""",
+Option("fallback_mandatory_f", None,
+       """
+       Enforces the fallback region for buffers.  Quex signalizes an error, 
+       if a pre-context pattern with arbitrary length occurrs. This option
+       *must* be set in the context of ByteLoader-s that cannot do backward 
+       loading, or with manual buffer filling using 'gavagers' or 'feeders'.  
+       It is advisable to set when backward loading is time-inefficient.
+       """),
+Option("fallback_optional_f", None,
+       """
+       This option imposes that fallback is not mandatory. It can be used for
+       cases where all pre-contexts are of deterministic maximum size, but still
+       fallback shall not be imposed. If there are any pre-contexts, then in that 
+       case, the related ByteLoader must be able to perform backward loading.
+       """),
+Option("standard_library_usage_f", None,
+       """
+       This option disables the usage of the Standard C/C++ library. It may be
+       used for minimal dependency lexical analyzers.
+       """),
+Option("implement_lib_lexeme_f", None,
+       """
+       By means of this option, the implementation of 'lib lexeme' is controlled.
+       In the context of multiple lexical analyzers running on the same lexatom type,
+       it may make sense to produce only one 'lib lexeme'. The library is created in 
+       ``lib/lexeme`` of the current lexer.
+
+       """),
+Option("implement_lib_quex_f", None,
+       """
+       'Lib quex' is the part of the lexers which is the same for all Quex generated
+       analyzers. When multiple lexers are linked into one application, 'lib quex'
+       may only be implemented once. The library is created in ``lib/quex`` of the 
+       current lexer.
+       """),
+Option("memory_management_extern_f", None,
+       """
+       If set, functions of 'MemoryManager' are not implemented by Quex.
+       Instead, the user must/can implement them. This makes sense, in 
+       environments where memory manager cannot be accomplished by 'malloc/free'
+       or 'new/delete'.
+       """),
+Option("implement_lexeme_null_f", None,
+       """
+       By this option it is controlled, whether a ``LexemeNull`` object is to 
+       be implemented for the current lexer.
+       """),
 """
 The implementation of customized converters is supported by the following options.
 """,
@@ -789,9 +853,16 @@ Option("query_unicode_names_f", None,
        (lengthy) Unicode name.
        """),
 """
+""",
+"""
 For the support of software development of Quex and debugging, the following options
 are provided. 
 """,
+Option("unit_test_f", None,
+    """
+    Implements some features for Unit Testing. This includes things such as statistics
+    on memory management, or the implementation of a 'strange input stream'.
+    """),
 Option("_debug_exception_f", None,
        """
        If set, exceptions are no longer caught and treated internally. This options
@@ -827,55 +898,55 @@ to work on the internal Quex core.
 """
 ]
 
-command_line_option_doc = [
-SectionHeader("Control Macros"),
-"""
-This section lists the command line options to control code generation. The 
-following macros may be defined in order to controll the assertion behavior. 
-By default, all asserts are armed. That is, the tiniest deviation from desired
-behavior is detected and causes a program abortion. Lexers with armed asserts
-write a note to the standard output, so that the user is aware of it.
-
-For performance reasons and for reasons of predictability, assers may be
-deactivated, or at least the message that tells about them. This happens 
-by means of the following two macros.
-""",
-CMacro("QUEX_OPTION_ASSERTS_DISABLED_EXT", 
-       """
-       Disables Quex-related assertions and operations to support the detection
-       of usage against design.
-       """),
-CMacro("QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT", 
-       """
-       Disables the lexer's initial note that tells about the armed assertions.
-       """),
-"""Detailed analysis of the lexer's state and mode transitions can be enabled
-by means of the following options. With traces written to the standard output
-it can be analyzed how input causes state and mode transitions, as well how
-new data is loaded into the buffer.
-""",
-CMacro("QUEX_OPTION_DEBUG_SHOW_EXT", 
-       "Enables all tracing of states, modes, and reload behavior."),
-CMacro("QUEX_OPTION_DEBUG_SHOW_MODES_EXT", 
-       """Enables tracing of mode transitions."""),
-"""Some compilers do not support the type ``wchar_t``. With the following
-option such compilers can be dealt with.
-"""
-CMacro("QUEX_OPTION_WCHAR_T_DISABLED_EXT", 
-       """Disables any functionality related to ``wchar_t``"""),
-CMacro("QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE_EXT", "", ""),
-       ""),
-]
+### command_line_option_doc = [
+### SectionHeader("Control Macros"),
+### """
+### This section lists the command line options to control code generation. The 
+### following macros may be defined in order to controll the assertion behavior. 
+### By default, all asserts are armed. That is, the tiniest deviation from desired
+### behavior is detected and causes a program abortion. Lexers with armed asserts
+### write a note to the standard output, so that the user is aware of it.
+### 
+### For performance reasons and for reasons of predictability, assers may be
+### deactivated, or at least the message that tells about them. This happens 
+### by means of the following two macros.
+### """,
+### CMacro("QUEX_OPTION_ASSERTS_DISABLED_EXT", 
+###        """
+###        Disables Quex-related assertions and operations to support the detection
+###        of usage against design.
+###        """),
+### CMacro("QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT", 
+###        """
+###        Disables the lexer's initial note that tells about the armed assertions.
+###        """),
+### """Detailed analysis of the lexer's state and mode transitions can be enabled
+### by means of the following options. With traces written to the standard output
+### it can be analyzed how input causes state and mode transitions, as well how
+### new data is loaded into the buffer.
+### """,
+### CMacro("QUEX_OPTION_DEBUG_SHOW_EXT", 
+###        "Enables all tracing of states, modes, and reload behavior."),
+### CMacro("QUEX_OPTION_DEBUG_SHOW_MODES_EXT", 
+###        """Enables tracing of mode transitions."""),
+### """Some compilers do not support the type ``wchar_t``. With the following
+### option such compilers can be dealt with.
+### """
+### CMacro("QUEX_OPTION_WCHAR_T_DISABLED_EXT", 
+###        """Disables any functionality related to ``wchar_t``"""),
+### CMacro("QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE_EXT", "", ""),
+###        ""),
+### ]
 
 
 def doc(Formatter, TemplateFile, OutFile):
     global command_line_option_doc
     global compile_option_doc
     command_line_doc_txt   = Formatter.do(command_line_option_doc)
-    compile_option_doc_txt = Formatter.do(compile_option_doc)
+    ## compile_option_doc_txt = Formatter.do(compile_option_doc)
     page = open(TemplateFile, "rb").read()
     page = page.replace("$$OPTIONS$$",         command_line_doc_txt)
-    page = page.replace("$$COMPILE_OPTIONS$$", compile_option_doc_txt)
+    ## page = page.replace("$$COMPILE_OPTIONS$$", compile_option_doc_txt)
     page = page.replace("$$VERSION$$",         "%s" % QUEX_VERSION)
     open(OutFile, "wb").write(page)
     print "Written: '%s'" % OutFile

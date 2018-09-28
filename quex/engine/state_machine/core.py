@@ -758,6 +758,21 @@ class DFA(object):
 
         return
 
+    def delete_named_number_list(self, NamedNumberList):
+        """Input: list of (number, name)
+
+        Deletes and given 'number' from the transitions of the state machine. 
+        
+        RETURNS: 'name' of the number that made the state machine empty.
+                 None,  if everything is Ok, things have been removed, 
+                        sm not empty.
+        """
+        for number, name in NamedNumberList:
+            self.delete_transitions_on_number(number)
+            self.clean_up()
+            if self.is_Empty(): return name
+        return None
+
     def delete_transitions_beyond_interval(self, MaskInterval):
         """Removes any transitions beyond the specified 'MaskInterval' from the DFA.
         """

@@ -12,7 +12,6 @@ from   quex.engine.misc.file_in              import skip_whitespace, \
 
 import quex.blackboard as     blackboard
 
-from   collections import namedtuple
 import types
 from   copy import copy
 
@@ -23,6 +22,10 @@ class SkipRangeData:
     def __init__(self, OpenerPattern, CloserPattern, CoreDict=None):
         self.opener_pattern = OpenerPattern
         self.closer_pattern = CloserPattern
+
+    def clone(self):
+        return SkipRangeData(self.opener_pattern.clone(),
+                             self.closer_pattern.clone())
 
 class Loopers:
     """Loopers -- loops that are integrated into the pattern state machine.
@@ -60,6 +63,25 @@ class Loopers:
 
         return total_set, pattern_str, source_reference
 
+class OptionSetting:
+    __slots__ = ("value", "sr", "mode_name")
+    def __init__(self, Value, Sr, ModeName):
+        self.value     = Value
+        self.sr        = Sr
+        self.mode_name = ModeName
+
+    def clone(self):
+        def cloney(X):
+            if hasattr(X, "clone"): 
+                return X.clone()
+            else:
+                assert type(X) in (str, unicode, int, long, float)
+                return X
+        if   type(self.value) == list:   new_value = [cloney(x) for x in self.value]
+        elif type(self.value) == tuple:  new_value = tuple(cloney(x) for x in self.value)
+        else:                            new_value = cloney(self.value)
+        return OptionSetting(new_value, self.sr, self.mode_name)
+
 #-----------------------------------------------------------------------------------------
 # mode_option_info_db: Information about properties of mode options.
 #-----------------------------------------------------------------------------------------
@@ -95,8 +117,6 @@ class ModeOptionInfo:
             content = self.__default_value
 
         return OptionSetting(content, SourceRef(), ModeName)
-
-OptionSetting = namedtuple("OptionSetting", ("value", "sr", "mode_name"))
 
 mode_option_info_db = {
    # -- a mode can be inheritable or not or only inheritable. if a mode
@@ -158,13 +178,14 @@ class OptionDB(dict):
 
         result = cls()
         for name, setting_list in setting_list_iterable(BaseModeSequence):
+            if name != mode_name: setting_list = [x.clone() for x in setting_list]
             result.__enter_setting_list(name, setting_list) 
 
         # Options which have not been set (or inherited) are set to the default value.
         for name, info in mode_option_info_db.iteritems():
-            if name in result: continue
-            if info.default_setting(mode_name) is None: continue
-            result.__enter_setting(name, info.default_setting(mode_name))
+            if   name in result: continue
+            elif info.default_setting(mode_name) is None: continue
+            result.__enter_setting(name, info.default_setting(mode_name).clone())
 
         return result
 

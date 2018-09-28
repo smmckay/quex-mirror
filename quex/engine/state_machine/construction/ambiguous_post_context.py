@@ -182,7 +182,7 @@ def mount(the_state_machine, PostConditionSM):
     # (*) The Backward Input Position detector CANNOT be inverted here.
     #     The inversion may depend on the input codec(!). So, it is 
     #     done just before code generation.
-    backward_detector_sm_to_be_inverted = PostConditionSM.clone()
+    bipd_sm_to_be_reversed = PostConditionSM.clone()
     ## DOES NOT WORK: stem_and_branches.prune_branches(backward_detector_sm)
 
     # NOTE: We do not need to mark any origins in the backward detector,
@@ -198,7 +198,7 @@ def mount(the_state_machine, PostConditionSM):
     # would create a new state machine. This function, though, is considered to 
     # 'mount' something on an existing state machine, i.e. change the object
     # that is referenced by the first function argument 'the_state_machine'.
-    return backward_detector_sm_to_be_inverted
+    return bipd_sm_to_be_reversed
 
 def philosophical_cut(core_sm, post_context_sm):
     """The 'philosophical cut' is a technique introduced by Frank-Rene Schaefer

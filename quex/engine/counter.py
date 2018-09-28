@@ -153,6 +153,9 @@ class CountActionMap(list):
             result.append(entry)
         return result
 
+    def clone(self):
+        return CountActionMap.from_list([(x[0].clone(), x[1]) for x in self])
+
     def pruned_clone(self, SubSet):
         return CountActionMap.from_list(self.iterable_in_sub_set(SubSet))
 
@@ -319,6 +322,18 @@ class IndentationCount_Pre:
         self.pattern_newline            = PatternNewline
         self.pattern_suppressed_newline = PatternSuppressedNewline
         self.pattern_comment_list       = PatternListComment
+
+    def clone(self):
+        def cloney(X):
+            if X is None: return None
+            else:         return X.clone()
+        return IndentationCount_Pre(self.sr,
+                WhiteSpaceCharacterSet   = cloney(self.whitespace_character_set), 
+                BadSpaceCharacterSet     = cloney(self.bad_space_character_set),
+                PatternNewline           = cloney(self.pattern_newline), 
+                PatternSuppressedNewline = cloney(self.pattern_suppressed_newline), 
+                PatternListComment       = [cloney(x) for x in self.pattern_comment_list])
+
 
     def get_sm_newline(self):
         return self.__get_sm(self.pattern_newline)

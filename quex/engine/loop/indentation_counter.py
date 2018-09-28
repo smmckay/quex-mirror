@@ -72,6 +72,9 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
     def _get_finalized_sm(P, CaMap):
         if P is None: return
         else:         return P.finalize(CaMap).sm
+    def _get_sm(P):
+        if P is None: return
+        else:         return P.sm
     whitespace_set        = IndentationSetup.whitespace_character_set
     bad_space_set         = IndentationSetup.bad_space_character_set
     if True:
@@ -80,9 +83,6 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
         sm_comment_list       = [ _get_finalized_sm(p, CaMap) for p in IndentationSetup.pattern_comment_list ]
         sm_comment_list       = [ sm for sm in sm_comment_list if sm is not None ]
     else:
-        def _get_sm(P):
-            if P is None: return
-            else:         return P.sm
         # BETTER, but then it seems to count badly => demo/C/03-Indentation.
         sm_newline            = _get_sm(IndentationSetup.pattern_newline)
         sm_suppressed_newline = _get_sm(IndentationSetup.pattern_suppressed_newline)

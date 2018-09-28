@@ -16,14 +16,14 @@ def do(A, B):
         # One depends on begin-of-line, the other doesn't => no commonality
         pre_result = E_Commonality.NONE
 
-    elif (A.pre_context_sm_to_be_inverted is not None) != (B.pre_context_sm_to_be_inverted is not None):
+    elif (A.pre_context_sm_to_be_reversed is not None) != (B.pre_context_sm_to_be_reversed is not None):
         # One depends on pre-conditions, the other doesn't => no commonality
         pre_result = E_Commonality.NONE
 
-    elif A.pre_context_sm_to_be_inverted is not None:
-        assert B.pre_context_sm_to_be_inverted is not None
+    elif A.pre_context_sm_to_be_reversed is not None:
+        assert B.pre_context_sm_to_be_reversed is not None
         # Both depend on pre-conditions: Are there commonalities in the pre-conditions?
-        pre_result = __core(A.pre_context_sm_to_be_inverted, B.pre_context_sm_to_be_inverted)
+        pre_result = __core(A.pre_context_sm_to_be_reversed, B.pre_context_sm_to_be_reversed)
     else:
         pre_result = E_Commonality.BOTH
 

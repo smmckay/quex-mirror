@@ -187,14 +187,16 @@ all_section_title_list = ["start", "define", "token", "mode", "repeated_token", 
 shorthand_db = {}
 
 #-----------------------------------------------------------------------------------------
-# signal_character_list: List of characters which carry a specific meaning and shall
-#                        not appear in the input stream.
+# signal_lexatoms: List of lexatoms that mark positions in the input stream wich are
+#                  relevant only to the lexical analyzer.
 #-----------------------------------------------------------------------------------------
-def signal_character_list(TheSetup):
-    return [
-        (TheSetup.buffer_limit_code, "Buffer Limit Code"),
-        (TheSetup.path_limit_code,   "Path Limit Code")
+def signal_lexatoms(TheSetup):
+    result = [
+        (TheSetup.buffer_limit_code, "Buffer Limit Code")
     ]
+    if TheSetup.compression_path_f: 
+        result.append((TheSetup.path_limit_code, "Path Limit Code"))
+    return result
 
 #-----------------------------------------------------------------------------------------
 # Helper functions about required features.
