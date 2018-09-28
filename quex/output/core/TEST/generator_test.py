@@ -432,7 +432,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
 
     def action(ThePattern, PatternName): 
         txt = []
-        if ThePattern.sm_bipd is not None:
+        if ThePattern.sm_bipd_to_be_reversed is not None:
             terminal_factory.do_bipd_entry_and_return(txt, pattern)
 
         txt.append("%s\n" % Lng.STORE_LAST_CHARACTER(blackboard.required_support_begin_of_line()))

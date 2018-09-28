@@ -6,7 +6,6 @@ from   quex.engine.state_machine.character_counter               import SmLineCo
 import quex.engine.state_machine.construction.setup_post_context as     setup_post_context
 import quex.engine.state_machine.construction.setup_pre_context  as     setup_pre_context
 import quex.engine.state_machine.algorithm.beautifier            as     beautifier
-import quex.engine.state_machine.algebra.reverse                 as     reverse
 import quex.engine.misc.error                                    as     error
 from   quex.engine.misc.tools                                    import typed
 
@@ -283,8 +282,8 @@ class Pattern_Prep(object):
 
         # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
         sm_main, \
-        sm_bipd  = self.__finalize_mount_post_context_sm(sm_main, 
-                                                         sm_post_context)
+        sm_bipd_to_be_reversed = self.__finalize_mount_post_context_sm(sm_main, 
+                                                                       sm_post_context)
         sm_pre_context = self.__finalize_mount_pre_context_sm(sm_main, 
                                                               sm_pre_context_to_be_reversed)
 
@@ -306,7 +305,7 @@ class Pattern_Prep(object):
         self.__pre_context_begin_of_stream_f = None
 
         return Pattern(original_incidence_id, 
-                       sm_main, sm_pre_context, sm_bipd,
+                       sm_main, sm_pre_context, sm_bipd_to_be_reversed,
                        lcci, 
                        PatternString = pattern_string, 
                        Sr            = sr)
@@ -332,7 +331,5 @@ class Pattern_Prep(object):
         elif not bipd_sm_to_be_reversed.is_DFA_compliant(): 
             bipd_sm_to_be_reversed = beautifier.do(bipd_sm_to_be_reversed)
 
-        bipd_sm = reverse.do(bipd_sm_to_be_reversed)
-
-        return sm, bipd_sm
+        return sm, bipd_sm_to_be_reversed
 

@@ -70,7 +70,7 @@ def do_core(Mode):
 
     # (*) Backward input position detection
     #     (Seldomly present -- only for Pseudo-Ambiguous Post Contexts)
-    bipd                 = generator.do_backward_read_position_detectors(Mode.bipd_sm_db,
+    bipd                 = generator.do_backward_read_position_detectors(Mode.bipd_sm_to_be_reversed_db,
                                                                          dial_db)
     # assert all_isinstance(bipd, (IfDoorIdReferencedCode, int, str, unicode))
 

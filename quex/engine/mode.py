@@ -9,10 +9,10 @@ class BasicMode:
     def __init__(self, Name, PatternList):
         self.name = Name
 
-        self.sm,                    \
-        self.pre_context_sm,        \
-        self.bipd_sm_db,            \
-        self.pre_context_sm_id_list = self.__prepare(PatternList)
+        self.sm,                        \
+        self.pre_context_sm,            \
+        self.bipd_sm_to_be_reversed_db, \
+        self.pre_context_sm_id_list     = self.__prepare(PatternList)
 
     def longest_pre_context(self):
         if not self.pre_context_sm: return 0
@@ -22,14 +22,14 @@ class BasicMode:
         # -- setup of state machine lists and id lists
         core_sm_list,                 \
         pre_context_sm_list,          \
-        incidence_id_and_bipd_sm_list = self.__prepare_sm_lists(PatternList)
+        incidence_id_and_bipd_sm_to_be_reversed_list = self.__prepare_sm_lists(PatternList)
 
         # (*) Create (combined) state machines
         #     Backward input position detection (bipd) remains separate engines.
         return combination.do(core_sm_list),                  \
                combination.do(pre_context_sm_list,            \
                               FilterDominatedOriginsF=False), \
-               dict((incidence_id, sm) for incidence_id, sm in incidence_id_and_bipd_sm_list), \
+               dict((incidence_id, sm) for incidence_id, sm in incidence_id_and_bipd_sm_to_be_reversed_list), \
                [ sm.get_id() for sm in pre_context_sm_list ]
 
     def __prepare_sm_lists(self, PatternList):
@@ -43,11 +43,11 @@ class BasicMode:
         ]
 
         # -- Backward input position detection (BIPD)
-        bipd_sm_list = [
-            (pattern.incidence_id, pattern.sm_bipd) for pattern in PatternList 
-            if pattern.sm_bipd is not None 
+        bipd_sm_to_be_reversed_list = [
+            (pattern.incidence_id, pattern.sm_bipd_to_be_reversed) for pattern in PatternList 
+            if pattern.sm_bipd_to_be_reversed is not None 
         ]
-        return sm_list, pre_context_sm_list, bipd_sm_list
+        return sm_list, pre_context_sm_list, bipd_sm_to_be_reversed_list
 
 class Mode(BasicMode):
     """Finalized 'Mode' as it results from combination of base modes.

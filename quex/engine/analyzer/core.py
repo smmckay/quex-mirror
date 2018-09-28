@@ -55,6 +55,7 @@ import quex.engine.analyzer.engine_supply_factory   as     engine
 
 from   quex.engine.state_machine.core               import DFA
 from   quex.engine.state_machine.state.single_entry import SeAccept      
+import quex.engine.state_machine.algebra.reverse    as     reverse
 import quex.engine.misc.error                       as     error
 
 from   quex.engine.misc.tools                            import typed
@@ -74,8 +75,13 @@ from   operator         import attrgetter, itemgetter
 def do(SM, EngineType=engine.FORWARD, 
        ReloadStateExtern=None, OnBeforeReload=None, OnAfterReload=None, 
        OnBeforeEntry=None, 
-       dial_db=None, OnReloadFailureDoorId=None, CutF=True, Sr=-1):
+       dial_db=None, OnReloadFailureDoorId=None, CutF=True, ReverseF=False, Sr=-1):
     assert dial_db is not None
+
+    if ReverseF:
+        backup_id = SM.get_id()
+        SM = reverse.do(SM, EnsureDFA_f=True)
+        SM.set_id(backup_id)
 
     if CutF:
         error_name = SM.delete_named_number_list(signal_lexatoms(Setup)) 

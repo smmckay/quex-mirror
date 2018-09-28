@@ -127,7 +127,7 @@ class TerminalFactory:
         #            terminal itself. Otherwise, it may be missed due to some 
         #            coding negligence.
         text = []
-        if ThePattern.sm_bipd is not None:
+        if ThePattern.sm_bipd_to_be_reversed is not None:
             self.do_bipd_entry_and_return(text, ThePattern)
 
         text.extend([
@@ -204,7 +204,7 @@ class TerminalFactory:
               The actions on 
               pattern match.
         """
-        door_id_entry  = DoorID.state_machine_entry(ThePattern.sm_bipd.get_id(), self.dial_db)
+        door_id_entry  = DoorID.state_machine_entry(ThePattern.sm_bipd_to_be_reversed.get_id(), self.dial_db)
         door_id_return = DoorID.bipd_return(ThePattern.incidence_id, self.dial_db)
         txt.append("    %s\n%s\n" 
            % (Lng.GOTO(door_id_entry, self.dial_db),   # Enter BIPD

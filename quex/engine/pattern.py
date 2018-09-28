@@ -17,7 +17,7 @@ class Pattern:
             against a necessary pre-context. If the pre-context is not
             given, this pattern cannot match.
 
-    .sm_bipd:
+    .sm_bipd_to_be_reversed:
 
             DFA to detect the input position in backward 
             direction. This is necessary to deal with the trailing 
@@ -29,12 +29,12 @@ class Pattern:
             number upon match of this pattern.
     """
     @typed(LCCI=(None, SmLineColumnCountInfo), PatternString=(str,unicode), Sr=SourceRef)
-    def __init__(self, IncidenceId, Sm, PreContextSm, BipdSm, LCCI, PatternString, Sr):
+    def __init__(self, IncidenceId, Sm, PreContextSm, BipdSmTobeReversed, LCCI, PatternString, Sr):
         assert IncidenceId == Sm.get_id()
         self.incidence_id           = IncidenceId
         self.sm                     = Sm
         self.sm_pre_context         = PreContextSm
-        self.sm_bipd                = BipdSm
+        self.sm_bipd_to_be_reversed = BipdSmTobeReversed
         # lcci = line column count information for main state machine
         self.lcci                   = LCCI
         self.sr                     = Sr
@@ -44,8 +44,8 @@ class Pattern:
     def from_character_set(CharacterSet, StateMachineId, Sr, LCCI=None, PatternString="<character set>"):
         return Pattern(StateMachineId, 
                        DFA.from_character_set(CharacterSet, StateMachineId), 
-                       PreContextSm  = None,
-                       BipdSm        = None, 
+                       PreContextSm       = None,
+                       BipdSmTobeReversed = None, 
                        LCCI          = LCCI,
                        PatternString = PatternString,
                        Sr            = Sr)
@@ -70,5 +70,6 @@ class Pattern:
         new_sm = self.sm.clone(StateMachineId=NewIncidenceId)
         if PatternString is None: pattern_string = self.__pattern_string
         else:                     pattern_string = PatternString
-        return Pattern(new_sm.get_id(), new_sm, self.sm_pre_context, self.sm_bipd,
+        return Pattern(new_sm.get_id(), new_sm, self.sm_pre_context, 
+                       self.sm_bipd_to_be_reversed,
                        self.lcci, pattern_string, self.sr)

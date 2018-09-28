@@ -98,7 +98,8 @@ def do_backward_read_position_detectors(BipdDb, dial_db):
     for incidence_id, bipd_sm in BipdDb.iteritems():
         txt, analyzer = __do_state_machine(bipd_sm, 
                                            engine.Class_BACKWARD_INPUT_POSITION(incidence_id), 
-                                           dial_db) 
+                                           dial_db,
+                                           ReverseF=True) 
         result.extend(txt)
     return result
 
@@ -172,7 +173,7 @@ def do_variable_definitions():
     # Following function refers to the global 'variable_db'
     return Lng.VARIABLE_DEFINITIONS(variable_db)
 
-def __do_state_machine(sm, EngineType, dial_db, ReloadStateForward=None): 
+def __do_state_machine(sm, EngineType, dial_db, ReloadStateForward=None, ReverseF=False): 
     """Generates code for state machine 'sm' and the 'EngineType'.
 
     RETURNS: list of strings
@@ -187,7 +188,8 @@ def __do_state_machine(sm, EngineType, dial_db, ReloadStateForward=None):
     # -- Analyze state machine --> optimized version
     analyzer = analyzer_generator.do(sm, EngineType, 
                                      ReloadStateExtern = ReloadStateForward, 
-                                     dial_db           = dial_db)
+                                     dial_db           = dial_db,
+                                     ReverseF          = ReverseF)
 
     # -- Generate code for analyzer
     txt.extend(

@@ -6,6 +6,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine          as     core
 import quex.engine.state_machine.transformation.core as     bc_factory
+import quex.engine.state_machine.algebra.reverse     as     reverse
 from   quex.blackboard                               import setup as Setup
 import quex.output.languages.core                    as     languages
 
@@ -32,8 +33,9 @@ def test(TestString):
     print pattern.sm.get_string(NormalizeF=True, Option="hex") 
     if pattern.sm_pre_context:
         print "pre-context = ", pattern.sm_pre_context.get_string(NormalizeF=True, Option="hex") 
-    if pattern.sm_bipd:
-        print "post-context backward input position detector = ", pattern.sm_bipd.get_string(NormalizeF=True, Option="hex") 
+    if pattern.sm_bipd_to_be_reversed:
+        sm = reverse.do(pattern.sm_bipd_to_be_reversed)
+        print "post-context backward input position detector = ", sm.get_string(NormalizeF=True, Option="hex") 
 
 test('µ/µ+/µ')
 test('[aµ]+/[aµ]')
