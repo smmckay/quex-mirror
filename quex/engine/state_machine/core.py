@@ -709,6 +709,16 @@ class DFA(object):
         # Delete states from where there is no connection to an acceptance state.
         self.delete_hopeless_states() 
 
+    def delete_loops_to_init_state(self):
+        """Deleting transitions to the init state makes sure that there is no
+        iteration, no loop, that starts from the init state. That in turn, 
+        ensures, that for the reverse state machine, there is no loop starting
+        from an acceptance state.
+        """
+        for state in self.states.itervalues():
+            state.target_map.delete_transitions_to_target(self.init_state_index)
+        self.delete_orphaned_states()
+
     def delete_orphaned_states(self):
         """Remove all orphan states.
 

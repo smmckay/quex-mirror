@@ -6,7 +6,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from   quex.input.code.base              import SourceRef_VOID
 import quex.engine.state_machine.construction.setup_post_context as setup_post_context
-import quex.engine.state_machine.construction.setup_pre_context as setup_pre_context 
+import quex.engine.state_machine.construction.setup_pre_context  as setup_pre_context 
 # import quex.engine.state_machine.construction.setup_border_conditions as setup_border_conditions 
 import quex.engine.state_machine.algorithm.beautifier as beautifier
 import quex.engine.state_machine.check.identity      as identity_checker

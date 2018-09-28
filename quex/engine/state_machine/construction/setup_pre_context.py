@@ -1,7 +1,6 @@
 # (C) Frank-Rene Schaefer
 #     ABSOLUTELY NO WARRANTY
 import quex.engine.state_machine.algorithm.beautifier            as     beautifier
-import quex.engine.state_machine.cut.stem_and_branches           as     stem_and_branches
 import quex.engine.state_machine.algebra.reverse                 as     reverse
 import quex.engine.state_machine.construction.sequentialize      as     sequentialize
 from   quex.engine.state_machine.construction.setup_post_context import DFA_Newline
@@ -50,11 +49,13 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamP
     if BeginOfLinePreContextF:
         pre_context_sm = sequentialize.do([DFA_Newline(), pre_context_sm])
 
+    # (*) Once an acceptance state is reached no further analysis is necessary.
+    ## stem_and_branches.prune_branches(reverse_pre_context)
+    pre_context_sm.delete_loops_to_init_state()
+
     # (*) Reverse the state machine of the pre-condition 
     reverse_pre_context = reverse.do(pre_context_sm, EnsureDFA_f=False)
 
-    # (*) Once an acceptance state is reached no further analysis is necessary.
-    stem_and_branches.prune_branches(reverse_pre_context)
     if     Setup.fallback_mandatory_f \
        and reverse_pre_context.longest_path_to_first_acceptance() is None:
         error.log("Pre-context contains patterns of arbitrary length to first acceptance backwards.")
