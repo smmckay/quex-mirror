@@ -6,6 +6,7 @@ import quex.engine.analyzer.track_analysis         as     track_analysis
 from   quex.engine.analyzer.position_register_map  import print_this
 import quex.engine.analyzer.engine_supply_factory  as     engine
 import quex.engine.state_machine.construction.combination  as     combination
+import quex.engine.state_machine.algebra.reverse  as     reverse
 from   quex.constants  import E_InputActions, E_StateIndices, E_AcceptanceCondition, E_Op
 from   quex.blackboard import setup as Setup
 
@@ -32,7 +33,7 @@ def prepare(PatternStringList, GetPreContextSM_F=False):
     pattern_list = map(lambda x: regex.do(x, {}).finalize(None), PatternStringList)
 
     if GetPreContextSM_F:
-        state_machine_list = [ pattern.sm_pre_context for pattern in pattern_list ]
+        state_machine_list = [ reverse.do(pattern.sm_pre_context_to_be_reversed) for pattern in pattern_list ]
     else:
         state_machine_list = [ pattern.sm for pattern in pattern_list ]
 

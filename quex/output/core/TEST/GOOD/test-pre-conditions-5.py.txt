@@ -1,0 +1,24 @@
+(*) Lexical Analyser Patterns:
+        黑森林/X/ --> 黑森林/X/
+        X/黑森林/ --> X/黑森林/
+                   X --> X
+           黑森林 --> 黑森林
+                 [ ] --> [ ]
+## (1) code generation
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function -Wno-missing-braces  -DQUEX_OPTION_ASSERTS ./tmp.c -I./. -I../../../code_base/TESTS -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+## (*) running the test
+(*) test string: 
+'X黑森林 黑森林 X黑森林 黑森林X'
+(*) result:
+                  X  'X'
+       X/黑森林/  '黑森林'
+                [ ]  ' '
+          黑森林  '黑森林'
+                [ ]  ' '
+                  X  'X'
+       X/黑森林/  '黑森林'
+                [ ]  ' '
+          黑森林  '黑森林'
+       黑森林/X/  'X'
+  ''

@@ -1,10 +1,10 @@
-# -*- UTF8 -*-
 #! /usr/bin/env python
+# -*- coding: utf8 -*-
 import sys
 import generator_test
 
 if "--hwut-info" in sys.argv:
-    print "Pre-conditions: The forth test;"
+    print "Pre-conditions: Test with UTF8;"
     print "CHOICES: ANSI-C, Cpp-Path-CG, Cpp-Template;"
     print "SAME;"
     sys.exit(0)
@@ -24,14 +24,14 @@ pattern_list = [
     #    patterns, since they are always longer.
     #
     # repetition of 'x' (one or more) **preceded** by 'good' + whitespace
-    'X/hello/',     
-    '[a-z]*X',
-    'hello',
-    'world',
+    '黑森林/X/',
+    'X/黑森林/',
+    'X',
+    '黑森林',
     '[ ]',
 ]
 pattern_action_pair_list = map(lambda re: (re, re.replace("\\t", "\\\\t").replace("\\n", "\\\\n")), 
                                pattern_list)
 
-test_str = """Xhello XhellohelloX Xhelloworld helloworld"""
-generator_test.do(pattern_action_pair_list, test_str, {}, choice, QuexBufferSize=13)    
+test_str = """X黑森林 黑森林 X黑森林 黑森林X"""
+generator_test.do(pattern_action_pair_list, test_str, {}, choice, QuexBufferSize=12, Encoding="utf8")    

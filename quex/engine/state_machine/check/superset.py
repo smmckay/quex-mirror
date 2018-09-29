@@ -133,13 +133,13 @@ def do(A, B):
     elif         A.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_STREAM) \
          and not B.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_STREAM): return False
     # here: not(A) or B => Either A does not have the condition or B has it too.
-    elif     (A.sm_pre_context is not None) \
-         and (B.sm_pre_context is None):                return False
+    elif     (A.sm_pre_context_to_be_reversed is not None) \
+         and (B.sm_pre_context_to_be_reversed is None):                return False
     # here: not(A) or B => Either A does not have the condition or B has it too.
-    elif     (A.sm_pre_context is None) \
-         and (B.sm_pre_context is not None):            return True
+    elif     (A.sm_pre_context_to_be_reversed is None) \
+         and (B.sm_pre_context_to_be_reversed is not None):            return True
 
     # 'A' and be either have both pre-context, or none.
-    if A.sm_pre_context is None: return True
-    else:                        return Checker(B.sm_pre_context, A.sm_pre_context).do()
+    if A.sm_pre_context_to_be_reversed is None: return True
+    else:                        return Checker(B.sm_pre_context_to_be_reversed, A.sm_pre_context_to_be_reversed).do()
 

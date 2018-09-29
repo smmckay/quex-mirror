@@ -5,6 +5,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine as     core
 from   quex.blackboard                      import setup as Setup
+import quex.engine.state_machine.algebra.reverse     as     reverse
 Setup.buffer_limit_code = -1
 Setup.path_limit_code   = -1
 
@@ -20,7 +21,7 @@ def test(TestString):
     # pattern.mount_pre_context_sm()
     print "pattern\n"
     print pattern.sm
-    print "pre-context =", pattern.sm_pre_context
+    print "pre-context =", reverse.do(pattern.sm_pre_context_to_be_reversed)
 
 test('"a"/";"/')
 test('(a|z)/c/')

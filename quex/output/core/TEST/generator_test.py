@@ -131,7 +131,9 @@ def __Setup_init_language_database(Language):
 def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-PlainMemory", 
        QuexBufferSize=15, # DO NOT CHANGE!
        SecondPatternActionPairList=[], QuexBufferFallbackN=0, ShowBufferLoadsF=False,
-       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS"):
+       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS",
+       Encoding="unicode",
+       CodeUnitSize_inByte=1):
     assert type(TestStr) == list or isinstance(TestStr, (str, unicode))
 
     assert QuexBufferFallbackN >= 0
@@ -139,7 +141,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
 
     BufferLimitCode = 0
     Setup.buffer_limit_code = BufferLimitCode
-    Setup.buffer_setup("", 1, "unicode")
+    Setup.buffer_setup("", CodeUnitSize_inByte, Encoding)
 
     CompileOptionStr = ""
     Setup.computed_gotos_f  = False

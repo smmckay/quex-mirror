@@ -984,9 +984,9 @@ quex/TESTS/code/TEST                                                 <no date>
         svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .......................................[OK]
+                          real .....................................[FAIL]
  * Code Check with pyflakes
-        pyflakes-check.sh ............................................[OK]
+        pyflakes-check.sh ..........................................[FAIL]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
@@ -998,10 +998,13 @@ quex/TESTS/code/TEST                                                 <no date>
 
     __parse_token_id_file
         test-token_id_file-find_ids.py ...............................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] function-check.sh _ real
+    [FAIL] pyflakes-check.sh
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1332,6 +1335,9 @@ quex/TESTS/misc/TEST                                                 <no date>
                                             PRE_X_PC .................[OK]
  * Customized codec files (option --encoding-file)
         customized_codec.sh ..........................................[OK]
+ * Exception occurred -- please, report a bug under
+        line-number-pragma.sh qx .....................................[OK]
+                              source .................................[OK]
  * FSM DFA_State Tracer
         debug_show.sh ................................................[OK]
  * Inadmissible commonalities
@@ -1350,9 +1356,6 @@ quex/TESTS/misc/TEST                                                 <no date>
         cmake-example.sh .............................................[OK]
  * Test code comments
         comment.sh ...................................................[OK]
- * Testing the implementation of line number pragmas
-        line-number-pragma.sh qx .....................................[OK]
-                              source .................................[OK]
 
  * Challenges with Buffer Size 5:
 
@@ -2230,6 +2233,10 @@ quex/output/core/TEST                                                <no date>
 
  * Pre-conditions:
 
+    Test with UTF8
+        test-pre-conditions-5.py ANSI-C ..............................[OK]
+                                 Cpp-Path-CG .........................[OK]
+                                 Cpp-Template ........................[OK]
     The forth test
         test-pre-conditions-4.py ANSI-C ..............................[OK]
                                  Cpp-Path-CG .........................[OK]
@@ -3422,7 +3429,7 @@ SUMMARY:
            56      [OK] ..../Cpp/TEST                                                 
            2       [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-           10      [OK] ........../code/TEST                                          
+        2  10    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            5       [OK] ........../did-you-mean/TEST                                  
            2       [OK] ........../documentation/TEST                                 
@@ -3473,17 +3480,17 @@ SUMMARY:
            58      [OK] ..../input/TEST                                               
            2       [OK] ........../files/TEST                                         
            27      [OK] ........../regular_expression/TEST                            
-           205     [OK] ..../output/core/TEST                                         
+           208     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
            33      [OK] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____             
-    |  ___|_ _(_) |___     | ___|      __  __
-    | |_ / _` | | / __|    |___ \      \ \/ /
-    |  _| (_| | | \__ \     ___) |      >  < 
-    |_|  \__,_|_|_|___/    |____/      /_/\_\
-                                                                   (1725 tests)
+     _____     _ _          _____           
+    |  ___|_ _(_) |___     |___  |    __  __
+    | |_ / _` | | / __|       / /     \ \/ /
+    |  _| (_| | | \__ \      / /       >  < 
+    |_|  \__,_|_|_|___/     /_/       /_/\_\
+                                                                   (1728 tests)
 
 ===============================================================================

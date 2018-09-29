@@ -48,11 +48,13 @@ class Pattern_Prep(object):
         self.check_initial(CoreSM, 
                            BeginOfLineF, PreContextSM, 
                            EndOfLineF, PostContextSM, 
-                           Sr,
-                           AllowNothingIsNecessaryF)
+                           Sr, AllowNothingIsNecessaryF)
 
-        self.__pattern_string = PatternString
-        self.__sr             = Sr
+        if PatternString is None: self.__pattern_string = ""
+        else:                     self.__pattern_string = PatternString
+        if Sr is None:            self.__sr             = SourceRef_VOID
+        else:                     self.__sr             = Sr
+
 
         # (*) Setup the whole pattern
         self.__sm                           = CoreSM
@@ -110,6 +112,7 @@ class Pattern_Prep(object):
     def sm(self):                                  return self.__sm
     @property
     def pre_context_sm_to_be_reversed(self):       return self.__pre_context_sm_to_be_reversed
+
     @property
     def pre_context_trivial_begin_of_line_f(self): 
         if self.__pre_context_sm_to_be_reversed is not None:
@@ -255,7 +258,7 @@ class Pattern_Prep(object):
         else: 
             lcci = None
 
-        # (*) Transform all state machines into buffer codec
+        # (*) Transform all state machines into buffer encoding _______________
         #     => may change state machine id 
         #     => backup the original id and restore later
         original_incidence_id = self.incidence_id()
@@ -269,35 +272,26 @@ class Pattern_Prep(object):
                           self.sr)
 
         sm_main.set_id(original_incidence_id)
-
-        # (*) Cut the signalling characters from any state machine
-        ### def cut(sm, Sr):
-        ### if sm is None: return None
-        ### error_name = sm.delete_named_number_list(blackboard.signal_lexatoms(Setup)) 
-        ### if not error_name: return sm
-        ### error.log("Pattern becomes empty after deleting signal character '%s'." % error_name, Sr)
-        ### 
-        ### sm_main                       = cut(sm_main, self.sr)
-        ### sm_pre_context_to_be_reversed = cut(sm_pre_context_to_be_reversed, self.sr)
-        ### sm_post_context               = cut(sm_post_context, self.sr)
+        #______________________________________________________________________
 
         # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
         sm_main, \
         sm_bipd_to_be_reversed = self.__finalize_mount_post_context_sm(sm_main, 
                                                                        sm_post_context)
-        sm_pre_context = self.__finalize_mount_pre_context_sm(sm_main, 
-                                                              sm_pre_context_to_be_reversed)
+        sm_pre_context_to_be_reversed = setup_pre_context.do(sm_main, 
+                                                             sm_pre_context_to_be_reversed, 
+                                                             self.__pre_context_begin_of_line_f, 
+                                                             self.__pre_context_begin_of_stream_f)
 
-        # Store finalized self
-        if self.__pattern_string is not None: pattern_string = self.__pattern_string
-        else:                                 pattern_string = ""
-        if self.__sr is None: sr = SourceRef_VOID
-        else:                 sr = self.__sr
+        if sm_pre_context_to_be_reversed is not None:
+            backup_sm_id   = sm_pre_context_to_be_reversed.get_id()
+            sm_pre_context = reverse.do(sm_pre_context_to_be_reversed)
+            sm_pre_context.set_id(backup_sm_id)
+        else:
+            sm_pre_context = None
 
         # Set: self = Dysfunctional! (No one shall work or finalize this self)
         self.__sm                            = None
-        self.__pattern_string                = None
-        self.__sr                            = None
         self.__post_context_sm               = None
         self.__post_context_end_of_line_f    = None
         self.__post_context_f                = None
@@ -306,21 +300,13 @@ class Pattern_Prep(object):
         self.__pre_context_begin_of_stream_f = None
 
         return Pattern(original_incidence_id, 
-                       sm_main, sm_pre_context, sm_bipd_to_be_reversed,
+                       sm_main, sm_pre_context_to_be_reversed, sm_bipd_to_be_reversed,
                        lcci, 
-                       PatternString = pattern_string, 
-                       Sr            = sr)
+                       PatternString = self.__pattern_string, 
+                       Sr            = self.__sr)
 
     def __finalize_mount_pre_context_sm(self, Sm, SmPreContextToBeInverted): 
-        pre_context_sm = setup_pre_context.do(Sm, SmPreContextToBeInverted, 
-                                    self.__pre_context_begin_of_line_f, 
-                                    self.__pre_context_begin_of_stream_f)
-        if pre_context_sm is None: return None
-
-        pre_context_sm_id = pre_context_sm.get_id()
-        reverse_pre_context = reverse.do(pre_context_sm)
-        reverse_pre_context.set_id(pre_context_sm_id)
-        return reverse_pre_context
+        return pre_context_sm_to_be_reversed
 
     def __finalize_mount_post_context_sm(self, Sm, SmPostContext):
         # In case of a 'trailing post context' a 'bipd_sm' may be provided

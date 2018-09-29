@@ -4,6 +4,7 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine as core
+import quex.engine.state_machine.algebra.reverse as reverse
 from quex.blackboard import setup as Setup
 Setup.buffer_limit_code = -1
 Setup.path_limit_code   = -1
@@ -28,8 +29,9 @@ def test_core(TestString):
     else:
         print "pattern\n", 
         print pattern.sm
-        if pattern.sm_pre_context:
-            print "pre-context =", pattern.sm_pre_context
+        if pattern.sm_pre_context_to_be_reversed:
+            reversed_sm = reverse.do(pattern.sm_pre_context_to_be_reversed)
+            print "pre-context =", reversed_sm
             print "begin of line = ", pattern.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE)
 
 test('[a-z]+')

@@ -111,12 +111,12 @@ def do(A, B):
          != B.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE):   return False
     elif    A.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_STREAM) \
          != B.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_STREAM): return False
-    elif    (A.sm_pre_context is None) \
-         != (B.sm_pre_context is None):               return False
+    elif    (A.sm_pre_context_to_be_reversed is None) \
+         != (B.sm_pre_context_to_be_reversed is None):               return False
 
     # Both either have pre-context, or none.
-    if A.sm_pre_context is None:                    
+    if A.sm_pre_context_to_be_reversed is None:                    
         return True
     else:
-        return Checker(A.sm_pre_context, B.sm_pre_context).do()
+        return Checker(A.sm_pre_context_to_be_reversed, B.sm_pre_context_to_be_reversed).do()
 

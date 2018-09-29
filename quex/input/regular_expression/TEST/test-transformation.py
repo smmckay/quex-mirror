@@ -31,8 +31,9 @@ def test(TestString):
     # During 'finalize()': pattern.mount_pre_context_sm()
     print "pattern\n" 
     print pattern.sm.get_string(NormalizeF=True, Option="hex") 
-    if pattern.sm_pre_context:
-        print "pre-context = ", pattern.sm_pre_context.get_string(NormalizeF=True, Option="hex") 
+    if pattern.sm_pre_context_to_be_reversed:
+        reversed_sm = reverse.do(pattern.sm_pre_context_to_be_reversed)
+        print "pre-context = ", reversed_sm.get_string(NormalizeF=True, Option="hex") 
     if pattern.sm_bipd_to_be_reversed:
         sm = reverse.do(pattern.sm_bipd_to_be_reversed)
         print "post-context backward input position detector = ", sm.get_string(NormalizeF=True, Option="hex") 
