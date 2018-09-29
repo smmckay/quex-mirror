@@ -283,13 +283,6 @@ class Pattern_Prep(object):
                                                              self.__pre_context_begin_of_line_f, 
                                                              self.__pre_context_begin_of_stream_f)
 
-        if sm_pre_context_to_be_reversed is not None:
-            backup_sm_id   = sm_pre_context_to_be_reversed.get_id()
-            sm_pre_context = reverse.do(sm_pre_context_to_be_reversed)
-            sm_pre_context.set_id(backup_sm_id)
-        else:
-            sm_pre_context = None
-
         # Set: self = Dysfunctional! (No one shall work or finalize this self)
         self.__sm                            = None
         self.__post_context_sm               = None
@@ -299,7 +292,7 @@ class Pattern_Prep(object):
         self.__pre_context_begin_of_line_f   = None
         self.__pre_context_begin_of_stream_f = None
 
-        return Pattern(original_incidence_id, 
+        return Pattern(sm_main.get_id(), 
                        sm_main, sm_pre_context_to_be_reversed, sm_bipd_to_be_reversed,
                        lcci, 
                        PatternString = self.__pattern_string, 
