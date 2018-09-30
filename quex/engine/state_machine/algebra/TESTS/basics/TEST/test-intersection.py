@@ -18,7 +18,7 @@ def test(A, B, OnlyOneF=False):
         print ("B = " + B_str).replace("\n", "\\n").replace("\t", "\\t")
         a_pattern = regex.do(A_str, {})
         b_pattern = regex.do(B_str, {})
-        result    = intersection.do([a_pattern.sm, b_pattern.sm])
+        result    = intersection.do([a_pattern.extract_sm(), b_pattern.extract_sm()])
         print "intersection = ", result
         return result
     print "---------------------------"

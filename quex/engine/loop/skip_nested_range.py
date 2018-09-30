@@ -115,7 +115,7 @@ def _get_state_machine_vs_terminal_list(CloserPattern, OpenerPattern, DoorIdExit
     ]
 
     def sm_terminal_pair(Pattern, Name, OpList, dial_db):
-        sm       = Pattern.sm.clone(StateMachineId=dial.new_incidence_id())
+        sm       = Pattern.get_cloned_sm(StateMachineId=dial.new_incidence_id())
         terminal = loop.MiniTerminal(Lng.COMMAND_LIST(OpList, dial_db), 
                                      Name, sm.get_id())
         return sm, terminal

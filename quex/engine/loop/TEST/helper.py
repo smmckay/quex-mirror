@@ -2,7 +2,6 @@ import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.output.analyzer.indentation_handler      as     indentation_handler
-from   quex.engine.pattern                           import Pattern
 from   quex.input.regular_expression.pattern         import Pattern_Prep
 from   quex.input.code.base                          import CodeFragment, SourceRef_VOID
 from   quex.input.files.specifier.counter            import LineColumnCount_Default
@@ -13,7 +12,6 @@ import quex.engine.loop.indentation_counter          as     indentation_counter
 from   quex.engine.misc.interval_handling            import NumberSet
 from   quex.engine.state_machine.core                import DFA
 from   quex.engine.analyzer.door_id_address_label    import get_plain_strings
-from   quex.engine.pattern                           import Pattern
 import quex.engine.analyzer.engine_supply_factory    as     engine
 import quex.engine.state_machine.transformation.core as     bc_factory
 import quex.output.analyzer.adapt                    as     adapt
@@ -137,10 +135,9 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
     end_str        = __prepare(Language)
 
     sm_close       = DFA.from_sequence(CloserSequence)  
-    closer_pattern = Pattern(sm_close.get_id(), sm_close,
-                             None, None, None,
-                             PatternString="<skip range closer>",
-                             Sr=SourceRef_VOID)
+    closer_pattern = Pattern_Prep(sm_close,
+                                  PatternString="<skip range closer>",
+                                  Sr=SourceRef_VOID)
     door_id_exit   = DoorID.continue_without_on_after_match(dial_db)
 
     analyzer_list,         \
@@ -181,12 +178,10 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
     sm_open  = DFA.from_sequence(OpenerSequence)  
     ca_map   = LineColumnCount_Default()
 
-    closer_pattern = Pattern(sm_close.get_id(), sm_close,
-                             None, None, None,
+    closer_pattern = Pattern_Prep(sm_close, 
                              PatternString="<skip range closer>",
                              Sr=SourceRef_VOID)
-    opener_pattern = Pattern(sm_open.get_id(), sm_open,
-                             None, None, None,
+    opener_pattern = Pattern_Prep(sm_open, 
                              PatternString="<skip range opener>",
                              Sr=SourceRef_VOID)
     door_id_exit   = DoorID.continue_without_on_after_match(dial_db)

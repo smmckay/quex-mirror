@@ -6,7 +6,6 @@ from   quex.engine.state_machine.character_counter               import SmLineCo
 import quex.engine.state_machine.construction.setup_post_context as     setup_post_context
 import quex.engine.state_machine.construction.setup_pre_context  as     setup_pre_context
 import quex.engine.state_machine.algorithm.beautifier            as     beautifier
-import quex.engine.state_machine.algebra.reverse                 as     reverse
 import quex.engine.misc.error                                    as     error
 from   quex.engine.misc.tools                                    import typed
 
@@ -73,7 +72,7 @@ class Pattern_Prep(object):
         self.__pre_context_begin_of_stream_f = BeginOfStreamF
         
         self.__validate(Sr)
-        self.__finalized_f = None
+        self.__finalized_f = False
 
     def clone(self):
         def cloney(X):
@@ -109,7 +108,31 @@ class Pattern_Prep(object):
         self.__sm.set_id(Id)
 
     @property
-    def sm(self):                                  return self.__sm
+    def sm(self):                                  assert False; return self.__sm
+
+    def extract_sm(self): 
+        """Extract the state machine from the pattern. The pattern may then no
+        longer be used! It is considered further 'finalized'.
+
+        A pattern's state machine can only be extracted ONCE!
+        """
+        tmp_sm = self.__sm
+        self.__mark_dysfunctional()
+        return tmp_sm
+
+    def get_cloned_sm(self, StateMachineId=None): 
+        """Get a clone of the pattern's state machine. That is, the caller may
+        do with the state machine anything, but the pattern is not affected.
+        """
+        if self.__sm is None: return None
+        return self.__sm.clone(StateMachineId=StateMachineId)
+
+    def borrow_sm(self):
+        """Exposes the core state machine to the user, assuming that he does not
+        modify it.
+        """
+        return self.__sm
+
     @property
     def pre_context_sm_to_be_reversed(self):       return self.__pre_context_sm_to_be_reversed
 
@@ -167,11 +190,11 @@ class Pattern_Prep(object):
         return msg
 
     def assert_consistency(self):
-        assert self.sm.is_DFA_compliant()
-        assert not self.sm.has_orphaned_states()
-        if self.pre_context_sm_to_be_reversed is not None:
-            assert self.pre_context_sm_to_be_reversed.is_DFA_compliant() 
-            assert not self.pre_context_sm_to_be_reversed.has_orphaned_states()
+        assert self.__sm.is_DFA_compliant()
+        assert not self.__sm.has_orphaned_states()
+        if self.__pre_context_sm_to_be_reversed is not None:
+            assert self.__pre_context_sm_to_be_reversed.is_DFA_compliant() 
+            assert not self.__pre_context_sm_to_be_reversed.has_orphaned_states()
 
     @staticmethod
     def check_initial(core_sm, 
@@ -248,41 +271,48 @@ class Pattern_Prep(object):
         NOTE: After the call to this function 'self' is dysfunctional (empty).
         """
         assert not self.__finalized_f
-        assert self.sm is not None
+        assert self.__sm is not None
+
+        self.__finalized_f = True
 
         # Count information must be determined BEFORE transformation!
         if CaMap is not None:
-            lcci = SmLineColumnCountInfo.from_DFA(CaMap, self.sm, 
+            lcci = SmLineColumnCountInfo.from_DFA(CaMap, self.__sm, 
                                                   self.pre_context_trivial_begin_of_line_f, 
                                                   Setup.buffer_encoding)
         else: 
             lcci = None
 
-        # (*) Transform all state machines into buffer encoding _______________
-        #     => may change state machine id 
-        #     => backup the original id and restore later
-        original_incidence_id = self.incidence_id()
+        if True: function = old_school
+        else:    function = new_school
 
-        ok0, sm_main                       = Setup.buffer_encoding.do_state_machine(self.__sm) 
-        ok1, sm_pre_context_to_be_reversed = Setup.buffer_encoding.do_state_machine(self.__pre_context_sm_to_be_reversed) 
-        ok2, sm_post_context               = Setup.buffer_encoding.do_state_machine(self.__post_context_sm) 
-        if not (ok0 and ok1 and ok2):
-            error.warning("Pattern contains elements not found in engine codec '%s'.\n" % Setup.buffer_encoding.name \
-                          + "(Buffer element size is %s [byte])" % Setup.lexatom.size_in_byte,
-                          self.sr)
+        ## self.__sm                            = self.__sm.clone()
+        ## jself.__pre_context_sm_to_be_reversed = self.__pre_context_sm_to_be_reversed.clone()
+        ## jself.__post_context_sm               = self.__post_context_sm.clone()
 
-        sm_main.set_id(original_incidence_id)
-        #______________________________________________________________________
+        sm_main,                       \
+        sm_pre_context_to_be_reversed, \
+        sm_bipd_to_be_reversed         = function(self.__sm,
+                                                  self.__pre_context_sm_to_be_reversed,
+                                                  self.__pre_context_begin_of_line_f,
+                                                  self.__pre_context_begin_of_stream_f,
+                                                  self.__post_context_sm,
+                                                  self.__post_context_end_of_line_f,
+                                                  self.__post_context_end_of_stream_f,
+                                                  self.__sr)
 
-        # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
-        sm_main, \
-        sm_bipd_to_be_reversed = self.__finalize_mount_post_context_sm(sm_main, 
-                                                                       sm_post_context)
-        sm_pre_context_to_be_reversed = setup_pre_context.do(sm_main, 
-                                                             sm_pre_context_to_be_reversed, 
-                                                             self.__pre_context_begin_of_line_f, 
-                                                             self.__pre_context_begin_of_stream_f)
 
+        self.__mark_dysfunctional()
+
+        return Pattern(sm_main.get_id(), 
+                       sm_main, 
+                       sm_pre_context_to_be_reversed, 
+                       sm_bipd_to_be_reversed,
+                       lcci, 
+                       PatternString = self.__pattern_string, 
+                       Sr            = self.__sr)
+
+    def __mark_dysfunctional(self):
         # Set: self = Dysfunctional! (No one shall work or finalize this self)
         self.__sm                            = None
         self.__post_context_sm               = None
@@ -291,31 +321,72 @@ class Pattern_Prep(object):
         self.__pre_context_sm_to_be_reversed = None
         self.__pre_context_begin_of_line_f   = None
         self.__pre_context_begin_of_stream_f = None
+        self.__finalized_f                   = True
 
-        return Pattern(sm_main.get_id(), 
-                       sm_main, sm_pre_context_to_be_reversed, sm_bipd_to_be_reversed,
-                       lcci, 
-                       PatternString = self.__pattern_string, 
-                       Sr            = self.__sr)
+def old_school(Sm, PreSm, PreBolF, PreBosF, PostSm, PostEolF, PostEosF, Sr):
+    # (*) Transform all state machines into buffer encoding _______________
+    #     => may change state machine id 
+    #     => backup the original id and restore later
+    original_incidence_id = Sm.get_id()
 
-    def __finalize_mount_pre_context_sm(self, Sm, SmPreContextToBeInverted): 
-        return pre_context_sm_to_be_reversed
+    ok0, sm_main                       = Setup.buffer_encoding.do_state_machine(Sm) 
+    ok1, sm_pre_context_to_be_reversed = Setup.buffer_encoding.do_state_machine(PreSm) 
+    ok2, sm_post_context               = Setup.buffer_encoding.do_state_machine(PostSm) 
+    if not (ok0 and ok1 and ok2):
+        error.warning("Pattern contains elements not found in engine codec '%s'.\n" % Setup.buffer_encoding.name \
+                      + "(Buffer element size is %s [byte])" % Setup.lexatom.size_in_byte,
+                      Sr)
 
-    def __finalize_mount_post_context_sm(self, Sm, SmPostContext):
-        # In case of a 'trailing post context' a 'bipd_sm' may be provided
-        # to detect the input position after match in backward direction.
-        # BIPD = backward input position detection.
-        sm,     \
-        bipd_sm_to_be_reversed = setup_post_context.do(Sm, SmPostContext, 
-                                                       self.__post_context_end_of_line_f, 
-                                                       self.__post_context_end_of_stream_f,
-                                                       self.__sr)
+    sm_main.set_id(original_incidence_id)
+    #______________________________________________________________________
 
-        if bipd_sm_to_be_reversed is None: 
-            return sm, None
+    # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
+    sm_main, \
+    sm_bipd_to_be_reversed = __finalize_mount_post_context_sm(sm_main, sm_post_context,
+                                                              PostEolF, PostEosF, Sr) 
+    sm_pre_context_to_be_reversed = setup_pre_context.do(sm_main, 
+                                                         sm_pre_context_to_be_reversed, 
+                                                         PreBolF, PreBosF) 
 
-        elif not bipd_sm_to_be_reversed.is_DFA_compliant(): 
-            bipd_sm_to_be_reversed = beautifier.do(bipd_sm_to_be_reversed)
+    return sm_main, sm_pre_context_to_be_reversed, sm_bipd_to_be_reversed
 
-        return sm, bipd_sm_to_be_reversed
+def new_school(Sm, PreSm, PreBolF, PreBosF, PostSm, PostEolF, PostEosF, Sr):
+    # backup the original id and restore later
+    original_incidence_id = Sm.get_id()
+
+    # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
+    sm_main, \
+    sm_bipd_to_be_reversed = __finalize_mount_post_context_sm(Sm, PostSm, PostEolF, PostEosF, Sr)
+    sm_pre_context_to_be_reversed = setup_pre_context.do(sm_main, PreSm, PreBolF, PreBosF)
+
+    # (*) Transform all state machines into buffer encoding _______________
+
+    ok0, sm_main                       = Setup.buffer_encoding.do_state_machine(sm_main) 
+    ok1, sm_pre_context_to_be_reversed = Setup.buffer_encoding.do_state_machine(sm_pre_context_to_be_reversed) 
+    ok2, sm_bipd_to_be_reversed        = Setup.buffer_encoding.do_state_machine(sm_bipd_to_be_reversed) 
+    if not (ok0 and ok1 and ok2):
+        error.warning("Pattern contains elements not found in engine codec '%s'.\n" % Setup.buffer_encoding.name \
+                      + "(Buffer element size is %s [byte])" % Setup.lexatom.size_in_byte,
+                      Sr)
+
+    sm_main.set_id(original_incidence_id)
+    #______________________________________________________________________
+
+    return sm_main, sm_pre_context_to_be_reversed, sm_bipd_to_be_reversed
+
+def __finalize_mount_post_context_sm(Sm, SmPostContext, PostEOL_f, PostEOS_f, Sr):
+    # In case of a 'trailing post context' a 'bipd_sm' may be provided
+    # to detect the input position after match in backward direction.
+    # BIPD = backward input position detection.
+    sm,                    \
+    bipd_sm_to_be_reversed = setup_post_context.do(Sm, SmPostContext, 
+                                                   PostEOL_f, PostEOS_f, Sr)
+
+    if bipd_sm_to_be_reversed is None: 
+        return sm, None
+
+    elif not bipd_sm_to_be_reversed.is_DFA_compliant(): 
+        bipd_sm_to_be_reversed = beautifier.do(bipd_sm_to_be_reversed)
+
+    return sm, bipd_sm_to_be_reversed
 

@@ -14,8 +14,8 @@ def test(A, B):
     def __core(A, TailCandidate):
         print ("Pattern = " + A).replace("\n", "\\n").replace("\t", "\\t")
         print ("Tail    = " + TailCandidate).replace("\n", "\\n").replace("\t", "\\t")
-        sm0 = regex.do(A, {}).sm
-        sm1 = regex.do(TailCandidate, {}).sm
+        sm0 = regex.do(A, {}).extract_sm()
+        sm1 = regex.do(TailCandidate, {}).extract_sm()
         only_common_f, common_f = tail.do(sm0, sm1)
         print "commonality: %s; exclusive: %s; " % (common_f, only_common_f)
     print "---------------------------"

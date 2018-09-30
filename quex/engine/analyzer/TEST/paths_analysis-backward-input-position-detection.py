@@ -21,7 +21,7 @@ pattern_list = [
     'ax',        
 ]
 
-state_machine_list = map(lambda x: regex.do(x, {}).sm, pattern_list)
+state_machine_list = map(lambda x: regex.do(x, {}).extract_sm(), pattern_list)
 sm                 = combination.do(state_machine_list, False) # May be 'True' later.
 sm                 = sm.normalized_clone()
 

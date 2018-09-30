@@ -14,7 +14,7 @@ import   quex.engine.state_machine.TEST_help.many_shapes as shapes
 shapes.set_unique_transition_f()
 
 def dfa(Str): 
-    return regex.do(Str, {}, AllowNothingIsNecessaryF=True).sm
+    return regex.do(Str, {}, AllowNothingIsNecessaryF=True).extract_sm()
 
 __dfa_list = [
         DFA.Universal(),  # Matches all lexemes

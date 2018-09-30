@@ -16,7 +16,7 @@ if "--hwut-info" in sys.argv:
 def test(RE):
     print "-------------------------------------------------------------------------------"
     print "## RE:", RE
-    result = core.do(RE, {}).sm
+    result = core.do(RE, {}).extract_sm()
     ## print "## DFA:", result
     ## result = repeat.do(result, 1)
     print "## RE+ (repetition):", result.get_string(NormalizeF=True)

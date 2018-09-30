@@ -385,8 +385,10 @@ class Mode_Prep:
         #
         reload_state_forward = ReloadState(EngineType=engine.FORWARD, 
                                            dial_db=self.dial_db)
+        # PPT from loopers (skip, skip-range, indentation)
         ppt_list.collect_loopers(self.loopers, self.ca_map, 
                                  reload_state_forward) 
+
 
         self.doc_history_deletion,        \
         self.doc_history_reprioritization = \

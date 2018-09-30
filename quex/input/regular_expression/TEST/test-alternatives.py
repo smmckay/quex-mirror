@@ -14,7 +14,7 @@ if "--hwut-info" in sys.argv:
     
 def test(TestString):
     print "expression    = \"" + TestString + "\""
-    print "state machine\n", core.do(TestString, {}).sm
+    print "state machine\n", core.do(TestString, {}).extract_sm()
 
 test('"a"|"c"|"e"|"g"')
 test('"ac"|"bd"')

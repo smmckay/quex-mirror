@@ -227,7 +227,7 @@ def parse_pattern_name_definitions(fh):
             error.log("Pattern definition with pre- and/or post-context.\n" + \
                       "Pre- and Post-Contexts can only be defined inside mode definitions.", 
                       fh)
-        state_machine = pattern.sm
+        state_machine = pattern.extract_sm()
 
         blackboard.shorthand_db[pattern_name] = \
                 PatternShorthand(pattern_name, state_machine, 

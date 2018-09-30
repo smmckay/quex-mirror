@@ -213,11 +213,11 @@ class IndentationCount_Prep(CountBase_Prep):
             self.__specify_character_set(self.bad_space_character_set, 
                                          "bad", pattern, sr)
         elif identifier == "newline":    
-            self.__specify_newline(pattern.sm, sr)
+            self.__specify_newline(pattern.extract_sm(), sr)
         elif identifier == "suppressor": 
-            self.__specify_suppressor(pattern.sm, sr)
+            self.__specify_suppressor(pattern.extract_sm(), sr)
         elif identifier == "comment":    
-            self.__specify_comment(pattern.sm, sr)
+            self.__specify_comment(pattern.extract_sm(), sr)
         else:                            
             return False
         return True
@@ -589,9 +589,10 @@ def extract_trigger_set(sr, Keyword, Pattern):
             error.log("For '%s' only patterns are addmissible which\n" % Keyword + \
                       "can be matched by a single character, e.g. \" \" or [a-z].", sr)
 
-    check_can_be_matched_by_single_character(Pattern.sm)
+    sm = Pattern.extract_sm()
+    check_can_be_matched_by_single_character(sm)
 
-    transition_map = Pattern.sm.get_init_state().target_map.get_map()
+    transition_map = sm.get_init_state().target_map.get_map()
     assert len(transition_map) == 1
     return transition_map.values()[0]
 

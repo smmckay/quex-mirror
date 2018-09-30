@@ -74,7 +74,8 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
         else:         return P.finalize(CaMap).sm
     def _get_sm(P):
         if P is None: return
-        else:         return P.sm
+        else:         return P.get_cloned_sm()
+
     whitespace_set        = IndentationSetup.whitespace_character_set
     bad_space_set         = IndentationSetup.bad_space_character_set
     if True:

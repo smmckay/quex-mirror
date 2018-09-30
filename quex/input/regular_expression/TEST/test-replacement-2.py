@@ -38,7 +38,7 @@ try:
     for key, regular_expression in pattern_dict.items():
         string_stream = StringIO(regular_expression)
 
-        state_machine = core.do(string_stream, adapted_dict).sm
+        state_machine = core.do(string_stream, adapted_dict).extract_sm()
 
         adapted_dict[key] = PatternShorthand(key, state_machine)
 

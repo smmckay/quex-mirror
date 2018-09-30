@@ -29,8 +29,8 @@ def test(A, B):
     def __core(Original, Cutter):
         print ("Original = " + Original).replace("\n", "\\n").replace("\t", "\\t")
         print ("Cutter   = " + Cutter).replace("\n", "\\n").replace("\t", "\\t")
-        orig   = regex.do(Original, {}).sm
-        cutter = regex.do(Cutter, {}).sm
+        orig   = regex.do(Original, {}).extract_sm()
+        cutter = regex.do(Cutter, {}).extract_sm()
         #print orig.get_string(NormalizeF=False)
         #print cutter.get_string(NormalizeF=False)
         # result = clean(complement_end.do(orig, cutter))

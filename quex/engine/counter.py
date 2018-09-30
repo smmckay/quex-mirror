@@ -334,20 +334,6 @@ class IndentationCount_Pre:
                 PatternSuppressedNewline = cloney(self.pattern_suppressed_newline), 
                 PatternListComment       = [cloney(x) for x in self.pattern_comment_list])
 
-
-    def get_sm_newline(self):
-        return self.__get_sm(self.pattern_newline)
-
-    def get_sm_suppressed_newline(self):
-        return self.__get_sm(self.pattern_suppressed_newline)
-
-    def get_sm_comment_list(self):
-        return [ x.sm for x in self.pattern_comment_list if x.sm is not None ]
-
-    def __get_sm(self, P):
-        if P: return P.sm
-        else: return None
-
     def __str__(self):
         def cs_str(Name, Cs):
             if Cs is None: return ""
@@ -357,8 +343,9 @@ class IndentationCount_Pre:
             return msg
 
         def sm_str(Name, Pattern):
-            if Pattern is None or Pattern.sm is None: return ""
-            Sm = Pattern.sm
+            if Pattern is None: return ""
+            Sm = Pattern.get_cloned_sm()
+            if Sm is None: return ""
             msg = "%s:\n" % Name
             if Sm is None: 
                 msg += "    <none>\n"

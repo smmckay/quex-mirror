@@ -16,8 +16,8 @@ def test(A, B):
     def __core(SuperPattern, SubPattern):
         print ("super = " + SuperPattern).replace("\n", "\\n").replace("\t", "\\t")
         print ("sub   = " + SubPattern).replace("\n", "\\n").replace("\t", "\\t")
-        super_p = regex.do(SuperPattern, {}).sm
-        sub_p   = regex.do(SubPattern, {}).sm
+        super_p = regex.do(SuperPattern, {}).extract_sm()
+        sub_p   = regex.do(SubPattern, {}).extract_sm()
         result  = difference.do(super_p, sub_p)
         print "result = ", beautifier.do(difference.do(super_p, sub_p)) # .get_string(NormalizeF=False)
     print "---------------------------"

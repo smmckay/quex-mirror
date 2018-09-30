@@ -59,7 +59,7 @@ def __parse(Txt_or_File, ExtractFunction=None, Name=None, Terminator=None,
 
     # (*) Extract the object as required 
     if ExtractFunction is not None:
-        result = ExtractFunction(pattern.sm)
+        result = ExtractFunction(pattern.get_cloned_sm())
 
         if pattern.has_pre_or_post_context() or result is None:
             sh.seek(start_position)

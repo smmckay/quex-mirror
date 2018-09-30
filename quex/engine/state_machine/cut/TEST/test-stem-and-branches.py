@@ -20,7 +20,7 @@ def clean(SM):
 def test(Original):
     print "---------------------------------------------------------"
     print ("Original = " + Original).replace("\n", "\\n").replace("\t", "\\t")
-    orig   = regex.do(Original, {}, AllowNothingIsNecessaryF=True).sm
+    orig   = regex.do(Original, {}, AllowNothingIsNecessaryF=True).extract_sm()
     print
     print "Head"
     print "    " + clean(stem_and_branches.stem(orig)).replace("\n", "\n    ")

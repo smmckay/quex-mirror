@@ -15,7 +15,7 @@ def test(TestString):
     TestString = TestString.replace("\n", "\\n").replace("\t", "\\t")
     TestString = "%s" % TestString
     print ("RE:     " + TestString).replace("\n", "\\n").replace("\t", "\\t")
-    sm = core.do(TestString, {}, AllowNothingIsNecessaryF=True).sm
+    sm = core.do(TestString, {}, AllowNothingIsNecessaryF=True).extract_sm()
     # print "#sm:", sm
     print ("result: %s" % sm.longest_path_to_first_acceptance())
 

@@ -19,8 +19,8 @@ def test(A_str, B_str):
     print ("B = " + B_str).replace("\n", "\\n").replace("\t", "\\t")
     print "---------------------------"
 
-    A = regex.do(A_str, {}).sm
-    B = regex.do(B_str, {}).sm
+    A = regex.do(A_str, {}).extract_sm()
+    B = regex.do(B_str, {}).extract_sm()
 
     # Determine lexeme set before union (possible modification)
     ## set0 = lexeme_set.get(A)

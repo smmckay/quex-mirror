@@ -532,15 +532,14 @@ class PPT_List(list):
             
     def _match_indentation_counter_newline_pattern(self, indentation_handler, CloserPattern):
 
-        if   indentation_handler                    is None: return False
-        elif indentation_handler.pattern_newline.sm is None: return False
-        elif CloserPattern                          is None: return False
+        if indentation_handler is None or CloserPattern is None: return False
 
-        assert CloserPattern.sm is not None
-        ## elif CloserPattern.sm                       is None: return False
+        inewline_sm = indentation_handler.pattern_newline.get_cloned_sm()
+        closer_sm   = CloserPattern.get_cloned_sm()
+        if inewline_sm is None or closer_sm is None: return False
 
         only_common_f, \
-        common_f       = tail.do(indentation_handler.pattern_newline.sm, CloserPattern.sm)
+        common_f       = tail.do(inewline_sm, closer_sm)
 
         error_check.tail(only_common_f, common_f, 
                         "indentation handler's newline", indentation_handler.pattern_newline.sr, 
@@ -572,12 +571,16 @@ def check_indentation_setup(isetup):
        too confusing.
     """
     candidates = [
-        isetup.get_sm_newline(),
-        isetup.get_sm_suppressed_newline(),
+        isetup.pattern_newline.get_cloned_sm(),
     ]
-    candidates.extend(
-        isetup.get_sm_comment_list()
-    )
+    if isetup.pattern_suppressed_newline is not None:
+        candidates.append(
+            isetup.pattern_suppressed_newline.get_cloned_sm()
+        )
+    if isetup.pattern_comment_list:
+        candidates.extend([
+            p.get_cloned_sm() for p in isetup.pattern_comment_list
+        ])
     candidates = tuple(x for x in candidates if x is not None)
 
     def mutually_subset(Sm1, Sm2):

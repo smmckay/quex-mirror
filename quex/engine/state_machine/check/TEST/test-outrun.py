@@ -15,8 +15,8 @@ def test(A, B):
     def __core(Pattern0, Pattern1):
         print ("Pattern A = " + Pattern0).replace("\n", "\\n").replace("\t", "\\t")
         print ("Pattern B = " + Pattern1).replace("\n", "\\n").replace("\t", "\\t")
-        sm0 = regex.do(Pattern0, {}).sm
-        sm1 = regex.do(Pattern1, {}).sm
+        sm0 = regex.do(Pattern0, {}).extract_sm()
+        sm1 = regex.do(Pattern1, {}).extract_sm()
         print "claim     = ", outrun_check.do(sm0, sm1)
     print "---------------------------"
     __core(A, B)

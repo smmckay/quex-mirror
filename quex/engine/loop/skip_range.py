@@ -71,7 +71,7 @@ def _get_state_machine_vs_terminal_list(CloserPattern, dial_db, DoorIdExit):
 
     The list contains only one single element.
     """
-    sm            = CloserPattern.sm.clone(StateMachineId=dial.new_incidence_id())
+    sm            = CloserPattern.get_cloned_sm(StateMachineId=dial.new_incidence_id())
     code          = [ Lng.GOTO(DoorIdExit, dial_db) ]
     mini_terminal = loop.MiniTerminal(code, "<SKIP RANGE TERMINATED>", sm.get_id())
     return [ (sm, mini_terminal) ]

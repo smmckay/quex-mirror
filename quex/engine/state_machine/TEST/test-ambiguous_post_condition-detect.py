@@ -19,13 +19,13 @@ def __test(RE_Core, RE_PostCondition):
     string_stream_PostCondition = StringIO(RE_PostCondition)
 
     try:
-        core_sm           = regex.do(string_stream_Core, {}).sm
+        core_sm           = regex.do(string_stream_Core, {}).extract_sm()
     except RegularExpressionException, x:
         print "Core Pattern:\n" + repr(x)
         return
 
     try:
-        post_context_sm = regex.do(string_stream_PostCondition, {}).sm
+        post_context_sm = regex.do(string_stream_PostCondition, {}).extract_sm()
     except RegularExpressionException, x:
         print "Post Condition Pattern:\n" + repr(x)
         return

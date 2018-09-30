@@ -24,7 +24,7 @@ def test(A_str):
     print "_____________________________________________________________________"
     if isinstance(A_str, (str, unicode)):
         print ("A = " + A_str).replace("\n", "\\n").replace("\t", "\\t")
-        sm = regex.do(A_str, {}).sm
+        sm = regex.do(A_str, {}).extract_sm()
     else:
         sm = A_str
         print "A = ", sm

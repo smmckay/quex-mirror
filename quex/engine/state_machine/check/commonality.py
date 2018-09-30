@@ -32,7 +32,7 @@ def do(A, B):
     # NOTE: Post-conditions do not change anything, since they match only when the whole
     #       lexeme has matched (from begin to end of post condition). Post-conditions only
     #       tell something about the place where the analyzer returns after the match.
-    result = __core(A.sm, B.sm)
+    result = __core(A.borrow_sm(), B.borrow_sm())
 
     if result == E_Commonality.NONE: return E_Commonality.NONE
 

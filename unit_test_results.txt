@@ -981,12 +981,12 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ................................................[OK]
+        svn-status.sh ..............................................[FAIL]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .....................................[FAIL]
+                          real .......................................[OK]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
@@ -1003,8 +1003,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] function-check.sh _ real
-    [FAIL] pyflakes-check.sh
+    [FAIL] svn-status.sh
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1335,9 +1334,6 @@ quex/TESTS/misc/TEST                                                 <no date>
                                             PRE_X_PC .................[OK]
  * Customized codec files (option --encoding-file)
         customized_codec.sh ..........................................[OK]
- * Exception occurred -- please, report a bug under
-        line-number-pragma.sh qx .....................................[OK]
-                              source .................................[OK]
  * FSM DFA_State Tracer
         debug_show.sh ................................................[OK]
  * Inadmissible commonalities
@@ -1356,6 +1352,9 @@ quex/TESTS/misc/TEST                                                 <no date>
         cmake-example.sh .............................................[OK]
  * Test code comments
         comment.sh ...................................................[OK]
+ * Testing the implementation of line number pragmas
+        line-number-pragma.sh qx .....................................[OK]
+                              source .................................[OK]
 
  * Challenges with Buffer Size 5:
 
@@ -3429,7 +3428,7 @@ SUMMARY:
            56      [OK] ..../Cpp/TEST                                                 
            2       [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        2  10    [FAIL] ........../code/TEST                                          
+        1  10    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            5       [OK] ........../did-you-mean/TEST                                  
            2       [OK] ........../documentation/TEST                                 
@@ -3486,11 +3485,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____           
-    |  ___|_ _(_) |___     |___  |    __  __
-    | |_ / _` | | / __|       / /     \ \/ /
-    |  _| (_| | | \__ \      / /       >  < 
-    |_|  \__,_|_|_|___/     /_/       /_/\_\
+     _____     _ _           __             
+    |  ___|_ _(_) |___      / /_      __  __
+    | |_ / _` | | / __|    | '_ \     \ \/ /
+    |  _| (_| | | \__ \    | (_) |     >  < 
+    |_|  \__,_|_|_|___/     \___/     /_/\_\
                                                                    (1728 tests)
 
 ===============================================================================

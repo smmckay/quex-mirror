@@ -60,7 +60,7 @@ def unary_checks(Q, operation):
 def parse_REs(A_txt, B_txt):
     print ("Original = " + A_txt).replace("\n", "\\n").replace("\t", "\\t")
     print ("Cutter   = " + B_txt).replace("\n", "\\n").replace("\t", "\\t")
-    A = regex.do(A_txt, {}).sm
-    B = regex.do("%s" % B_txt, {}).sm
+    A = regex.do(A_txt, {}).extract_sm()
+    B = regex.do("%s" % B_txt, {}).extract_sm()
     return A, B
 
