@@ -283,23 +283,16 @@ class Pattern_Prep(object):
         else: 
             lcci = None
 
-        if True: function = old_school
-        else:    function = new_school
-
-        ## self.__sm                            = self.__sm.clone()
-        ## jself.__pre_context_sm_to_be_reversed = self.__pre_context_sm_to_be_reversed.clone()
-        ## jself.__post_context_sm               = self.__post_context_sm.clone()
-
         sm_main,                       \
         sm_pre_context_to_be_reversed, \
-        sm_bipd_to_be_reversed         = function(self.__sm,
-                                                  self.__pre_context_sm_to_be_reversed,
-                                                  self.__pre_context_begin_of_line_f,
-                                                  self.__pre_context_begin_of_stream_f,
-                                                  self.__post_context_sm,
-                                                  self.__post_context_end_of_line_f,
-                                                  self.__post_context_end_of_stream_f,
-                                                  self.__sr)
+        sm_bipd_to_be_reversed         = _prepare_state_machines_new_school(self.__sm,
+                                                                 self.__pre_context_sm_to_be_reversed,
+                                                                 self.__pre_context_begin_of_line_f,
+                                                                 self.__pre_context_begin_of_stream_f,
+                                                                 self.__post_context_sm,
+                                                                 self.__post_context_end_of_line_f,
+                                                                 self.__post_context_end_of_stream_f,
+                                                                 self.__sr)
 
 
         self.__mark_dysfunctional()
@@ -323,40 +316,13 @@ class Pattern_Prep(object):
         self.__pre_context_begin_of_stream_f = None
         self.__finalized_f                   = True
 
-def old_school(Sm, PreSm, PreBolF, PreBosF, PostSm, PostEolF, PostEosF, Sr):
-    # (*) Transform all state machines into buffer encoding _______________
-    #     => may change state machine id 
-    #     => backup the original id and restore later
-    original_incidence_id = Sm.get_id()
-
-    ok0, sm_main                       = Setup.buffer_encoding.do_state_machine(Sm) 
-    ok1, sm_pre_context_to_be_reversed = Setup.buffer_encoding.do_state_machine(PreSm) 
-    ok2, sm_post_context               = Setup.buffer_encoding.do_state_machine(PostSm) 
-    if not (ok0 and ok1 and ok2):
-        error.warning("Pattern contains elements not found in engine codec '%s'.\n" % Setup.buffer_encoding.name \
-                      + "(Buffer element size is %s [byte])" % Setup.lexatom.size_in_byte,
-                      Sr)
-
-    sm_main.set_id(original_incidence_id)
-    #______________________________________________________________________
-
-    # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
-    sm_main, \
-    sm_bipd_to_be_reversed = __finalize_mount_post_context_sm(sm_main, sm_post_context,
-                                                              PostEolF, PostEosF, Sr) 
-    sm_pre_context_to_be_reversed = setup_pre_context.do(sm_main, 
-                                                         sm_pre_context_to_be_reversed, 
-                                                         PreBolF, PreBosF) 
-
-    return sm_main, sm_pre_context_to_be_reversed, sm_bipd_to_be_reversed
-
-def new_school(Sm, PreSm, PreBolF, PreBosF, PostSm, PostEolF, PostEosF, Sr):
+def _prepare_state_machines_new_school(Sm, PreSm, PreBolF, PreBosF, PostSm, PostEolF, PostEosF, Sr):
     # backup the original id and restore later
     original_incidence_id = Sm.get_id()
 
     # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
-    sm_main, \
-    sm_bipd_to_be_reversed = __finalize_mount_post_context_sm(Sm, PostSm, PostEolF, PostEosF, Sr)
+    sm_main,                      \
+    sm_bipd_to_be_reversed        = _finalize_mount_post_context_sm(Sm, PostSm, PostEolF, PostEosF, Sr)
     sm_pre_context_to_be_reversed = setup_pre_context.do(sm_main, PreSm, PreBolF, PreBosF)
 
     # (*) Transform all state machines into buffer encoding _______________
@@ -369,12 +335,24 @@ def new_school(Sm, PreSm, PreBolF, PreBosF, PostSm, PostEolF, PostEosF, Sr):
                       + "(Buffer element size is %s [byte])" % Setup.lexatom.size_in_byte,
                       Sr)
 
+    if False:
+        # This should NOT be necessary! <fschaef 18y10m01d>
+        sm_main = beautifier.do(sm_main)
+        if sm_pre_context_to_be_reversed:
+            backup_sm_id = sm_pre_context_to_be_reversed.get_id()
+            sm_pre_context_to_be_reversed = beautifier.do(sm_pre_context_to_be_reversed)
+            sm_pre_context_to_be_reversed.set_id(backup_sm_id)
+        if sm_bipd_to_be_reversed:
+            backup_sm_id = sm_bipd_to_be_reversed.get_id()
+            sm_bipd_to_be_reversed = beautifier.do(sm_bipd_to_be_reversed)
+            sm_bipd_to_be_reversed.set_id(backup_sm_id)
+
     sm_main.set_id(original_incidence_id)
     #______________________________________________________________________
 
     return sm_main, sm_pre_context_to_be_reversed, sm_bipd_to_be_reversed
 
-def __finalize_mount_post_context_sm(Sm, SmPostContext, PostEOL_f, PostEOS_f, Sr):
+def _finalize_mount_post_context_sm(Sm, SmPostContext, PostEOL_f, PostEOS_f, Sr):
     # In case of a 'trailing post context' a 'bipd_sm' may be provided
     # to detect the input position after match in backward direction.
     # BIPD = backward input position detection.

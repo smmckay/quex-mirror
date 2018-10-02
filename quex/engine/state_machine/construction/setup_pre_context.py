@@ -2,6 +2,7 @@
 #     ABSOLUTELY NO WARRANTY
 import quex.engine.state_machine.construction.sequentialize      as     sequentialize
 from   quex.engine.state_machine.construction.setup_post_context import DFA_Newline
+import quex.engine.state_machine.algorithm.beautifier            as     beautifier
 import quex.engine.misc.error                                    as     error
 from   quex.constants                                            import E_AcceptanceCondition
 from   quex.blackboard                                           import setup as Setup
@@ -45,7 +46,10 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamP
         return None
 
     if BeginOfLinePreContextF:
-        pre_context_sm = sequentialize.do([DFA_Newline(), pre_context_sm])
+        new_pre_context_sm = DFA_Newline()
+        sequentialize.do([new_pre_context_sm, pre_context_sm], 
+                         MountToFirstStateMachineF=True)
+        pre_context_sm = beautifier.do(new_pre_context_sm)
 
     # (*) Once an acceptance state is reached no further analysis is necessary.
     ## stem_and_branches.prune_branches(reverse_pre_context)

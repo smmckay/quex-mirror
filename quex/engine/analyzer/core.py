@@ -52,6 +52,7 @@ from   quex.engine.operations.operation_list        import Op, \
 import quex.engine.analyzer.mega_state.analyzer     as     mega_state_analyzer
 import quex.engine.analyzer.position_register_map   as     position_register_map
 import quex.engine.analyzer.engine_supply_factory   as     engine
+import quex.engine.state_machine.construction.combination as     combination
 
 from   quex.engine.state_machine.core               import DFA
 from   quex.engine.state_machine.state.single_entry import SeAccept      
@@ -72,16 +73,28 @@ import itertools
 from   operator         import attrgetter, itemgetter
 
 @typed(dial_db=DialDB)
-def do(SM, EngineType=engine.FORWARD, 
+def do(SmOrSmList, EngineType=engine.FORWARD, 
        ReloadStateExtern=None, OnBeforeReload=None, OnAfterReload=None, 
        OnBeforeEntry=None, 
        dial_db=None, OnReloadFailureDoorId=None, CutF=True, ReverseF=False, Sr=-1):
     assert dial_db is not None
 
-    if ReverseF:
-        backup_id = SM.get_id()
-        SM = reverse.do(SM, EnsureDFA_f=True)
-        SM.set_id(backup_id)
+    if type(SmOrSmList) != list:
+        SM = SmOrSmList
+        if ReverseF:
+            backup_id = SM.get_id()
+            SM = reverse.do(SM, EnsureDFA_f=True)
+            SM.set_id(backup_id)
+    else:
+        sm_list = []
+        if ReverseF:
+            for sm in SmOrSmList:
+                backup_sm_id = sm.get_id()
+                reversed_sm = reverse.do(sm)
+                reversed_sm.set_id(backup_sm_id)
+                sm_list.append(reversed_sm)
+
+        SM = combination.do(sm_list, FilterDominatedOriginsF=False)
 
     if CutF:
         error_name = SM.delete_named_number_list(signal_lexatoms(Setup)) 

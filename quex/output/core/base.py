@@ -56,7 +56,7 @@ def do_main(SM, ReloadStateForward, dial_db):
 
     return txt, analyzer
 
-def do_pre_context(SM, PreContextSmIdList, dial_db):
+def do_pre_context(PreContextSmToBeReversedList, PreContextSmIdList, dial_db):
     """Pre-context detecting state machine (backward).
     ---------------------------------------------------------------------------
     Micro actions are: pre-context fullfilled_f
@@ -73,10 +73,11 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
              [1] reload state BACKWARD, to be generated later.
     """
 
-    if SM is None: return [], None
+    if not PreContextSmToBeReversedList: return [], None
 
     analyzer_txt, \
-    analyzer      = __do_state_machine(SM, engine.BACKWARD_PRE_CONTEXT, dial_db) 
+    analyzer      = __do_state_machine(PreContextSmToBeReversedList, engine.BACKWARD_PRE_CONTEXT, 
+                                       dial_db, ReverseF=True) 
 
     epilog_txt    = _get_pre_context_epilog_definition(dial_db)
 
@@ -173,23 +174,25 @@ def do_variable_definitions():
     # Following function refers to the global 'variable_db'
     return Lng.VARIABLE_DEFINITIONS(variable_db)
 
-def __do_state_machine(sm, EngineType, dial_db, ReloadStateForward=None, ReverseF=False): 
+def __do_state_machine(SmOrSmList, EngineType, dial_db, ReloadStateForward=None, ReverseF=False): 
     """Generates code for state machine 'sm' and the 'EngineType'.
 
     RETURNS: list of strings
     """
-    assert len(sm.get_orphaned_state_index_list()) == 0
+    assert type(SmOrSmList) == list or len(SmOrSmList.get_orphaned_state_index_list()) == 0
+
+    # -- Analyze state machine --> optimized version
+    analyzer = analyzer_generator.do(SmOrSmList, EngineType, 
+                                     ReloadStateExtern = ReloadStateForward, 
+                                     dial_db           = dial_db,
+                                     ReverseF          = ReverseF)
 
     txt = []
     # -- [optional] comment state machine transitions 
     if Setup.comment_state_machine_f: 
-        Lng.COMMENT_STATE_MACHINE(txt, sm)
-
-    # -- Analyze state machine --> optimized version
-    analyzer = analyzer_generator.do(sm, EngineType, 
-                                     ReloadStateExtern = ReloadStateForward, 
-                                     dial_db           = dial_db,
-                                     ReverseF          = ReverseF)
+        if type(SmOrSmList) != list: SmOrSmList = [ SmOrSmList ]
+        for sm in SmOrSmList:
+            Lng.COMMENT_STATE_MACHINE(txt, sm)
 
     # -- Generate code for analyzer
     txt.extend(

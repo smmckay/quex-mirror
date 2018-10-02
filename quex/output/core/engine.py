@@ -63,7 +63,7 @@ def do_core(Mode):
     # (*) Pre Context DFA
     #     (If present: All pre-context combined in single backward analyzer.)
     pre_context,         \
-    pre_analyzer         = generator.do_pre_context(Mode.pre_context_sm,
+    pre_analyzer         = generator.do_pre_context(Mode.pre_context_sm_to_be_reversed_list,
                                                     Mode.pre_context_sm_id_list,
                                                     dial_db)
     # assert all_isinstance(pre_context, (IfDoorIdReferencedCode, int, str, unicode))

@@ -1,6 +1,7 @@
 import quex.engine.state_machine.algebra.reverse as reverse
 from   quex.engine.misc.file_operations import write_safely_and_close
 from   quex.blackboard                  import setup as Setup
+import quex.engine.state_machine.construction.combination as     combination
 
 class Generator:
     def __init__(self, Mode):
@@ -18,8 +19,10 @@ class Generator:
 
         self.__do(self.mode.sm, self.file_name_main, Option)
 
-        if self.mode.pre_context_sm is not None:
-            self.__do(self.mode.pre_context_sm, self.file_name_pre_context, Option)
+        if self.mode.pre_context_sm_to_be_reversed_list:
+            sm_list = [ reverse.do(sm) for sm in self.mode.pre_context_sm_to_be_reversed_list ]
+            sm = combination.do(sm_list, FilterDominatedOriginsF=False)
+            self.__do(sm, self.file_name_pre_context, Option)
 
         if len(self.mode.bipd_sm_to_be_reversed_db) != 0:
             for sm in self.mode.bipd_sm_to_be_reversed_db.itervalues():

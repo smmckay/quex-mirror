@@ -1,7 +1,6 @@
 from   quex.input.code.base                               import SourceRef
 from   quex.engine.misc.tools                             import typed
 import quex.engine.state_machine.construction.combination as     combination
-import quex.engine.state_machine.algebra.reverse          as     reverse
 
 class BasicMode:
     """Very basic information about a 'Mode'. Basically, only use the 
@@ -10,14 +9,25 @@ class BasicMode:
     def __init__(self, Name, PatternList):
         self.name = Name
 
-        self.sm,                        \
-        self.pre_context_sm,            \
-        self.bipd_sm_to_be_reversed_db, \
-        self.pre_context_sm_id_list     = self.__prepare(PatternList)
+        self.sm,                                 \
+        self.pre_context_sm_to_be_reversed_list, \
+        self.bipd_sm_to_be_reversed_db,          \
+        self.pre_context_sm_id_list              = self.__prepare(PatternList)
 
     def longest_pre_context(self):
-        if not self.pre_context_sm: return 0
-        return self.pre_context_sm.longest_path_to_first_acceptance()
+        """RETURNS: None, if length is arbitrary.
+                    N >= 0, maximum length of pre-context.
+        """
+        if not self.pre_context_sm_to_be_reversed_list: 
+            return 0
+        else:
+            length_list = [
+                sm.longest_path_to_first_acceptance()
+                for sm in self.pre_context_sm_to_be_reversed_list
+            ]
+            if None in length_list: return None
+            return max(length for length in length_list)
+                
 
     def __prepare(self, PatternList):
         # -- setup of state machine lists and id lists
@@ -25,20 +35,12 @@ class BasicMode:
         pre_context_sm_to_be_reversed_list,          \
         incidence_id_and_bipd_sm_to_be_reversed_list = self.__prepare_sm_lists(PatternList)
 
-        pre_context_sm_list = []
-        for sm in pre_context_sm_to_be_reversed_list:
-            backup_sm_id = sm.get_id()
-            reversed_sm = reverse.do(sm)
-            reversed_sm.set_id(backup_sm_id)
-            pre_context_sm_list.append(reversed_sm)
-
         # (*) Create (combined) state machines
         #     Backward input position detection (bipd) remains separate engines.
         return combination.do(core_sm_list),                  \
-               combination.do(pre_context_sm_list,            \
-                              FilterDominatedOriginsF=False), \
+               pre_context_sm_to_be_reversed_list, \
                dict((incidence_id, sm) for incidence_id, sm in incidence_id_and_bipd_sm_to_be_reversed_list), \
-               [ sm.get_id() for sm in pre_context_sm_list ]
+               [ sm.get_id() for sm in pre_context_sm_to_be_reversed_list ]
 
     def __prepare_sm_lists(self, PatternList):
         # -- Core state machines of patterns
