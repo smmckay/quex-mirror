@@ -277,28 +277,31 @@ class Pattern_Prep(object):
 
         # Count information must be determined BEFORE transformation!
         if CaMap is not None:
-            lcci = SmLineColumnCountInfo.from_DFA(CaMap, self.__sm, 
+            lcci = SmLineColumnCountInfo.from_DFA(CaMap, self.__sm.clone(), 
                                                   self.pre_context_trivial_begin_of_line_f, 
                                                   Setup.buffer_encoding)
         else: 
             lcci = None
 
-        sm_main,                       \
-        sm_pre_context_to_be_reversed, \
-        sm_bipd_to_be_reversed         = _prepare_state_machines_new_school(self.__sm,
-                                                                 self.__pre_context_sm_to_be_reversed,
-                                                                 self.__pre_context_begin_of_line_f,
-                                                                 self.__pre_context_begin_of_stream_f,
-                                                                 self.__post_context_sm,
-                                                                 self.__post_context_end_of_line_f,
-                                                                 self.__post_context_end_of_stream_f,
-                                                                 self.__sr)
+        original_incidence_id = self.__sm.get_id()
 
+        # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
+        sm_main,                      \
+        sm_bipd_to_be_reversed        = _finalize_mount_post_context_sm(self.__sm, 
+                                                                        self.__post_context_sm, 
+                                                                        self.__post_context_end_of_line_f, 
+                                                                        self.__post_context_end_of_stream_f, 
+                                                                        self.__sr)
+        sm_pre_context_to_be_reversed = setup_pre_context.do(sm_main, 
+                                                             self.__pre_context_sm_to_be_reversed, 
+                                                             self.__pre_context_begin_of_line_f, 
+                                                             self.__pre_context_begin_of_stream_f)
+
+        sm_main.set_id(original_incidence_id)
 
         self.__mark_dysfunctional()
 
-        return Pattern(sm_main.get_id(), 
-                       sm_main, 
+        return Pattern(sm_main, 
                        sm_pre_context_to_be_reversed, 
                        sm_bipd_to_be_reversed,
                        lcci, 
@@ -315,42 +318,6 @@ class Pattern_Prep(object):
         self.__pre_context_begin_of_line_f   = None
         self.__pre_context_begin_of_stream_f = None
         self.__finalized_f                   = True
-
-def _prepare_state_machines_new_school(Sm, PreSm, PreBolF, PreBosF, PostSm, PostEolF, PostEosF, Sr):
-    # backup the original id and restore later
-    original_incidence_id = Sm.get_id()
-
-    # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
-    sm_main,                      \
-    sm_bipd_to_be_reversed        = _finalize_mount_post_context_sm(Sm, PostSm, PostEolF, PostEosF, Sr)
-    sm_pre_context_to_be_reversed = setup_pre_context.do(sm_main, PreSm, PreBolF, PreBosF)
-
-    # (*) Transform all state machines into buffer encoding _______________
-
-    ok0, sm_main                       = Setup.buffer_encoding.do_state_machine(sm_main) 
-    ok1, sm_pre_context_to_be_reversed = Setup.buffer_encoding.do_state_machine(sm_pre_context_to_be_reversed) 
-    ok2, sm_bipd_to_be_reversed        = Setup.buffer_encoding.do_state_machine(sm_bipd_to_be_reversed) 
-    if not (ok0 and ok1 and ok2):
-        error.warning("Pattern contains elements not found in engine codec '%s'.\n" % Setup.buffer_encoding.name \
-                      + "(Buffer element size is %s [byte])" % Setup.lexatom.size_in_byte,
-                      Sr)
-
-    if False:
-        # This should NOT be necessary! <fschaef 18y10m01d>
-        sm_main = beautifier.do(sm_main)
-        if sm_pre_context_to_be_reversed:
-            backup_sm_id = sm_pre_context_to_be_reversed.get_id()
-            sm_pre_context_to_be_reversed = beautifier.do(sm_pre_context_to_be_reversed)
-            sm_pre_context_to_be_reversed.set_id(backup_sm_id)
-        if sm_bipd_to_be_reversed:
-            backup_sm_id = sm_bipd_to_be_reversed.get_id()
-            sm_bipd_to_be_reversed = beautifier.do(sm_bipd_to_be_reversed)
-            sm_bipd_to_be_reversed.set_id(backup_sm_id)
-
-    sm_main.set_id(original_incidence_id)
-    #______________________________________________________________________
-
-    return sm_main, sm_pre_context_to_be_reversed, sm_bipd_to_be_reversed
 
 def _finalize_mount_post_context_sm(Sm, SmPostContext, PostEOL_f, PostEOS_f, Sr):
     # In case of a 'trailing post context' a 'bipd_sm' may be provided

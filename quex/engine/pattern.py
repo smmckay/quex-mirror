@@ -28,9 +28,8 @@ class Pattern:
             number upon match of this pattern.
     """
     @typed(LCCI=(None, SmLineColumnCountInfo), PatternString=(str,unicode), Sr=SourceRef)
-    def __init__(self, IncidenceId, Sm, PreContextSmToBeReversed, BipdSmTobeReversed, LCCI, PatternString, Sr):
-        assert IncidenceId == Sm.get_id()
-        self.incidence_id           = IncidenceId
+    def __init__(self, Sm, PreContextSmToBeReversed, BipdSmTobeReversed, LCCI, PatternString, Sr):
+        self.incidence_id           = Sm.get_id()
         self.sm                     = Sm
         self.sm_pre_context_to_be_reversed = PreContextSmToBeReversed
         self.sm_bipd_to_be_reversed        = BipdSmTobeReversed
@@ -41,8 +40,7 @@ class Pattern:
 
     @staticmethod
     def from_character_set(CharacterSet, StateMachineId, Sr, LCCI=None, PatternString="<character set>"):
-        return Pattern(StateMachineId, 
-                       DFA.from_character_set(CharacterSet, StateMachineId), 
+        return Pattern(DFA.from_character_set(CharacterSet, StateMachineId),
                        PreContextSmToBeReversed = None,
                        BipdSmTobeReversed = None, 
                        LCCI          = LCCI,
@@ -69,6 +67,8 @@ class Pattern:
         new_sm = self.sm.clone(StateMachineId=NewIncidenceId)
         if PatternString is None: pattern_string = self.__pattern_string
         else:                     pattern_string = PatternString
-        return Pattern(new_sm.get_id(), new_sm, self.sm_pre_context_to_be_reversed, 
+
+        return Pattern(new_sm, 
+                       self.sm_pre_context_to_be_reversed, 
                        self.sm_bipd_to_be_reversed,
                        self.lcci, pattern_string, self.sr)

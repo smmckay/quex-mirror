@@ -79,21 +79,23 @@ def do(SmOrSmList, EngineType=engine.FORWARD,
        dial_db=None, OnReloadFailureDoorId=None, CutF=True, ReverseF=False, Sr=-1):
     assert dial_db is not None
 
-    if type(SmOrSmList) != list:
-        SM = SmOrSmList
-        if ReverseF:
-            backup_id = SM.get_id()
-            SM = reverse.do(SM, EnsureDFA_f=True)
-            SM.set_id(backup_id)
-    else:
-        sm_list = []
-        if ReverseF:
-            for sm in SmOrSmList:
-                backup_sm_id = sm.get_id()
-                reversed_sm = reverse.do(sm)
-                reversed_sm.set_id(backup_sm_id)
-                sm_list.append(reversed_sm)
+    def treat(sm, ReverseF):
+        backup_id = sm.get_id()
+        ok_f, sm = Setup.buffer_encoding.do_state_machine(sm) 
+        if not ok_f:
+            error.warning("Pattern contains elements not found in engine codec '%s'.\n" % Setup.buffer_encoding.name \
+                          + "(Buffer element size is %s [byte])" % Setup.lexatom.size_in_byte,
+                          Sr)
 
+        if ReverseF:
+            sm = reverse.do(sm, EnsureDFA_f=True)
+        sm.set_id(backup_id)
+        return sm
+
+    if type(SmOrSmList) != list:
+        SM = treat(SmOrSmList, ReverseF)
+    else:
+        sm_list = [ treat(sm, ReverseF) for sm in SmOrSmList ]
         SM = combination.do(sm_list, FilterDominatedOriginsF=False)
 
     if CutF:

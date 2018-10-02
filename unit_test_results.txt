@@ -61,11 +61,11 @@ TEST                                                                 <no date>
  * clemwang:
 
     3474524 0.62.3 Escape characters in --language dot plot of [:space:]
-        bug-3474524.sh ...............................................[OK]
+        bug-3474524.sh .............................................[FAIL]
     3478018 0.62.3 errmsg about missing { when missing }
         bug-3478018.sh ...............................................[OK]
     3479354 Reversed (right to left) Pattern Definition
-        bug-3479354.sh ...............................................[OK]
+        bug-3479354.sh .............................................[FAIL]
     3485516 0.60.1 0.60.1 Exception Handling Disorder
         bug-3485516.sh ...............................................[OK]
     3486388 0.61.2 Need better errmsg when incorrectly using 2 Lexers at once
@@ -141,7 +141,7 @@ TEST                                                                 <no date>
         bug-2209142.sh error .........................................[OK]
                        good ..........................................[OK]
     2277660 character count pre-determination
-        bug-2277660.sh ...............................................[OK]
+        bug-2277660.sh .............................................[FAIL]
     2349109 0.33.5 Line and Column number counts with Set skippers
         bug-2349109.sh newline-skipper ...............................[OK]
                        newline-skipper-utf8 ..........................[OK]
@@ -171,7 +171,7 @@ TEST                                                                 <no date>
  * inhenriksen:
 
     3164355 C with whitespace character gives bad exception
-        bug-3164355.sh ...............................................[OK]
+        bug-3164355.sh .............................................[FAIL]
 
  * jdavidberger:
 
@@ -181,7 +181,7 @@ TEST                                                                 <no date>
  * jmarsik:
 
     0.58.2 history effect in UCS database interface: 3235790
-        bug-3235790.sh ...............................................[OK]
+        bug-3235790.sh .............................................[FAIL]
     3115741 0.55.4 move_backward triggers assert
         bug-3115741.sh general .......................................[OK]
                        undo-line-colum-count .........................[OK]
@@ -249,7 +249,7 @@ TEST                                                                 <no date>
     2891125 0.45.1 bug in -- version
         bug-2891125.sh ...............................................[OK]
     2894648 0.46.2 Backslashed . is unknown to quex
-        bug-2894648.sh ...............................................[OK]
+        bug-2894648.sh .............................................[FAIL]
 
  * ollydbg:
 
@@ -314,7 +314,7 @@ TEST                                                                 <no date>
  * remcobloemen1:
 
     3295781 Duplicate label with Template and Path Compression
-        bug-3295781.sh ...............................................[OK]
+        bug-3295781.sh .............................................[FAIL]
 
  * rmanoj-oss:
 
@@ -345,7 +345,7 @@ TEST                                                                 <no date>
     1885846 Empty RE in define section
         bug-1885846.sh ...............................................[OK]
     1885855 P{ ...} syntax does not work outside of [:...:]
-        bug-1885855.sh ...............................................[OK]
+        bug-1885855.sh .............................................[FAIL]
     1887163 Single state mode causes quex to crash
         bug-1887163.sh ...............................................[OK]
     1889086 Single state mode causes quex to crash
@@ -496,6 +496,14 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] bug-3474524.sh
+    [FAIL] bug-3479354.sh
+    [FAIL] bug-2277660.sh
+    [FAIL] bug-3164355.sh
+    [FAIL] bug-3235790.sh
+    [FAIL] bug-2894648.sh
+    [FAIL] bug-3295781.sh
+    [FAIL] bug-1885855.sh
     [FAIL] bug-1889892.sh
 ===============================================================================
                                                                                
@@ -1331,9 +1339,9 @@ quex/TESTS/misc/TEST                                                 <no date>
                                             PRE_X_DTC ................[OK]
                                             PRE_X_PC .................[OK]
  * Customized codec files (option --encoding-file)
-        customized_codec.sh ..........................................[OK]
+        customized_codec.sh ........................................[FAIL]
  * FSM DFA_State Tracer
-        debug_show.sh ................................................[OK]
+        debug_show.sh ..............................................[FAIL]
  * Inadmissible commonalities
         commonality.sh indentation-newline ...........................[OK]
                        mix ...........................................[OK]
@@ -1370,10 +1378,13 @@ quex/TESTS/misc/TEST                                                 <no date>
                                                      PRE_X ...........[OK]
                                                      PRE_X_DTC .......[OK]
                                                      PRE_X_PC ........[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] customized_codec.sh
+    [FAIL] debug_show.sh
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -2018,7 +2029,7 @@ quex/input/regular_expression/TEST                                   <no date>
                            3 .........................................[OK]
                            special ...................................[OK]
  * Transformations
-        test-transformation.py .......................................[OK]
+        test-transformation.py .....................................[FAIL]
 
  * Backslashed Characters:
 
@@ -2071,10 +2082,12 @@ quex/input/regular_expression/TEST                                   <no date>
         test-properties-2.py .........................................[OK]
     Simple
         test-properties.py ...........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] test-transformation.py
 ===============================================================================
                                                                                
                              Output Core Generator                             
@@ -3421,7 +3434,7 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        1  240   [FAIL] TEST                                                          
+        9  240   [FAIL] TEST                                                          
            56      [OK] demo/C/TEST                                                   
            56      [OK] ..../Cpp/TEST                                                 
            2       [OK] ..../TEST                                                     
@@ -3438,7 +3451,7 @@ SUMMARY:
            21      [OK] ........../indentation_count/TEST                             
            6       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-           33      [OK] ........../misc/TEST                                          
+        2  33    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            14      [OK] ........../source-package/TEST                                
            5       [OK] ........../token-class/TEST                                   
@@ -3476,18 +3489,18 @@ SUMMARY:
            62      [OK] ........................./transformation/TEST                 
            58      [OK] ..../input/TEST                                               
            2       [OK] ........../files/TEST                                         
-           27      [OK] ........../regular_expression/TEST                            
+        1  27    [FAIL] ........../regular_expression/TEST                            
            208     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
            33      [OK] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____             
-    |  ___|_ _(_) |___     | ___|      __  __
-    | |_ / _` | | / __|    |___ \      \ \/ /
-    |  _| (_| | | \__ \     ___) |      >  < 
-    |_|  \__,_|_|_|___/    |____/      /_/\_\
+     _____     _ _          _   __             
+    |  ___|_ _(_) |___     / | / /_      __  __
+    | |_ / _` | | / __|    | || '_ \     \ \/ /
+    |  _| (_| | | \__ \    | || (_) |     >  < 
+    |_|  \__,_|_|_|___/    |_| \___/     /_/\_\
                                                                    (1728 tests)
 
 ===============================================================================

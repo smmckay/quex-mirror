@@ -55,7 +55,7 @@ State 11:
   .entry:
     .from REOAD_FORWARD: 
     .from BEFORE_ENTRY: 
-    .from 22: 
+    .from 19: 
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=0)
     [1, 127]: DoorID(s=DROP_OUT, d=0)
@@ -76,41 +76,41 @@ DoorID(s=DROP_OUT, d=4) => case 0: goto Pattern0;
 
 State 1:
   .entry:
-    .from 20: 
+    .from 22: 
  -- .transition_map:
     [0, 255]: DoorID(s=DROP_OUT, d=6)
 
-State 18:
+State 20:
   .entry:
     .from 0: 
-    .from 19: 
-    .from 20: 
+    .from 21: 
+    .from 22: 
  -- .transition_map:
     [0, 255]: DoorID(s=DROP_OUT, d=7)
 
-State 19:
+State 21:
   .entry:
     .from REOAD_FORWARD: 
     .from 0: 
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=4)
-    [1, 127]: DoorID(s=18, d=0)
+    [1, 127]: DoorID(s=20, d=0)
     [128, 151]: DoorID(s=DROP_OUT, d=8)
-    [152]: DoorID(s=20, d=0)
+    [152]: DoorID(s=22, d=0)
     [153, 191]: DoorID(s=DROP_OUT, d=8)
-    [192, 255]: DoorID(s=18, d=0)
+    [192, 255]: DoorID(s=20, d=0)
 
-State 20:
+State 22:
   .entry:
     .from REOAD_FORWARD: 
-    .from 19: 
+    .from 21: 
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=5)
-    [1, 127]: DoorID(s=18, d=0)
+    [1, 127]: DoorID(s=20, d=0)
     [128, 145]: DoorID(s=DROP_OUT, d=9)
     [146]: DoorID(s=1, d=0)
     [147, 191]: DoorID(s=DROP_OUT, d=9)
-    [192, 255]: DoorID(s=18, d=0)
+    [192, 255]: DoorID(s=20, d=0)
 
 State 0:
   .entry:
@@ -119,11 +119,11 @@ State 0:
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=3)
     [1, 127]: DoorID(s=DROP_OUT, d=5)
-    [128, 191]: DoorID(s=18, d=0)
+    [128, 191]: DoorID(s=20, d=0)
     [192, 234]: DoorID(s=DROP_OUT, d=5)
-    [235]: DoorID(s=19, d=0)
+    [235]: DoorID(s=21, d=0)
     [236, 253]: DoorID(s=DROP_OUT, d=5)
-    [254, 255]: DoorID(s=18, d=0)
+    [254, 255]: DoorID(s=20, d=0)
 
 
 DoorID(s=DROP_OUT, d=5) => case 7: goto Pattern7;

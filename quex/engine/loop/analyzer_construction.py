@@ -10,6 +10,8 @@ def do(loop_sm, AppendixSmList, loop_config, CutSignalLexatomsF):
     
     RETURNS: list of FSM-s.
     """
+    # (transformed state machines have same id)
+
     # AppendixSm Ids MUST be unique!
     assert len(set([sm.get_id() for sm in AppendixSmList])) == len(AppendixSmList)
 

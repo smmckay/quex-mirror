@@ -30,7 +30,7 @@ State 3:
   .entry:
     .from REOAD_FORWARD: 
     .from BEFORE_ENTRY: 
-    .from 11: 
+    .from 8: 
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=0)
     [1, 127]: DoorID(s=DROP_OUT, d=0)
@@ -48,41 +48,41 @@ DoorID(s=DROP_OUT, d=2) => case Bad Lexatom: goto Bad Lexatom;
 
 State 1:
   .entry:
-    .from 9: 
+    .from 11: 
  -- .transition_map:
     [0, 255]: DoorID(s=DROP_OUT, d=4)
 
-State 7:
+State 9:
   .entry:
     .from 0: 
-    .from 8: 
-    .from 9: 
+    .from 10: 
+    .from 11: 
  -- .transition_map:
     [0, 255]: DoorID(s=DROP_OUT, d=5)
 
-State 8:
+State 10:
   .entry:
     .from REOAD_FORWARD: 
     .from 0: 
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=3)
-    [1, 127]: DoorID(s=7, d=0)
+    [1, 127]: DoorID(s=9, d=0)
     [128, 151]: DoorID(s=DROP_OUT, d=6)
-    [152]: DoorID(s=9, d=0)
+    [152]: DoorID(s=11, d=0)
     [153, 191]: DoorID(s=DROP_OUT, d=6)
-    [192, 255]: DoorID(s=7, d=0)
+    [192, 255]: DoorID(s=9, d=0)
 
-State 9:
+State 11:
   .entry:
     .from REOAD_FORWARD: 
-    .from 8: 
+    .from 10: 
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=4)
-    [1, 127]: DoorID(s=7, d=0)
+    [1, 127]: DoorID(s=9, d=0)
     [128, 145]: DoorID(s=DROP_OUT, d=7)
     [146]: DoorID(s=1, d=0)
     [147, 191]: DoorID(s=DROP_OUT, d=7)
-    [192, 255]: DoorID(s=7, d=0)
+    [192, 255]: DoorID(s=9, d=0)
 
 State 0:
   .entry:
@@ -91,11 +91,11 @@ State 0:
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=2)
     [1, 127]: DoorID(s=DROP_OUT, d=3)
-    [128, 191]: DoorID(s=7, d=0)
+    [128, 191]: DoorID(s=9, d=0)
     [192, 234]: DoorID(s=DROP_OUT, d=3)
-    [235]: DoorID(s=8, d=0)
+    [235]: DoorID(s=10, d=0)
     [236, 253]: DoorID(s=DROP_OUT, d=3)
-    [254, 255]: DoorID(s=7, d=0)
+    [254, 255]: DoorID(s=9, d=0)
 
 
 DoorID(s=DROP_OUT, d=3) => case 5: goto Pattern5;

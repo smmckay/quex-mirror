@@ -129,11 +129,10 @@ def prepare(tm):
 def get_transition_function(iid_map, Codec):
     global dial_db
     if Codec == "UTF8": Setup.buffer_setup("uint8_t", 1,  "utf8")
-    else:               Setup.buffer_setup("uint32_t", 4, "unicode")
+    else:               Setup.buffer_setup("uint32_t", 4, "none")
 
     Setup.bad_lexatom_detection_f = False
     sm        = DFA.from_IncidenceIdMap(iid_map)
-    dummy, sm = Setup.buffer_encoding.do_state_machine(sm)
     analyzer  = analyzer_generator.do(sm, engine.CHARACTER_COUNTER, dial_db=dial_db, CutF=False)
     tm_txt    = do_analyzer(analyzer)
     tm_txt    = Lng.GET_PLAIN_STRINGS(tm_txt, dial_db=dial_db)

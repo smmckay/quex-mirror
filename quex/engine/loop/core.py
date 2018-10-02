@@ -192,10 +192,6 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
     )
 
     # Loop represented by FSM-s and Terminal-s ________________________________
-    # (transformed state machines have same id)
-    loop_sm          = _encoding_transform(loop_sm)
-    appendix_sm_list = [ _encoding_transform(sm) for sm in appendix_sm_list ]
-
     analyzer_list,   \
     door_id_loop     = analyzer_construction.do(loop_sm, appendix_sm_list, loop_config, 
                                                 CutSignalLexatomsF) 

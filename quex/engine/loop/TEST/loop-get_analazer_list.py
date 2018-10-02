@@ -93,9 +93,6 @@ def test(LoopMap, ColumnNPerCodeUnit):
          (lei.character_set, lei.iid_couple_terminal) for lei in LoopMap
     )
 
-    loop_sm          = loop._encoding_transform(loop_sm)
-    appendix_sm_list = [ loop._encoding_transform(sm) for sm in appendix_sm_list ]
-
     analyzer_list, \
     door_id_loop   = analyzer_construction.do(loop_sm, appendix_sm_list, config, True) 
 
