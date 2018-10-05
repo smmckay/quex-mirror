@@ -7,7 +7,7 @@ from   quex.engine.operations.operation_list import Op
 
 from   quex.blackboard import setup as Setup, Lng
 
-class SmLineColumnCountInfo:
+class SmLineColumnCountInfo(object):
     """Information on character counting characteristics of lexeme that match a 
     given state machine.
     
@@ -48,6 +48,16 @@ class SmLineColumnCountInfo:
          E_Count.VOID => if there is no relation between lexeme length and
                          column number increment.
     """
+    __slots__ = (
+        "column_n_increment",
+        "line_n_increment",
+        "column_index",
+        "grid_step_n",
+        "column_n_increment_by_lexeme_length",
+        "line_n_increment_by_lexeme_length",
+        "grid_step_size_by_lexeme_length",
+        "run_time_counter_required_f"
+    )
     def __init__(self, Result=None, CodecTrafoInfo=None, SM=None):
         if Result is None: 
             self.column_n_increment                  = 0

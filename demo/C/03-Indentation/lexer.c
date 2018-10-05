@@ -1,4 +1,12 @@
-#if ! defined(LEXER2)
+#if defined(LEXER_DEBUG)
+#   include "Debug/Debug.h"
+typedef Debug       Lexer;
+typedef Debug_Token Token;
+#define CONSTRUCT      Debug_from_file_name
+#define DESTRUCT       Debug_destruct
+#define TOKEN_ID_NAME  Debug_map_token_id_to_name
+#define TOKEN_STRING   Debug_Token_get_string
+#elif ! defined(LEXER2)
 #   include "Easy/Easy.h"
 typedef Easy       Lexer;
 typedef Easy_Token Token;

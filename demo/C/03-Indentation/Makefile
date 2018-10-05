@@ -21,5 +21,9 @@ lexer2: easy2.qx
 	quex -i patterns.qx tokens.qx common.qx easy2.qx -o Easy2 --language C
 	$(LD) -DLEXER2 lexer.c Easy2/Easy2.c -o $@ 
 
+debug: debug.qx 
+	quex -i debug.qx -o Debug --language C
+	$(LD) -DLEXER_DEBUG lexer.c Debug/Debug.c -o $@ 
+
 clean:	
-	rm -rf lexer lexer2 Easy/ Easy2/ *.o tmp.*
+	rm -rf lexer lexer2 Easy/ Easy2/ *.o tmp.* debug Debug

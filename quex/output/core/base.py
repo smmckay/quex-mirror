@@ -32,7 +32,7 @@ from   quex.blackboard import setup as Setup, \
 #            modify analyzer
 #            terminal = exit_door_id
 #
-def do_main(SM, ReloadStateForward, dial_db):
+def do_main(CoreSmList, ReloadStateForward, dial_db):
     """Main pattern matching state machine (forward).
     ---------------------------------------------------------------------------
     Micro actions are: line/column number counting, position set/reset,
@@ -47,7 +47,7 @@ def do_main(SM, ReloadStateForward, dial_db):
 
             position, PositionRegisterN, last_acceptance, input.
     """
-    txt, analyzer = __do_state_machine(SM, engine.Class_FORWARD(), dial_db, 
+    txt, analyzer = __do_state_machine(CoreSmList, engine.Class_FORWARD(), dial_db, 
                                        ReloadStateForward) 
 
     # Treat the external reload state the same way as if it was generated

@@ -31,15 +31,18 @@ def test(TestString):
     # During 'finalize()': pattern.mount_pre_context_sm()
     print "pattern\n" 
     assert pattern.sm.is_DFA_compliant()
+    ok_f, sm = Setup.buffer_encoding.do_state_machine(pattern.sm)
     sm = beautifier.do(pattern.sm)
     print sm.get_string(NormalizeF=True, Option="hex") 
     if pattern.sm_pre_context_to_be_reversed:
         assert pattern.sm_pre_context_to_be_reversed.is_DFA_compliant()
-        reversed_sm = reverse.do(pattern.sm_pre_context_to_be_reversed)
+        ok_f, sm = Setup.buffer_encoding.do_state_machine(pattern.sm_pre_context_to_be_reversed)
+        reversed_sm = reverse.do(sm)
         print "pre-context = ", reversed_sm.get_string(NormalizeF=True, Option="hex") 
     if pattern.sm_bipd_to_be_reversed:
         assert pattern.sm_bipd_to_be_reversed.is_DFA_compliant()
-        sm = reverse.do(pattern.sm_bipd_to_be_reversed)
+        ok_f, sm = Setup.buffer_encoding.do_state_machine(pattern.sm_bipd_to_be_reversed)
+        sm = reverse.do(sm)
         print "post-context backward input position detector = ", sm.get_string(NormalizeF=True, Option="hex") 
 
 test('µ/µ+/µ')

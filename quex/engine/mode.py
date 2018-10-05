@@ -1,6 +1,5 @@
 from   quex.input.code.base                               import SourceRef
 from   quex.engine.misc.tools                             import typed
-import quex.engine.state_machine.construction.combination as     combination
 
 class BasicMode:
     """Very basic information about a 'Mode'. Basically, only use the 
@@ -9,7 +8,7 @@ class BasicMode:
     def __init__(self, Name, PatternList):
         self.name = Name
 
-        self.sm,                                 \
+        self.core_sm_list,                       \
         self.pre_context_sm_to_be_reversed_list, \
         self.bipd_sm_to_be_reversed_db,          \
         self.pre_context_sm_id_list              = self.__prepare(PatternList)
@@ -28,7 +27,6 @@ class BasicMode:
             if None in length_list: return None
             return max(length for length in length_list)
                 
-
     def __prepare(self, PatternList):
         # -- setup of state machine lists and id lists
         core_sm_list,                                \
@@ -37,7 +35,7 @@ class BasicMode:
 
         # (*) Create (combined) state machines
         #     Backward input position detection (bipd) remains separate engines.
-        return combination.do(core_sm_list),                  \
+        return core_sm_list,                       \
                pre_context_sm_to_be_reversed_list, \
                dict((incidence_id, sm) for incidence_id, sm in incidence_id_and_bipd_sm_to_be_reversed_list), \
                [ sm.get_id() for sm in pre_context_sm_to_be_reversed_list ]

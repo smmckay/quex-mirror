@@ -77,7 +77,7 @@ def do_core(Mode):
     # (*) Main DFA -- try to match core patterns
     #     Post-context handling is webbed into the main state machine.
     main, \
-    main_analyzer        = generator.do_main(Mode.sm, ReloadStateForward, 
+    main_analyzer        = generator.do_main(Mode.core_sm_list, ReloadStateForward, 
                                              dial_db)
     # assert all_isinstance(main, (IfDoorIdReferencedCode, int, str, unicode))
     extra                = generator.do_analyzer_list(Mode.extra_analyzer_list)

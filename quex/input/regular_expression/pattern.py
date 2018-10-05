@@ -74,6 +74,7 @@ class Pattern_Prep(object):
         self.__validate(Sr)
         self.__finalized_f = False
 
+
     def clone(self):
         def cloney(X):
             if X is None:         return None
@@ -106,9 +107,6 @@ class Pattern_Prep(object):
 
     def set_incidence_id(self, Id):
         self.__sm.set_id(Id)
-
-    @property
-    def sm(self):                                  assert False; return self.__sm
 
     def extract_sm(self): 
         """Extract the state machine from the pattern. The pattern may then no
@@ -190,11 +188,14 @@ class Pattern_Prep(object):
         return msg
 
     def assert_consistency(self):
-        assert self.__sm.is_DFA_compliant()
-        assert not self.__sm.has_orphaned_states()
-        if self.__pre_context_sm_to_be_reversed is not None:
-            assert self.__pre_context_sm_to_be_reversed.is_DFA_compliant() 
-            assert not self.__pre_context_sm_to_be_reversed.has_orphaned_states()
+        def check(SM):
+            if SM is None: return
+            assert SM.is_DFA_compliant()
+            assert not SM.has_orphaned_states()
+
+        check(self.__sm)
+        check(self.__pre_context_sm_to_be_reversed)
+        check(self.__post_context_sm)
 
     @staticmethod
     def check_initial(core_sm, 
@@ -262,8 +263,6 @@ class Pattern_Prep(object):
         """Prepares for further processing:
 
             * Determines line column counting information (lcci)
-            * Transforms according to buffer's encoding
-            * Cuts signal characters from state machine(s)
             * Mounts pre and post context state machines
 
         RETURNS: 'Pattern' object.
@@ -277,7 +276,7 @@ class Pattern_Prep(object):
 
         # Count information must be determined BEFORE transformation!
         if CaMap is not None:
-            lcci = SmLineColumnCountInfo.from_DFA(CaMap, self.__sm.clone(), 
+            lcci = SmLineColumnCountInfo.from_DFA(CaMap, self.__sm, 
                                                   self.pre_context_trivial_begin_of_line_f, 
                                                   Setup.buffer_encoding)
         else: 
@@ -297,6 +296,7 @@ class Pattern_Prep(object):
                                                              self.__pre_context_begin_of_line_f, 
                                                              self.__pre_context_begin_of_stream_f)
 
+        sm_main = sm_main.clone()
         sm_main.set_id(original_incidence_id)
 
         self.__mark_dysfunctional()

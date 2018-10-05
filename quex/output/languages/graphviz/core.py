@@ -17,7 +17,7 @@ class Generator:
         """Prepare output in the 'dot' language, that graphviz uses."""
         assert Option in ["utf8", "hex"]
 
-        self.__do(self.mode.sm, self.file_name_main, Option)
+        self.__do(combination.do(self.mode.core_sm_list), self.file_name_main, Option)
 
         if self.mode.pre_context_sm_to_be_reversed_list:
             sm_list = [ reverse.do(sm) for sm in self.mode.pre_context_sm_to_be_reversed_list ]
