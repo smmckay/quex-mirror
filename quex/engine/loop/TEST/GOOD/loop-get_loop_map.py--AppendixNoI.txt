@@ -10,17 +10,17 @@ exit character set exits: [True]
 #_[ Print ]___________________________________________________
 
 [-oo, 000F] [0040, oo]  ((6)) GotoDoorId: { door_id=DoorID(s=8, d=ACCEPTANCE),  } <appendix: DoorID(s=8, d=ACCEPTANCE)>
-[0010, 001F]  ((8)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=0, d=STATE_MACHINE_ENTRY)>
+[0010, 001F]  ((9)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=8, d=STATE_MACHINE_ENTRY)>
 [0020, 003F]  ((7)) ColumnCountAdd: { factor=1, value=0,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
 
 #_[ Appendix DFAs ]________________________________
 
-IncidenceId: 0
+IncidenceId: 8
 init-state = 0L
 00000 
      == 'A' ==> 00001
     
-00001 A(0)
+00001 A(8)
     
 
 
@@ -35,18 +35,18 @@ exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0040, oo]  ((9)) GotoDoorId: { door_id=DoorID(s=11, d=ACCEPTANCE),  } <appendix: DoorID(s=11, d=ACCEPTANCE)>
-[0010, 001F] [0030, 003F]  ((10)) ColumnCountAdd: { factor=1, value=0,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
-[0020, 002F]  ((11)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=2, d=STATE_MACHINE_ENTRY)>
+[-oo, 000F] [0040, oo]  ((10)) GotoDoorId: { door_id=DoorID(s=12, d=ACCEPTANCE),  } <appendix: DoorID(s=12, d=ACCEPTANCE)>
+[0010, 001F] [0030, 003F]  ((11)) ColumnCountAdd: { factor=1, value=0,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
+[0020, 002F]  ((13)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=12, d=STATE_MACHINE_ENTRY)>
 
 #_[ Appendix DFAs ]________________________________
 
-IncidenceId: 2
+IncidenceId: 12
 init-state = 0L
 00000 
      == 'A' ==> 00001
     
-00001 A(2)
+00001 A(12)
      == 'B' ==> 00000
     
 
@@ -62,9 +62,9 @@ exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0040, oo]  ((12)) GotoDoorId: { door_id=DoorID(s=15, d=ACCEPTANCE),  } <appendix: DoorID(s=15, d=ACCEPTANCE)>
-[0010, 002F]  ((13)) ColumnCountAdd: { factor=1, value=0,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
-[0030, 003F]  ((14)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=17, d=ACCEPTANCE)>
+[-oo, 000F] [0040, oo]  ((14)) GotoDoorId: { door_id=DoorID(s=17, d=ACCEPTANCE),  } <appendix: DoorID(s=17, d=ACCEPTANCE)>
+[0010, 002F]  ((15)) ColumnCountAdd: { factor=1, value=0,  } <appendix: ("Marker that identifies a 'GotoDoorId(LoopReentry)'",)>
+[0030, 003F]  ((17)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=19, d=ACCEPTANCE)>
 
 
 
@@ -76,28 +76,28 @@ exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0040, oo]  ((15)) GotoDoorId: { door_id=DoorID(s=18, d=ACCEPTANCE),  } <appendix: DoorID(s=18, d=ACCEPTANCE)>
-[0010, 001F]  ((17)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=0, d=STATE_MACHINE_ENTRY)>
-[0020, 002F]  ((18)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=2, d=STATE_MACHINE_ENTRY)>
-[0030, 003F]  ((19)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=17, d=ACCEPTANCE)>
+[-oo, 000F] [0040, oo]  ((18)) GotoDoorId: { door_id=DoorID(s=20, d=ACCEPTANCE),  } <appendix: DoorID(s=20, d=ACCEPTANCE)>
+[0010, 001F]  ((23)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=20, d=STATE_MACHINE_ENTRY)>
+[0020, 002F]  ((24)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=21, d=STATE_MACHINE_ENTRY)>
+[0030, 003F]  ((25)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=19, d=ACCEPTANCE)>
 
 #_[ Appendix DFAs ]________________________________
 
-IncidenceId: 0
+IncidenceId: 20
 init-state = 0L
 00000 
      == 'A' ==> 00001
     
-00001 A(0)
+00001 A(20)
     
 
 
-IncidenceId: 2
+IncidenceId: 21
 init-state = 0L
 00000 
      == 'A' ==> 00001
     
-00001 A(2)
+00001 A(21)
      == 'B' ==> 00000
     
 

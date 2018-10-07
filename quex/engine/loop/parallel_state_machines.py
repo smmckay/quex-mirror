@@ -5,7 +5,7 @@ import quex.engine.state_machine.algebra.intersection     as     intersection
 from   quex.engine.state_machine.character_counter        import SmLineColumnCountInfo
 from   quex.engine.counter                                import CountAction, \
                                                                  CountActionMap
-from   quex.engine.misc.tools                             import typed
+from   quex.engine.misc.tools                             import typed, flatten_list_of_lists
 from   quex.engine.misc.interval_handling                 import NumberSet
 import quex.engine.misc.error                             as     error
 
@@ -20,6 +20,8 @@ def do(loop_config, CaMap, SmList):
     
          Parallel state machine  ---->    first transition  
                                        +  appendix state machine
+
+         Appendix Sm-Id --> Original Sm-Id
     
     The 'first transition' is mounted on the loop state machine triggering an
     acceptance that causes a transit to the appendix state machine. 
@@ -30,66 +32,68 @@ def do(loop_config, CaMap, SmList):
     _assert_no_intersections(SmList)
     assert all(sm.get_id() is not None for sm in SmList)
 
-    first_vs_appendix_sm = split_first_transition(SmList)
+    loop_map_1,     \
+    original_iid_db = split_first_transition(SmList)
+    # loop_map_1: list of [0] first transition character set
+    #                     [1] appendix sm with first transition removed
+    #
+    # original_iid_db:    appendix sm id --> original sm id
 
-    def single_incidence_id(Dfa):
-        indicence_id_set = Dfa.acceptance_id_set()
-        if len(indicence_id_set) > 1:
-            error.log("internal error: state machine more than one acceptance in init state not allowed\n"
-                      "internal error: during loop generation (skip, indentation, or counter.")
-        elif len(indicence_id_set) == 1:
-            return indicence_id_set.pop()
-        elif Dfa.get_init_state().is_bad_lexatom_detector():
-            return E_IncidenceIDs.BAD_LEXATOM
-        else:
-            error.log("internal error: state machine without acceptance state not allowed\n"
-                      "internal error: during loop generation (skip, indentation, or counter.")
+    appendix_cmd_list_db = loop_config.get_appendix_terminal_cmd_list_db(
+                                CaMap, [sm for cs, sm in loop_map_1],
+                                original_iid_db)
+    # appendix_cmd_list_db: appendix sm id --> CmdList(count action,
+    #                                                  goto original terminal)
 
-    # appendix_sm-s match with original incidence_ids 
-    # => the count information is 'original'
-    appendix_lcci_db = dict(
-        (single_incidence_id(appendix_sm),
-         SmLineColumnCountInfo.from_DFA(CaMap, appendix_sm, False, Setup.buffer_encoding))
-        for character_set, appendix_sm in first_vs_appendix_sm
-        if appendix_sm.get_init_state().has_transitions()
-    )
-
-    disjoint_first_vs_appendix_sm,       \
-    bad_lexatom_detector_character_set = \
+    loop_map_2 = \
         split_first_character_set_for_distinct_count_actions(CaMap, 
-                                                             first_vs_appendix_sm)
+                                                             loop_map_1)
+    # loop_map_2: list of [0] character set where all elements
+    #                         require same count actions
+    #                     [1] count action 
+    #                     [2] appendix sm
 
-    # appendix_sm-s may be combined, but their sub-graphs still match and 
-    # notify the original incidence ids.
-    first_vs_appendix_sm_list    = combine_intersecting_character_sets(disjoint_first_vs_appendix_sm)
+    # For a 'state transition' it is required that all character sets
+    # in the list are disjoint. Thus, any intersection must build its
+    # on entry. Thus, some entries might have more than one appendix.
+    loop_map_3 = combine_intersecting_character_sets(loop_map_2)
+    # loop_map_2: list of [0] character set no character set intersects
+    #                         with any other.
+    #                     [1] count action 
+    #                     [2] list of (appendix sm)
 
-    first_vs_ca_and_appendix_sm, \
-    appendix_sm_list             = combine_appendix_sm_lists(first_vs_appendix_sm_list)
+    # A transition can only enter one state machine, so all appendix
+    # state machines related to the same character set must be combined.
+    loop_map_4,                   \
+    combined_appendix_sm_list_raw = combine_appendix_sm_lists(loop_map_3)
+    # loop_map_4: list of [0] (disjoint) character set 
+    #                     [1] count action for character set
+    #                     [2] state machine id of related combined appendix sm
+    # combined_appendix_sm_lists: list of all generated (combined) appendix sm-s
 
-    def get_code(CA, AppendixSm):
-        init_state = AppendixSm.get_init_state()
-        if init_state.input_position_store_f():
-            error.log("skip/skip_range/indentation/counter implementation.\n"
-                      "Inadmissible post context after first character.\n"
-                      "(This should have been detected during the parsing process)")
-        elif not init_state.has_transitions():
-            # NO appendix after first transition. => jump to appendix terminal.
-            return loop_config.cmd_list_CA_GotoTerminal(CA, single_incidence_id(AppendixSm))
-        else:
-            return loop_config.cmd_list_CA_GotoAppendixDfa(CA, AppendixSm.get_id())
+    loop_map_5, \
+    combined_appendix_sm_list = determine_CmdLists(loop_config, loop_map_4, 
+                                                   combined_appendix_sm_list_raw,
+                                                   original_iid_db)
+    # loop_map_5: list of [0] (disjoint) character set 
+    #                     [1] CmdList = (count action, goto terminal/appendix sm),
+    # combined_appendix_sm_list: contains only those combined appendix state machines
+    #                            that do have transitions
 
-    loop_map = [
+    loop_map_6 = [
         LoopMapEntry(character_set, 
                      IidCoupleTerminal = dial.new_incidence_id(), 
-                     Code              = get_code(ca, appendix_sm)) 
-        for character_set, ca, appendix_sm in first_vs_ca_and_appendix_sm
+                     Code              = cmd_list) 
+        for character_set, cmd_list in loop_map_5
     ]
-    loop_map.append(
-        LoopMapEntry(bad_lexatom_detector_character_set,
-                     IidCoupleTerminal = E_IncidenceIDs.BAD_LEXATOM)
-    )
+    # loop_map_6: list of LoopMapEntry-s
 
-    return loop_map, appendix_sm_list, appendix_lcci_db
+    # There must be a command list for any acceptance in the appendix 
+    # state machines. 
+    all_acceptance_id_set = flatten_list_of_lists(sm.acceptance_id_set() for sm in combined_appendix_sm_list)
+    assert all(iid in appendix_cmd_list_db for iid in all_acceptance_id_set)
+
+    return loop_map_6, combined_appendix_sm_list, appendix_cmd_list_db
 
 def _assert_no_intersections(SmList):
     # ESSENTIAL: Delimiter state machines shall never match on a common lexeme!
@@ -151,15 +155,26 @@ def split_first_transition(SmList):
     Character sets MAY INTERSECT, and MAY REQUIRE NON-UNIFORM count actions.
     """
     result = []
-    for sm in SmList:
-        for first_set, appendix_sm in _cut_first_transition(sm, CloneStateMachineId=True):
+    appendix_sm_to_iid_original_db = {}
+    for original_sm in SmList:
+        iid_original = original_sm.get_id()
+        for first_set, appendix_sm in _cut_first_transition(original_sm, CloneStateMachineId=False):
             # Every appendix DFA gets its own 'id'.
             # HOWEVER: Multiple appendix DFAs might match to same 'acceptance id',
             #          => Such DFAs transit to same terminal upon acceptance.
-            ##appendix_sm.mark_state_origins(sm.get_id())
-            ##appendix_sm.set_id(index.get_state_machine_id())
+            appendix_sm.mark_state_origins()
             result.append((first_set, appendix_sm))
-    return result
+            assert appendix_sm.get_id() not in appendix_sm_to_iid_original_db
+            appendix_sm_to_iid_original_db[appendix_sm.get_id()] = iid_original
+
+    for character_set, appendix_sm in result:
+        init_state = appendix_sm.get_init_state()
+        if init_state.input_position_store_f():
+            error.log("skip/skip_range/indentation/counter implementation.\n"
+                      "Inadmissible post context after first character.\n"
+                      "(This should have been detected during the parsing process)")
+
+    return result, appendix_sm_to_iid_original_db
 
 def combine_intersecting_character_sets(first_vs_appendix_sm):
     result = []   # list of [0] Character Set
@@ -218,7 +233,6 @@ def split_first_character_set_for_distinct_count_actions(CaMap, FirstVsAppendixS
     RETURNS: [0] list of [0] Character Set
                          [1] CountAction related to that character set.
                          [2] Appendix state machine related to that character set.
-             [1] Bad lexatom character set
 
     The iterable reports character sets for which their is a distinct count
     action and appendix state machine.
@@ -248,22 +262,26 @@ def split_first_character_set_for_distinct_count_actions(CaMap, FirstVsAppendixS
         else:
             return CA
 
-    result = [
+    return [
         (character_set, prepare_count_action(ca), appendix_sm)
         for trigger_set, appendix_sm in FirstVsAppendixSmList
             for character_set, ca in CaMap.iterable_in_sub_set(trigger_set)
     ]
 
-    # SPECIAL CASE: The pruned appendix state machine solely exists of
-    #               a single state that notifies about 'BAD LEXATOM'.
-    # Such state machines must be filtered out. The character set that 
-    # triggers a transition is treated later with 'GotoTerminal(IidBadLexatom)'.
-    bad_lexatom_detector_character_set = NumberSet.from_union_of_iterable(
-        x[0] for x in result if     x[2].is_plain_bad_lexatom_detector()
-    )
-    result = [ 
-        x    for x in result if not x[2].is_plain_bad_lexatom_detector() 
-    ]
-    return result, bad_lexatom_detector_character_set
+def determine_CmdLists(loop_config, LoopMap4, combined_appendix_sm_list, OriginalIidDb):
+    result = []
+    dispensables = set()
+    for character_set, ca, combined_appendix_sm in LoopMap4:
+        cmd_list,         \
+        appendix_exists_f = loop_config.get_couple_terminal_cmd_list(ca, combined_appendix_sm, 
+                                                                     OriginalIidDb)
 
+        result.append((character_set, cmd_list))
+        if not appendix_exists_f:
+            dispensables.add(combined_appendix_sm.get_id())
+
+    new_combined_appendix_sm_list = [
+        sm for sm in combined_appendix_sm_list if sm.get_id() not in dispensables
+    ]
+    return result, new_combined_appendix_sm_list
 

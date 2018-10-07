@@ -32,7 +32,7 @@ _31:
     loop_restart_p = (me->buffer._read_p);
 
 
-    __quex_debug_init_state(18);
+    __quex_debug_init_state("", 18);
 switch( input ) {
 case 0x9: goto _3;
 case 0xA: goto _2;
@@ -78,7 +78,7 @@ _16:
     me->buffer._read_p = me->buffer._lexeme_start_p + 1;
 goto _34;
 
-    __quex_debug("Drop-Out Catcher\n");
+    __quex_debug("%s" " Drop-Out Catcher\n");
 
 
     __quex_assert_no_passage();

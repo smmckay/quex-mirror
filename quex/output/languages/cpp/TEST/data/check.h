@@ -32,7 +32,7 @@ typedef int Lexer_goto_label_t;
 #else
 #   define __quex_debug(X) 
 #   define __quex_debug_state(X)
-#   define __quex_debug_init_state(X)
+#   define __quex_debug_init_state(X, Y)
 #   define __quex_debug_drop_out(X)
 #endif
 #define __quex_debug_counter(X) 

@@ -284,17 +284,23 @@ class LoopConfig:
         self.iid_loop_exit                    = dial.new_incidence_id()
         self.iid_loop_after_appendix_drop_out = dial.new_incidence_id() 
 
+        self.__run_time_counter_required_f = False
+
 
     def appendix_dfa_present_f(self):
         return self.__appendix_dfa_present_f
 
+    def run_time_counter_required_f(self):
+        return self.__run_time_counter_required_f
+
     def get_count_code(self, LCCI):
-        if LCCI is None: return False, []
+        if LCCI is None: return []
 
         run_time_counter_required_f, \
         cmd_list                     = SmLineColumnCountInfo.get_OpList(LCCI, ModeName=self.mode_name)
 
         if run_time_counter_required_f:
+            self.__run_time_counter_required_f = True
             # The content to be counted starts where the appendix started.
             # * Begin of counting at 'loop restart pointer'.
             # * Run-time counting can ONLY work, if the lexeme start pointer 
@@ -308,9 +314,9 @@ class LoopConfig:
                 Op.Assign(E_R.CountReferenceP, E_R.InputP, Condition="COLUMN")
             )
 
-        return run_time_counter_required_f, cmd_list
+        return cmd_list
 
-    def replace_Lazy_DoorIdLoop(self, cmd, DoorIdLoop):
+    def __replace_Lazy_DoorIdLoop(self, cmd, DoorIdLoop):
         if   cmd.id == E_Op.GotoDoorId:
             if cmd.content.door_id != self.Lazy_DoorIdLoop: return cmd
             return Op.GotoDoorId(DoorIdLoop)
@@ -319,6 +325,17 @@ class LoopConfig:
             return Op.GotoDoorIdIfInputPNotEqualPointer(DoorIdLoop, cmd.content.pointer)
         else:
             return cmd
+
+    def replace_Lazy_DoorIdLoop(self, CmdList, DoorIdLoop):
+        return [ 
+            self.__replace_Lazy_DoorIdLoop(cmd, DoorIdLoop) for cmd in CmdList 
+        ]
+
+    def CodeTerminal_without_Lazy_DoorIdLoop(self, CmdList, DoorIdLoop):
+        return CodeTerminal(
+            Lng.COMMAND_LIST(self.replace_Lazy_DoorIdLoop(CmdList, DoorIdLoop), 
+                             self.dial_db)
+        )
 
     def get_required_register_set(self, AppendixSmExistF):
         result = set()
@@ -380,4 +397,56 @@ class LoopConfig:
         cmd_list.extend(CmdList)
         cmd_list.append(Op.GotoDoorId(DoorIdTarget))
         return cmd_list
+
+    def get_appendix_terminal_cmd_list_db(self, CaMap, AppendixSmList, OriginalIidDb):
+        def prepare(AppendixSm, OriginalIidDb):
+            lcci     = SmLineColumnCountInfo.from_DFA(CaMap, AppendixSm, False, Setup.buffer_encoding)
+            cmd_list = self.get_count_code(lcci)
+            target_door_id = DoorID.incidence(OriginalIidDb[AppendixSm.get_id()], self.dial_db)
+            cmd_list.append(Op.GotoDoorId(target_door_id))
+            return (AppendixSm.get_id(), cmd_list)
+
+        # This includes cmd_list-s for zero transition appendix sm, in case they
+        # are combined with others that go further.
+        return dict(prepare(sm, OriginalIidDb) for sm in AppendixSmList)
+
+    def get_couple_terminal_cmd_list(self, CA, CombinedAppendixSm, OriginalIidDb):
+        """CA:                 Count action for the character set of the loop 
+                               entry.
+           CombinedAppendixSm: (combined) appendix sm where to jump upon 
+                               triggering of the character set.
+           OriginalIidDb:      Appendix sm id --> original iid of the state machine
+                                                  where it came from.
+
+        RETURNS: [0] CmdList -- for loop count action and transition to appendix
+                                state machine or entry into according terminal.
+                 [1] True, if there is a transition to an appendix state machine
+                     False, if not
+                 
+        """
+        transition_to_appendix_f = CombinedAppendixSm.get_init_state().has_transitions()
+        acceptance_id_set        = CombinedAppendixSm.acceptance_id_set()
+        combined_appendix_sm_id  = CombinedAppendixSm.get_id()
+
+        cmd_list = []
+        if CA is not None:
+            cmd_list.extend(CA.get_OpList(self.column_number_per_code_unit))
+
+        if not transition_to_appendix_f:
+            # NO appendix after first transition => jump to appendix terminal.
+            assert len(acceptance_id_set) == 1
+            iid_original   = OriginalIidDb[acceptance_id_set.pop()]
+            target_door_id = DoorID.incidence(iid_original, self.dial_db)
+            transition_to_appendix_f = False
+        else:
+            # appendix after first transition. => jump to appendix state machine.
+            self.__appendix_dfa_present_f = True
+            cmd_list.extend([
+                Op.Assign(E_R.LoopRestartP, E_R.InputP),
+                Op.Assign(E_R.LexemeStartP, E_R.InputP)
+            ])
+            target_door_id = DoorID.state_machine_entry(combined_appendix_sm_id,
+                                                        self.dial_db)
+        cmd_list.append(Op.GotoDoorId(target_door_id))
+        return cmd_list, transition_to_appendix_f
 

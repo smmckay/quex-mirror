@@ -180,10 +180,10 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
 
     # LoopMap: Associate characters with the reactions on their occurrence _____
     #
-    loop_map,         \
-    appendix_sm_list, \
-    appendix_lcci_db  = _get_loop_map(loop_config, CaMap, parallel_sm_list, 
-                                      loop_config.iid_loop_exit, LoopCharacterSet)
+    loop_map,                  \
+    combined_appendix_sm_list, \
+    appendix_cmd_list_db       = _get_loop_map(loop_config, CaMap, parallel_sm_list, 
+                                               loop_config.iid_loop_exit, LoopCharacterSet)
 
     # Loop DFA
     loop_sm = DFA.from_IncidenceIdMap(
@@ -192,18 +192,19 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
     )
 
     # Loop represented by FSM-s and Terminal-s ________________________________
-    analyzer_list,   \
-    door_id_loop     = analyzer_construction.do(loop_sm, appendix_sm_list, loop_config, 
-                                                CutSignalLexatomsF) 
+    analyzer_list, \
+    door_id_loop   = analyzer_construction.do(loop_sm, 
+                                              combined_appendix_sm_list, 
+                                              loop_config, 
+                                              CutSignalLexatomsF) 
 
     if not loop_config.appendix_dfa_present_f():
         loop_config.iid_loop_after_appendix_drop_out = None
 
-    terminal_list, \
-    run_time_counter_required_f = terminal_construction.do(loop_map, loop_config, 
-                                                           appendix_lcci_db, 
-                                                           parallel_terminal_list,
-                                                           door_id_loop)
+    terminal_list = terminal_construction.do(loop_map, loop_config, 
+                                             appendix_cmd_list_db, 
+                                             parallel_terminal_list,
+                                             door_id_loop)
 
     # Clean the loop map from the 'exit transition'.
     clean_loop_map = [lei for lei in loop_map if lei.iid_couple_terminal != loop_config.iid_loop_exit]
@@ -211,8 +212,8 @@ def do(CaMap, LoopCharacterSet=None, ParallelSmTerminalPairList=None,
            terminal_list, \
            clean_loop_map, \
            door_id_loop, \
-           loop_config.get_required_register_set(len(appendix_sm_list) != 0), \
-           run_time_counter_required_f
+           loop_config.get_required_register_set(len(combined_appendix_sm_list) != 0), \
+           loop_config.run_time_counter_required_f()
 
 def _sm_terminal_pair_list_extract(ParallelSmTerminalPairList):
     """Terminals and state machines are linked by the 'incidence id'.
@@ -290,9 +291,9 @@ def _get_loop_map(loop_config, CaMap, SmList, IidLoopExit, L_subset):
 
     # 'couple_list': Transitions to 'couple terminals' 
     #                => connect to appendix state machines
-    couple_list,      \
-    appendix_sm_list, \
-    appendix_lcci_db  = parallel_state_machines.do(loop_config, CaMap, SmList)
+    couple_list,               \
+    combined_appendix_sm_list, \
+    appendix_cmd_list_db       = parallel_state_machines.do(loop_config, CaMap, SmList)
 
     assert L_couple.is_equal(NumberSet.from_union_of_iterable( lei.character_set for lei in couple_list))
 
@@ -300,7 +301,7 @@ def _get_loop_map(loop_config, CaMap, SmList, IidLoopExit, L_subset):
                      plain_list,  # --> iterate to loop start
                      exit_list)   # --> exit loop
 
-    return result, appendix_sm_list, appendix_lcci_db
+    return result, combined_appendix_sm_list, appendix_cmd_list_db
 
 @typed(CaMap=CountActionMap)
 def _get_LoopMapEntry_list_plain(loop_config, CaMap, L_pure):

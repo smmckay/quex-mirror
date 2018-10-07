@@ -56,6 +56,7 @@ def test(NsCaList, SM_list=[]):
             self.dial_db                     = TheDialDb
             self.column_number_per_code_unit = None
             self.lexeme_end_check_f          = False
+            self.mode_name                   = "TestMode"
 
     loop_map,         \
     appendix_sm_list, \

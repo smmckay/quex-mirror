@@ -10,61 +10,61 @@ exit character set exits: [True]
 #_[ Print ]___________________________________________________
 
 [-oo, 000F] [0060, oo]  ((6)) GotoDoorId: { door_id=DoorID(s=8, d=ACCEPTANCE),  } <appendix: DoorID(s=8, d=ACCEPTANCE)>
-[0010, 001F]  ((19)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=0, d=STATE_MACHINE_ENTRY)>
-[0020, 002F]  ((20)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=11, d=STATE_MACHINE_ENTRY)>
-[0030, 003F]  ((22)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=18, d=STATE_MACHINE_ENTRY)>
-[0040, 004F]  ((21)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=12, d=STATE_MACHINE_ENTRY)>
-[0050, 005F]  ((23)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=39, d=ACCEPTANCE)>
+[0010, 001F]  ((22)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=8, d=STATE_MACHINE_ENTRY)>
+[0020, 002F]  ((23)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=14, d=STATE_MACHINE_ENTRY)>
+[0030, 003F]  ((25)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=21, d=STATE_MACHINE_ENTRY)>
+[0040, 004F]  ((24)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=15, d=STATE_MACHINE_ENTRY)>
+[0050, 005F]  ((26)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=41, d=ACCEPTANCE)>
 
 #_[ Appendix DFAs ]________________________________
 
-IncidenceId: 0
+IncidenceId: 8
 init-state = 0L
 00000 
      == 'A' ==> 00001
     
-00001 A(0)
+00001 A(8)
     
 
 
-IncidenceId: 11
+IncidenceId: 14
 init-state = 0L
 00000 
      == 'A' ==> 00001
     
-00001 A(0), A(2)
+00001 A(8), A(9)
      == 'B' ==> 00002
     
 00002 
      == 'A' ==> 00003
     
-00003 A(2)
+00003 A(9)
      == 'B' ==> 00002
     
 
 
-IncidenceId: 12
+IncidenceId: 15
 init-state = 0L
-00000 A(4)
+00000 A(10)
      == 'A' ==> 00001
     
-00001 A(2)
+00001 A(9)
      == 'B' ==> 00000
     
 
 
-IncidenceId: 18
+IncidenceId: 21
 init-state = 0L
-00000 A(4)
+00000 A(10)
      == 'A' ==> 00001
     
-00001 A(0), A(2)
+00001 A(8), A(9)
      == 'B' ==> 00002
     
 00002 
      == 'A' ==> 00003
     
-00003 A(2)
+00003 A(9)
      == 'B' ==> 00002
     
 

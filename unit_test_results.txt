@@ -61,11 +61,11 @@ TEST                                                                 <no date>
  * clemwang:
 
     3474524 0.62.3 Escape characters in --language dot plot of [:space:]
-        bug-3474524.sh .............................................[FAIL]
+        bug-3474524.sh ...............................................[OK]
     3478018 0.62.3 errmsg about missing { when missing }
         bug-3478018.sh ...............................................[OK]
     3479354 Reversed (right to left) Pattern Definition
-        bug-3479354.sh .............................................[FAIL]
+        bug-3479354.sh ...............................................[OK]
     3485516 0.60.1 0.60.1 Exception Handling Disorder
         bug-3485516.sh ...............................................[OK]
     3486388 0.61.2 Need better errmsg when incorrectly using 2 Lexers at once
@@ -249,7 +249,7 @@ TEST                                                                 <no date>
     2891125 0.45.1 bug in -- version
         bug-2891125.sh ...............................................[OK]
     2894648 0.46.2 Backslashed . is unknown to quex
-        bug-2894648.sh .............................................[FAIL]
+        bug-2894648.sh ...............................................[OK]
 
  * ollydbg:
 
@@ -314,7 +314,7 @@ TEST                                                                 <no date>
  * remcobloemen1:
 
     3295781 Duplicate label with Template and Path Compression
-        bug-3295781.sh ...............................................[OK]
+        bug-3295781.sh .............................................[FAIL]
 
  * rmanoj-oss:
 
@@ -496,12 +496,10 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] bug-3474524.sh
-    [FAIL] bug-3479354.sh
     [FAIL] bug-2277660.sh
     [FAIL] bug-3164355.sh
     [FAIL] bug-3235790.sh
-    [FAIL] bug-2894648.sh
+    [FAIL] bug-3295781.sh
     [FAIL] bug-1885855.sh
     [FAIL] bug-1889892.sh
 ===============================================================================
@@ -1001,7 +999,7 @@ quex/TESTS/code/TEST                                                 <no date>
         function-check.sh example ....................................[OK]
                           real .....................................[FAIL]
  * Code Check with pyflakes
-        pyflakes-check.sh ............................................[OK]
+        pyflakes-check.sh ..........................................[FAIL]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
@@ -1020,6 +1018,7 @@ quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
     [FAIL] svn-status.sh
     [FAIL] function-check.sh _ real
+    [FAIL] pyflakes-check.sh
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1770,7 +1769,7 @@ quex/engine/loop/TEST                                                <no date>
                                   loop ...............................[OK]
                                   non-const ..........................[OK]
     Get Loop Map.
-        loop-get_loop_map.py AppendixI ...............................[OK]
+        loop-get_loop_map.py AppendixI .............................[FAIL]
                              AppendixNoI .............................[OK]
                              Plain ...................................[OK]
                              Split ...................................[OK]
@@ -1806,10 +1805,12 @@ quex/engine/loop/TEST                                                <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       4 ..............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] loop-get_loop_map.py _ AppendixI
 ===============================================================================
                                                                                
                     Miscellaneous Support Functions/Modules                    
@@ -3441,12 +3442,12 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        8  240   [FAIL] TEST                                                          
+        6  240   [FAIL] TEST                                                          
         2  56    [FAIL] demo/C/TEST                                                   
         2  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        2  10    [FAIL] ........../code/TEST                                          
+        3  10    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            5       [OK] ........../did-you-mean/TEST                                  
            2       [OK] ........../documentation/TEST                                 
@@ -3481,7 +3482,7 @@ SUMMARY:
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
            27      [OK] .............................../template/TEST                 
-           39      [OK] .........../loop/TEST                                         
+        1  39    [FAIL] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
            17      [OK] .........../operations/TEST                                   
            55      [OK] .........../state_machine/TEST                                

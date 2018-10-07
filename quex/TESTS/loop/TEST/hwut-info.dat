@@ -4,3 +4,4 @@ bash ./executer.sh *.qx
 
 --not *.txt *.exe
 --not executer.sh
+--not debug*

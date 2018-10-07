@@ -7,6 +7,12 @@
 (1, 82)  	LETTER 'E'
 (2, 1)  	LETTER 'F'
 (2, 24)  	LETTER 'G'
+(2, 47)  	LETTER 'H'
+(2, 67)  	LETTER 'I'
+(4, 1)  	LETTER 'J'
 (5, 1)  	<TERMINATION> ''
-| [END] number of token = 8
+| [END] number of token = 11
 `------------------------------------------------------------------------------------
+
+
+

@@ -142,6 +142,9 @@ class SmLineColumnCountInfo(object):
         until the first newline. This tremendous computation time overhead is shied
         away from, because of the aforementioned low expected value add.
 
+        RETURNS: 'None', if SM is empty (no transitions).
+                  SmLineColumnCountInfo, else.
+
         ___________________________________________________________________________
         """
         tracer     = CharacterCountTracer(SM)
@@ -149,8 +152,7 @@ class SmLineColumnCountInfo(object):
 
         init_state_target_map = init_state.target_map.get_map()
         if not init_state_target_map:
-            assert False
-            return SmLineColumnCountInfo.from_Empty()
+            return None # Do not count anything
 
         if BeginOfLineF: column_index = 0
         else:            column_index = E_Count.VOID

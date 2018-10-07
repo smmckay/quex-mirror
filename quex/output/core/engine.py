@@ -19,6 +19,8 @@ def do(Mode, ModeNameList):
     """
     variable_db.init() 
 
+    Lng.debug_unit_name_set("Mode:%s" % Mode.name)
+
     function_body,       \
     variable_definitions = do_core(Mode) 
 
@@ -29,6 +31,7 @@ def do(Mode, ModeNameList):
 
 def do_with_counter(Mode, ModeNameList):
     txt = []
+    Lng.debug_unit_name_set("Counter:%s" % Mode.name)
     if Mode.run_time_counter_db is not None:
         variable_db.init()
         txt.append(
@@ -62,6 +65,7 @@ def do_core(Mode):
 
     # (*) Pre Context DFA
     #     (If present: All pre-context combined in single backward analyzer.)
+    Lng.debug_unit_name_set("Pre-Context:%s" % Mode.name)
     pre_context,         \
     pre_analyzer         = generator.do_pre_context(Mode.pre_context_sm_to_be_reversed_list,
                                                     Mode.pre_context_sm_id_list,
@@ -70,15 +74,18 @@ def do_core(Mode):
 
     # (*) Backward input position detection
     #     (Seldomly present -- only for Pseudo-Ambiguous Post Contexts)
+    Lng.debug_unit_name_set("Backward-Input-Position-Detection:%s" % Mode.name)
     bipd                 = generator.do_backward_read_position_detectors(Mode.bipd_sm_to_be_reversed_db,
                                                                          dial_db)
     # assert all_isinstance(bipd, (IfDoorIdReferencedCode, int, str, unicode))
 
     # (*) Main DFA -- try to match core patterns
     #     Post-context handling is webbed into the main state machine.
+    Lng.debug_unit_name_set("Core:%s" % Mode.name)
     main, \
     main_analyzer        = generator.do_main(Mode.core_sm_list, ReloadStateForward, 
                                              dial_db)
+    Lng.debug_unit_name_set("Extra:%s" % Mode.name)
     # assert all_isinstance(main, (IfDoorIdReferencedCode, int, str, unicode))
     extra                = generator.do_analyzer_list(Mode.extra_analyzer_list)
 
@@ -96,6 +103,7 @@ def do_core(Mode):
     # assert all_isinstance(reload_procedures, (IfDoorIdReferencedCode, int, str, unicode))
 
     # (*) Re-entry preparation
+    Lng.debug_unit_name_set("Re-Entry-Preparation:%s" % Mode.name)
     reentry_preparation  = generator.do_reentry_preparation(Mode.pre_context_sm_id_list,
                                                             OnAfterMatchCode, 
                                                             dial_db)

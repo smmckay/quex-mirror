@@ -6,20 +6,19 @@ from   quex.engine.misc.tools                             import typed
 
 from   quex.blackboard import Lng
 
-def do(loop_map, loop_config, appendix_lcci_db, ParallelMiniTerminalList, 
+def do(loop_map, loop_config, appendix_cmd_list_db, ParallelMiniTerminalList, 
        DoorIdLoop):
     """RETURNS: list of all Terminal-s.
     """
-    loop_terminal_list           = _get_terminal_list_for_loop(loop_map, loop_config,
-                                                               DoorIdLoop) 
+    terminal_list_0 = _get_terminal_list_for_loop(loop_map, loop_config,
+                                                  DoorIdLoop) 
+    terminal_list_1 = _get_terminal_list_for_appendix_sms(loop_config, 
+                                                          DoorIdLoop,
+                                                          appendix_cmd_list_db)
+    terminal_list_2 = _get_terminal_list_for_original_terminals(loop_config, 
+                                                                ParallelMiniTerminalList)
 
-    run_time_counter_required_f, \
-    parallel_terminal_list       = _get_terminal_list_for_appendices(loop_config, 
-                                                                     appendix_lcci_db,
-                                                                     ParallelMiniTerminalList)
-
-    return loop_terminal_list + parallel_terminal_list, \
-           run_time_counter_required_f
+    return terminal_list_0 + terminal_list_1 + terminal_list_2
 
 @typed(loop_map=LoopMap)
 def _get_terminal_list_for_loop(loop_map, loop_config, DoorIdLoop):
@@ -43,12 +42,8 @@ def _get_terminal_list_for_loop(loop_map, loop_config, DoorIdLoop):
         elif lme.code is None:                                     continue
         done.add(lme.iid_couple_terminal)
 
-        code = [ 
-            loop_config.replace_Lazy_DoorIdLoop(cmd, DoorIdLoop) 
-            for cmd in lme.code 
-        ]
         result.append(
-            Terminal(CodeTerminal(Lng.COMMAND_LIST(code, loop_config.dial_db)), 
+            Terminal(loop_config.CodeTerminal_without_Lazy_DoorIdLoop(lme.code, DoorIdLoop),
                      "<LOOP TERMINAL %s>" % lme.iid_couple_terminal, 
                      IncidenceId = lme.iid_couple_terminal,
                      dial_db     = loop_config.dial_db)
@@ -76,27 +71,27 @@ def _get_terminal_list_for_loop(loop_map, loop_config, DoorIdLoop):
 
     return result
 
+def _get_terminal_list_for_appendix_sms(loop_config, DoorIdLoop, appendix_cmd_list_db):
+
+    return [
+        Terminal(loop_config.CodeTerminal_without_Lazy_DoorIdLoop(cmd_list, DoorIdLoop),
+                 "<LOOP APPENDIX TERMINAL %s>" % appendix_sm_id, 
+                 IncidenceId = appendix_sm_id,
+                 dial_db     = loop_config.dial_db)
+        for appendix_sm_id, cmd_list in appendix_cmd_list_db.iteritems()
+    ]
+
 @typed(ParallelMiniTerminalList=[MiniTerminal])
-def _get_terminal_list_for_appendices(loop_config, appendix_lcci_db, 
-                                      ParallelMiniTerminalList):
-    """RETURNS: [0] True, default counter is required.
-                    False, else.
-                [1] list of terminals of the appendix state machines.
+def _get_terminal_list_for_original_terminals(loop_config, 
+                                              ParallelMiniTerminalList):
+    """RETURNS: 
+           [0] list of terminals of the appendix state machines.
     """
-    run_time_counter_required_f = False
-    terminal_list               = []
-    for mini_terminal in ParallelMiniTerminalList:
-        rtcr_f, cmd_list = loop_config.get_count_code(
-            appendix_lcci_db.get(mini_terminal.incidence_id)
-        )
-        count_code = Lng.COMMAND_LIST(cmd_list, loop_config.dial_db)
-        run_time_counter_required_f |= rtcr_f
+    return [
+        mini.get_Terminal(PreCode            = [], 
+                          dial_db            = loop_config.dial_db, 
+                          LoopStateMachineId = loop_config.loop_state_machine_id)
+        for mini in ParallelMiniTerminalList
+    ]
 
-        terminal_list.append(
-            mini_terminal.get_Terminal(count_code, 
-                                       loop_config.dial_db, 
-                                       loop_config.loop_state_machine_id)
-        )
-
-    return run_time_counter_required_f, terminal_list
 

@@ -1,7 +1,7 @@
 import quex.output.core.state.core      as     state_coder
 import quex.output.core.state.entry     as     entry
 import quex.output.core.mega_state.core as     mega_state_coder
-from   quex.blackboard                       import Lng
+from   quex.blackboard                  import Lng
 
 from   collections import defaultdict
 from   itertools   import imap

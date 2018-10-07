@@ -121,6 +121,7 @@ class Language(dict):
         self.__analyzer                           = None
         self.__code_generation_reload_label       = None
         self.__code_generation_on_reload_fail_adr = None
+        self.__debug_unit_name                    = None
         assert self.RETURN.endswith(";")
         self.__re_RETURN                          = re.compile(r"\b%s\b" % self.RETURN[:-1])
         # NOTE: 'END_OF_STREAM' is not an error, it it caught upon the 
@@ -1050,19 +1051,25 @@ class Language(dict):
         return "%s %s %s(%s)" % (Prolog, ReturnType, FunctionName, 
                                  ", ".join("%s %s" % (type_str, name_str) for type_str, name_str in ArgList))
 
+    def debug_unit_name_set(self, Name):
+        self.__debug_unit_name = Name
+
     def STATE_DEBUG_INFO(self, TheState, GlobalEntryF):
         assert isinstance(TheState, Processor)
+        if self.__debug_unit_name is None: name = ""
+        else:                              name = self.__debug_unit_name
 
         if isinstance(TheState, TemplateState):
-            return "    __quex_debug_template_state(%i, state_key);\n" \
-                   % TheState.index
+            return "    __quex_debug_template_state(\"%s\", %i, state_key);\n" \
+                   % (name, TheState.index)
         elif isinstance(TheState, PathWalkerState):
-            return "    __quex_debug_path_walker_state(%i, path_walker_%s_path_base, path_iterator);\n" \
-                   % (TheState.index, TheState.index)
+            return "    __quex_debug_path_walker_state(\"%s\", %i, path_walker_%s_path_base, path_iterator);\n" \
+                   % (name, TheState.index, TheState.index)
         elif GlobalEntryF: 
-            return "    __quex_debug_init_state(%i);\n" % TheState.index
+            return "    __quex_debug_init_state(\"%s\", %i);\n" \
+                   % (name, TheState.index)
         elif TheState.index == E_StateIndices.DROP_OUT:
-            return "    __quex_debug(\"Drop-Out Catcher\\n\");\n"
+            return "    __quex_debug(\"%s\" \" Drop-Out Catcher\\n\");\n"
         elif isinstance(TheState.index, (int, long)):
             return "    __quex_debug_state(%i);\n" % TheState.index
         else:
