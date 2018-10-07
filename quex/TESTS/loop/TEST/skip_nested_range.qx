@@ -1,11 +1,29 @@
 // skip-nested-range: Concurrent regular expressions;
-// CHOICES:    whitespace, multiple, multi-length-end;
+// CHOICES:    whitespace, multiple, multi-length-end, multi-length-end-2;
 token { LETTER; STAR; CLOSING_BRACKET; }
+
+// multi-length-end: 
+//
+//
+//     (loop)-- '<' -->(opener)-- '<' -->(closer)
+//
+//     That means, that the appendix of the opener '<' is empty after the 
+//     loop, but the pattern must continue to possibly detect '<<'. If, 
+//     what follows is not a '<', the position of acceptance of the first
+//     must be resumed.
+//
+// multi-length-end-2:
+//
+//     Same as multi-length-end, but the empty acceptance is only one
+//     choice. The other choice is something that lies behind the closer.
+//
+
 
 mode X : 
 <skip:              [ \t\n]                 >  // whitespace
 <skip_nested_range: ("/-"|"/+") ("-/"|"+/") >  // multiple
 <skip_nested_range: ">"  ">"{2,}            >  // multi-length-end
+<skip_nested_range: "|"|"|||"  "||"         >  // multi-length-end-2
 {
     <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
 	[A-Z]+ => QUEX_TKN_LETTER(Lexeme);
