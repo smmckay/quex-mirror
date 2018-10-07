@@ -325,20 +325,6 @@ def _get_LoopMapEntry_list_plain(loop_config, CaMap, L_pure):
         for character_set, ca in CaMap.iterable_in_sub_set(L_pure)
     ]
 
-def _encoding_transform(sm):
-    """Transform the given state machines into the buffer's encoding.
-    The original 'DFA-Id' remains intact! That is, both state machines
-    have the same id (supposed the old one vanishes).
-    """
-    verdict_f, \
-    sm_transformed = Setup.buffer_encoding.do_state_machine(sm) 
-
-    if not verdict_f:
-        error.log("Deep error: loop (skip range, skip nested range, indentation, ...)\n"
-                  "contained character not suited for given character encoding.")
-
-    return sm_transformed
-
 def _state_machine_tagged_with_matching_incidence_ids(Sm):
     # All state machines must match the with the incidence id of the state machine id.
     # The acceptance id is used as terminal id later.

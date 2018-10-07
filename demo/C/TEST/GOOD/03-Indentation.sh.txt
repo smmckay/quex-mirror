@@ -1,56 +1,56 @@
 (1, 1)  	STRUCT
-(1, 8)  	IDENTIFIER 'example'
+(1, 8)  	IDENTIFIER 'example' 
 (1, 15)  	COLON
 (1, 16)  	<INDENT>
-(2, 3)  	IDENTIFIER 'int'
-(2, 10)  	IDENTIFIER 'x'
+(2, 3)  	IDENTIFIER 'int' 
+(2, 10)  	IDENTIFIER 'x' 
 (2, 11)  	<NODENT>
-(3, 3)  	IDENTIFIER 'double'
-(3, 10)  	IDENTIFIER 'y'
-(5, 1)  	<DEDENT>
-(6, 1)  	FUNCTION_DEF 'def'
-(6, 5)  	IDENTIFIER 'function'
+(3, 3)  	IDENTIFIER 'double' 
+(3, 10)  	IDENTIFIER 'y' 
+(3, 11)  	<DEDENT>
+(6, 1)  	FUNCTION_DEF 'def' 
+(6, 5)  	IDENTIFIER 'function' 
 (6, 13)  	BRACKET_O
-(6, 14)  	IDENTIFIER 'Name'
+(6, 14)  	IDENTIFIER 'Name' 
 (6, 18)  	BRACKET_C
 (6, 19)  	<INDENT>
 (7, 4)  	IF
-(7, 7)  	IDENTIFIER 'Name'
+(7, 7)  	IDENTIFIER 'Name' 
 (7, 12)  	OP_EQUAL
-(7, 15)  	EVENT_MODE_CHANGE ''
-(7, 21)  	STRING 'Josef'
-(7, 21)  	EVENT_MODE_CHANGE ''
+(7, 15)  	EVENT_MODE_CHANGE '' 
+(7, 21)  	STRING 'Josef' 
+(7, 21)  	EVENT_MODE_CHANGE '' 
 (7, 22)  	COLON
 (7, 23)  	<INDENT>
-(8, 7)  	PRINT 'print'
-(8, 13)  	EVENT_MODE_CHANGE ''
-(8, 23)  	STRING 'hello Joe'
-(8, 23)  	EVENT_MODE_CHANGE ''
+(8, 7)  	PRINT 'print' 
+(8, 13)  	EVENT_MODE_CHANGE '' 
+(8, 23)  	STRING 'hello Joe' 
+(8, 23)  	EVENT_MODE_CHANGE '' 
 (8, 25)  	<DEDENT>
 (9, 4)  	ELSE
 (9, 9)  	<INDENT>
-(10, 7)  	PRINT 'print'
-(10, 13)  	EVENT_MODE_CHANGE ''
-(10, 20)  	STRING 'hello '
-(10, 20)  	EVENT_MODE_CHANGE ''
-(10, 22)  	IDENTIFIER 'Name'
+(10, 7)  	PRINT 'print' 
+(10, 13)  	EVENT_MODE_CHANGE '' 
+(10, 20)  	STRING 'hello ' 
+(10, 20)  	EVENT_MODE_CHANGE '' 
+(10, 22)  	IDENTIFIER 'Name' 
 (10, 26)  	<DEDENT>
-(12, 4)  	PRINT 'print'
-(12, 10)  	EVENT_MODE_CHANGE ''
-(12, 32)  	STRING 'welcome to my program'
-(12, 32)  	EVENT_MODE_CHANGE ''
+(12, 4)  	PRINT 'print' 
+(12, 10)  	EVENT_MODE_CHANGE '' 
+(12, 32)  	STRING 'welcome to my program' 
+(12, 32)  	EVENT_MODE_CHANGE '' 
 (12, 33)  	<NODENT>
 (14, 4)  	FOR
-(14, 8)  	IDENTIFIER 'letter'
+(14, 8)  	IDENTIFIER 'letter' 
 (14, 15)  	IN
-(14, 18)  	IDENTIFIER 'Name'
+(14, 18)  	IDENTIFIER 'Name' 
 (14, 22)  	COLON
 (14, 23)  	<INDENT>
-(15, 7)  	PRINT 'print'
-(15, 13)  	IDENTIFIER 'letter'
-(15, 20)  	EVENT_MODE_CHANGE ''
-(15, 22)  	STRING '!'
-(15, 22)  	EVENT_MODE_CHANGE ''
+(15, 7)  	PRINT 'print' 
+(15, 13)  	IDENTIFIER 'letter' 
+(15, 20)  	EVENT_MODE_CHANGE '' 
+(15, 22)  	STRING '!' 
+(15, 22)  	EVENT_MODE_CHANGE '' 
 (18, 1)  	<DEDENT>
 (18, 1)  	<DEDENT>
 (18, 1)  	<TERMINATION>

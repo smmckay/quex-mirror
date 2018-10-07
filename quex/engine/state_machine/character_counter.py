@@ -95,10 +95,6 @@ class SmLineColumnCountInfo(object):
             return False
 
     @staticmethod
-    def from_Empty():
-        return SmLineColumnCountInfo(Result=None)
-
-    @staticmethod
     @typed(CaMap=CountActionMap)
     def from_DFA(CaMap, SM, BeginOfLineF=False, CodecTrafoInfo=None):
         """LINE AND COLUMN NUMBER ANALYSIS ________________________________________

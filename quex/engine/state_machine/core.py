@@ -5,6 +5,7 @@ from   quex.engine.misc.interval_handling           import NumberSet, Interval, 
 import quex.engine.state_machine.index              as     state_machine_index
 from   quex.engine.state_machine.state.core         import DFA_State
 from   quex.engine.state_machine.state.single_entry import SeAccept
+from   quex.input.code.base                         import SourceRef_VOID
 
 from   quex.engine.misc.tools  import typed, flatten_it_list_of_lists
 from   quex.constants          import E_IncidenceIDs, \
@@ -40,9 +41,17 @@ class DFA(object):
     may count colum and line numbers, set jump positions for post-context
     pattern, or compute CRCs on the fly.
     """
+    __slots__ = (
+        "states",
+        "init_state_index",
+        "__id",
+        "sr"
+    )
     def __init__(self, InitStateIndex=None, AcceptanceF=False, InitState=None, DoNothingF=False, DfaId=None):
         if DfaId is None: self.set_id(state_machine_index.get_state_machine_id())
         else:             self.set_id(DfaId)
+
+        self.sr = SourceRef_VOID
 
         if DoNothingF: return
 
@@ -363,13 +372,6 @@ class DFA(object):
             state.acceptance_id_set() for state in self.states.itervalues() 
             if state.is_acceptance() 
         ))
-
-    def is_plain_bad_lexatom_detector(self):
-        init_state = self.get_init_state()
-        if       init_state is None:                   return False
-        if       init_state.has_transitions():         return False
-        elif not init_state.is_bad_lexatom_detector(): return False
-        else:                                          return True
 
     def get_bad_lexatom_detector_state_index_list(self):
         """At the time of this writing, BAD_LEXATOMs are implemented as states 

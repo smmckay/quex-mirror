@@ -76,7 +76,7 @@ from   operator         import attrgetter, itemgetter
 def do(SmOrSmList, EngineType=engine.FORWARD, 
        ReloadStateExtern=None, OnBeforeReload=None, OnAfterReload=None, 
        OnBeforeEntry=None, 
-       dial_db=None, OnReloadFailureDoorId=None, CutF=True, ReverseF=False, Sr=-1):
+       dial_db=None, OnReloadFailureDoorId=None, CutF=True, ReverseF=False):
     assert dial_db is not None
 
     def treat(sm, ReverseF):
@@ -85,7 +85,7 @@ def do(SmOrSmList, EngineType=engine.FORWARD,
         if not ok_f:
             error.warning("Pattern contains elements not found in engine codec '%s'.\n" % Setup.buffer_encoding.name \
                           + "(Buffer element size is %s [byte])" % Setup.lexatom.size_in_byte,
-                          Sr)
+                          sm.sr)
 
         if ReverseF:
             sm = reverse.do(sm, EnsureDFA_f=True)
@@ -95,14 +95,16 @@ def do(SmOrSmList, EngineType=engine.FORWARD,
     if type(SmOrSmList) != list:
         SM = treat(SmOrSmList, ReverseF)
     else:
+        assert SmOrSmList
         sm_list = [ treat(sm, ReverseF) for sm in SmOrSmList ]
         SM = combination.do(sm_list, FilterDominatedOriginsF=False)
+        SM.sr = sm_list[0].sr
 
     if CutF:
         error_name = SM.delete_named_number_list(signal_lexatoms(Setup)) 
         if error_name:
             error.log("Pattern is empty after deletion of signal lexatom '%s'" % error_name,
-                      Sr)
+                      SM.sr)
 
     # Generate FSM from DFA
     analyzer = FSM.from_DFA(SM, EngineType, ReloadStateExtern, 

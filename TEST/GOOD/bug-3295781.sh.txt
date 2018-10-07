@@ -1,13 +1,14 @@
 /* analyzer_function */ Simple_Y_analyzer_function
 /* analyzer_function */ Simple_X_analyzer_function
-__quex_debug_template_state(323, state_key);
+__quex_debug_template_state("Counter:Y", 300, state_key);
 Simple_Y_analyzer_function(struct Simple_tag* me) 
-__quex_debug_path_walker_state(335, path_walker_335_path_base, path_iterator);
-__quex_debug_template_state(336, state_key);
-__quex_debug_template_state(207, state_key);
+__quex_debug_path_walker_state("Core:Y", 322, path_walker_322_path_base, path_iterator);
+__quex_debug_template_state("Core:Y", 323, state_key);
+__quex_debug_template_state("Extra:Y", 243, state_key);
 Simple_X_analyzer_function(struct Simple_tag* me) 
-__quex_debug_path_walker_state(337, path_walker_337_path_base, path_iterator);
-__quex_debug_path_walker_state(338, path_walker_338_path_base, path_iterator);
-__quex_debug_path_walker_state(339, path_walker_339_path_base, path_iterator);
-__quex_debug_template_state(343, state_key);
+__quex_debug_path_walker_state("Core:X", 384, path_walker_384_path_base, path_iterator);
+__quex_debug_path_walker_state("Core:X", 385, path_walker_385_path_base, path_iterator);
+__quex_debug_path_walker_state("Core:X", 386, path_walker_386_path_base, path_iterator);
+__quex_debug_template_state("Core:X", 387, state_key);
+__quex_debug_template_state("Core:X", 388, state_key);
 ## Compile: No output is good output

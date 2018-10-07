@@ -2,17 +2,14 @@ from   quex.engine.loop.loop_map                          import LoopMapEntry
 import quex.engine.analyzer.door_id_address_label         as     dial
 import quex.engine.state_machine.construction.combination as     combination
 import quex.engine.state_machine.algebra.intersection     as     intersection
-from   quex.engine.state_machine.character_counter        import SmLineColumnCountInfo
 from   quex.engine.counter                                import CountAction, \
                                                                  CountActionMap
 from   quex.engine.misc.tools                             import typed, flatten_list_of_lists
-from   quex.engine.misc.interval_handling                 import NumberSet
 import quex.engine.misc.error                             as     error
 
 from   quex.blackboard import setup as Setup
 from   quex.constants  import E_CharacterCountType, \
-                              E_R, \
-                              E_IncidenceIDs
+                              E_R
 
 @typed(CaMap=CountActionMap)
 def do(loop_config, CaMap, SmList):

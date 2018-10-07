@@ -35,8 +35,14 @@ class Pattern:
         self.sm_bipd_to_be_reversed        = BipdSmTobeReversed
         # lcci = line column count information for main state machine
         self.lcci                   = LCCI
-        self.sr                     = Sr
         self.__pattern_string       = PatternString
+
+        self.sr    = Sr
+        self.sm.sr = Sr
+        if self.sm_pre_context_to_be_reversed is not None:
+            self.sm_pre_context_to_be_reversed.sr = Sr
+        if self.sm_bipd_to_be_reversed is not None:
+            self.sm_bipd_to_be_reversed.sr        = Sr
 
     @staticmethod
     def from_character_set(CharacterSet, StateMachineId, Sr, LCCI=None, PatternString="<character set>"):

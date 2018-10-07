@@ -14,7 +14,7 @@ exit character set exits: [True]
 [0020, 002F]  ((23)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=14, d=STATE_MACHINE_ENTRY)>
 [0030, 003F]  ((25)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=21, d=STATE_MACHINE_ENTRY)>
 [0040, 004F]  ((24)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=15, d=STATE_MACHINE_ENTRY)>
-[0050, 005F]  ((26)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=41, d=ACCEPTANCE)>
+[0050, 005F]  ((26)) ColumnCountAdd: { factor=1, value=0,  } <appendix: DoorID(s=19, d=ACCEPTANCE)>
 
 #_[ Appendix DFAs ]________________________________
 

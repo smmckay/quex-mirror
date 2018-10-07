@@ -356,18 +356,6 @@ class LoopConfig:
         target_door_id = DoorID.incidence(IidTerminal, self.dial_db)
         return self._cmd_list_Frame(CA, [], target_door_id)
         
-    def cmd_list_CA_GotoAppendixDfa(self, CA, AppendixDfaId): 
-        # Couple Terminal: transit to appendix state machine.
-        # When the appendix drops out, the loop must continue where the
-        # appendix has began => Set 'LoopRestartP' to current position.
-        self.__appendix_dfa_present_f = True
-        cmd_list        = [ 
-            Op.Assign(E_R.LoopRestartP, E_R.InputP),
-            Op.Assign(E_R.LexemeStartP, E_R.InputP)
-        ]
-        target_door_id = DoorID.state_machine_entry(AppendixDfaId, self.dial_db)
-        return self._cmd_list_Frame(CA, cmd_list, target_door_id)
-
     def cmd_list_CA_GotoLoopEntry(self, CA): 
         if not self.lexeme_end_check_f: 
             return self._cmd_list_Frame(CA, [], self.Lazy_DoorIdLoop)
