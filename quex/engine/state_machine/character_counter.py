@@ -418,6 +418,10 @@ class CharacterCountTracer(TreeWalker):
         self.sm       = SM
         self.depth    = 0
         self.result   = Count(E_Count.VIRGIN, E_Count.VIRGIN, E_Count.VIRGIN, E_Count.VIRGIN)
+        if SM.get_init_state().is_acceptance():
+            self.result = Count(ColumnN=0, LineN=0, ColumnIndex=E_Count.VIRGIN, GridStepN=E_Count.VIRGIN)
+        else:
+            self.result = Count(E_Count.VIRGIN, E_Count.VIRGIN, E_Count.VIRGIN, E_Count.VIRGIN)
         self.known_db = {}  # state_index --> count
         TreeWalker.__init__(self)
 
