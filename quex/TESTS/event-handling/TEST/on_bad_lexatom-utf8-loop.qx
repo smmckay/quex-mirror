@@ -1,5 +1,6 @@
 // Errors: on_bad_lexatom (Encoding UTF8) -- in loop;
-// CHOICES: skip, skip_range, skip_nested_range, indentation;
+// CHOICES: utf8-indent-2nd, utf8-indent-whitespace, utf8-skip-range-begin-2nd, utf8-indent-3rd, utf8-skip-nested-range-begin-2nd,  utf8-skip-range-begin-3rd, utf8-indent-comment, utf8-skip-nested-range-begin-3rd, utf8-indent-newline, utf8-skip-range-end-2nd, utf8-indent-suppressed, utf8-skip-nested-range-end-2nd, utf8-skip-range-end-3rd, utf8-indent-whitespace-2nd, utf8-skip-nested-range-end-3rd, utf8-indent-whitespace-3rd, utf8-skip; 
+
 token { X; NEWLINE; }
 
 header { 
@@ -8,12 +9,16 @@ header {
 }
 
 mode X :
-<skip: ﬆ>                         // digraph C-K st
-<skip_range: ﬀ ﬁ>                    // digraph C-K ff C-K fi
-<skip_nested_range: Ⅶ     ⅤⅧ>        // digraph C-K 7R C-K 5R C-K 8R
-<indentation: ‖ => whitespace;>            // digraph C-K 2!
+<skip: ﬆ>                        // digraph C-K st
+<skip_range: ﬀ ﬁ>                // digraph C-K ff C-K fi
+<skip_nested_range: Ⅶ     ⅤⅧ>    // digraph C-K 7R C-K 5R C-K 8R
+<indentation: ‖ => whitespace;   // digraph C-K 2!
+              デ => bad;         // digraph C-K De 
+              λ => newline;      // digraph C-K l*  
+              σ => suppressor;   // digraph C-K l*  
+              ξ+ => comment;>    // digraph C-K c*
 {
-    [^\nﬆﬀⅦⅠ]+ => TK_X(Lexeme);
+    [A-Z \n]+ => TK_X(Lexeme);
 
     on_bad_lexatom { 
         {

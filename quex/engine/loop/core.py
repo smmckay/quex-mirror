@@ -107,7 +107,6 @@ from   quex.engine.state_machine.core                     import DFA
 from   quex.engine.counter                                import CountActionMap
 from   quex.engine.misc.interval_handling                 import NumberSet
 from   quex.engine.misc.tools                             import typed
-import quex.engine.misc.error                             as     error
 
 from   quex.blackboard import setup as Setup
 from   quex.constants  import E_IncidenceIDs

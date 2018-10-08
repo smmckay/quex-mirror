@@ -1,0 +1,66 @@
+| Mode change to X
+| [START]
+bad_lexatom: '0x33'
+lexeme:      EF AC 33 
+TOKEN: <TERMINATION> ''
+| [END]
+  mode:       X;
+  error_code: OnBadLexatom;
+  counter: {
+    _column_number_at_begin: 1;
+    _column_number_at_end:   1;
+    _indentation_stack: [1, ]
+  }
+  _indentation_handler_active_f: true;
+  _mode_stack: {
+    size:    64;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x55ed2fc345a0)) (== _front);
+      end:       begin + 65536 (== _back + 1);
+    }
+    _read_p:                      begin + 4, end - 65532;
+    _lexeme_start_p:              begin + 1, end - 65535;
+    _lexatom_at_lexeme_start:     0xA;
+    filler: {
+      lexatom_index_next_to_fill:     4;
+      byte_n_per_lexatom:             1;
+      _byte_order_reversion_active_f: false;
+      type:                           plain;
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 4;
+        type:             FILE;
+        file_handle:      ((0x55ed2fc34260));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 4;
+      end_p:               begin + 5, end - 65531;
+    }
+  }
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+   lexeme start--------------------------->[0001] 0x00EF
+                                           [0002] 0x00AC
+                                           [0003] 0x0033
+   input---------------------------------->[0004] 0x0000
+   end of file---------------------------->[0005] 0x0000
+                                           [0006] 0x00FF
+                                           ...
+                                           [FFFB] 0x00FF
+                                           [FFFC] 0x00FF
+                                           [FFFD] 0x00FF
+                                           [FFFE] 0x00FF
+   buffer back---------------------------->[FFFF] 0x0000
+_________________________________________________________________
+
+

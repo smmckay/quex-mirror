@@ -21,7 +21,7 @@ def do(Condition):
     elif Condition == "count-line":
         return bool(Setup.count_line_number_f)
     elif Condition == "count-column":
-        return bool(Setup.count_column_number_f)
+        return bool(Setup.count_column_number_f) or bool(required_support_indentation_count())
     elif Condition == "token-stamp-line":
         return do("count-line")                      # NEEDS REWORK
     elif Condition == "token-stamp-column":
@@ -33,7 +33,7 @@ def do(Condition):
     elif Condition == "token-class-only":
         return Setup.token_class_only_f
     elif Condition == "count":
-        return Setup.count_line_number_f or Setup.count_column_number_f
+        return Setup.count_line_number_f or Setup.count_column_number_f or bool(required_support_indentation_count())
     elif Condition == "indentation":
         return bool(required_support_indentation_count())
     elif Condition == "lib-quex":
