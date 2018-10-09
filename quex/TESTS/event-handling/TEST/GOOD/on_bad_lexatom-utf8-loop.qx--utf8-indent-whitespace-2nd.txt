@@ -1,0 +1,76 @@
+| Mode change to X
+| [START]
+TOKEN: X 'DADA'
+bad_lexatom: '0x60'
+lexeme:      CE BB CE BB E2 60 
+TOKEN: <TERMINATION> ''
+| [END]
+  mode:       X;
+  error_code: OnBadLexatom;
+  counter: {
+    _column_number_at_begin: 1;
+    _column_number_at_end:   2;
+    _indentation_stack: [1, 2, ]
+  }
+  _indentation_handler_active_f: true;
+  _mode_stack: {
+    size:    64;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x55b056c6d5a0)) (== _front);
+      end:       begin + 65536 (== _back + 1);
+    }
+    _read_p:                      begin + 11, end - 65525;
+    _lexeme_start_p:              begin + 5, end - 65531;
+    _lexatom_at_lexeme_start:     0x66;
+    filler: {
+      lexatom_index_next_to_fill:     13;
+      byte_n_per_lexatom:             1;
+      _byte_order_reversion_active_f: false;
+      type:                           plain;
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 13;
+        type:             FILE;
+        file_handle:      ((0x55b056c6d260));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 13;
+      end_p:               begin + 14, end - 65522;
+    }
+  }
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+                                           [0001] 0x0044
+                                           [0002] 0x0041
+                                           [0003] 0x0044
+                                           [0004] 0x0041
+   lexeme start--------------------------->[0005] 0x00CE
+                                           [0006] 0x00BB
+                                           [0007] 0x00CE
+                                           ...
+                                           [0009] 0x00E2
+                                           [000A] 0x0060
+   input---------------------------------->[000B] 0x0000
+                                           [000C] 0x00CE
+                                           [000D] 0x00BB
+   end of file---------------------------->[000E] 0x0000
+                                           ...
+                                           [FFFB] 0x00FF
+                                           [FFFC] 0x00FF
+                                           [FFFD] 0x00FF
+                                           [FFFE] 0x00FF
+   buffer back---------------------------->[FFFF] 0x0000
+_________________________________________________________________
+
+
+

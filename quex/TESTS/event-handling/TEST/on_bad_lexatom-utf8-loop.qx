@@ -1,5 +1,5 @@
 // Errors: on_bad_lexatom (Encoding UTF8) -- in loop;
-// CHOICES: utf8-indent-2nd, utf8-indent-whitespace, utf8-skip-range-begin-2nd, utf8-indent-3rd, utf8-skip-nested-range-begin-2nd,  utf8-skip-range-begin-3rd, utf8-indent-comment, utf8-skip-nested-range-begin-3rd, utf8-indent-newline, utf8-skip-range-end-2nd, utf8-indent-suppressed, utf8-skip-nested-range-end-2nd, utf8-skip-range-end-3rd, utf8-indent-whitespace-2nd, utf8-skip-nested-range-end-3rd, utf8-indent-whitespace-3rd, utf8-skip; 
+// CHOICES: utf8-indent-bad-2nd, utf8-indent-bad-3rd, utf8-skip-range-begin-2nd, utf8-skip-nested-range-begin-2nd,  utf8-skip-range-begin-3rd, utf8-indent-comment, utf8-skip-nested-range-begin-3rd, utf8-indent-newline, utf8-skip-range-end-2nd, utf8-indent-suppressed, utf8-skip-nested-range-end-2nd, utf8-skip-range-end-3rd, utf8-indent-whitespace-2nd, utf8-skip-nested-range-end-3rd, utf8-indent-whitespace-3rd, utf8-skip; 
 
 token { X; NEWLINE; }
 

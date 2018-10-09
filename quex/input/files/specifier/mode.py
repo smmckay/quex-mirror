@@ -305,7 +305,7 @@ class Mode_Prep:
         self.pattern_action_pair_list = PapList
         # Loopers = Containing all 'looping' objects for skipping and 
         #           indentation handling. (patterns are finalized)
-        self.loopers = Loopers
+        self.loopers                  = Loopers
 
         # OptionsDb, IncidenceDb, and CounterDb contain aggregated content
         # from base modes.
@@ -319,9 +319,6 @@ class Mode_Prep:
         self.exit_mode_name_list  = ExitModeNameList  # This mode can exit to those.
 
     def pre_finalize(self, ModePrepDb):
-        """REQUIRES: All Mode_Prep must be defined.
-           TASK:     Collect patterns from base modes.
-        """
         self.dial_db            = DialDB()
         self.base_mode_sequence = [ ModePrepDb[name] for name in self.base_mode_name_sequence ]
 
@@ -330,7 +327,7 @@ class Mode_Prep:
         self.extra_analyzer_list,         \
         self.run_time_counter_required_f, \
         self.reload_state_forward,        \
-        self.required_register_set        = self.__setup_matching_configuration(ModePrepDb)
+        self.required_register_set        = self.__setup_matching_configuration()
 
     def finalize(self, ModePrepDb):
         """REQUIRES: Patterns from base modes have been collected.
@@ -360,7 +357,7 @@ class Mode_Prep:
                     Documentation       = self.doc, 
                     dial_db             = self.dial_db)
 
-    def __setup_matching_configuration(self, ModePrepDb):
+    def __setup_matching_configuration(self):
         """Collect all pattern-action pairs and 'loopers' and align it in a list
         of 'priority-pattern-terminal' objects, i.e. a 'ppt_list'. That list associates
         each pattern with a priority and a terminal containing an action to be executed
@@ -376,15 +373,15 @@ class Mode_Prep:
         loopers implement state machines which are subject to reload. The same reload 
         state later used by the general matching state machine.
         """
+        reload_state_forward = ReloadState(EngineType=engine.FORWARD, 
+                                           dial_db=self.dial_db)
         # PPT from pattern-action pairs
         #
         ppt_list = PPT_List(TerminalFactory(self.name, self.incidence_db, self.dial_db))
-        ppt_list.collect_match_pattern(ModePrepDb, self.base_mode_sequence)
+        ppt_list.collect_match_pattern(self.base_mode_sequence)
 
         # PPT and Extra Terminals from skippers, and indentation handlers
         #
-        reload_state_forward = ReloadState(EngineType=engine.FORWARD, 
-                                           dial_db=self.dial_db)
         # PPT from loopers (skip, skip-range, indentation)
         ppt_list.collect_loopers(self.loopers, self.ca_map, 
                                  reload_state_forward) 

@@ -82,14 +82,14 @@ class PPT_List(list):
         self.terminal_factory      = terminal_factory
         self.required_register_set = set()
 
-    def collect_match_pattern(self, ModePrepDb, BaseModeSequence):
+    def collect_match_pattern(self, BaseModeSequence):
         """Collect patterns of all inherited modes. Patterns are like virtual functions
         in C++ or other object oriented programming languages. Also, the patterns of the
         uppest mode has the highest priority, i.e. comes first.
 
         'pap' = pattern action pair.
         """
-        def pap_iterator(ModePrepDb, BaseModeSequence):
+        def pap_iterator(BaseModeSequence):
             assert len(BaseModeSequence) == len(set(m.name for m in BaseModeSequence)), \
                    "Base mode sequences MUST mention each mode only once."
             for mode_hierarchy_index, mode_prep in enumerate(BaseModeSequence):
@@ -100,7 +100,7 @@ class PPT_List(list):
             PPT(PatternPriority(mhi, pattern.incidence_id), 
                 pattern, 
                 self.terminal_factory.do_match_pattern(code, pattern))
-            for mhi, pattern, code in pap_iterator(ModePrepDb, BaseModeSequence)
+            for mhi, pattern, code in pap_iterator(BaseModeSequence)
         )
 
     def extra_analyzer_list(self):
