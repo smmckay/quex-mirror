@@ -1126,14 +1126,13 @@ quex/TESTS/event-handling/TEST                                       <no date>
                                bad-utf8-4th ..........................[OK]
                                good-utf8 .............................[OK]
     on_bad_lexatom (Encoding UTF8) -- in loop
-        on_bad_lexatom-utf8-loop.qx utf8-indent-2nd ........[NO GOOD FILE]
-                                    utf8-indent-3rd ........[NO GOOD FILE]
-                                    utf8-indent-comment ....[NO GOOD FILE]
-                                    utf8-indent-newline ....[NO GOOD FILE]
-                                    utf8-indent-suppressed .[NO GOOD FILE]
-                                    utf8-indent-whitespace .[NO GOOD FILE]
-                                    utf8-indent-whitespace-2nd [NO GOOD FILE]
-                                    utf8-indent-whitespace-3rd [NO GOOD FILE]
+        on_bad_lexatom-utf8-loop.qx utf8-indent-bad-2nd ..............[OK]
+                                    utf8-indent-bad-3rd ..............[OK]
+                                    utf8-indent-comment ..............[OK]
+                                    utf8-indent-newline ..............[OK]
+                                    utf8-indent-suppressed ...........[OK]
+                                    utf8-indent-whitespace-2nd .......[OK]
+                                    utf8-indent-whitespace-3rd .......[OK]
                                     utf8-skip ........................[OK]
                                     utf8-skip-nested-range-begin-2nd .[OK]
                                     utf8-skip-nested-range-begin-3rd .[OK]
@@ -1174,19 +1173,10 @@ quex/TESTS/event-handling/TEST                                       <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       error ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] on_bad_lexatom-utf8-loop.qx _ utf8-indent-2nd
-                                     \__ utf8-indent-3rd
-                                     \__ utf8-indent-comment
-                                     \__ utf8-indent-newline
-                                     \__ utf8-indent-suppressed
-                                     \__ utf8-indent-whitespace
-                                     \__ utf8-indent-whitespace-2nd
-                                     \__ utf8-indent-whitespace-3rd
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -3428,14 +3418,6 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
-    [NO GOOD FILE] on_bad_lexatom-utf8-loop.qx _ utf8-indent-2nd
-                                             \__ utf8-indent-3rd
-                                             \__ utf8-indent-comment
-                                             \__ utf8-indent-newline
-                                             \__ utf8-indent-suppressed
-                                             \__ utf8-indent-whitespace
-                                             \__ utf8-indent-whitespace-2nd
-                                             \__ utf8-indent-whitespace-3rd
 ===============================================================================
 
 SUMMARY:
@@ -3454,7 +3436,7 @@ SUMMARY:
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-        8  49    [FAIL] ........../event-handling/TEST                                
+           48      [OK] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
            8       [OK] ........../loop/TEST                                          
@@ -3504,11 +3486,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           ___            
-    |  ___|_ _(_) |___      ( _ )     __  __
-    | |_ / _` | | / __|     / _ \     \ \/ /
-    |  _| (_| | | \__ \    | (_) |     >  < 
-    |_|  \__,_|_|_|___/     \___/     /_/\_\
-                                                                   (1743 tests)
+     ___  _ _   _  __                        _      _ 
+    / _ \| | | | |/ /___  _ __ _ __ ___  ___| |_   | |
+   | | | | | | | ' // _ \| '__| '__/ _ \/ __| __|  | |
+   | |_| | | | | . \ (_) | |  | | |  __/ (__| |_   |_|
+    \___/|_|_| |_|\_\___/|_|  |_|  \___|\___|\__|  (_)
+                                                                   (1742 tests)
 
 ===============================================================================
