@@ -48,4 +48,4 @@ lex_ascii/Lexer.cpp:  ascii.qx
 	quex -i ascii.qx -o Lexer --odir lex_ascii
 		 
 clean:	
-	rm -rf lex_ascii/ lex_utf8/ *.o $(FILES) tmp.*
+	rm -rf lex_ascii/ lex_utf8/ *.o $(FILES) tmp.* build

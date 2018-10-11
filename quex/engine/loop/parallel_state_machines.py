@@ -174,6 +174,8 @@ def split_first_transition(SmList):
     return result, appendix_sm_to_iid_original_db
 
 def combine_intersecting_character_sets(first_vs_appendix_sm):
+    # TODO: Consider using 'target_map_ops.py', since this applies the same
+    #       procedure.
     result = []   # list of [0] Character Set
     #                       [1] Count Action related to [0]
     #                       [2] List of appendix state machines related [0]

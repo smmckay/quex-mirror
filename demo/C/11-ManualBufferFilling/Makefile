@@ -52,4 +52,4 @@ converter/Lexer.c: lexConverter.qx
 		 --buffer-element-type wchar_t --language C            
 
 clean:	
-	rm -rf plain/ converter/ *.o $(FILES) tmp.*
+	rm -rf plain/ converter/ *.o $(FILES) tmp.* build

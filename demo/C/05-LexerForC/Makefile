@@ -28,4 +28,4 @@ lexical_analysis/LexerForC.c: c.qx
 	quex -i c.qx -o LexerForC --odir lexical_analysis --language C
 
 clean:	
-	rm -rf lexer lexical_analysis *.o tmp.*
+	rm -rf lexer lexical_analysis *.o tmp.* build

@@ -1,11 +1,14 @@
-Purify the concept of 'content size' in Buffer
----
-OnLoadFailure handler Unit Tests -- check the ONFAILURE handling.
+Next Release:
 
-in TESTS/event_handling/TEST
+() Complete CMakeLists.txt files for demos.
+() Documentation, Documentation, Documentation 
+() python 3.0 compatibility
+() MIT License for all files
+() UTs for engine/loop
+===================================================================================
 
---------------------------------
-Normalization: 
+
+MISC IDEAS:
 
     Define a unique representation for an equivalence
 
@@ -26,7 +29,7 @@ Expansion:
     \CannonExp
 
 --------------------------------
-Vowelization
+Vowelization (Arabic/Hebrew)
     \Vowel      --> also match without vowels
     \Devowel(p) --> also match partly without vowels
 

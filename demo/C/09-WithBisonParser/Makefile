@@ -27,4 +27,4 @@ Calc_parser.tab.c:  Calc_parser.y
 	bison $<
 
 clean:	
-	rm -rf parser lexical_analysis/ tmp.* Calc_parser.tab.c Calc_parser.tab.h *.o
+	rm -rf parser lexical_analysis/ tmp.* Calc_parser.tab.c Calc_parser.tab.h *.o build

@@ -48,4 +48,4 @@ lex_ascii/Lexer.c:  ascii.qx
 	quex -i ascii.qx -o Lexer --odir lex_ascii --language C
 		 
 clean:	
-	rm -rf lex_ascii/ lex_utf8/ *.o $(FILES) tmp.*
+	rm -rf lex_ascii/ lex_utf8/ *.o $(FILES) tmp.* build
