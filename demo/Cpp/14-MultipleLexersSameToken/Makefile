@@ -38,4 +38,4 @@ A_B_C/Global-token.cpp:
 		 # generate lib-quex
 
 clean:
-	rm -rf max/ moritz/ boeck/ A_B_C/ *.o lexer tmp.* 
+	rm -rf max/ moritz/ boeck/ A_B_C/ *.o lexer tmp.* build

@@ -29,4 +29,4 @@ boeck/boeck.cpp:  boeck.qx
 		 --token-id-prefix TKN_ --suppress 6 # for once: lib-quex
 
 clean:
-	rm -rf max/ moritz/ boeck/ *.o lexer tmp.*
+	rm -rf max/ moritz/ boeck/ *.o lexer tmp.* build

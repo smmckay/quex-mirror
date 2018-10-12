@@ -1,20 +1,25 @@
 Next Release:
 
-() Complete CMakeLists.txt files for demos.
-() Documentation, Documentation, Documentation 
-() python 3.0 compatibility
-() MIT License for all files
-() UTs for engine/loop
+()  Documentation, Documentation, Documentation 
+(/) Complete CMakeLists.txt files for demos.
+()  UTs on CMakeLists.txt in demo/
+()  Python 3.0 compatibility
+()  MIT License for all files
+()  UTs for engine/loop
+()  Docker Image for App and Dev
+()  Remove QUEX_ERROR_EXIT and ASSERT!
+()  Unify 'target_map_ops.trigger_set_line_up' and 'loop.combine ...'
+()  static_cast<*> in C++
+
 ===================================================================================
 
-
-MISC IDEAS:
+MISC:
 
     Define a unique representation for an equivalence
 
     Many representations --> single representation
-                             (1) composition: single character
-                             (2) decomposition: multiple characters
+          (1) composition: single character
+          (2) decomposition: multiple characters
 
     \CompatComp
     \CannonComp
@@ -33,11 +38,9 @@ Vowelization (Arabic/Hebrew)
     \Vowel      --> also match without vowels
     \Devowel(p) --> also match partly without vowels
 
-
 --------------------------------
 
 \Stem and \Brancher Unit Tests and checks
 
 --------------------------------
 
-Remove QUEX_ERROR_EXIT and ASSERT!
