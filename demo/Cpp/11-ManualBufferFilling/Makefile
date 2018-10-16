@@ -39,9 +39,6 @@ feeder-converter.exe:   lexer-feeder.cpp receiver.cpp  converter/Lexer.cpp
 gavager-converter.exe:  lexer-gavager.cpp receiver.cpp converter/Lexer.cpp
 	$(LD_CONVERTER) -o $@ $^ 
 
-point-converter.exe:    lexer-point.cpp                converter/Lexer.cpp
-	$(LD_CONVERTER) -o $@ $^ 
-          
 plain/Lexer.cpp: lexPlain.qx 
 	quex --cbm --fallback-mandatory \
 		 -i lexPlain.qx -o Lexer --odir plain 

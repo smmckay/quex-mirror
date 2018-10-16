@@ -1,8 +1,8 @@
 Next Release:
 
-()  Documentation, Documentation, Documentation 
+(w)  Documentation, Documentation, Documentation 
 (/) Complete CMakeLists.txt files for demos.
-()  UTs on CMakeLists.txt in demo/
+(/)  UTs on CMakeLists.txt in demo/
 ()  Python 3.0 compatibility
 ()  MIT License for all files
 ()  UTs for engine/loop

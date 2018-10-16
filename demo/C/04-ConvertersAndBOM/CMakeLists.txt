@@ -33,10 +33,10 @@ find_package(ICU COMPONENTS uc)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 add_executable(lexer          lexer.c          Easy/Easy.c)
+add_executable(lexer-icu      lexer-icu.c      Easy/Easy.c)
 add_executable(lexer-with-bom lexer-with-bom.c Easy/Easy.c)
-add_executable(lexer-with-icu lexer-icu.c      Easy/Easy.c)
 
-target_link_libraries(lexer-with-icu ${ICU_LIBRARIES})
+target_link_libraries(lexer-icu ${ICU_LIBRARIES})
 
 add_custom_command (
     OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/Easy/Easy.c

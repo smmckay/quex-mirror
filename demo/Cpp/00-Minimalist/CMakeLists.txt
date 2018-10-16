@@ -31,6 +31,6 @@ add_executable(lexer lexer.cpp tiny/tiny.cpp)
 add_custom_command (
     OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/tiny/tiny.cpp
     COMMAND quex -i ${CMAKE_CURRENT_SOURCE_DIR}/tiny.qx -o tiny --odir tiny 
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/tiny.qx
+    DEPENDS tiny.qx
 )
 

@@ -26,11 +26,11 @@ project (ModesAndStuff)
 
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
-add_executable(lexer  lexer.c ${CMAKE_CURRENT_BINARY_DIR}/Easy/Easy.c)
-add_executable(lexer2 lexer.c ${CMAKE_CURRENT_BINARY_DIR}/Easy2/Easy2.c)
+add_executable(lexer  lexer.c Easy/Easy.c)
+add_executable(lexer2 lexer.c Easy2/Easy2.c)
 target_compile_definitions(lexer2 PRIVATE LEXER2)
 
-set(S         ${CMAKE_CURRENT_SOURCE_DIR})
+set(S ${CMAKE_CURRENT_SOURCE_DIR})
 set(COMMON_QX ${S}/patterns.qx ${S}/tokens.qx ${S}/common.qx)
 
 add_custom_command (
@@ -39,7 +39,7 @@ add_custom_command (
     DEPENDS ${COMMON_QX} ${S}/easy.qx
 )
 add_custom_command (
-    OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/Easy2/Easy2.c 
+    OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/Easy2/Easy2.c
     COMMAND quex -i ${COMMON_QX} ${S}/easy2.qx -o Easy2 --language C
     DEPENDS ${COMMON_QX} ${S}/easy2.qx
 )

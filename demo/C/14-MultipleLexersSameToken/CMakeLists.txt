@@ -70,8 +70,9 @@ add_custom_command(
 
 add_custom_command(
     OUTPUT  ${CMAKE_CURRENT_SOURCE_DIR}/A_B_C/Global-token.c
-    COMMAND quex -i ${CMAKE_CURRENT_SOURCE_DIR}/token_ids.qx --token-class-only -o Global --token-class Common_Token 
+    COMMAND quex -i ${CMAKE_CURRENT_SOURCE_DIR}/token_ids.qx 
 		    --odir ${CMAKE_CURRENT_SOURCE_DIR}/A_B_C -b 4  
+            --token-class-only -o Global --token-class Common_Token 
             --language C  
 		    # generate lib-quex
 	DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/token_ids.qx)

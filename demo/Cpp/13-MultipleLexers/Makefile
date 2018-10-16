@@ -12,7 +12,8 @@ LD       := $(COMPILER) -I./ -Iboeck $(ADD_FLAGS)
 #           -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT 
 #           -DQUEX_OPTION_DEBUG_SHOW_EXT
 
-all \
+all: lexer
+
 lexer: lexer.cpp max/max.cpp moritz/moritz.cpp boeck/boeck.cpp
 	$(LD) $^ -o $@ 
 	 

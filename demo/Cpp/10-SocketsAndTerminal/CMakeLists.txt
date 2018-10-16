@@ -26,17 +26,17 @@ project (SocketsAndTerminal)
 
 add_executable(lexer-socket       ${CMAKE_CURRENT_SOURCE_DIR}/lexer-socket.cpp       ${CMAKE_CURRENT_SOURCE_DIR}/lex_ascii/Lexer.cpp)
 add_executable(lexer-stdin        ${CMAKE_CURRENT_SOURCE_DIR}/lexer-stdin.cpp        ${CMAKE_CURRENT_SOURCE_DIR}/lex_ascii/Lexer.cpp)
-add_executable(lexer-commandline  ${CMAKE_CURRENT_SOURCE_DIR}/lexer-command-line.cpp ${CMAKE_CURRENT_SOURCE_DIR}/lex_ascii/Lexer.cpp)
+add_executable(lexer-command-line ${CMAKE_CURRENT_SOURCE_DIR}/lexer-command-line.cpp ${CMAKE_CURRENT_SOURCE_DIR}/lex_ascii/Lexer.cpp)
 add_executable(feed-socket        ${CMAKE_CURRENT_SOURCE_DIR}/feed-socket.cpp)
                                      
-add_executable(lexer-socketutf8       ${CMAKE_CURRENT_SOURCE_DIR}/lexer-socket.cpp       ${CMAKE_CURRENT_SOURCE_DIR}/lex_utf8/Lexer.cpp)
-add_executable(lexer-stdinutf8        ${CMAKE_CURRENT_SOURCE_DIR}/lexer-stdin.cpp        ${CMAKE_CURRENT_SOURCE_DIR}/lex_utf8/Lexer.cpp)
-add_executable(lexer-commandline-utf8 ${CMAKE_CURRENT_SOURCE_DIR}/lexer-command-line.cpp ${CMAKE_CURRENT_SOURCE_DIR}/lex_utf8/Lexer.cpp)
+add_executable(lexer-socket-utf8        ${CMAKE_CURRENT_SOURCE_DIR}/lexer-socket.cpp       ${CMAKE_CURRENT_SOURCE_DIR}/lex_utf8/Lexer.cpp)
+add_executable(lexer-stdin-utf8         ${CMAKE_CURRENT_SOURCE_DIR}/lexer-stdin.cpp        ${CMAKE_CURRENT_SOURCE_DIR}/lex_utf8/Lexer.cpp)
+add_executable(lexer-command-line-utf8 ${CMAKE_CURRENT_SOURCE_DIR}/lexer-command-line.cpp ${CMAKE_CURRENT_SOURCE_DIR}/lex_utf8/Lexer.cpp)
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
-target_compile_options(lexer-socketutf8       PRIVATE -DWITH_UTF8)
-target_compile_options(lexer-stdinutf8        PRIVATE -DWITH_UTF8)
-target_compile_options(lexer-commandline-utf8 PRIVATE -DWITH_UTF8)
+target_compile_options(lexer-socket-utf8       PRIVATE -DWITH_UTF8)
+target_compile_options(lexer-stdin-utf8        PRIVATE -DWITH_UTF8)
+target_compile_options(lexer-command-line-utf8 PRIVATE -DWITH_UTF8)
           
 add_custom_command(
     OUTPUT  ${CMAKE_CURRENT_SOURCE_DIR}/lex_utf8/Lexer.cpp

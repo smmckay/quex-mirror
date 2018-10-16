@@ -10,6 +10,8 @@ Contents:
 
    introduction/main.rst
 
+   00-make-it/main.rst
+
    01-basic-concepts/main.rst
 
    02-syntax/main.rst
