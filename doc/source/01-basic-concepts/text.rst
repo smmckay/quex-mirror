@@ -97,3 +97,8 @@ compiler construction.  Further, the relation between lexatom and state machine
 events has been clarified based on the fact that efficient analysis requires
 intermediate storage of data in memory buffers.  The next section discusses how
 lexatoms are filled into that buffer.
+
+.. rubric:: Footnotes
+
+.. [#f5] Since the Unicode standard does not assign characters beyond 
+         0x10ffff, in real life, the maximum amount of bytes in UTF8 is four.

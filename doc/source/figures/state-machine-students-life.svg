@@ -17,7 +17,7 @@
    viewBox="0 0 239.5773 139.23475"
    id="svg2"
    sodipodi:version="0.32"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="state-machine-students-life.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.0"
@@ -32,7 +32,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -221,8 +221,8 @@
     </marker>
   </defs>
   <sodipodi:namedview
-     inkscape:window-height="744"
-     inkscape:window-width="1024"
+     inkscape:window-height="1019"
+     inkscape:window-width="1920"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      guidetolerance="10.0"
@@ -233,11 +233,11 @@
      pagecolor="#ffffff"
      id="base"
      showgrid="false"
-     inkscape:zoom="1.3740567"
-     inkscape:cx="390.16395"
-     inkscape:cy="-7.8071735"
+     inkscape:zoom="3.8864192"
+     inkscape:cx="208.76947"
+     inkscape:cy="89.785921"
      inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:window-y="27"
      inkscape:current-layer="svg2"
      showborder="true"
      inkscape:showpageshadow="false"
@@ -246,164 +246,135 @@
      fit-margin-left="1"
      fit-margin-right="1"
      fit-margin-bottom="1" />
-  <g
-     id="g3213"
-     transform="translate(-80.60266,1.8591056)">
-    <ellipse
-       d="m 720,-95 c 0,9.941125 -8.05887,18 -18,18 -9.94113,0 -18,-8.058875 -18,-18 0,-9.94113 8.05887,-18 18,-18 9.94113,0 18,8.05887 18,18 z"
-       style="font-size:17.0722332px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:none;stroke:#000000;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       cx="702"
-       cy="-95"
-       rx="18"
-       ry="18"
-       id="ellipse3177"
-       sodipodi:cx="702"
-       sodipodi:cy="-95"
-       sodipodi:rx="18"
-       sodipodi:ry="18"
-       transform="matrix(1.1729007,0,0,0.59220168,-625.93047,134.44815)" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text133"
-       style="font-size:11.19999981px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       y="81.235085"
-       x="197.25989">study</text>
-  </g>
-  <g
-     id="g3217"
-     transform="translate(-40.333721,1.9436056)">
-    <ellipse
-       d="m 720,-95 c 0,9.941125 -8.05887,18 -18,18 -9.94113,0 -18,-8.058875 -18,-18 0,-9.94113 8.05887,-18 18,-18 9.94113,0 18,8.05887 18,18 z"
-       style="font-size:17.0722332px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:none;stroke:#000000;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       cx="702"
-       cy="-95"
-       rx="18"
-       ry="18"
-       id="ellipse3179"
-       sodipodi:cx="702"
-       sodipodi:cy="-95"
-       sodipodi:rx="18"
-       sodipodi:ry="18"
-       transform="matrix(1.1729007,0,0,0.59220168,-537.11961,134.36365)" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text43"
-       style="font-size:11.19999981px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       y="81.95723"
-       x="286.14731">eat</text>
-  </g>
   <path
      style="fill:none;stroke:#000000;stroke-width:0.88490313px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-     d="m 128.89628,71.471081 c 0,0 24.91534,-16.177069 51.84656,-16.744201 26.93121,-0.567132 51.21873,16.100194 51.21873,16.100194"
+     d="m 1.3827472,46.523297 c 0,0 24.9153398,-16.177069 51.8465598,-16.744201 26.93121,-0.567132 51.218733,16.100194 51.218733,16.100194"
      id="path3271"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="czc" />
+  <circle
+     style="opacity:1;fill:#fcffff;fill-opacity:1;stroke:#000000;stroke-width:0.88490313;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     id="path998"
+     cx="-10.670364"
+     cy="67.167938"
+     r="24.021414" />
+  <circle
+     style="opacity:1;fill:#fcffff;fill-opacity:1;stroke:#000000;stroke-width:0.88490313;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     id="path998-9"
+     cx="247.48921"
+     cy="67.167938"
+     r="24.021414" />
+  <circle
+     style="opacity:1;fill:#fcffff;fill-opacity:1;stroke:#000000;stroke-width:0.88490313;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     id="path998-9-7"
+     cx="118.40943"
+     cy="67.167946"
+     r="24.021414" />
   <path
      sodipodi:nodetypes="czc"
      inkscape:connector-curvature="0"
      id="path3245"
-     d="m 232.46997,88.411014 c 0,0 -24.91534,16.177076 -51.84656,16.744206 -26.93121,0.56713 -51.21873,-16.100196 -51.21873,-16.100196"
+     d="m 104.95644,87.598488 c 0,0 -24.915343,16.177072 -51.846563,16.744202 C 26.178667,104.90982 1.8911472,88.242498 1.8911472,88.242498"
      style="fill:none;stroke:#000000;stroke-width:0.88490313px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)" />
   <path
      style="fill:none;stroke:#000000;stroke-width:0.88490313px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-     d="m 125.22729,70.400128 c 0,0 51.31966,-32.599267 120.75539,-32.522391 69.43573,0.07688 118.83954,31.878384 118.83954,31.878384"
+     d="m -2.2862428,44.313888 c 0,0 51.3196598,-32.599267 120.7553928,-32.522391 69.43573,0.07688 118.83954,31.878384 118.83954,31.878384"
      id="path3490"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="czc" />
   <flowRoot
-     transform="matrix(0.88490315,0,0,0.88490315,-98.038279,66.425147)"
-     style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+     transform="matrix(0.88490315,0,0,0.88490315,-226.18316,75.806998)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0.01%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
      id="flowRoot4975"
      xml:space="preserve"><flowRegion
-       id="flowRegion4977"><rect
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans"
+       id="flowRegion4977"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"><rect
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
          y="34.351151"
          x="349.69446"
          height="18.740129"
          width="62.588394"
          id="rect4979" /></flowRegion><flowPara
-       id="flowPara4981">replete</flowPara></flowRoot>  <flowRoot
+       id="flowPara1046">satiety</flowPara></flowRoot>  <flowRoot
      xml:space="preserve"
      id="flowRoot4549"
-     style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-     transform="matrix(0.88490315,0,0,0.88490315,-13.995268,32.936744)"><flowRegion
-       id="flowRegion4551"><rect
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0.01%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+     transform="matrix(0.88490315,0,0,0.88490315,-141.96418,27.570396)"
+     inkscape:export-xdpi="200"
+     inkscape:export-ydpi="200"><flowRegion
+       id="flowRegion4551"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"><rect
          id="rect4553"
          width="62.588394"
          height="18.740129"
          x="349.69446"
          y="34.351151"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans" /></flowRegion><flowPara
-       id="flowPara4555">hungry</flowPara></flowRoot>  <flowRoot
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /></flowRegion><flowPara
+       id="flowPara1042">hunger</flowPara></flowRoot>  <flowRoot
      xml:space="preserve"
-     id="flowRoot4557"
-     style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-     transform="matrix(0.88490315,0,0,0.88490315,-153.72557,-47.05996)"><flowRegion
-       id="flowRegion4559"><rect
-         id="rect4561"
+     id="flowRoot1054"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0.01%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+     transform="matrix(0.88490315,0,0,0.88490315,-276.38505,-64.493937)"><flowRegion
+       id="flowRegion1050"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"><rect
+         id="rect1048"
          width="72.595261"
          height="20.013731"
          x="350.60416"
          y="120.41019"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans" /></flowRegion><flowPara
-       id="flowPara4563">hungry</flowPara></flowRoot>  <g
-     id="g3241"
-     transform="translate(0,1.1807056)">
-    <ellipse
-       transform="matrix(1.1729007,0,0,0.59220168,-448.37354,135.12655)"
-       sodipodi:ry="18"
-       sodipodi:rx="18"
-       sodipodi:cy="-95"
-       sodipodi:cx="702"
-       id="ellipse129"
-       ry="18"
-       rx="18"
-       cy="-95"
-       cx="702"
-       style="font-size:17.0722332px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:none;stroke:#000000;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       d="m 720,-95 c 0,9.941125 -8.05887,18 -18,18 -9.94113,0 -18,-8.058875 -18,-18 0,-9.94113 8.05887,-18 18,-18 9.94113,0 18,8.05887 18,18 z" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text43-9"
-       style="font-size:11.19999981px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       y="81.95723"
-       x="374.96994">sleep</text>
-  </g>
-  <flowRoot
-     transform="matrix(0.88490315,0,0,0.88490315,15.880501,1.6777194)"
-     style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /></flowRegion><flowPara
+       id="flowPara1052">hunger</flowPara></flowRoot>  <flowRoot
+     transform="matrix(0.88490315,0,0,0.88490315,-275.24659,-98.192223)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0.01%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+     id="flowRoot1038"
+     xml:space="preserve"><flowRegion
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+       id="flowRegion1034"><rect
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+         y="120.41019"
+         x="350.60416"
+         height="20.013731"
+         width="72.595261"
+         id="rect1032" /></flowRegion><flowPara
+       id="flowPara1056">fatigue</flowPara></flowRoot>  <flowRoot
+     transform="matrix(0.88490315,0,0,0.88490315,-111.63303,3.0903829)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:sans-serif;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
      id="flowRoot3205"
      xml:space="preserve"><flowRegion
-       id="flowRegion3207"><rect
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans"
+       id="flowRegion3207"
+       style="font-family:sans-serif"><rect
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:Sans;text-align:start;writing-mode:lr-tb;text-anchor:start"
          y="120.41019"
          x="350.60416"
          height="20.013731"
          width="72.595261"
          id="rect3209" /></flowRegion><flowPara
-       id="flowPara3211">buzz</flowPara></flowRoot>  <flowRoot
-     xml:space="preserve"
-     id="flowRoot4557-1"
-     style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-     transform="matrix(0.88490315,0,0,0.88490315,-151.36733,-74.393326)"><flowRegion
-       id="flowRegion4559-6"><rect
-         id="rect4561-2"
-         width="72.595261"
-         height="20.013731"
-         x="350.60416"
-         y="120.41019"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans" /></flowRegion><flowPara
-       id="flowPara4563-2">tired</flowPara></flowRoot>  <path
+       id="flowPara3211"
+       style="font-size:12px;line-height:1.25;font-family:sans-serif">buzz</flowPara></flowRoot>  <path
      style="fill:none;stroke:#000000;stroke-width:0.88490313px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-     d="m 365.22846,89.958274 c 0,0 -51.31966,32.599266 -120.7554,32.522386 -69.43573,-0.0769 -118.83954,-31.878376 -118.83954,-31.878376"
+     d="m 237.71493,89.601131 c 0,0 -51.31966,32.599269 -120.7554,32.522389 C 47.523797,122.04662 -1.8800128,90.245141 -1.8800128,90.245141"
      id="path3490-0"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="czc" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend-1)"
-     d="m 502.51913,89.930379 -97.00446,0"
+     style="fill:none;stroke:#000000;stroke-width:0.88490313px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend-1)"
+     d="M 223.30471,66.699521 H 143.15744"
      id="path3273"
      inkscape:connector-curvature="0"
-     transform="matrix(0.88490315,0,0,0.88490315,-91.58561,0)"
      sodipodi:nodetypes="cc" />
+  <text
+     x="-10.856302"
+     y="70.214035"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.19999981px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-align:center;writing-mode:lr-tb;text-anchor:middle"
+     id="text133">study</text>
+  <text
+     x="118.30006"
+     y="71.020683"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.19999981px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-align:center;writing-mode:lr-tb;text-anchor:middle"
+     id="text43">eat</text>
+  <text
+     x="247.45641"
+     y="70.257782"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.19999981px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-align:center;writing-mode:lr-tb;text-anchor:middle"
+     id="text43-9">sleep</text>
 </svg>

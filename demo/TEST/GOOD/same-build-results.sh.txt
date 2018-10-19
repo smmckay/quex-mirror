@@ -1,0 +1,37 @@
+-- C -----------------------------------------------------
+
+[OK]   00-Minimalist (lexer )
+[OK]   01-Trivial (lexer )
+[OK]   02-ModesAndStuff (lexer )
+[OK]   03-Indentation (lexer lexer2 )
+[OK]   04-ConvertersAndBOM (lexer lexer-icu lexer-with-bom )
+[OK]   05-LexerForC (lexer )
+[OK]   06-Include (lexer-1 lexer-2 )
+[OK]   07-TrailingPostContext (lexer )
+[OK]   08-DeletionAndPriorityMark (lexer )
+[OK]   09-WithBisonParser (parser )
+[OK]   10-SocketsAndTerminal (feed-socket lexer-command-line lexer-command-line-utf8 lexer-socket lexer-socket-utf8 lexer-stdin lexer-stdin-utf8 )
+[OK]   11-ManualBufferFilling (feeder-converter.exe feeder-plain.exe gavager-converter.exe gavager-plain.exe point-plain.exe )
+[OK]   12-EngineEncoding (iso8859-7-lexer utf16-lexer utf16-lexer-other utf8-lexer )
+[OK]   13-MultipleLexers (lexer )
+[OK]   14-MultipleLexersSameToken (lexer )
+
+-- Cpp -----------------------------------------------------
+
+[OK]   00-Minimalist (lexer )
+[OK]   01-Trivial (lexer )
+[OK]   02-ModesAndStuff (lexer )
+[OK]   03-Indentation (lexer lexer2 )
+[OK]   04-ConvertersAndBOM (lexer lexer-icu lexer-with-bom )
+[OK]   05-LexerForC (lexer )
+[OK]   06-Include (lexer-1 lexer-2 )
+[OK]   07-TrailingPostContext (lexer )
+[OK]   08-DeletionAndPriorityMark (lexer )
+[OK]   09-WithBisonParser (parser )
+[OK]   10-SocketsAndTerminal (feed-socket lexer-command-line lexer-command-line-utf8 lexer-socket lexer-socket-utf8 lexer-stdin lexer-stdin-utf8 )
+[OK]   11-ManualBufferFilling (feeder-converter.exe feeder-plain.exe gavager-converter.exe gavager-plain.exe point-plain.exe )
+[OK]   12-EngineEncoding (iso8859-7-lexer utf16-lexer utf16-lexer-other utf8-lexer )
+[OK]   13-MultipleLexers (lexer )
+[OK]   14-MultipleLexersSameToken (lexer )
+
+<terminated 0>
