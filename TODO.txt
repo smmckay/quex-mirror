@@ -1,6 +1,8 @@
 Next Release:
 
 (w)  Documentation, Documentation, Documentation 
+     + make its
+     + state machine, lexical analysis
 (/) Complete CMakeLists.txt files for demos.
 (/)  UTs on CMakeLists.txt in demo/
 ()  Python 3.0 compatibility
@@ -10,6 +12,9 @@ Next Release:
 ()  Remove QUEX_ERROR_EXIT and ASSERT!
 ()  Unify 'target_map_ops.trigger_set_line_up' and 'loop.combine ...'
 ()  static_cast<*> in C++
+()  example with linux kernel module
+()  operators for 'remove/insert/change/ to implement levenstein automaton
+()  user function definitions
 
 ===================================================================================
 
