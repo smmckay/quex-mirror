@@ -5,6 +5,7 @@ Next Release:
      + state machine, lexical analysis
 (/) Complete CMakeLists.txt files for demos.
 (/)  UTs on CMakeLists.txt in demo/
+()  move repository to git
 ()  Python 3.0 compatibility
 ()  MIT License for all files
 ()  UTs for engine/loop
