@@ -84,7 +84,7 @@ letters.  Since the set of possibly occurring letters is a closed set, namely
 the *alphabet*,  letters may play the role of events in the FSM.  In the
 graphical display of a state machine, letter sequences correspond to pathes
 along the states which they activate.  For the sake of precise discussions let
-the terms 'lexeme' and 'lexatom' be defined as below.
+the terms 'lexatom' and 'lexeme' be defined as below.
 
 Lexatom:
    A lexatom is one instance of the finite set of elements in a sequence 

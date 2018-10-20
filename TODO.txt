@@ -3,6 +3,7 @@ Next Release:
 (w)  Documentation, Documentation, Documentation 
      + make its
      + state machine, lexical analysis
+     + sequential data streams
 (/) Complete CMakeLists.txt files for demos.
 (/)  UTs on CMakeLists.txt in demo/
 ()  move repository to git
