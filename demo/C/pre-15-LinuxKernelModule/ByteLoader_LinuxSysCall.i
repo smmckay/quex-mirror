@@ -7,12 +7,19 @@ $$INC: buffer/bytes/ByteLoader_LinuxSysCall$$
 $$INC: quex/MemoryManager$$
 $$INC: definitions$$
 
+#include <linux/kernel.h>
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/syscalls.h>
+#include <linux/fcntl.h>
+#include <asm/uaccess.h>
+
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE void                       QUEX_NAME(ByteLoader_LinuxSysCall_construct)(QUEX_NAME(ByteLoader_LinuxSysCall)* me, int fd);
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION  QUEX_NAME(ByteLoader_LinuxSysCall_tell)(QUEX_NAME(ByteLoader)* me);
 QUEX_INLINE void                       QUEX_NAME(ByteLoader_LinuxSysCall_seek)(QUEX_NAME(ByteLoader)* me, 
-                                                                        QUEX_TYPE_STREAM_POSITION Pos);
+                                                                               QUEX_TYPE_STREAM_POSITION Pos);
 QUEX_INLINE size_t                     QUEX_NAME(ByteLoader_LinuxSysCall_load)(QUEX_NAME(ByteLoader)* me, 
                                                                         void* buffer, const size_t ByteN, 
                                                                         bool*);
@@ -95,16 +102,16 @@ QUEX_INLINE QUEX_TYPE_STREAM_POSITION
 QUEX_NAME(ByteLoader_LinuxSysCall_tell)(QUEX_NAME(ByteLoader)* alter_ego)            
 { 
     QUEX_NAME(ByteLoader_LinuxSysCall)* me = (QUEX_NAME(ByteLoader_LinuxSysCall)*)(alter_ego);
-    /* Use 'lseek(current position + 0)' to get the current position.        */
-    return (QUEX_TYPE_STREAM_POSITION)lseek(me->fd, 0, SEEK_CUR); 
+    /* Use 'sys_lseek(current position + 0)' to get the current position.     */
+    return (QUEX_TYPE_STREAM_POSITION)sys_lseek(me->fd, 0, SEEK_CUR); 
 }
 
 QUEX_INLINE void    
 QUEX_NAME(ByteLoader_LinuxSysCall_seek)(QUEX_NAME(ByteLoader)*    alter_ego, 
-                                 QUEX_TYPE_STREAM_POSITION Pos) 
+                                        QUEX_TYPE_STREAM_POSITION Pos) 
 { 
     QUEX_NAME(ByteLoader_LinuxSysCall)* me = (QUEX_NAME(ByteLoader_LinuxSysCall)*)(alter_ego);
-    lseek(me->fd, (long)Pos, SEEK_SET); 
+    sys_lseek(me->fd, (long)Pos, SEEK_SET); 
 }
 
 QUEX_INLINE size_t  
@@ -116,7 +123,7 @@ QUEX_NAME(ByteLoader_LinuxSysCall_load)(QUEX_NAME(ByteLoader)* alter_ego,
  * The caller will realize end of stream by a return of zero bytes.          */
 { 
     QUEX_NAME(ByteLoader_LinuxSysCall)* me = (QUEX_NAME(ByteLoader_LinuxSysCall)*)(alter_ego);
-    ssize_t                        n  = sys_read(me->fd, buffer, ByteN); 
+    ssize_t                             n  = sys_read(me->fd, buffer, ByteN); 
     /* Theoretically, a last 'terminating zero' might be send over socket 
      * connections. Make sure, that this does not appear in the stream.      */
     if( n && ((uint8_t*)buffer)[n-1] == 0x0 ) {
