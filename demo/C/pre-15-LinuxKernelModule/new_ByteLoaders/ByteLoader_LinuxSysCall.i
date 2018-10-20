@@ -123,7 +123,7 @@ QUEX_NAME(ByteLoader_LinuxSysCall_load)(QUEX_NAME(ByteLoader)* alter_ego,
  * The caller will realize end of stream by a return of zero bytes.          */
 { 
     QUEX_NAME(ByteLoader_LinuxSysCall)* me = (QUEX_NAME(ByteLoader_LinuxSysCall)*)(alter_ego);
-    ssize_t                             n  = sys_read(me->fd, buffer, ByteN); 
+    ssize_t                        n  = sys_read(me->fd, buffer, ByteN); 
     /* Theoretically, a last 'terminating zero' might be send over socket 
      * connections. Make sure, that this does not appear in the stream.      */
     if( n && ((uint8_t*)buffer)[n-1] == 0x0 ) {
