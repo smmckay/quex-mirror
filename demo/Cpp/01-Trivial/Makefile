@@ -28,4 +28,4 @@ easy/Easy.cpp: easy.qx
 	quex -i easy.qx -o Easy --odir easy --token-id-offset 0x1000 
 
 clean:	
-	rm -rf lexer easy/ *.o
+	rm -rf lexer easy/ *.o build

@@ -9,4 +9,4 @@ lexer: lexer.c tiny/tiny.c
 	gcc lexer.c tiny/tiny.c -I. -Wall -Werror -o lexer 
 
 clean:
-	rm -rf lexer tiny/
+	rm -rf lexer tiny/ build

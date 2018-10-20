@@ -52,7 +52,7 @@ Easy/Easy: definitions.qx end_of_file.qx program.qx
 clean: clean_lexer clean_lexer-icu clean_lexer-with-bom
 
 clean_lexer:	
-	rm -rf lexer Easy/ *.o tmp.*
+	rm -rf lexer Easy/ *.o tmp.* build
 
 clean_lexer-with-bom:	
 	rm -rf lexer-with-bom Easy/ *.o tmp.*

@@ -29,4 +29,4 @@ easy/Easy: simple.qx
 		 --token-id-offset  0x1000 
 
 clean:	
-	rm -rf lexer easy/ *.o tmp.*
+	rm -rf lexer easy/ *.o tmp.* build

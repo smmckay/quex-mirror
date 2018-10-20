@@ -22,4 +22,4 @@ lexer2: easy2.qx
 	$(LD) -DLEXER2 lexer.c Easy2/Easy2.c -o $@ 
 
 clean:	
-	rm -rf lexer lexer2 Easy/ Easy2/ *.o tmp.*
+	rm -rf lexer lexer2 Easy/ Easy2/ *.o tmp.* build

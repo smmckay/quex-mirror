@@ -9,4 +9,4 @@ lexer: lexer.cpp tiny/tiny.cpp
 	g++ lexer.cpp tiny/tiny.cpp -I. -Wall -Werror -o lexer 
 
 clean:
-	rm -rf lexer tiny/
+	rm -rf lexer tiny/ build

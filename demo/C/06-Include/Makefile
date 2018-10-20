@@ -27,8 +27,8 @@ approach-2/Easy.c: approach-2.qx
 	quex -i approach-2.qx -o Easy --language C --odir approach-2
 
 clean: clean_lexer-1 clean_lexer-2
-	rm -rf tmp.* *.o
+	rm -rf tmp.* *.o build
 clean_lexer-1:
-	rm -rf lexer-1 approach-1 
+	rm -rf lexer-1 approach-1
 clean_lexer-2:
 	rm -rf lexer-2 approach-2 
