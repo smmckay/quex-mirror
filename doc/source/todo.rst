@@ -1,3 +1,44 @@
+-- What modes are about!
+    .. describe:: List of base modes  
+
+      #. Base modes from which behavior is inherited.
+
+    .. describe:: Tags in <...> brackets
+
+      #. Skippers, i.e. machines that run in parallel without causing any
+         token to be produced.
+
+      #. Counting behavior, i.e. what character counts how many columns or 
+         lines, or causes jumps on a column number grid.
+
+      #. Indentation based scope parameters, defining what is a newline 
+         what is white space, what is bad at the beginning of a line (the
+         tab character or space?) :cite:`todo`.
+
+      #. Transition control, specifying from where a mode can be entered
+         and to what mode it may transit.
+
+      #. Inheritance control, specifying if the mode can be inherited or
+         not.
+
+    .. describe:: Pattern-Action Pairs
+
+      #. Patterns which are lurking to cause actions and send tokens.
+
+    .. describe:: Event Handlers
+
+      #. On-Incidence definitions for 'on_failure', 'on_end_of_stream', 
+         etc.
+
+TODO:
+.. Talk about the 'lexeme in buffer': In this case, though, a callback must be
+   implemented which reacts on the buffer's content change. On this event the
+   callback must saveguard all related strings.
+
+-- TODO: Mention the 'ByteLoader_Memory'
+    TODO: callbacks 'on_buffer_overflow', 'on_content_change'
+          that can load sequentially from memory.
+
 -- '-o namespace::lexer' when used with multiple lexers where only the namespace
    differs, better use '--odir' to write lexers in separate directories.
 

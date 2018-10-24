@@ -9,8 +9,12 @@ science.
 
 Grapheme:
     A minimally distinctive unit of writing in the context of a particular 
-    writing system :cite:`Unicode2015`. The arabic letters ل  (lam) and 
-    أ (alif) are graphemes. The commonly used combination لأ (lam-alif) is not.
+    writing system :cite:`Unicode2015`. The arabic letter ل  (lam) and 
+    the vocalization mark |damma| |nbsp| (damma) are graphemes. The 
+    vocalized ُل is not.
+
+.. |damma|  unicode:: U+064F .. ARABIC DAMMA
+.. |nbsp|   unicode:: U+00A0 .. NO-BREAK SPACE
 
 Glyph:
     An graphical representation of a grapheme. This may include a specification
@@ -63,14 +67,12 @@ to occupy.
 
 At a time, when there was only ASCII :cite:`Standard2018cs50` encoded text, the
 letter 'A', i.e.  the code point 65, was repesented by a single code unit,
-namely 65, and it was stored in a single byte. Even the graphics chip might
-have directly displayed a set of pixels for the glyph of 'A' when 65 was stored
-in a byte of its memory region.  In this context, phrases such as '*a
-lexical analyzer iterates over bytes*' or '*the state machine triggers on the
-letter A*', indeed, make sense.  In a generalized context of arbitrary writing
-systems and encodings, such statements become cloudy. The following paragraphs
-explain the necessity of the precise aforementioned definitions with the
-example of an egyptian hieroglyph.
+namely 65, and it was stored in a single byte. A graphics chip might have
+directly displayed a pixelized glyph of 'A' when 65 was stored in a byte of its
+memory region.  In this context, phrases such as '*a lexical analyzer iterates
+over bytes*' or '*the state machine triggers on the letter A*', made sense,
+indeed.  However, in a general context of arbitrary writing systems and
+encodings, such statements become cloudy. 
 
 .. _fig:lexatom-explanation:
 
@@ -83,16 +85,23 @@ example of an egyptian hieroglyph.
 
 
 :numref:`fig:lexatom-explanation` shows the example of the Egyptian Hieroglyph
-P002. The figure shows three state machines depending on the encoding for which
-they were developped. When a lexer runs on Unicode (UTF32) the hieroglyph is
-represented by a single lexatom given as '0x1329D' which is identical to the
-code point. The cells that carry lexatoms may be 4 byte wide.  When the dynamic
-length encoding UTF16 is used, the character is represented by two lexatoms
-'0xD80C' followed by '0xDE9E'. The code unit is two byte wide and therefore a
-cell carrying a lexatom must be at least of that size. In UTF8, the same
-character is represented by a sequences of lexatoms namely '0xF0',  '0x93',
-'0x8A', and '0x9D'. A code unit is one byte wide. In this case four instances
-of a code unit represent the given code point.
+P002. The character consists of a single code unit, i.e. the glyph represents
+the according grapheme. Depending on the used encoding three different state
+machines are depicted. When a lexer runs on Unicode (UTF32) the hieroglyph is
+matched by a single lexatom given as 0x1329D which is identical to the code
+point. The cells that carry lexatoms should be at least 3 byte wide.  When the
+dynamic length encoding UTF16 is used, the character is represented by two
+lexatoms 0xD80C followed by 0xDE9E. The code unit is two byte wide. In UTF8,
+the same character is represented by a sequences of lexatoms namely 0xF0,
+0x93, 0x8A, and 0x9D. A code unit fits into a single byte. In this case four
+instances of a code unit, for lexatoms, represent the given code point.
+
+The concepts of a code unit and a lexatom seems subtle. TODO
+which acts as event in a state machine. If a state machine runs on code points,
+a lexatom is a code point. Additionally, the term code unit is rather uncommon
+outside the field of Unicode and character encoding. To express generality
+beyond the treatment of human-readable text, the author of this text chose the
+term lexatom in the context of lexical analysis.
 
 .. rubric:: Footnotes
 
@@ -102,6 +111,4 @@ of a code unit represent the given code point.
    the UTF-8 encoding form, 16-bit code units in the UTF-16 encoding form, and 
    32-bit code units in the UTF-32 encoding form."*
 
-.. [#f5] Since the Unicode standard does not assign characters beyond 
-         0x10ffff, in real life, the maximum amount of bytes in UTF8 is four.
 

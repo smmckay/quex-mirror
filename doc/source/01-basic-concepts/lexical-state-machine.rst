@@ -134,9 +134,9 @@ Shortest match implies restrictions. For example, consider the set of lexemes
 (``for``, ``forester``). The lexatom sequence ``f``, ``o``, ``r``, ``e``,
 ``s``, ``t`` would reach an acceptance state after the third letter. The lexer
 would signalize a match of ``for`` and stop.  It could never recognize a
-``forest``. This, however, restricts the set of treatable patterns.
-Longest match does not impose restrictions. For the sake
-of generality, Quex implements the longest match approach.
+``forest``. This, however, restricts the set of treatable patterns.  Longest
+match does not impose restrictions. For the sake of generality, Quex implements
+the longest match approach.
 
 .. rubric:: Footnotes
 

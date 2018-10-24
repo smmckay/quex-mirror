@@ -58,10 +58,10 @@ buffer filler is compiled.
 
 COMMENT: Syntactic Chunks vs. Arbitrary Chunks
 
-Earlier versions of this example directory distinguised between syntactic
+Earlier versions of this example directory distinguished between syntactic
 chunks and arbitrary chunks. The adaptors for feeding and gavaging, though,
 provide a high-performance easy-to-use API so that differentiation between
-these two concepts is no longer considered advantegeous.
+these two concepts is no longer considered advantageous.
 
 
 

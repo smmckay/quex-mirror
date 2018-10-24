@@ -1,65 +1,77 @@
 Input
 =====
 
-Input data may be provided in a variety of different ways.  First, data may be
-delivered through different file handling interfaces, through network or any
-other customized protocol. Second, the translation of bytes into lexatoms may
-vary dependent on the state machine engine's internal encoding and the prefixed
-decoders. To account for this, the load process happens in
-two steps as shown in :ref:`fig:byte-lexatom-buffer` implemented by a
-``ByteLoader`` and a ``LexatomLoader``:
+A Quex generated lexer can either acquire the data for its buffer
+*automatically* or via a *manual filling* action by the user. Programming
+interfaces [#f1]_ for loading or receiving bytes may differ. Further, there
+might be some conversion [#f2]_ needed before the incoming data is in a form
+where it can be lexically analyzed. To cope with this, input is provided
+in two stages represented by the classes ``ByteLoader`` and ``LexatomLoader``.
 
-    #. ByteLoader: Loading raw bytes from some raw byte source. 
-           
-    #. LexatomLoader: Loading lexatoms derived from raw bytes.
+:rumref:`fig:input-procedure-stages` shows this setup.  The
+``ByteLoader`` interface allows to mount a variety of different adapters that
+connect to APIs for data acquisition. The ``LexatomLoader`` interface relies on
+the ``ByteLoader`` interface to load data. It provides on the other hand an
+interface for the buffer to load lexatoms. Depending on the particular
+scenario, an appropriate derivative of ``ByteLoader`` and ``LexatomLoader``
+may be setup. User customized derivatives for both may be plugged in at need.
 
-    TODO: Mention the 'ByteLoader_Memory'
-    TODO: callbacks 'on_buffer_overflow', 'on_content_change'
-          that can load sequentially from memory.
-
-The raw byte source may be the Standard C or C++ file handling interface, or
-that of POSIX, RTOS, or any other customized interface. A ``ByteLoader``
-implements a common API through which any outside data is communicated. The
-byte loader produces a byte stream. It  performs stream navigation (tell and
-seek) on byte level.  The lexer's buffer, though, requires lexatoms. 
-
-It is the task of the lexatom loader to transform the ``ByteLoader``-s byte
-stream into an lexatom stream. The lexatom loader performs stream navigation on
-lexatom level. The lexatoms are finally stored in a dedicated chunk of memory:
-the buffer. A 'lexatom pointer' points to the current lexatom to be treated.
-For the sake of efficiency, the cells of the buffer all need to be of the same
-size. Only then, subsequent lexatoms can be accessed quickly by adding a
-constant to the lexatom pointer.  
-
-.. _fig:byte-lexatom-buffer:
+.. _fig:input-procedure-stages:
 
 .. figure:: ../figures/byte-lexatom-buffer.png
    
    The path of data from the outside world until it arrives in the lexer's
    lexatom buffer.
 
-Technically, the two entities ``ByteLoader`` and ``LexatomLoader`` are base
-classes that specify the interfaces for byte and lexatom loading. Any concrete
-implementation is derived from those two. While the default API of a generated
-lexer hides their existence, they become important when the input provision
-must be customized :ref:`sec:input-provision`.
 
-The two-step input provision is flexible enough to cope with the constraints of
-tiny embedded systems, where there is even no Standard C I/O library available,
-up to platforms where input streams are decrypted and converted by complex
-algorithms.
 
-.. NOTE figures are setup with 'sdedit'. As for version 4.01 a NullPointer
-   exception prevents exporting to png. So that has been postponed.
-   Consider files: "buffer-automatic-load.sdx" and "buffer-manual-load.sdx"
+By default, buffer loading happens in the background, when new data needs to be
+filled into the buffer--without any user interaction.  This is shown in
+:numref:`fig-seqdiag-automatic-buffer-loading`. When the lexer hits a buffer
+boarder, it requests new lexatoms from its instance of the ``LexatomLoader``. The
+``LexatomLoader`` requests data through the ``ByteLoader``.  The ``ByteLoader``
+applies its particular API to read data from its source. It then returns data
+to the caller. The ``LexatomLoader`` takes this data, possibly converts it, and
+fills the buffer region that has been indicated to be filled.  The user is, in
+this case, completely unaware of loading, conversion, and possibly stream
+navigation activities.
 
-The buffer filling process may happen in two ways: *automatically* or
-*manually*. By default, a generated lexer detects when the end of a buffer is
-reached and tries to load new content automatically. In some cases, this not be
-practical or efficient (see :ref:`sec-using-mmap-for loading`). For manual
-buffer filling, Quex provides adapters, namely 'feeder' and 'gavager'. By means
-of those content can be copied into the buffer or even inserted. With these two
-adaptors the same infrastructure of byte- and lexatom-loading is used as for
-manual filling.  The input procedure may be specified upon a call to the
-lexer's constructor, the reset functions, or the include-push functions.
+.. _fig:seqdiag-automatic-buffer-loading:
 
+.. figure:: ../figures/buffer-automatic-load.png
+   
+   Automatic buffer loading in the background.
+
+:numref:`fig:seqdiag-manual-buffer-filling` shows the flow of action of the
+alternative method: manual buffer filling [#f3]_. When the lexer reaches the
+end of its present data, it stacks a token signalling *out-of-data*.  The user
+must now react by filling new data into the buffer, before the next analysis
+step.  To facilitate the process of filling, two adaptors are provided namely
+``Feeder`` and ``Gavager``.  A ``Feeder`` feeds as much as possible data into
+the buffer and maintains the position of unfed data. A ``Gavager`` lets the
+user access the buffer directly.  Even more direct buffer access can be
+achieved by pointing the lexer to a specified memory region to be used as
+buffer.  Functioning applications of these approaches can reviewed in the
+subdirectory `11-ManualBufferFilling` of the demonstration examples.
+
+.. _fig:seqdiag-manual-buffer-filling:
+
+.. figure:: ../figures/buffer-manual-load.png
+   
+   Manual buffer filling.
+
+.. rubric:: Footnotes
+
+.. [#f1] Standard C and C++ provide libraries for input output. Input,
+         however, may come also through other APIs, such as POSIX, or 
+         VFS for Linux kernel modules.
+
+.. [#f2] Lexatom loading may consist of a plain passing through of incoming
+         bytes. Alternatively, Quex provides modules that are able to use 
+         GNU-IConv, or IBMs ICU™ for character set conversion.
+
+.. [#f3] Possible scenarios for manual buffer filling are environments where 
+         blocking function calls for 'read' are not permitted, environments 
+         where data is provided in chunks as function arguments, or 
+         setups where a significant performance increase can 
+         be expected from running a lexer on prepared memory regions.
