@@ -50,9 +50,10 @@ Easy/Easy: definitions.qx end_of_file.qx program.qx
 
 # (*) HELPERS __________________________________________________________________
 clean: clean_lexer clean_lexer-icu clean_lexer-with-bom
+	rm -rf build
 
 clean_lexer:	
-	rm -rf lexer Easy/ *.o tmp.* build
+	rm -rf lexer Easy/ *.o tmp.*
 
 clean_lexer-with-bom:	
 	rm -rf lexer-with-bom Easy/ *.o tmp.*

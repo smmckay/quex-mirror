@@ -59,4 +59,4 @@ clean_lexer-with-bom:
 	rm -rf lexer-with-bom Easy/ *.o tmp.*
 
 clean_lexer-icu:	
-	rm -rf lexer-icu Easy/ *.o tmp.* 
+	rm -rf lexer-icu Easy/ *.o tmp.*

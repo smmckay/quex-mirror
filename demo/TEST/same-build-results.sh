@@ -10,7 +10,7 @@
 source helper.sh
 
 hwut_info $1 \
-    "Demo Consistency: C and C++ Makefiles;\n" \
+    "Demo Consistency: Same build results Makefile vs. CMakeLists.txt;\n" \
     "HAPPY: [0-9]+"
 
 
