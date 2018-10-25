@@ -1,11 +1,11 @@
 Next Release:
 
-(w)  Documentation, Documentation, Documentation 
-     + make its
-     + state machine, lexical analysis
-     + sequential data streams
 (/) Complete CMakeLists.txt files for demos.
 (/)  UTs on CMakeLists.txt in demo/
+(w)  Documentation, Documentation, Documentation 
+     (/) Chapter 1
+     (/) Chapter 2 
+     (w) Chapter 3
 ()  move repository to git
 ()  Python 3.0 compatibility
 ()  MIT License for all files
@@ -15,8 +15,10 @@ Next Release:
 ()  Unify 'target_map_ops.trigger_set_line_up' and 'loop.combine ...'
 ()  static_cast<*> in C++
 ()  example with linux kernel module
-()  operators for 'remove/insert/change/ to implement levenstein automaton
-()  user function definitions
+()  example with DNA
+()  pattern defition macros/functions
+()  functions for 'insert(P, set)', 'remove(P, set)', and 'alternative(P, set)'
+()  show how to build Levenstein Automaton.
 
 ===================================================================================
 
