@@ -3,31 +3,42 @@
 Main Sections
 =============
 
-Functionality may be provided by two types of syntactic means: This which
-*configure* functionality and those which provide functionality by *pasting*
-source code into generated code. This holds in particular for the top-level
-syntax elements, so their explanations are grouped into to according
-sub-sections.
+On the top level, the syntax is concerned with the subjects: 
+
+    * Behavior of the lexical analyzer defined by modes and patterns.
+    * Token identifiers and token definitions.
+    * Class definition of the lexical analyzer.
+    * Class definition of a memento.
+
+A particular type of sections are those that consist of solely of user
+code to be pasted into the generated code. Such sections are marked in the
+following by::
+
+       section-name {
+           (user code)
+       }
+
+Where ``section-name`` represent the describe section name.
 
 .. _sec:top-level-configuration:
 
-Configuration
-#############
+Behavior
+########
+
+The key sections to describe a lexer's behavior are ``start``,  ``mode``, and
+``define``. These elements are described below.
+
+.. data:: start = mode_name;
+
+   Defines a mode with name ``mode_name`` as initial mode. Whenever the lexer
+   starts the first time, includes another file, or resets, this mode is 
+   setup.
 
 .. data:: mode
 
-   A mode section starts with the keyword ``mode``. For a specific point in
-   time the lexer is in one distinct mode. A mode defines a lexer's behavior
-   and a mode change implements a change in its behavior. 
-   
-   The core task of a mode is to define reactions for the moment when the
-   stream matches particular input patterns. Modes are subject to inheritance.
-   There are several optional 'tags' that modify its setup.  Additionally,
-   there are 'incidences' for which handlers may be specified.
-
-   The precise syntax of a mode is defined in a dedicated chapter (namely
-   :ref:`sec:modes`). The following fragment is intended to provide a rough
-   impression to be understood intuitively.
+   This keyword opens a section to define a lexer mode.  The precise syntax of
+   a mode is defined in a dedicated chapter (namely :ref:`sec:modes`). The
+   following fragment provides a rough impression.
 
    .. code-block:: cpp
 
@@ -79,6 +90,12 @@ Configuration
    expressions increases with their complexity.  Thus, defining meaningful
    sub-patterns is the basis for a robust lexer construction. Divide and 
    conquer! 
+
+Token
+#####
+
+The token, is the essential output of lexical analysis. The following keywords
+allow one to model the token class and the token identifiers.
 
 .. data:: token
 
@@ -137,37 +154,25 @@ Configuration
    customized token classes or structs may be defined in the ``token_type``
    section (chapter :ref:`sec:token`).
 
-.. data:: start
+Additionally, an external token identifier file can be specified on the 
+command line using the option ``--external-token-id-file``. An external
+token class can be specified by ``--external-token-class``.
 
-   An initial mode ``START_MODE`` in which the lexical analyzer starts its
-   analysis can be specified via 
-      
-      .. code-block:: cpp
-      
-         start = START_MODE;
 
 .. _sec:top-level-paste:
 
-Pasting Source Code
-###################
-
-Section which define code to be pasted into generated code follow the pattern::
-
-       section-name {
-           ...
-           section content
-           ...
-       }
+Lexer Class
+###########
 
 Whatever is contained between the two brackets is pasted in the corresponding location
 for the given section-name. The available sections are the following:
 
-.. data:: header
+.. data:: header { (user code) }
 
    Content of this section is pasted into the header of the generated files. Here, 
    additional include files or constants may be specified. 
 
-.. data:: body
+.. data:: body { (user code) }
 
    Extensions to the lexical analyzer class definition. This is useful for 
    adding new class members to the analyzers or declaring ``friend``-ship
@@ -183,7 +188,7 @@ for the given section-name. The available sections are the following:
    defines an additional variable ``my_counter`` and a friend function inside
    the lexer class' body.
 
-.. data:: constructor
+.. data:: constructor { (user code) }
 
    Extensions to the lexer's  constructor. This is the place to initialize the
    additional members mentioned in the ``body`` section. Note, that as in every
@@ -202,7 +207,7 @@ for the given section-name. The available sections are the following:
    (``true``) or failure (``false``) of the construction. By default, it
    returns ``true``.
 
-.. data:: destructor
+.. data:: destructor { (user code) }
 
    Extensions to the lexer's destructor. This is the place to free or
    de-initialize customized resources.  Also, it is good practice to *mark the
@@ -219,11 +224,15 @@ for the given section-name. The available sections are the following:
            }
        }
 
-.. data:: reset
+.. data:: reset { (user code) }
 
    Section that defines customized behavior upon reset. This fragment is
    executed *after* the reset of the remaining parts of the lexical analyser.
    The analyzer is referred to by ``self``.
+
+
+Memento Class
+#############
 
 Some pattern may trigger a 'stream inclusion'. Inclusion means that the lexer
 interrupts the analysis of the current stream and continues with an 'included'
@@ -236,7 +245,7 @@ customized memento handling upon inclusion and return from inclusion are the
 following. Lexer's which are not user-extended do not require any customized
 memento handling.
 
-.. data:: memento
+.. data:: memento { (user code) }
 
    Content of this section is pasted into the definition of the generated
    memento class. The user may have defined customized extra data in the lexer
@@ -244,7 +253,7 @@ memento handling.
    and return from stream inclusion, it should be specified accordingly in this
    section.
 
-.. data:: memento_pack
+.. data:: memento_pack { (user code) }
 
    This section contains code to be executed when the state of a lexical
    analyzer is *stored* in a memento upon inclusion. The code is executed
@@ -268,7 +277,7 @@ memento handling.
    ``false`` if not.  A ``false`` causes an immediate deletion of the memento.
    Then, nothing will be pushed on the stack and the inclusion is aborted.
 
-.. data:: memento_unpack
+.. data:: memento_unpack { (user code) }
 
    Code from this section is executed when the state of a lexical analyzer is
    *restored* from a memento. The code is executed *after* the default return

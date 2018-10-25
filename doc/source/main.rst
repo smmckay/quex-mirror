@@ -12,7 +12,7 @@ Contents:
 
    00-make-it/main.rst
 
-   01-basic-concepts/main.rst
+   01-basic-concepts/00-main.rst
 
    02-syntax/main.rst
 
