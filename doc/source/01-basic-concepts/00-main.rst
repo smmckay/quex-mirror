@@ -18,9 +18,9 @@ talks about the *reader*, it actually addresses *you*.
 
 .. toctree::
 
-   lexical-state-machine.rst
-   text.rst
-   input.rst
-   output.rst
-   modes.rst
-   summary.rst
+   01-approach.rst
+   02-text.rst
+   03-input.rst
+   04-output.rst
+   05-modes.rst
+   06-summary.rst
