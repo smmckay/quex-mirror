@@ -11,10 +11,9 @@ from   quex.engine.misc.file_in                 import EndOfStreamException, \
                                                        read_integer, \
                                                        skip_whitespace
 import quex.input.files.mode                    as     mode
+import quex.input.files.section_define          as     section_define
 import quex.input.files.token_type              as     token_type
 import quex.input.files.code_fragment           as     code_fragment
-import quex.input.regular_expression.core       as     regular_expression
-from   quex.input.regular_expression.auxiliary  import PatternShorthand
 from   quex.input.setup                         import NotificationDB
 from   quex.output.token.id_generator           import token_id_db_enter, prepare_default_standard_token_ids
 from   quex.input.code.base                     import SourceRef
@@ -124,7 +123,7 @@ def parse_section(fh, mode_prep_prep_db):
             return
             
         elif word == "define":
-            parse_pattern_name_definitions(fh)
+            section_define.parse(fh)
             error.insight("Section '%s'" % word)
             return
 
@@ -178,60 +177,6 @@ def parse_section(fh, mode_prep_prep_db):
     except EndOfStreamException:
         fh.seek(position)
         error.error_eof(word, fh)
-
-def parse_pattern_name_definitions(fh):
-    """Parses pattern definitions of the form:
-   
-          WHITESPACE  [ \t\n]
-          IDENTIFIER  [a-zA-Z0-9]+
-          OP_PLUS     "+"
-          
-       That means: 'name' whitespace 'regular expression' whitespace newline.
-       Comments can only be '//' nothing else and they have to appear at the
-       beginning of the line.
-       
-       One regular expression can have more than one name, but one name can 
-       only have one regular expression.
-    """
-    skip_whitespace(fh)
-    if not check(fh, "{"):
-        error.log("define region must start with opening '{'.", fh)
-
-    while 1 + 1 == 2:
-        skip_whitespace(fh)
-
-        if check(fh, "}"): 
-            return
-        
-        # -- get the name of the pattern
-        skip_whitespace(fh)
-        pattern_name = read_identifier(fh, OnMissingStr="Missing identifier for pattern definition.")
-
-        if blackboard.shorthand_db.has_key(pattern_name):
-            error.log("Second definition of pattern '%s'.\n" % pattern_name + \
-                      "Pattern names must be unique.", fh)
-
-        skip_whitespace(fh)
-
-        if check(fh, "}"): 
-            error.log("Missing regular expression for pattern definition '%s'." % \
-                      pattern_name, fh)
-
-        # A regular expression state machine
-        # (No possible transformation into a particular codec whatever.
-        #  the state machines are transformed once, after they are expanded
-        #  as patterns in a mode.)
-        pattern = regular_expression.parse(fh, AllowNothingIsFineF = True) 
-
-        if pattern.has_pre_or_post_context():
-            error.log("Pattern definition with pre- and/or post-context.\n" + \
-                      "Pre- and Post-Contexts can only be defined inside mode definitions.", 
-                      fh)
-        state_machine = pattern.extract_sm()
-
-        blackboard.shorthand_db[pattern_name] = \
-                PatternShorthand(pattern_name, state_machine, 
-                                 SourceRef.from_FileHandle(fh), pattern.pattern_string())
 
 def parse_token_id_definitions(fh, NamesOnlyF=False):
     """NamesOnlyF == True: Allow only definition of names, no numeric values 

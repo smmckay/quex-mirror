@@ -1,9 +1,9 @@
 # The 'grammar' of quex's regular expressions:
 #
 #  complete expression: expression
-#                       expression / expression                 = post conditioned expression
-#                       expression / expression /               = pre conditioned expression
-#                       expression / expression / expression    = pre and post conditioned expression
+#                       expression / expression              = post conditioned expression
+#                       expression / expression /            = pre conditioned expression
+#                       expression / expression / expression = pre and post conditioned expression
 # 
 #  expression: term
 #              term | expression
